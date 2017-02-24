@@ -1,0 +1,56 @@
+<?php
+
+namespace Procuracion\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Empleado
+ *
+ * @ORM\Table(name="empleado")
+ * @ORM\Entity
+ */
+class Empleado
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Nombres", type="string", length=100, nullable=true)
+     */
+    private $nombres;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Apellidos", type="string", length=100, nullable=true)
+     */
+    private $apellidos;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Puesto", type="string", length=255, nullable=true)
+     */
+    private $puesto;
+
+    /**
+     * @var integer
+     *
+     * Many Empleados have One Unidadadministrativa
+     * @ManyToOne(targetEntity="Unidadadministrativa")
+     * @JoinColumn(name="unidadadministrativa", referencedColumnName="id")
+     */
+    private $unidadadministrativa;
+
+
+}
+

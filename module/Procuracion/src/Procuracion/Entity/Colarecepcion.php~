@@ -1,0 +1,96 @@
+<?php
+
+namespace Application\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Colarecepcion
+ *
+ * @ORM\Table(name="colarecepcion")
+ * @ORM\Entity
+ */
+class Colarecepcion
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_persona", type="integer", nullable=true)
+     */
+    private $idPersona;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="FechaEntrada", type="date", nullable=true)
+     */
+    private $fechaentrada;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="HoraEntrada", type="time", nullable=true)
+     */
+    private $horaentrada;
+
+     /**
+     * @var integer
+     *
+     * @ORM\Column(name="Sede", type="integer", nullable=true)
+     */
+    private $sede;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Prioridad", type="string", length=20, nullable=true)
+     */
+    private $prioridad;
+
+     /**
+     * @var integer
+     *
+     * @ORM\Column(name="LapiceroVerde", type="integer", nullable=true)
+     */
+    private $lapiceroverde;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Turno", type="string", nullable=true)
+     */
+    private $turno;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="HoraAtencion", type="time", nullable=true)
+     */
+    private $horaatencion;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Observaciones", type="text", length=65535, nullable=true)
+     */
+    private $observaciones;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="RazonSalida", type="string", length=50, nullable=true)
+     */
+    private $razonsalida;
+
+
+}
+

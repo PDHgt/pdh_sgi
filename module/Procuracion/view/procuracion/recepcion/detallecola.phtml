@@ -1,0 +1,63 @@
+<?php $cola = $this->visita; ?>
+<section class="content-header">
+    <h1><?php echo $this->title; ?></h1>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-info">
+                <div class="box-header">
+                    <h3 class="box-title"><?php echo $this->subtitle; ?></h3>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <strong>Tipo de documento</strong>
+                            <p><?php echo $cola->getIdpersona()->getTipoDocumento();    ?></p>
+                        </div>
+                        <div class="col-xs-3">
+                            <strong># de documento</strong>
+                            <p><?php echo $cola->getIdpersona()->getNumeroDocumento();    ?></p>
+                        </div>
+                        <div class="col-xs-3">
+                            <strong>Nombres</strong>
+                            <p><?php echo $cola->getIdpersona()->getNombres()    ?></p>
+                        </div>
+                        <div class="col-xs-3">
+                            <strong>Apellidos</strong>
+                            <p><?php echo $cola->getIdpersona()->getApellidos();    ?></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <strong>Fecha</strong>
+                            <p><?php echo $cola->getFechaentrada()->format("d/m/Y");    ?></p>
+                        </div>
+                        <div class="col-xs-4">
+                            <strong>Hora</strong>
+                            <p><?php echo $cola->getHoraentrada()->format("H:i:s");    ?></p>
+                        </div>
+                        <div class="col-xs-4">
+                            <strong>Prioridad</strong>
+                            <p><?php echo $cola->getPrioridad();    ?></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <strong>Observaciones</strong>
+                            <p><?php echo $cola->getObservaciones(); ?></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <button class="btn btn-danger btn-flat" data-dismiss="modal">Cerrar</button>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+

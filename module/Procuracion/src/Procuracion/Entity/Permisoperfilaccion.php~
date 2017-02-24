@@ -1,0 +1,47 @@
+<?php
+
+namespace Application\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Permisoperfilaccion
+ *
+ * @ORM\Table(name="permisoperfilaccion")
+ * @ORM\Entity
+ */
+class Permisoperfilaccion
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_perfil", type="integer", nullable=true)
+     */
+    private $idPerfil;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_accion", type="integer", nullable=true)
+     */
+    private $idAccion;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_permiso", type="integer", nullable=true)
+     */
+    private $idPermiso;
+
+
+}
+

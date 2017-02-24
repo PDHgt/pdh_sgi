@@ -1,0 +1,54 @@
+<?php
+
+namespace Procuracion\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Turno
+ *
+ * @ORM\Table(name="turno")
+ * @ORM\Entity
+ */
+class Turno
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Sede", type="integer", nullable=true)
+     */
+    private $sede;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="Fecha", type="date", nullable=true)
+     */
+    private $fecha;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Prioridad", type="integer", nullable=true)
+     */
+    private $prioridad;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Numero", type="integer", nullable=true)
+     */
+    private $numero;
+
+
+}
+

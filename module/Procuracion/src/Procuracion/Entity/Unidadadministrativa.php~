@@ -1,0 +1,41 @@
+<?php
+
+namespace Procuracion\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Unidadadministrativa
+ *
+ * @ORM\Table(name="unidadadministrativa")
+ * @ORM\Entity
+ */
+class Unidadadministrativa
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Nombre", type="string", length=255, nullable=true)
+     */
+    private $nombre;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Sede", type="integer", nullable=true)
+     */
+    private $sede;
+
+
+
+}
+

@@ -1,0 +1,110 @@
+<section class="content-header">
+    <h1><?php echo $this->title; ?> </h1>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-warning">
+                <div class="box-header">
+                    <h3 class="box-title"><?php echo $this->subtitle; ?></h3>
+                </div>
+                <div class="box-body">
+                    <table id="datatable" class="table table-bordered table-hover dataTable" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Nombres</th>
+                                <th>Apellidos</th>
+                                <th>Fecha</th>
+                                <th>Hora</th>
+                                <th>Observaciones</th>
+                                <th>Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $colas = $this->cola;
+                            foreach ($colas as $cola):
+                                switch ($cola->getPrioridad()) {
+                                    case '1':
+                                        $class = "red-text";
+                                        $tooltip = "Urgente";
+                                        break;
+                                    case '2':
+                                        $class = "yellow-text";
+                                        $tooltip = "Importante";
+                                        break;
+                                    case '3':
+                                        $class = "green-text";
+                                        $tooltip = "Normal";
+                                }
+                                ?>
+                                <tr>
+                                    <td>
+                                        <a data-toggle="tooltip" title="<?php echo $tooltip ?>">
+                                            <span class="glyphicon glyphicon-exclamation-sign <?php echo $class ?> fa-lg">
+                                            </span>
+                                        </a><strong><?php echo $cola->getTurno(); ?></strong>
+                                    </td>
+                                    <td>
+                                        <?php echo $cola->getIdpersona()->getNombres(); ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $cola->getIdpersona()->getApellidos(); ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $cola->getFechaentrada()->format('d-m-Y'); ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $cola->getHoraentrada()->format('H:i:s'); ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $cola->getObservaciones(); ?>
+                                    </td>
+                                    <td>
+                                        <a href="<?php echo $this->url('recepcion/procesar', array('action' => 'detallecola', 'id' => $cola->getId())); ?>" data-toggle="modal" data-target="#detailsModal" data-tt="tooltip" title="Detalles">
+                                            <span class="glyphicon glyphicon-search fa-lg"></span>
+                                        </a>
+                                        <a data-toggle="tooltip" title="Atender" href="<?php echo $this->url('recepcion/procesar', array('action' => 'atender', 'id' => $cola->getId())); ?>">
+                                            <span class="glyphicon glyphicon-log-in fa-lg"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="fixed-action-btn">
+    <nav class="fab">
+        <a class="fab-button bg-primary" href="<?php $this->url('recepcion'); ?>./registro/solicitante" tooltip="Solicitante">
+        </a>
+        <a class="fab-button bg-primary" href="<?php $this->url('recepcion'); ?>./registro/visitante" tooltip="Visitante">
+        </a>
+        <a class="fab-button" href="#"><span class="fab-span"><span class="fab-span rotate"></span></span></a>
+    </nav>
+
+    <!--<button class="btn-default btn-floating btn-large waves-effect waves-light"><span class="glyphicon glyphicon-plus"></span></button>
+    <ul>
+        <li><a href="<?php /* echo $this->url('formulario') */ ?>registrovisita"><span class="glyphicon glyphicon-user"></span></a></li>
+    </ul>-->
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+

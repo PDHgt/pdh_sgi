@@ -1,0 +1,65 @@
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url('inicio/procesar', array('action' => 'login')
+));
+$form->prepare();
+
+
+
+//echo $this->form()->openTag($form);
+?>
+<div class="login-box">
+    <div class="login-logo">
+        <a href="<?php echo $this->url('inicio') ?>" class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini"><b>SGI</b></span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg">Sistema de Gestión Institucional</span>
+        </a>
+    </div>
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+        <p class="login-box-msg">Inicie sesión</p>
+        <div class="row" id="mensajes">
+            <div class="col-xs-12">
+                <?php
+                if ($this->mensajes) {
+                    foreach ($this->mensajes as $message) {
+                        echo "<p class='bg-danger text-center'>" . $this->translate($message) . "<p>";
+                    }
+                }
+                ?>
+            </div>
+        </div>
+
+        <?php echo $this->form()->openTag($form) ?>
+        <div class="form-group has-feedback">
+            <?php echo $this->formRow($form->get('usuario')); ?>
+            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+        </div>
+        <div class="form-group has-feedback">
+            <?php echo $this->formRow($form->get('password')); ?>
+            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        </div>
+        <div class="row">
+            <div class="col-xs-8">
+                <div class="checkbox">
+
+                </div>
+            </div>
+            <!-- /.col -->
+            <div class="col-xs-4">
+                <?php echo $this->formSubmit($form->get('submit')); ?>
+            </div>
+        </div>
+
+        <?php echo $this->form()->closeTag(); ?>
+
+    </div>
+    <!-- /.login-box-body -->
+</div>
+<!-- /.login-box -->
+
+
+
+
