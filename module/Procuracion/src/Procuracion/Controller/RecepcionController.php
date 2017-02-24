@@ -266,6 +266,8 @@ class RecepcionController extends AbstractActionController {
         $personaservice = new PersonaService();
         $personas = $personaservice->searchPersona($this->getEntityManager(), $parametros);
 
+        /* agrego comentario */
+
         $header = new ViewModel();
         $header->setTemplate('recepcion/header');
 
