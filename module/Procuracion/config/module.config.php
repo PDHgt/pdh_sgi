@@ -161,8 +161,6 @@ return array(
             'layout/index' => __DIR__ . '/../view/layout/layout-index.phtml',
             'layout/layout' => __DIR__ . '/../view/layout/layout-recepcion.phtml',
             'layout/modal' => __DIR__ . '/../view/layout/layout-modal.phtml',
-            //'layout/ajax' => __DIR__ . '/../view/layout/layout-ajax.phtml',
-            //'layout/recepcion' => __DIR__ . '/../view/layout/recepcion.phtml',
             'recepcion/header' => __DIR__ . '/../view/procuracion/header.phtml',
             'recepcion/aside' => __DIR__ . '/../view/procuracion/aside.phtml',
             'error/404' => __DIR__ . '/../view/error/404.phtml',

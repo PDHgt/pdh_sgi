@@ -16,16 +16,33 @@ class PersonaService {
     public function searchPersona(EntityManager $em, array $parametros) {
         $repository = $em->getRepository('Procuracion\Entity\Persona');
         $cadena = "SELECT p FROM Procuracion\Entity\Persona p WHERE (";
-        if ($parametros['nombres'] != "")
+        if ($parametros['nombres'] != "") {
             $cadena .= "p.nombres like '%" . $parametros['nombres'] . "%'";
-        if ($parametros['apellidos'] != "")
-            $cadena .= " AND p.apellidos like '%" . $parametros['apellidos'] . "%'";
-        if ($parametros['documento'] != "")
-            $cadena .= " AND p.numerodocumento like '%" . $parametros['documento'] . "%'";
+            if ($parametros['apellidos'] != "") {
+                $cadena .= " AND p.apellidos like '%" . $parametros['apellidos'] . "%'";
+                if ($parametros['documento'] != "") {
+                    $cadena .= " AND p.numerodocumento like '%" . $parametros['documento'] . "%'";
+                }
+            } else {
+                if ($parametros['documento'] != "") {
+                    $cadena .= " AND p.numerodocumento like '%" . $parametros['documento'] . "%'";
+                }
+            }
+        } else {
+            if ($parametros['apellidos'] != "") {
+                $cadena .= "p.apellidos like '%" . $parametros['apellidos'] . "%'";
+                if ($parametros['documento'] != "") {
+                    $cadena .= " AND p.numerodocumento like '%" . $parametros['documento'] . "%'";
+                }
+            } else {
+                if ($parametros['documento'] != "") {
+                    $cadena .= "p.numerodocumento like '%" . $parametros['documento'] . "%'";
+                }
+            }
+        }
         $cadena .= ")";
         $query = $em->createQuery($cadena);
         $products = $query->getResult();
-        //var_dump($products);
         return $products;
     }
 

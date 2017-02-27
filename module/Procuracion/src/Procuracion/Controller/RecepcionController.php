@@ -169,17 +169,6 @@ class RecepcionController extends AbstractActionController {
         $registro = new PersonaService();
         //guarda una visita nueva
 
-        /* switch ($data['tipopersona']) {
-          case 'visitante':
-          $registro = new VisitaService();
-          $registro->save($this->getEntityManager(), $persona, $visita);
-          return $this->forward()->dispatch('Procuracion\Controller\Recepcion', array('action' => 'visita'));
-
-          case 'solicitante':
-          $registro = new ColaRecepcionService();
-          $registro->save($this->getEntityManager(), $persona, $cola);
-          return $this->forward()->dispatch('Procuracion\Controller\Recepcion', array('action' => 'cola'));
-          } */
         switch ($data['tipopersona']) {
             case 'visitante':
                 $registro->savePersona($this->getEntityManager(), $persona, $visita, 1);
@@ -262,12 +251,13 @@ class RecepcionController extends AbstractActionController {
     public function resultadoAction() {
         $data = $this->request->getPost();
 
-        $parametros = array('documento' => $data['numdoc'], 'nombres' => $data['nombre'], 'apellidos' => $data['apellido']);
-        $personaservice = new PersonaService();
-        $personas = $personaservice->searchPersona($this->getEntityManager(), $parametros);
+        if (empty($data['numdoc']) && empty($data['nombre']) && empty($data['apellido'])) {
 
-        /* agrego comentario */
-
+        } else {
+            $parametros = array('documento' => $data['numdoc'], 'nombres' => $data['nombre'], 'apellidos' => $data['apellido']);
+            $personaservice = new PersonaService();
+            $personas = $personaservice->searchPersona($this->getEntityManager(), $parametros);
+        }
         $header = new ViewModel();
         $header->setTemplate('recepcion/header');
 
@@ -278,11 +268,7 @@ class RecepcionController extends AbstractActionController {
         $layout->addChild($header, 'header')
                 ->addChild($aside, 'aside');
 
-        $view = new ViewModel(array(
-            'title' => 'Recepción de personas',
-            'subtitle' => 'Búsqueda de personas',
-            'personas' => $personas
-        ));
+        $view = new ViewModel(array('title' => 'Recepción de personas', 'subtitle' => 'Búsqueda de personas', 'personas' => $personas));
         return $view;
     }
 
@@ -291,13 +277,10 @@ class RecepcionController extends AbstractActionController {
 
         $visitas = new VisitaService();
         $getvisitas = $visitas->getVisitas($this->getEntityManager(), $id);
-        var_dump($getvisitas);
 
-        //$solicitudes = new ColaRecepcionService();
-        //$getsolicitudes = $solicitudes->getEnCola($this->getEntityManager(), $id);
+        $solicitudes = new ColaRecepcionService();
+        $getsolicitudes = $solicitudes->getEnCola($this->getEntityManager(), $id);
 
-        /* var_dump($getvisitas);
-          var_dump($getsolicitudes); */
         $header = new ViewModel();
         $header->setTemplate('recepcion/header');
 
@@ -310,8 +293,10 @@ class RecepcionController extends AbstractActionController {
 
         $view = new ViewModel(array(
             'title' => 'Recepción de personas',
-            'subtitle' => 'Bitácora de X ',
-            'visitas' => $getvisitas
+            'subtitle_visitas' => 'Bitácora de visitas',
+            'visitas' => $getvisitas,
+            'subtitle_solicitudes' => 'Bitácora de solicitudes',
+            'solicitudes' => $getsolicitudes
         ));
         return $view;
     }

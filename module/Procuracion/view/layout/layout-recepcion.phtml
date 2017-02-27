@@ -88,9 +88,9 @@
         <?php echo $this->inlineScript() ?>
         <script type="text/javascript">
             $(document).ready(function() {
-                $('#datatable').DataTable({
+                $('.datatable').DataTable({
                     "language": {
-                        "url": "../js/datatables/spanish.json"
+                        "url": "<?php echo $this->basePath(); ?>/js/datatables/spanish.json"
                     },
                     "bSort": false
                 });
