@@ -50,84 +50,12 @@
                                         <a href="<?php echo $this->url('recepcion/procesar', array('action' => 'detallevisita', 'id' => $visita->getId())); ?>" data-toggle="modal" data-target="#detailsModal" data-tt="tooltip" title="Detalles">
                                             <span class="glyphicon glyphicon-search fa-lg"></span>
                                         </a>
-                                        <a href="" data-toggle="modal" data-target="#departureModal" data-tt="tooltip" title="Salida de visita">
+                                        <a href="<?php echo $this->url('recepcion/procesar', array('action' => 'salidavisita', 'id' => $visita->getId())); ?>" data-toggle="modal" data-target="#departureModal" data-tt="tooltip" title="Salida de visita">
                                             <span class="glyphicon glyphicon-log-out red-text fa-lg"></span>
                                         </a>
                                     </td>
                                 </tr>
-
-                                <!-- Modal -->
-                            <div class="modal fade" id="departureModal" tabindex="-1">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="box-body">
-                                            <?php
-                                            $form = $this->form;
-                                            $form->prepare();
-                                            $form->setAttributes(array(
-                                                'action' => $this->url('recepcion/procesar', array('action' => 'salida', 'id' => $visita->getId())),
-                                                'method' => 'post'
-                                            ));
-
-                                            // Get the form label plugin
-                                            $formLabel = $this->plugin('formLabel');
-                                            // Render the opening tag
-                                            echo $this->form()->openTag($form);
-                                            ?>
-                                            <div class="row">
-                                                <div class="col-xs-6">
-                                                    <div class="form-group">
-                                                        <?php
-                                                        $fecha_actual = date("Y-m-d");
-                                                        //echo $fecha_actual;
-                                                        $fecha = $form->get('fecha')->setValue($fecha_actual);
-                                                        echo $formLabel->openTag() . $fecha->getOption('label') . " ";
-
-                                                        //echo $this->formElementErrors($name);
-                                                        echo $formLabel->closeTag();
-                                                        echo $this->formInput($fecha);
-                                                        ?>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xs-6">
-                                                    <div class="form-group">
-                                                        <?php
-                                                        $hora_actual = date("H:i:s");
-                                                        //echo $hora_actual;
-                                                        $hora = $form->get('hora')->setValue($hora_actual);
-                                                        echo $formLabel->openTag() . $hora->getOption('label') . " ";
-
-                                                        //echo $this->formElementErrors($name);
-                                                        echo $formLabel->closeTag();
-                                                        echo $this->formInput($hora);
-                                                        ?>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-xs-12">
-                                                    <div class="form-group">
-                                                        <?php
-                                                        $obs = $form->get('obs');
-                                                        echo $formLabel->openTag() . $obs->getOption('label') . " ";
-
-                                                        //echo $this->formElementErrors($name);
-                                                        echo $formLabel->closeTag();
-                                                        echo $this->formTextarea($obs);
-                                                        ?>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="box-footer">
-                                            <?php echo $this->formElement($form->get('guardar')) ?>
-                                            <button class="btn btn-danger btn-flat" data-dismiss="modal">Cancelar</button>
-                                        </div>
-                                        <?php echo $this->form()->closeTag() ?>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
@@ -154,8 +82,11 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="departureModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
 
 
-
-
-
+        </div>
+    </div>
+</div>

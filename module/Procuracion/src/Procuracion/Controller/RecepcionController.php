@@ -18,7 +18,8 @@ class RecepcionController extends AbstractActionController {
 
     public function getEntityManager() {
         if (null === $this->em) {
-            $this->em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+
+            $this->em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
         }
         return $this->em;
     }
@@ -137,7 +138,9 @@ class RecepcionController extends AbstractActionController {
         if (empty($data["nac"])) {
             $nac = NULL;
         } else {
-            $nac = date_create($data["nac"]);
+            $nac = date_create_from_format('d/m/Y', $data["nac"]); /*
+             * $nac = date_create(date("Y-m-d", ));
+             */
         }
         $persona = array(
             'nombres' => $data["nombre"],
@@ -192,6 +195,18 @@ class RecepcionController extends AbstractActionController {
 
         $this->layout('layout/modal');
         $view = new ViewModel(array('title' => 'Recepción de personas', 'subtitle' => 'Detalle de visita', 'visita' => $visita));
+
+        return $view;
+    }
+
+    public function salidavisitaAction() {
+
+        $id = $this->getEvent()->getRouteMatch()->getParam('id');
+
+        $form = new Formulario();
+
+        $this->layout('layout/modal');
+        $view = new ViewModel(array('title' => 'Recepción de personas', 'subtitle' => 'Salida de visita', 'form' => $form, 'id' => $id));
 
         return $view;
     }
