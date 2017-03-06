@@ -13,33 +13,45 @@
                     <div class="row">
                         <div class="col-xs-3">
                             <strong>Tipo de documento</strong>
-                            <p><?php echo $cola->getIdpersona()->getTipoDocumento();    ?></p>
+                            <p><?php echo $cola->getIdpersona()->getTipoDocumento(); ?></p>
                         </div>
                         <div class="col-xs-3">
                             <strong># de documento</strong>
-                            <p><?php echo $cola->getIdpersona()->getNumeroDocumento();    ?></p>
+                            <p><?php echo $cola->getIdpersona()->getNumeroDocumento(); ?></p>
                         </div>
                         <div class="col-xs-3">
                             <strong>Nombres</strong>
-                            <p><?php echo $cola->getIdpersona()->getNombres()    ?></p>
+                            <p><?php echo $cola->getIdpersona()->getNombres() ?></p>
                         </div>
                         <div class="col-xs-3">
                             <strong>Apellidos</strong>
-                            <p><?php echo $cola->getIdpersona()->getApellidos();    ?></p>
+                            <p><?php echo $cola->getIdpersona()->getApellidos(); ?></p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-4">
                             <strong>Fecha</strong>
-                            <p><?php echo $cola->getFechaentrada()->format("d/m/Y");    ?></p>
+                            <p><?php echo $cola->getFechaentrada()->format("d/m/Y"); ?></p>
                         </div>
                         <div class="col-xs-4">
                             <strong>Hora</strong>
-                            <p><?php echo $cola->getHoraentrada()->format("H:i:s");    ?></p>
+                            <p><?php echo $cola->getHoraentrada()->format("H:i:s"); ?></p>
                         </div>
                         <div class="col-xs-4">
                             <strong>Prioridad</strong>
-                            <p><?php echo $cola->getPrioridad();    ?></p>
+                            <p><?php
+                                switch ($cola->getPrioridad()) {
+                                    case "3":
+                                        echo "Normal";
+                                        break;
+                                    case "2":
+                                        echo "Importante";
+                                        break;
+                                    case "1":
+                                        echo "Urgente";
+                                        break;
+                                }
+                                ?></p>
                         </div>
                     </div>
                     <div class="row">

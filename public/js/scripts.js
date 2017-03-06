@@ -2,7 +2,15 @@ $(document).ready(function() {
     $('#historyBack').click(function() {
         window.history.go(-1);
     });
+
 });
+$(function() {
+    $("#datepicker").datepicker({
+        changeMonth: true,
+        changeYear: true,
+        dateFormat: 'dd/mm/yy'});
+});
+
 
 (function(window) {
     'use strict';

@@ -43,10 +43,22 @@
                                         <?php echo $visita->getEmpleado()->getUnidadadministrativa()->getNombre(); ?>
                                     </td>
                                     <td>
-                                        <?php echo $visita->getFechasalida()->format("H:i:s"); ?>
+                                        <?php
+                                        if ($visita->getFechasalida() == NULL) {
+                                            echo "No se registro fecha";
+                                        } else {
+                                            echo $visita->getFechasalida()->format("d/m/Y");
+                                        }
+                                        ?>
                                     </td>
                                     <td>
-                                        <?php echo $visita->getHorasalida()->format("H:i:s"); ?>
+                                        <?php
+                                        if ($visita->getHorasalida() == NULL) {
+                                            echo "No se registro hora";
+                                        } else {
+                                            echo $visita->getHorasalida()->format("H:i:s");
+                                        }
+                                        ?>
                                     </td>
 
                                 </tr>
@@ -85,7 +97,19 @@
                                         <?php echo $solicitud->getHoraentrada()->format("H:i:s"); ?>
                                     </td>
                                     <td>
-                                        <?php echo $solicitud->getPrioridad(); ?>
+                                        <?php
+                                        switch ($solicitud->getPrioridad()) {
+                                            case "3":
+                                                echo "Normal";
+                                                break;
+                                            case "2":
+                                                echo "Importante";
+                                                break;
+                                            case "1":
+                                                echo "Urgente";
+                                                break;
+                                        }
+                                        ?>
                                     </td>
                                     <td>
                                         <?php echo $solicitud->getTurno(); ?>

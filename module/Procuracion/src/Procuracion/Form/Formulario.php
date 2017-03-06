@@ -71,6 +71,22 @@ class Formulario extends Form {
             )
         ));
         /*
+         * Fecha de nacimiento
+         */
+        $this->add(array(
+            'name' => 'nac',
+            'options' => array(
+                'label' => 'Fecha de nacimiento',
+            ),
+            'attributes' => array(
+                'type' => 'date',
+                'class' => 'form-control',
+                'id' => 'datepicker'
+            //'readonly' => true
+            //'disabled' => true
+            )
+        ));
+        /*
          * Campo tipo de documento
          */
         $this->add(array(
@@ -144,6 +160,7 @@ class Formulario extends Form {
             ),
             'attributes' => array(
                 'class' => 'form-control',
+                'required' => true
             )
         ));
         /*
@@ -156,12 +173,11 @@ class Formulario extends Form {
                 'label' => 'Oficina / Unidad',
                 'empty_option' => 'Seleccione una opción',
                 'value_options' => array(
-                    'Dirección de Tecnología' => 'Dirección de Tecnología',
-                    'Dirección de Procuración' => 'Dirección de Procuración'
                 ),
             ),
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'required' => true
             )
         ));
         /*
@@ -206,6 +222,9 @@ class Formulario extends Form {
                     '2' => 'Importante',
                     '3' => 'Normal',
                 )
+            ),
+            'attributes' => array(
+                'value' => '3'
             )
         ));
         /*
@@ -260,21 +279,6 @@ class Formulario extends Form {
                     'T' => 'Transexual',
                     'I' => 'Intersexual'
                 )
-            )
-        ));
-        /*
-         * Fecha de nacimiento
-         */
-        $this->add(array(
-            'name' => 'nac',
-            'options' => array(
-                'label' => 'Fecha de nacimiento',
-            ),
-            'attributes' => array(
-                'type' => 'date',
-                'class' => 'form-control',
-            //'readonly' => true
-            //'disabled' => true
             )
         ));
         /*

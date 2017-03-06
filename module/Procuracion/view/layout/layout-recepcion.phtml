@@ -20,6 +20,7 @@
                 ->prependStylesheet($this->basePath() . '/css/ionicons.min.css')
                 ->prependStylesheet($this->basePath() . '/css/font-awesome.min.css')
                 ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css')
+                ->prependStylesheet($this->basePath() . '/css/jquery-ui.css')
         ?>
         <!-- Scripts -->
         <?php
@@ -29,53 +30,29 @@
                 ->prependFile($this->basePath() . '/js/dataTables.bootstrap.js')
                 ->prependFile($this->basePath() . '/js/jquery.dataTables.js')
                 ->prependFile($this->basePath() . '/js/bootstrap.min.js')
-                ->prependFile($this->basePath() . '/js/jquery.min.js')
-        //->prependFile($this->basePath() . '/js/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9',))
-        //->prependFile($this->basePath() . '/js/html5shiv.js',   'text/javascript', array('conditional' => 'lt IE 9',))
+                ->prependFile($this->basePath() . '/js/jquery-ui.js')
+                ->prependFile($this->basePath() . '/js/jquery.js')
         ;
         ?>
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-        <![endif]-->
     </head>
     <body class="hold-transition skin-blue sidebar-mini">
-        <?php
-        //var_dump($this->header);
-        //var_dump($this->aside);
-        ?>
         <div class="wrapper">
             <!-- Main Header -->
-
             <!-- Left side column. contains the logo and sidebar -->
-
-
-
             <?php echo $this->header; ?>
-
             <?php echo $this->aside; ?>
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->
-
-
                 <!-- Main content -->
-
                 <?php echo $this->content; ?>
-
-
-
                 <!-- /.content -->
             </div>
             <!-- /.content-wrapper -->
-
             <!-- Main Footer -->
             <footer class="main-footer">
                 <!-- To the right -->
                 <div class="pull-right hidden-xs">
-
                 </div>
                 <!-- Default to the left -->
                 <strong>&copy; 2005 - <?php echo date('Y') ?> / DT-PDH</strong> Todos los derechos reservados <?php /* echo $this->translate('All rights reserved.') */ ?>
@@ -88,7 +65,7 @@
         <?php echo $this->inlineScript() ?>
         <script type="text/javascript">
             $(document).ready(function() {
-                $('.datatable').DataTable({
+                $('#datatable').DataTable({
                     "language": {
                         "url": "<?php echo $this->basePath(); ?>/js/datatables/spanish.json"
                     },
