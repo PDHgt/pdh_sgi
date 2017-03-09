@@ -1,0 +1,40 @@
+<?php
+
+namespace Procuracion\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Departamento
+ *
+ * @ORM\Table(name="departamento", indexes={@ORM\Index(name="Codigo", columns={"Codigo"})})
+ * @ORM\Entity
+ */
+class Departamento
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Codigo", type="integer", nullable=true)
+     */
+    private $codigo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Nombre", type="string", length=255, nullable=true)
+     */
+    private $nombre;
+
+
+}
+

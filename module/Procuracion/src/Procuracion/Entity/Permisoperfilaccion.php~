@@ -1,13 +1,13 @@
 <?php
 
-namespace Application\Entity;
+namespace Procuracion\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Permisoperfilaccion
  *
- * @ORM\Table(name="permisoperfilaccion")
+ * @ORM\Table(name="permisoperfilaccion", indexes={@ORM\Index(name="id_perfil", columns={"id_perfil"}), @ORM\Index(name="id_accion", columns={"id_accion"})})
  * @ORM\Entity
  */
 class Permisoperfilaccion
@@ -22,25 +22,31 @@ class Permisoperfilaccion
     private $id;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="id_perfil", type="integer", nullable=true)
+     * @ORM\Column(name="Permisos", type="string", length=20, nullable=true)
      */
-    private $idPerfil;
+    private $permisos;
 
     /**
-     * @var integer
+     * @var \Procuracion\Entity\Accion
      *
-     * @ORM\Column(name="id_accion", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Accion")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_accion", referencedColumnName="id")
+     * })
      */
     private $idAccion;
 
     /**
-     * @var integer
+     * @var \Procuracion\Entity\Perfil
      *
-     * @ORM\Column(name="id_permiso", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Perfil")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_perfil", referencedColumnName="id")
+     * })
      */
-    private $idPermiso;
+    private $idPerfil;
 
 
 }

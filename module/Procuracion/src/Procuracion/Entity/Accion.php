@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="accion")
  * @ORM\Entity
  */
-class Accion {
-
+class Accion
+{
     /**
      * @var integer
      *
@@ -28,12 +28,15 @@ class Accion {
      */
     private $accion;
 
+
+
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
@@ -44,9 +47,10 @@ class Accion {
      *
      * @return Accion
      */
-    public function setAccion($accion) {
+    public function setAccion($accion)
+    {
         $this->accion = $accion;
-
+    
         return $this;
     }
 
@@ -55,8 +59,8 @@ class Accion {
      *
      * @return string
      */
-    public function getAccion() {
+    public function getAccion()
+    {
         return $this->accion;
     }
-
 }

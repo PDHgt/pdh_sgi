@@ -327,6 +327,10 @@ class ComposerStaticInit2c8a47d1649b39606744ec478e30eccb
             array (
                 0 => __DIR__ . '/..' . '/zendframework/zendxml/library',
             ),
+            'ZendDeveloperTools' => 
+            array (
+                0 => __DIR__ . '/..' . '/zendframework/zend-developer-tools/src',
+            ),
         ),
         'P' => 
         array (
@@ -787,6 +791,7 @@ class ComposerStaticInit2c8a47d1649b39606744ec478e30eccb
         'SebastianBergmann\\RecursionContext\\InvalidArgumentException' => __DIR__ . '/..' . '/sebastian/recursion-context/src/InvalidArgumentException.php',
         'SebastianBergmann\\Version' => __DIR__ . '/..' . '/sebastian/version/src/Version.php',
         'Text_Template' => __DIR__ . '/..' . '/phpunit/php-text-template/Text/Template.php',
+        'ZendDeveloperTools\\Module' => __DIR__ . '/..' . '/zendframework/zend-developer-tools/Module.php',
         'Zend\\I18n\\Translator\\Resources' => __DIR__ . '/..' . '/zendframework/zend-i18n-resources/src/Resources.php',
     );
 

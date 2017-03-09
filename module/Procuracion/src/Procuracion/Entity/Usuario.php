@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Usuario
  *
- * @ORM\Table(name="usuario")
+ * @ORM\Table(name="usuario", indexes={@ORM\Index(name="id_empleado", columns={"id_empleado"}), @ORM\Index(name="idPerfilUsuario", columns={"id_perfil"})})
  * @ORM\Entity
  */
 class Usuario
@@ -22,54 +22,67 @@ class Usuario
     private $id;
 
     /**
-     * @var integer idempleado
-     *
-     * @ORM\ManyToOne(targetEntity="Empleado", fetch="EAGER")
-     * @ORM\JoinColumn(name="idempleado", referencedColumnName="id")
-     */
-    private $idempleado;
-
-    /**
      * @var string
      *
-     * @ORM\Column(name="usuario", type="string", length=10, nullable=true)
+     * @ORM\Column(name="Usuario", type="string", length=20, nullable=true)
      */
     private $usuario;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="password", type="string", length=10, nullable=true)
+     * @ORM\Column(name="Password", type="string", length=32, nullable=true)
      */
     private $password;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="estado", type="integer", nullable=true)
+     * @ORM\Column(name="Estado", type="integer", nullable=true)
      */
-    private $estado = '1';
+    private $estado;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="modify_by", type="integer", nullable=true)
      */
-    private $modifyby;
+    private $modifyBy = '1';
 
     /**
-     * @var date
+     * @var \DateTime
      *
      * @ORM\Column(name="modify_at", type="date", nullable=true)
      */
-    private $modifyat;
+    private $modifyAt;
 
     /**
-     * @var date
+     * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="date", nullable=true)
      */
-    private $createdat;
+    private $createdAt;
+
+    /**
+     * @var \Procuracion\Entity\Perfil
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Perfil")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_perfil", referencedColumnName="id")
+     * })
+     */
+    private $idPerfil;
+
+    /**
+     * @var \Procuracion\Entity\Empleado
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Empleado")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_empleado", referencedColumnName="id")
+     * })
+     */
+    private $idEmpleado;
+
 
 
     /**
@@ -83,30 +96,6 @@ class Usuario
     }
 
     /**
-     * Set idempleado
-     *
-     * @param integer $idempleado
-     *
-     * @return Usuario
-     */
-    public function setIdempleado($idempleado)
-    {
-        $this->idempleado = $idempleado;
-
-        return $this;
-    }
-
-    /**
-     * Get idempleado
-     *
-     * @return integer
-     */
-    public function getIdempleado()
-    {
-        return $this->idempleado;
-    }
-
-    /**
      * Set usuario
      *
      * @param string $usuario
@@ -116,7 +105,7 @@ class Usuario
     public function setUsuario($usuario)
     {
         $this->usuario = $usuario;
-
+    
         return $this;
     }
 
@@ -140,7 +129,7 @@ class Usuario
     public function setPassword($password)
     {
         $this->password = $password;
-
+    
         return $this;
     }
 
@@ -164,7 +153,7 @@ class Usuario
     public function setEstado($estado)
     {
         $this->estado = $estado;
-
+    
         return $this;
     }
 
@@ -179,75 +168,122 @@ class Usuario
     }
 
     /**
-     * Set modify_by
+     * Set modifyBy
      *
-     * @param integer $modify_by
+     * @param integer $modifyBy
      *
      * @return Usuario
      */
-    public function setModifyby($modify_by)
+    public function setModifyBy($modifyBy)
     {
-        $this->modifyby = $modify_by;
-
+        $this->modifyBy = $modifyBy;
+    
         return $this;
     }
 
     /**
-     * Get modify_by
+     * Get modifyBy
      *
      * @return integer
      */
-    public function getModifyby()
+    public function getModifyBy()
     {
-        return $this->modifyby;
+        return $this->modifyBy;
     }
 
     /**
-     * Set modify_at
+     * Set modifyAt
      *
-     * @param date $modify_at
+     * @param \DateTime $modifyAt
      *
      * @return Usuario
      */
-    public function setModifyat($modify_at)
+    public function setModifyAt($modifyAt)
     {
-        $this->modifyat = $modify_at;
-
+        $this->modifyAt = $modifyAt;
+    
         return $this;
     }
 
     /**
-     * Get modify_at
+     * Get modifyAt
      *
-     * @return date
+     * @return \DateTime
      */
-    public function getModifyat()
+    public function getModifyAt()
     {
-        return $this->modifyat;
+        return $this->modifyAt;
     }
 
     /**
-     * Set created_at
+     * Set createdAt
      *
-     * @param date $created_at
+     * @param \DateTime $createdAt
      *
      * @return Usuario
      */
-    public function setCreatedat($created_at)
+    public function setCreatedAt($createdAt)
     {
-        $this->createdat = $created_at;
-
+        $this->createdAt = $createdAt;
+    
         return $this;
     }
 
     /**
-     * Get created_at
+     * Get createdAt
      *
-     * @return date
+     * @return \DateTime
      */
-    public function getCreatedat()
+    public function getCreatedAt()
     {
-        return $this->createdat;
+        return $this->createdAt;
     }
 
+    /**
+     * Set idPerfil
+     *
+     * @param \Procuracion\Entity\Perfil $idPerfil
+     *
+     * @return Usuario
+     */
+    public function setIdPerfil(\Procuracion\Entity\Perfil $idPerfil = null)
+    {
+        $this->idPerfil = $idPerfil;
+    
+        return $this;
+    }
+
+    /**
+     * Get idPerfil
+     *
+     * @return \Procuracion\Entity\Perfil
+     */
+    public function getIdPerfil()
+    {
+        return $this->idPerfil;
+    }
+
+    /**
+     * Set idEmpleado
+     *
+     * @param \Procuracion\Entity\Empleado $idEmpleado
+     *
+     * @return Usuario
+     */
+    public function setIdEmpleado(\Procuracion\Entity\Empleado $idEmpleado = null)
+    {
+        $this->idEmpleado = $idEmpleado;
+    
+        return $this;
+    }
+
+    /**
+     * Get idEmpleado
+     *
+     * @return \Procuracion\Entity\Empleado
+     */
+    public function getIdEmpleado()
+    {
+        return $this->idEmpleado;
+    }
 }

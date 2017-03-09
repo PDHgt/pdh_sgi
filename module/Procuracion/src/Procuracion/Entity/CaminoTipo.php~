@@ -1,0 +1,60 @@
+<?php
+
+namespace Procuracion\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * CaminoTipo
+ *
+ * @ORM\Table(name="camino_tipo", indexes={@ORM\Index(name="id_actividad", columns={"id_actividad"}), @ORM\Index(name="id_tipo_expediente", columns={"id_tipo_expediente"})})
+ * @ORM\Entity
+ */
+class CaminoTipo
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Orden", type="integer", nullable=true)
+     */
+    private $orden;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Activo", type="integer", nullable=true)
+     */
+    private $activo;
+
+    /**
+     * @var \Procuracion\Entity\Actividad
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Actividad")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_actividad", referencedColumnName="id")
+     * })
+     */
+    private $idActividad;
+
+    /**
+     * @var \Procuracion\Entity\TipoExpediente
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\TipoExpediente")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_tipo_expediente", referencedColumnName="id")
+     * })
+     */
+    private $idTipoExpediente;
+
+
+}
+

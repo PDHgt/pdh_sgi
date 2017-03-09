@@ -123,21 +123,6 @@ class Formulario extends Form {
         /*
          * Campo de insitucion o empresa
          */
-        /* $this->add(array(
-          'type' => 'select',
-          'name' => 'institucion',
-          'options' => array(
-          'label' => 'Empresa / Institución',
-          'empty_option' => 'Seleccione una opción',
-          'value_options' => array(
-          'Pública' => 'Pública',
-          'Privada' => 'Privada'
-          ),
-          ),
-          'attributes' => array(
-          'class' => 'form-control'
-          )
-          )); */
         $this->add(array(
             'name' => 'institucion',
             'options' => array(

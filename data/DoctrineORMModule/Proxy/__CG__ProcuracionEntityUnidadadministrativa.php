@@ -64,10 +64,10 @@ class Unidadadministrativa extends \Procuracion\Entity\Unidadadministrativa impl
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Unidadadministrativa' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Unidadadministrativa' . "\0" . 'nombre', '' . "\0" . 'Procuracion\\Entity\\Unidadadministrativa' . "\0" . 'sede'];
+            return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Unidadadministrativa' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Unidadadministrativa' . "\0" . 'nombre', '' . "\0" . 'Procuracion\\Entity\\Unidadadministrativa' . "\0" . 'idSede'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Unidadadministrativa' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Unidadadministrativa' . "\0" . 'nombre', '' . "\0" . 'Procuracion\\Entity\\Unidadadministrativa' . "\0" . 'sede'];
+        return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Unidadadministrativa' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Unidadadministrativa' . "\0" . 'nombre', '' . "\0" . 'Procuracion\\Entity\\Unidadadministrativa' . "\0" . 'idSede'];
     }
 
     /**
@@ -213,23 +213,23 @@ class Unidadadministrativa extends \Procuracion\Entity\Unidadadministrativa impl
     /**
      * {@inheritDoc}
      */
-    public function setSede($sede)
+    public function setIdSede(\Procuracion\Entity\Sede $idSede = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSede', [$sede]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIdSede', [$idSede]);
 
-        return parent::setSede($sede);
+        return parent::setIdSede($idSede);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getSede()
+    public function getIdSede()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSede', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIdSede', []);
 
-        return parent::getSede();
+        return parent::getIdSede();
     }
 
 }

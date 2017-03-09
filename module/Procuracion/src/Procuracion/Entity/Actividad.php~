@@ -1,0 +1,47 @@
+<?php
+
+namespace Procuracion\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Actividad
+ *
+ * @ORM\Table(name="actividad")
+ * @ORM\Entity
+ */
+class Actividad
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Actividad", type="string", length=255, nullable=true)
+     */
+    private $actividad;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Duracion", type="integer", nullable=true)
+     */
+    private $duracion;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Activa", type="integer", nullable=true)
+     */
+    private $activa;
+
+
+}
+

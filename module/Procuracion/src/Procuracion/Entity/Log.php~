@@ -1,0 +1,67 @@
+<?php
+
+namespace Procuracion\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Log
+ *
+ * @ORM\Table(name="log", indexes={@ORM\Index(name="id_accion_log", columns={"id_accion_log"}), @ORM\Index(name="quien", columns={"id_usuario"})})
+ * @ORM\Entity
+ */
+class Log
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="Fecha", type="date", nullable=true)
+     */
+    private $fecha;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ValorAnterior", type="string", length=255, nullable=true)
+     */
+    private $valoranterior;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="NuevoValor", type="string", length=255, nullable=true)
+     */
+    private $nuevovalor;
+
+    /**
+     * @var \Procuracion\Entity\AccionLog
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\AccionLog")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_accion_log", referencedColumnName="id")
+     * })
+     */
+    private $idAccionLog;
+
+    /**
+     * @var \Procuracion\Entity\Usuario
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Usuario")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_usuario", referencedColumnName="id")
+     * })
+     */
+    private $idUsuario;
+
+
+}
+

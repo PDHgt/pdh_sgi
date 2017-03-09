@@ -7,11 +7,11 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Persona
  *
- * @ORM\Table(name="persona")
+ * @ORM\Table(name="persona", indexes={@ORM\Index(name="Depto", columns={"Depto"}), @ORM\Index(name="Muni", columns={"Muni"})})
  * @ORM\Entity
  */
-class Persona {
-
+class Persona
+{
     /**
      * @var integer
      *
@@ -59,7 +59,7 @@ class Persona {
     /**
      * @var string
      *
-     * @ORM\Column(name="LGBTI", type="string", length=2, nullable=false)
+     * @ORM\Column(name="LGBTI", type="string", length=2, nullable=true)
      */
     private $lgbti;
 
@@ -78,11 +78,41 @@ class Persona {
     private $edad;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="Direccion", type="string", length=255, nullable=true)
+     */
+    private $direccion;
+
+    /**
+     * @var \Procuracion\Entity\Departamento
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Departamento")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="Depto", referencedColumnName="Codigo")
+     * })
+     */
+    private $depto;
+
+    /**
+     * @var \Procuracion\Entity\Municipio
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Municipio")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="Muni", referencedColumnName="Codigo")
+     * })
+     */
+    private $muni;
+
+
+
+    /**
      * Get id
      *
      * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
@@ -93,9 +123,10 @@ class Persona {
      *
      * @return Persona
      */
-    public function setNombres($nombres) {
+    public function setNombres($nombres)
+    {
         $this->nombres = $nombres;
-
+    
         return $this;
     }
 
@@ -104,7 +135,8 @@ class Persona {
      *
      * @return string
      */
-    public function getNombres() {
+    public function getNombres()
+    {
         return $this->nombres;
     }
 
@@ -115,9 +147,10 @@ class Persona {
      *
      * @return Persona
      */
-    public function setApellidos($apellidos) {
+    public function setApellidos($apellidos)
+    {
         $this->apellidos = $apellidos;
-
+    
         return $this;
     }
 
@@ -126,7 +159,8 @@ class Persona {
      *
      * @return string
      */
-    public function getApellidos() {
+    public function getApellidos()
+    {
         return $this->apellidos;
     }
 
@@ -137,9 +171,10 @@ class Persona {
      *
      * @return Persona
      */
-    public function setTipodocumento($tipodocumento) {
+    public function setTipodocumento($tipodocumento)
+    {
         $this->tipodocumento = $tipodocumento;
-
+    
         return $this;
     }
 
@@ -148,7 +183,8 @@ class Persona {
      *
      * @return string
      */
-    public function getTipodocumento() {
+    public function getTipodocumento()
+    {
         return $this->tipodocumento;
     }
 
@@ -159,9 +195,10 @@ class Persona {
      *
      * @return Persona
      */
-    public function setNumerodocumento($numerodocumento) {
+    public function setNumerodocumento($numerodocumento)
+    {
         $this->numerodocumento = $numerodocumento;
-
+    
         return $this;
     }
 
@@ -170,7 +207,8 @@ class Persona {
      *
      * @return string
      */
-    public function getNumerodocumento() {
+    public function getNumerodocumento()
+    {
         return $this->numerodocumento;
     }
 
@@ -181,9 +219,10 @@ class Persona {
      *
      * @return Persona
      */
-    public function setSexo($sexo) {
+    public function setSexo($sexo)
+    {
         $this->sexo = $sexo;
-
+    
         return $this;
     }
 
@@ -192,7 +231,8 @@ class Persona {
      *
      * @return integer
      */
-    public function getSexo() {
+    public function getSexo()
+    {
         return $this->sexo;
     }
 
@@ -203,9 +243,10 @@ class Persona {
      *
      * @return Persona
      */
-    public function setLgbti($lgbti) {
+    public function setLgbti($lgbti)
+    {
         $this->lgbti = $lgbti;
-
+    
         return $this;
     }
 
@@ -214,7 +255,8 @@ class Persona {
      *
      * @return string
      */
-    public function getLgbti() {
+    public function getLgbti()
+    {
         return $this->lgbti;
     }
 
@@ -225,9 +267,10 @@ class Persona {
      *
      * @return Persona
      */
-    public function setFechanacimiento($fechanacimiento) {
+    public function setFechanacimiento($fechanacimiento)
+    {
         $this->fechanacimiento = $fechanacimiento;
-
+    
         return $this;
     }
 
@@ -236,7 +279,8 @@ class Persona {
      *
      * @return \DateTime
      */
-    public function getFechanacimiento() {
+    public function getFechanacimiento()
+    {
         return $this->fechanacimiento;
     }
 
@@ -247,9 +291,10 @@ class Persona {
      *
      * @return Persona
      */
-    public function setEdad($edad) {
+    public function setEdad($edad)
+    {
         $this->edad = $edad;
-
+    
         return $this;
     }
 
@@ -258,8 +303,80 @@ class Persona {
      *
      * @return integer
      */
-    public function getEdad() {
+    public function getEdad()
+    {
         return $this->edad;
     }
 
+    /**
+     * Set direccion
+     *
+     * @param string $direccion
+     *
+     * @return Persona
+     */
+    public function setDireccion($direccion)
+    {
+        $this->direccion = $direccion;
+    
+        return $this;
+    }
+
+    /**
+     * Get direccion
+     *
+     * @return string
+     */
+    public function getDireccion()
+    {
+        return $this->direccion;
+    }
+
+    /**
+     * Set depto
+     *
+     * @param \Procuracion\Entity\Departamento $depto
+     *
+     * @return Persona
+     */
+    public function setDepto(\Procuracion\Entity\Departamento $depto = null)
+    {
+        $this->depto = $depto;
+    
+        return $this;
+    }
+
+    /**
+     * Get depto
+     *
+     * @return \Procuracion\Entity\Departamento
+     */
+    public function getDepto()
+    {
+        return $this->depto;
+    }
+
+    /**
+     * Set muni
+     *
+     * @param \Procuracion\Entity\Municipio $muni
+     *
+     * @return Persona
+     */
+    public function setMuni(\Procuracion\Entity\Municipio $muni = null)
+    {
+        $this->muni = $muni;
+    
+        return $this;
+    }
+
+    /**
+     * Get muni
+     *
+     * @return \Procuracion\Entity\Municipio
+     */
+    public function getMuni()
+    {
+        return $this->muni;
+    }
 }

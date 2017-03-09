@@ -1,0 +1,46 @@
+<?php
+
+namespace Procuracion\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * HechoDerecho
+ *
+ * @ORM\Table(name="hecho_derecho", indexes={@ORM\Index(name="id_hecho", columns={"id_hecho"}), @ORM\Index(name="id_derecho", columns={"id_derecho"})})
+ * @ORM\Entity
+ */
+class HechoDerecho
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \Procuracion\Entity\Derecho
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Derecho")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_derecho", referencedColumnName="id")
+     * })
+     */
+    private $idDerecho;
+
+    /**
+     * @var \Procuracion\Entity\DefHecho
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\DefHecho")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_hecho", referencedColumnName="id")
+     * })
+     */
+    private $idHecho;
+
+
+}
+

@@ -50,6 +50,7 @@ class Turno
     private $numero;
 
 
+
     /**
      * Get id
      *
@@ -70,7 +71,7 @@ class Turno
     public function setSede($sede)
     {
         $this->sede = $sede;
-
+    
         return $this;
     }
 
@@ -94,7 +95,7 @@ class Turno
     public function setFecha($fecha)
     {
         $this->fecha = $fecha;
-
+    
         return $this;
     }
 
@@ -118,7 +119,7 @@ class Turno
     public function setPrioridad($prioridad)
     {
         $this->prioridad = $prioridad;
-
+    
         return $this;
     }
 
@@ -142,7 +143,7 @@ class Turno
     public function setNumero($numero)
     {
         $this->numero = $numero;
-
+    
         return $this;
     }
 
@@ -155,5 +156,4 @@ class Turno
     {
         return $this->numero;
     }
-
 }

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Visita
  *
- * @ORM\Table(name="visita")
+ * @ORM\Table(name="visita", indexes={@ORM\Index(name="idPersona", columns={"id_persona"})})
  * @ORM\Entity
  */
 class Visita
@@ -20,13 +20,6 @@ class Visita
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="idPersona", type="integer", nullable=true)
-     */
-    private $idpersona;
 
     /**
      * @var \DateTime
@@ -48,14 +41,6 @@ class Visita
      * @ORM\Column(name="Sede", type="integer", nullable=true)
      */
     private $sede;
-
-    /**
-     * @var integer empleado
-     *
-     * @ORM\OneToOne(targetEntity="Empleado", fetch="EAGER")
-     * @ORM\JoinColumn(name="empleado", referencedColumnName="id")
-     */
-    private $empleado;
 
     /**
      * @var string
@@ -120,6 +105,25 @@ class Visita
      */
     private $updatedAt;
 
+    /**
+     * @var \Procuracion\Entity\Persona
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Persona")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_persona", referencedColumnName="id")
+     * })
+     */
+    private $idPersona;
+
+    /**
+     * @var \Procuracion\Entity\Empleado
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Empleado")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="Empleado", referencedColumnName="id")
+     * })
+     */
+    private $empleado;
 
 }
 

@@ -7,11 +7,11 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Colarecepcion
  *
- * @ORM\Table(name="colarecepcion")
+ * @ORM\Table(name="colarecepcion", indexes={@ORM\Index(name="id_persona", columns={"id_persona"})})
  * @ORM\Entity
  */
-class Colarecepcion {
-
+class Colarecepcion
+{
     /**
      * @var integer
      *
@@ -20,14 +20,6 @@ class Colarecepcion {
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
-
-    /**
-     * @var integer $idpersona
-     *
-     * @ORM\ManyToOne(targetEntity="Persona", fetch="EAGER")
-     * @ORM\JoinColumn(name="id_persona",referencedColumnName="id")
-     */
-    private $idPersona;
 
     /**
      * @var \DateTime
@@ -43,7 +35,7 @@ class Colarecepcion {
      */
     private $horaentrada;
 
-     /**
+    /**
      * @var integer
      *
      * @ORM\Column(name="Sede", type="integer", nullable=true)
@@ -57,7 +49,7 @@ class Colarecepcion {
      */
     private $prioridad;
 
-     /**
+    /**
      * @var integer
      *
      * @ORM\Column(name="LapiceroVerde", type="integer", nullable=true)
@@ -67,7 +59,7 @@ class Colarecepcion {
     /**
      * @var string
      *
-     * @ORM\Column(name="Turno", type="string", nullable=true)
+     * @ORM\Column(name="Turno", type="string", length=11, nullable=true)
      */
     private $turno;
 
@@ -93,34 +85,25 @@ class Colarecepcion {
     private $razonsalida;
 
     /**
+     * @var \Procuracion\Entity\Persona
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Persona")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_persona", referencedColumnName="id")
+     * })
+     */
+    private $idPersona;
+
+
+
+    /**
      * Get id
      *
      * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
-    }
-
-    /**
-     * Set idPersona
-     *
-     * @param integer $idPersona
-     *
-     * @return Colarecepcion
-     */
-    public function setIdpersona($idPersona) {
-        $this->idPersona = $idPersona;
-
-        return $this;
-    }
-
-    /**
-     * Get idPersona
-     *
-     * @return integer
-     */
-    public function getIdpersona() {
-        return $this->idPersona;
     }
 
     /**
@@ -130,9 +113,10 @@ class Colarecepcion {
      *
      * @return Colarecepcion
      */
-    public function setFechaentrada($fechaentrada) {
+    public function setFechaentrada($fechaentrada)
+    {
         $this->fechaentrada = $fechaentrada;
-
+    
         return $this;
     }
 
@@ -141,7 +125,8 @@ class Colarecepcion {
      *
      * @return \DateTime
      */
-    public function getFechaentrada() {
+    public function getFechaentrada()
+    {
         return $this->fechaentrada;
     }
 
@@ -152,9 +137,10 @@ class Colarecepcion {
      *
      * @return Colarecepcion
      */
-    public function setHoraentrada($horaentrada) {
+    public function setHoraentrada($horaentrada)
+    {
         $this->horaentrada = $horaentrada;
-
+    
         return $this;
     }
 
@@ -163,7 +149,8 @@ class Colarecepcion {
      *
      * @return \DateTime
      */
-    public function getHoraentrada() {
+    public function getHoraentrada()
+    {
         return $this->horaentrada;
     }
 
@@ -174,9 +161,10 @@ class Colarecepcion {
      *
      * @return Colarecepcion
      */
-    public function setSede($sede) {
+    public function setSede($sede)
+    {
         $this->sede = $sede;
-
+    
         return $this;
     }
 
@@ -185,7 +173,8 @@ class Colarecepcion {
      *
      * @return integer
      */
-    public function getSede() {
+    public function getSede()
+    {
         return $this->sede;
     }
 
@@ -196,9 +185,10 @@ class Colarecepcion {
      *
      * @return Colarecepcion
      */
-    public function setPrioridad($prioridad) {
+    public function setPrioridad($prioridad)
+    {
         $this->prioridad = $prioridad;
-
+    
         return $this;
     }
 
@@ -207,8 +197,33 @@ class Colarecepcion {
      *
      * @return string
      */
-    public function getPrioridad() {
+    public function getPrioridad()
+    {
         return $this->prioridad;
+    }
+
+    /**
+     * Set lapiceroverde
+     *
+     * @param integer $lapiceroverde
+     *
+     * @return Colarecepcion
+     */
+    public function setLapiceroverde($lapiceroverde)
+    {
+        $this->lapiceroverde = $lapiceroverde;
+    
+        return $this;
+    }
+
+    /**
+     * Get lapiceroverde
+     *
+     * @return integer
+     */
+    public function getLapiceroverde()
+    {
+        return $this->lapiceroverde;
     }
 
     /**
@@ -218,9 +233,10 @@ class Colarecepcion {
      *
      * @return Colarecepcion
      */
-    public function setTurno($turno) {
+    public function setTurno($turno)
+    {
         $this->turno = $turno;
-
+    
         return $this;
     }
 
@@ -229,30 +245,9 @@ class Colarecepcion {
      *
      * @return string
      */
-    public function getTurno() {
+    public function getTurno()
+    {
         return $this->turno;
-    }
-
-    /**
-     * Set lapiceroverde
-     *
-     * @param string $lapiceroverde
-     *
-     * @return Colarecepcion
-     */
-    public function setLapiceroverde($lapiceroverde) {
-        $this->lapiceroverde = $lapiceroverde;
-
-        return $this;
-    }
-
-    /**
-     * Get lapiceroverde
-     *
-     * @return string
-     */
-    public function getLapiceroverde() {
-        return $this->lapiceroverde;
     }
 
     /**
@@ -262,9 +257,10 @@ class Colarecepcion {
      *
      * @return Colarecepcion
      */
-    public function setHoraatencion($horaatencion) {
+    public function setHoraatencion($horaatencion)
+    {
         $this->horaatencion = $horaatencion;
-
+    
         return $this;
     }
 
@@ -273,7 +269,8 @@ class Colarecepcion {
      *
      * @return \DateTime
      */
-    public function getHoraatencion() {
+    public function getHoraatencion()
+    {
         return $this->horaatencion;
     }
 
@@ -284,9 +281,10 @@ class Colarecepcion {
      *
      * @return Colarecepcion
      */
-    public function setObservaciones($observaciones) {
+    public function setObservaciones($observaciones)
+    {
         $this->observaciones = $observaciones;
-
+    
         return $this;
     }
 
@@ -295,7 +293,8 @@ class Colarecepcion {
      *
      * @return string
      */
-    public function getObservaciones() {
+    public function getObservaciones()
+    {
         return $this->observaciones;
     }
 
@@ -306,9 +305,10 @@ class Colarecepcion {
      *
      * @return Colarecepcion
      */
-    public function setRazonsalida($razonsalida) {
+    public function setRazonsalida($razonsalida)
+    {
         $this->razonsalida = $razonsalida;
-
+    
         return $this;
     }
 
@@ -317,8 +317,32 @@ class Colarecepcion {
      *
      * @return string
      */
-    public function getRazonsalida() {
+    public function getRazonsalida()
+    {
         return $this->razonsalida;
     }
 
+    /**
+     * Set idPersona
+     *
+     * @param \Procuracion\Entity\Persona $idPersona
+     *
+     * @return Colarecepcion
+     */
+    public function setIdPersona(\Procuracion\Entity\Persona $idPersona = null)
+    {
+        $this->idPersona = $idPersona;
+    
+        return $this;
+    }
+
+    /**
+     * Get idPersona
+     *
+     * @return \Procuracion\Entity\Persona
+     */
+    public function getIdPersona()
+    {
+        return $this->idPersona;
+    }
 }

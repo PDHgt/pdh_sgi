@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="perfil")
  * @ORM\Entity
  */
-class Perfil {
-
+class Perfil
+{
     /**
      * @var integer
      *
@@ -28,12 +28,15 @@ class Perfil {
      */
     private $nombre;
 
+
+
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
@@ -44,9 +47,10 @@ class Perfil {
      *
      * @return Perfil
      */
-    public function setNombre($nombre) {
+    public function setNombre($nombre)
+    {
         $this->nombre = $nombre;
-
+    
         return $this;
     }
 
@@ -55,8 +59,8 @@ class Perfil {
      *
      * @return string
      */
-    public function getNombre() {
+    public function getNombre()
+    {
         return $this->nombre;
     }
-
 }

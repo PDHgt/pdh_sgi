@@ -1,0 +1,57 @@
+<?php
+
+namespace Procuracion\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * DetalleCatalogo
+ *
+ * @ORM\Table(name="detalle_catalogo", indexes={@ORM\Index(name="id_catalogo", columns={"id_catalogo"}), @ORM\Index(name="Codigo", columns={"Codigo"}), @ORM\Index(name="Codigo_2", columns={"Codigo"})})
+ * @ORM\Entity
+ */
+class DetalleCatalogo
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Codigo", type="integer", nullable=true)
+     */
+    private $codigo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Valor", type="string", length=255, nullable=true)
+     */
+    private $valor;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Activo", type="integer", nullable=true)
+     */
+    private $activo;
+
+    /**
+     * @var \Procuracion\Entity\CatalogoDatos
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\CatalogoDatos")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_catalogo", referencedColumnName="id")
+     * })
+     */
+    private $idCatalogo;
+
+
+}
+

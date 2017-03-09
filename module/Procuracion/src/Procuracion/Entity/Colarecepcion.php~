@@ -1,13 +1,13 @@
 <?php
 
-namespace Application\Entity;
+namespace Procuracion\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Colarecepcion
  *
- * @ORM\Table(name="colarecepcion")
+ * @ORM\Table(name="colarecepcion", indexes={@ORM\Index(name="id_persona", columns={"id_persona"})})
  * @ORM\Entity
  */
 class Colarecepcion
@@ -20,13 +20,6 @@ class Colarecepcion
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id_persona", type="integer", nullable=true)
-     */
-    private $idPersona;
 
     /**
      * @var \DateTime
@@ -42,7 +35,7 @@ class Colarecepcion
      */
     private $horaentrada;
 
-     /**
+    /**
      * @var integer
      *
      * @ORM\Column(name="Sede", type="integer", nullable=true)
@@ -56,17 +49,17 @@ class Colarecepcion
      */
     private $prioridad;
 
-     /**
+    /**
      * @var integer
      *
      * @ORM\Column(name="LapiceroVerde", type="integer", nullable=true)
      */
     private $lapiceroverde;
-    
+
     /**
      * @var string
      *
-     * @ORM\Column(name="Turno", type="string", nullable=true)
+     * @ORM\Column(name="Turno", type="string", length=11, nullable=true)
      */
     private $turno;
 
@@ -90,6 +83,16 @@ class Colarecepcion
      * @ORM\Column(name="RazonSalida", type="string", length=50, nullable=true)
      */
     private $razonsalida;
+
+    /**
+     * @var \Procuracion\Entity\Persona
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Persona")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_persona", referencedColumnName="id")
+     * })
+     */
+    private $idPersona;
 
 
 }

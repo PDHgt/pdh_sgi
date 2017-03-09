@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="permiso")
  * @ORM\Entity
  */
-class Permiso {
-
+class Permiso
+{
     /**
      * @var integer
      *
@@ -28,12 +28,15 @@ class Permiso {
      */
     private $permiso;
 
+
+
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
@@ -44,9 +47,10 @@ class Permiso {
      *
      * @return Permiso
      */
-    public function setPermiso($permiso) {
+    public function setPermiso($permiso)
+    {
         $this->permiso = $permiso;
-
+    
         return $this;
     }
 
@@ -55,8 +59,8 @@ class Permiso {
      *
      * @return string
      */
-    public function getPermiso() {
+    public function getPermiso()
+    {
         return $this->permiso;
     }
-
 }

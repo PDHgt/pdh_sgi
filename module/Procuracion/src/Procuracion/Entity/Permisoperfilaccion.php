@@ -7,11 +7,11 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Permisoperfilaccion
  *
- * @ORM\Table(name="permisoperfilaccion")
+ * @ORM\Table(name="permisoperfilaccion", indexes={@ORM\Index(name="id_perfil", columns={"id_perfil"}), @ORM\Index(name="id_accion", columns={"id_accion"})})
  * @ORM\Entity
  */
-class Permisoperfilaccion {
-
+class Permisoperfilaccion
+{
     /**
      * @var integer
      *
@@ -22,99 +22,113 @@ class Permisoperfilaccion {
     private $id;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="id_perfil", type="integer", nullable=true)
+     * @ORM\Column(name="Permisos", type="string", length=20, nullable=true)
      */
-    private $idPerfil;
+    private $permisos;
 
     /**
-     * @var integer
+     * @var \Procuracion\Entity\Accion
      *
-     * @ORM\Column(name="id_accion", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Accion")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_accion", referencedColumnName="id")
+     * })
      */
     private $idAccion;
 
     /**
-     * @var integer
+     * @var \Procuracion\Entity\Perfil
      *
-     * @ORM\Column(name="id_permiso", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Perfil")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_perfil", referencedColumnName="id")
+     * })
      */
-    private $idPermiso;
+    private $idPerfil;
+
+
 
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
-     * Set idPerfil
+     * Set permisos
      *
-     * @param integer $idPerfil
+     * @param string $permisos
      *
      * @return Permisoperfilaccion
      */
-    public function setIdPerfil($idPerfil) {
-        $this->idPerfil = $idPerfil;
-
+    public function setPermisos($permisos)
+    {
+        $this->permisos = $permisos;
+    
         return $this;
     }
 
     /**
-     * Get idPerfil
+     * Get permisos
      *
-     * @return integer
+     * @return string
      */
-    public function getIdPerfil() {
-        return $this->idPerfil;
+    public function getPermisos()
+    {
+        return $this->permisos;
     }
 
     /**
      * Set idAccion
      *
-     * @param integer $idAccion
+     * @param \Procuracion\Entity\Accion $idAccion
      *
      * @return Permisoperfilaccion
      */
-    public function setIdAccion($idAccion) {
+    public function setIdAccion(\Procuracion\Entity\Accion $idAccion = null)
+    {
         $this->idAccion = $idAccion;
-
+    
         return $this;
     }
 
     /**
      * Get idAccion
      *
-     * @return integer
+     * @return \Procuracion\Entity\Accion
      */
-    public function getIdAccion() {
+    public function getIdAccion()
+    {
         return $this->idAccion;
     }
 
     /**
-     * Set idPermiso
+     * Set idPerfil
      *
-     * @param integer $idPermiso
+     * @param \Procuracion\Entity\Perfil $idPerfil
      *
      * @return Permisoperfilaccion
      */
-    public function setIdPermiso($idPermiso) {
-        $this->idPermiso = $idPermiso;
-
+    public function setIdPerfil(\Procuracion\Entity\Perfil $idPerfil = null)
+    {
+        $this->idPerfil = $idPerfil;
+    
         return $this;
     }
 
     /**
-     * Get idPermiso
+     * Get idPerfil
      *
-     * @return integer
+     * @return \Procuracion\Entity\Perfil
      */
-    public function getIdPermiso() {
-        return $this->idPermiso;
+    public function getIdPerfil()
+    {
+        return $this->idPerfil;
     }
-
 }

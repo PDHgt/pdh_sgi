@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Unidadadministrativa
  *
- * @ORM\Table(name="unidadadministrativa")
+ * @ORM\Table(name="unidadadministrativa", indexes={@ORM\Index(name="sede", columns={"id_sede"})})
  * @ORM\Entity
  */
 class Unidadadministrativa
@@ -29,11 +29,14 @@ class Unidadadministrativa
     private $nombre;
 
     /**
-     * @var integer
+     * @var \Procuracion\Entity\Sede
      *
-     * @ORM\Column(name="Sede", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Sede")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_sede", referencedColumnName="id")
+     * })
      */
-    private $sede;
+    private $idSede;
 
 
 
@@ -57,7 +60,7 @@ class Unidadadministrativa
     public function setNombre($nombre)
     {
         $this->nombre = $nombre;
-
+    
         return $this;
     }
 
@@ -72,26 +75,26 @@ class Unidadadministrativa
     }
 
     /**
-     * Set sede
+     * Set idSede
      *
-     * @param integer $sede
+     * @param \Procuracion\Entity\Sede $idSede
      *
-     * @return Empleado
+     * @return Unidadadministrativa
      */
-    public function setSede($sede)
+    public function setIdSede(\Procuracion\Entity\Sede $idSede = null)
     {
-        $this->sede = $sede;
-
+        $this->idSede = $idSede;
+    
         return $this;
     }
 
     /**
-     * Get sede
+     * Get idSede
      *
-     * @return integer
+     * @return \Procuracion\Entity\Sede
      */
-    public function getSede()
+    public function getIdSede()
     {
-        return $this->sede;
-    }    
+        return $this->idSede;
+    }
 }

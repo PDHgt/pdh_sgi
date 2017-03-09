@@ -7,11 +7,11 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Empleado
  *
- * @ORM\Table(name="empleado")
+ * @ORM\Table(name="empleado", indexes={@ORM\Index(name="UnidadAdministrativa", columns={"UnidadAdministrativa"})})
  * @ORM\Entity
  */
-class Empleado {
-
+class Empleado
+{
     /**
      * @var integer
      *
@@ -43,20 +43,24 @@ class Empleado {
     private $puesto;
 
     /**
-     * @var integer
+     * @var \Procuracion\Entity\Unidadadministrativa
      *
-     * Many Empleados have One Unidadadministrativa
-     * @ORM\ManyToOne(targetEntity="Unidadadministrativa")
-     * @ORM\JoinColumn(name="unidadadministrativa", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Unidadadministrativa")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="UnidadAdministrativa", referencedColumnName="id")
+     * })
      */
     private $unidadadministrativa;
+
+
 
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
@@ -67,9 +71,10 @@ class Empleado {
      *
      * @return Empleado
      */
-    public function setNombres($nombres) {
+    public function setNombres($nombres)
+    {
         $this->nombres = $nombres;
-
+    
         return $this;
     }
 
@@ -78,7 +83,8 @@ class Empleado {
      *
      * @return string
      */
-    public function getNombres() {
+    public function getNombres()
+    {
         return $this->nombres;
     }
 
@@ -89,9 +95,10 @@ class Empleado {
      *
      * @return Empleado
      */
-    public function setApellidos($apellidos) {
+    public function setApellidos($apellidos)
+    {
         $this->apellidos = $apellidos;
-
+    
         return $this;
     }
 
@@ -100,7 +107,8 @@ class Empleado {
      *
      * @return string
      */
-    public function getApellidos() {
+    public function getApellidos()
+    {
         return $this->apellidos;
     }
 
@@ -111,9 +119,10 @@ class Empleado {
      *
      * @return Empleado
      */
-    public function setPuesto($puesto) {
+    public function setPuesto($puesto)
+    {
         $this->puesto = $puesto;
-
+    
         return $this;
     }
 
@@ -122,30 +131,32 @@ class Empleado {
      *
      * @return string
      */
-    public function getPuesto() {
+    public function getPuesto()
+    {
         return $this->puesto;
     }
 
     /**
      * Set unidadadministrativa
      *
-     * @param integer $unidadadministrativa
+     * @param \Procuracion\Entity\Unidadadministrativa $unidadadministrativa
      *
      * @return Empleado
      */
-    public function setUnidadadministrativa($unidadadministrativa) {
+    public function setUnidadadministrativa(\Procuracion\Entity\Unidadadministrativa $unidadadministrativa = null)
+    {
         $this->unidadadministrativa = $unidadadministrativa;
-
+    
         return $this;
     }
 
     /**
      * Get unidadadministrativa
      *
-     * @return integer
+     * @return \Procuracion\Entity\Unidadadministrativa
      */
-    public function getUnidadadministrativa() {
+    public function getUnidadadministrativa()
+    {
         return $this->unidadadministrativa;
     }
-
 }

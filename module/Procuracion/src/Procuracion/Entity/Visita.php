@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Visita
  *
- * @ORM\Table(name="visita")
+ * @ORM\Table(name="visita", indexes={@ORM\Index(name="idPersona", columns={"id_persona"})})
  * @ORM\Entity
  */
 class Visita
@@ -20,14 +20,6 @@ class Visita
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
-
-    /**
-     * @var integer $idpersona
-     *
-     * @ORM\ManyToOne(targetEntity="Persona", fetch="EAGER")
-     * @ORM\JoinColumn(name="idpersona",referencedColumnName="id")
-     */
-    private $idpersona;
 
     /**
      * @var \DateTime
@@ -49,15 +41,6 @@ class Visita
      * @ORM\Column(name="Sede", type="integer", nullable=true)
      */
     private $sede;
-
-
-    /**
-     * @var integer empleado
-     *
-     * @ORM\OneToOne(targetEntity="Empleado", fetch="EAGER")
-     * @ORM\JoinColumn(name="empleado", referencedColumnName="id")
-     */
-    private $empleado;
 
     /**
      * @var string
@@ -122,7 +105,25 @@ class Visita
      */
     private $updatedAt;
 
+    /**
+     * @var \Procuracion\Entity\Persona
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Persona")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_persona", referencedColumnName="id")
+     * })
+     */
+    private $idPersona;
 
+    /**
+     * @var \Procuracion\Entity\Empleado
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Empleado")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="Empleado", referencedColumnName="id")
+     * })
+     */
+    private $empleado;
 
     /**
      * Get id
@@ -135,30 +136,6 @@ class Visita
     }
 
     /**
-     * Set idpersona
-     *
-     * @param integer $idpersona
-     *
-     * @return Visita
-     */
-    public function setIdpersona($idpersona)
-    {
-        $this->idpersona = $idpersona;
-
-        return $this;
-    }
-
-    /**
-     * Get idpersona
-     *
-     * @return integer
-     */
-    public function getIdpersona()
-    {
-        return $this->idpersona;
-    }
-
-    /**
      * Set fechaentrada
      *
      * @param \DateTime $fechaentrada
@@ -168,7 +145,7 @@ class Visita
     public function setFechaentrada($fechaentrada)
     {
         $this->fechaentrada = $fechaentrada;
-
+    
         return $this;
     }
 
@@ -192,7 +169,7 @@ class Visita
     public function setHoraentrada($horaentrada)
     {
         $this->horaentrada = $horaentrada;
-
+    
         return $this;
     }
 
@@ -216,7 +193,7 @@ class Visita
     public function setSede($sede)
     {
         $this->sede = $sede;
-
+    
         return $this;
     }
 
@@ -240,7 +217,7 @@ class Visita
     public function setEmpleado($empleado)
     {
         $this->empleado = $empleado;
-
+    
         return $this;
     }
 
@@ -264,7 +241,7 @@ class Visita
     public function setInstitucion($institucion)
     {
         $this->institucion = $institucion;
-
+    
         return $this;
     }
 
@@ -288,7 +265,7 @@ class Visita
     public function setTipoinstitucion($tipoinstitucion)
     {
         $this->tipoinstitucion = $tipoinstitucion;
-
+    
         return $this;
     }
 
@@ -312,7 +289,7 @@ class Visita
     public function setMotivovisita($motivovisita)
     {
         $this->motivovisita = $motivovisita;
-
+    
         return $this;
     }
 
@@ -336,7 +313,7 @@ class Visita
     public function setFechasalida($fechasalida)
     {
         $this->fechasalida = $fechasalida;
-
+    
         return $this;
     }
 
@@ -360,7 +337,7 @@ class Visita
     public function setHorasalida($horasalida)
     {
         $this->horasalida = $horasalida;
-
+    
         return $this;
     }
 
@@ -377,14 +354,14 @@ class Visita
     /**
      * Set notaalsalir
      *
-     * @param string $nota
+     * @param string $notaalsalir
      *
      * @return Visita
      */
-    public function setNotaalsalir($nota)
+    public function setNotaalsalir($notaalsalir)
     {
-        $this->notaalsalir = $nota;
-
+        $this->notaalsalir = $notaalsalir;
+    
         return $this;
     }
 
@@ -408,7 +385,7 @@ class Visita
     public function setCreatedBy($createdBy)
     {
         $this->createdBy = $createdBy;
-
+    
         return $this;
     }
 
@@ -432,7 +409,7 @@ class Visita
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
-
+    
         return $this;
     }
 
@@ -456,7 +433,7 @@ class Visita
     public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;
-
+    
         return $this;
     }
 
@@ -468,5 +445,29 @@ class Visita
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * Set idPersona
+     *
+     * @param \Procuracion\Entity\Persona $idPersona
+     *
+     * @return Visita
+     */
+    public function setIdPersona(\Procuracion\Entity\Persona $idPersona = null)
+    {
+        $this->idPersona = $idPersona;
+    
+        return $this;
+    }
+
+    /**
+     * Get idPersona
+     *
+     * @return \Procuracion\Entity\Persona
+     */
+    public function getIdPersona()
+    {
+        return $this->idPersona;
     }
 }

@@ -1,0 +1,87 @@
+<?php
+
+namespace Procuracion\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * TrabajoExpediente
+ *
+ * @ORM\Table(name="trabajo_expediente", indexes={@ORM\Index(name="id_exp", columns={"id_expediente"}), @ORM\Index(name="id_act", columns={"id_actividad"}), @ORM\Index(name="id_usr", columns={"id_usuario"}), @ORM\Index(name="id_usr_asig", columns={"id_usuario_asigna"})})
+ * @ORM\Entity
+ */
+class TrabajoExpediente
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="Inicio", type="datetime", nullable=true)
+     */
+    private $inicio;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="Fin", type="datetime", nullable=true)
+     */
+    private $fin;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="FechaAsignacion", type="date", nullable=true)
+     */
+    private $fechaasignacion;
+
+    /**
+     * @var \Procuracion\Entity\Actividad
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Actividad")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_actividad", referencedColumnName="id")
+     * })
+     */
+    private $idActividad;
+
+    /**
+     * @var \Procuracion\Entity\Expediente
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Expediente")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_expediente", referencedColumnName="id")
+     * })
+     */
+    private $idExpediente;
+
+    /**
+     * @var \Procuracion\Entity\Usuario
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Usuario")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_usuario", referencedColumnName="id")
+     * })
+     */
+    private $idUsuario;
+
+    /**
+     * @var \Procuracion\Entity\Usuario
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Usuario")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_usuario_asigna", referencedColumnName="id")
+     * })
+     */
+    private $idUsuarioAsigna;
+
+
+}
+
