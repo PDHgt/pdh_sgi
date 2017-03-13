@@ -1,0 +1,196 @@
+<?php $visita = $this->visita; ?>
+<section class="content-header">
+    <h1><?php echo $this->title; ?></h1>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-success">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><?php echo $this->subtitle; ?></h3>
+
+                </div>
+                <?php
+                $form = $this->form;
+                $form->prepare();
+                $form->setAttributes(array(
+                    'action' => $this->url('recepcion/procesar', array('action' => 'actualizar')),
+                    'method' => 'post'
+                ));
+                // Get the form label plugin
+                $formLabel = $this->plugin('formLabel');
+                // Render the opening tag
+                echo $this->form()->openTag($form);
+                $tipo = $form->get('tipopersona')->setValue('visitante');
+                $id = $form->get('id')->setValue($visita->getIdpersona()->getId());
+                $vid = $form->get('vid')->setValue($visita->getId());
+                echo $this->formInput($tipo);
+                echo $this->formInput($id);
+                echo $this->formInput($vid);
+                ?>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="form-group">
+                                <?php
+                                $fecha = $form->get('fecha')->setValue($visita->getFechaentrada()->format("Y-m-d"));
+                                echo $formLabel->openTag() . $fecha->getOption('label') . " ";
+                                echo $formLabel->closeTag();
+                                echo $this->formInput($fecha);
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="form-group">
+                                <?php
+                                $hora = $form->get('hora')->setValue($visita->getHoraentrada()->format("H:m:s"));
+                                echo $formLabel->openTag() . $hora->getOption('label') . " ";
+                                echo $formLabel->closeTag();
+                                echo $this->formInput($hora);
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div class="form-group">
+                                <?php
+                                $tipodoc = $form->get('tipodoc')->setValue($visita->getIdpersona()->getTipoDocumento());
+                                echo $formLabel->openTag() . $tipodoc->getOption('label') . " ";
+                                echo $formLabel->closeTag();
+                                echo $this->formSelect($tipodoc);
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div class="form-group">
+                                <?php
+                                $numdoc = $form->get('numdoc')->setValue($visita->getIdpersona()->getNumeroDocumento());
+                                echo $formLabel->openTag() . $numdoc->getOption('label') . " ";
+                                echo $formLabel->closeTag();
+                                echo $this->formInput($numdoc);
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div class="form-group">
+                                <?php
+                                if (($visita->getIdpersona()->getFechanacimiento()) == NULL) {
+                                    $fecha_nac = $form->get('nac')->setValue($visita->getIdpersona()->getFechanacimiento());
+                                } else {
+                                    $fecha_nac = $form->get('nac')->setValue($visita->getIdpersona()->getFechanacimiento()->format("d/m/Y"));
+                                }
+                                echo $formLabel->openTag() . $fecha_nac->getOption('label') . " ";
+                                echo $formLabel->closeTag();
+                                echo $this->formInput($fecha_nac);
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div class="form-group">
+                                <?php
+                                $sexo = $form->get('sexo')->setValue($visita->getIdpersona()->getSexo());
+                                echo "<p>" . $formLabel->openTag() . $sexo->getOption('label') . " ";
+                                echo $formLabel->closeTag() . "</p>";
+                                echo $this->formRadio($sexo);
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <?php
+                                        $nombre = $form->get('nombre')->setValue($visita->getIdpersona()->getNombres());
+                                        echo $formLabel->openTag() . $nombre->getOption('label') . " ";
+                                        echo $formLabel->closeTag();
+                                        echo $this->formInput($nombre);
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <?php
+                                        $apellido = $form->get('apellido')->setValue($visita->getIdpersona()->getApellidos());
+                                        echo $formLabel->openTag() . $apellido->getOption('label') . " ";
+                                        echo $formLabel->closeTag();
+                                        echo $this->formInput($apellido);
+                                        ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <?php
+                                        $institucion = $form->get('institucion')->setValue($visita->getInstitucion());
+                                        echo $formLabel->openTag() . $institucion->getOption('label') . " ";
+                                        echo $formLabel->closeTag();
+                                        echo $this->formInput($institucion);
+                                        ?>
+                                    </div>
+
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <?php
+                                        $empleados = $this->empleados;
+                                        $empleadosOptions = array();
+                                        foreach ($empleados as $empleadoOption) {
+                                            $empleadosOptions[$empleadoOption->getId()] = $empleadoOption->getNombres() . " " . $empleadoOption->getApellidos();
+                                        }
+                                        $empleado = $form->get('empleado')->setValueOptions($empleadosOptions)->setValue($visita->getEmpleado()->getId());
+                                        echo $formLabel->openTag() . $empleado->getOption('label') . " ";
+                                        echo $formLabel->closeTag();
+                                        echo $this->formSelect($empleado);
+                                        ?>
+                                    </div>
+
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <?php
+                                        $unidades = $this->unidades;
+                                        $unidadesOptions = array();
+                                        foreach ($unidades as $unidadOption) {
+                                            $unidadesOptions[$unidadOption->getId()] = $unidadOption->getNombre();
+                                        }
+                                        $unidad = $form->get('unidad')->setValueOptions($unidadesOptions)->setValue($visita->getEmpleado()->getUnidadadministrativa()->getId());
+                                        echo $formLabel->openTag() . $unidad->getOption('label') . " ";
+                                        echo $formLabel->closeTag();
+                                        echo $this->formSelect($unidad);
+                                        ?>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group ">
+                                <?php
+                                $motivo = $form->get('motivo')->setValue($visita->getMotivoVisita());
+                                echo $formLabel->openTag() . $motivo->getOption('label') . " ";
+                                echo $formLabel->closeTag();
+                                echo $this->formTextarea($motivo);
+                                ?>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <?php echo $this->formElement($form->get('guardar')->setValue('Modificar')) ?>
+                        <a href="<?php echo $this->url('recepcion') ?>/visita" class="btn btn-danger">Cancelar</a>
+                    </div>
+                    <?php echo $this->form()->closeTag() ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+
+</script>

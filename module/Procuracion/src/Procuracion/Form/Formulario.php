@@ -43,6 +43,33 @@ class Formulario extends Form {
             )
         ));
         /*
+         * Campo id hidden
+         */
+        $this->add(array(
+            'name' => 'id',
+            'attributes' => array(
+                'type' => 'hidden',
+            )
+        ));
+        /*
+         * Campo vid hidden
+         */
+        $this->add(array(
+            'name' => 'vid',
+            'attributes' => array(
+                'type' => 'hidden',
+            )
+        ));
+        /*
+         * Campo cid hidden
+         */
+        $this->add(array(
+            'name' => 'cid',
+            'attributes' => array(
+                'type' => 'hidden',
+            )
+        ));
+        /*
          * Campo nombre
          */
         $this->add(array(
@@ -300,6 +327,17 @@ class Formulario extends Form {
                 //'onClick' => 'goBack()',
                 'value' => 'Cancelar',
                 'class' => 'btn btn-danger btn-flat'
+            )
+        ));
+        /*
+         * Botón modificar
+         */
+        $this->add(array(
+            'name' => 'cambiar',
+            'attributes' => array(
+                'type' => 'button',
+                'value' => 'Cambiar tipo',
+                'class' => 'btn btn-warning btn-flat',
             )
         ));
         /*

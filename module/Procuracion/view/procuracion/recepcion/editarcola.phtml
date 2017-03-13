@@ -1,0 +1,179 @@
+<?php $cola = $this->cola; ?>
+<section class="content-header">
+    <h1><?php echo $this->title; ?></h1>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-success">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><?php echo $this->subtitle; ?></h3>
+
+                </div>
+                <?php
+                $form = $this->form;
+                $form->prepare();
+                $form->setAttributes(array(
+                    'action' => $this->url('recepcion/procesar', array('action' => 'actualizar')),
+                    'method' => 'post'
+                ));
+                // Get the form label plugin
+                $formLabel = $this->plugin('formLabel');
+                // Render the opening tag
+                echo $this->form()->openTag($form);
+                $tipo = $form->get('tipopersona')->setValue('solicitante');
+                $id = $form->get('id')->setValue($cola->getIdpersona()->getId());
+                $cid = $form->get('cid')->setValue($cola->getId());
+                echo $this->formInput($tipo);
+                echo $this->formInput($id);
+                echo $this->formInput($cid);
+                ?>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="form-group">
+                                <?php
+                                $fecha = $form->get('fecha')->setValue($cola->getFechaentrada()->format("Y-m-d"));
+                                echo $formLabel->openTag() . $fecha->getOption('label') . " ";
+                                echo $formLabel->closeTag();
+                                echo $this->formInput($fecha);
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="form-group">
+                                <?php
+                                $hora = $form->get('hora')->setValue($cola->getHoraentrada()->format("H:m:s"));
+                                echo $formLabel->openTag() . $hora->getOption('label') . " ";
+                                echo $formLabel->closeTag();
+                                echo $this->formInput($hora);
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div class="form-group">
+                                <?php
+                                $tipodoc = $form->get('tipodoc')->setValue($cola->getIdpersona()->getTipoDocumento());
+                                echo $formLabel->openTag() . $tipodoc->getOption('label') . " ";
+                                echo $formLabel->closeTag();
+                                echo $this->formSelect($tipodoc);
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div class="form-group">
+                                <?php
+                                $numdoc = $form->get('numdoc')->setValue($cola->getIdpersona()->getNumeroDocumento());
+                                echo $formLabel->openTag() . $numdoc->getOption('label') . " ";
+                                echo $formLabel->closeTag();
+                                echo $this->formInput($numdoc);
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div class="form-group">
+                                <?php
+                                $fecha_nac = $form->get('nac')->setValue($cola->getIdpersona()->getFechanacimiento()->format("d/m/Y"));
+                                echo $formLabel->openTag() . $fecha_nac->getOption('label') . " ";
+                                echo $formLabel->closeTag();
+                                echo $this->formInput($fecha_nac);
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div class="form-group">
+                                <?php
+                                $sexo = $form->get('sexo')->setValue($cola->getIdpersona()->getSexo());
+                                echo "<p>" . $formLabel->openTag() . $sexo->getOption('label') . " ";
+                                echo $formLabel->closeTag() . "</p>";
+                                echo $this->formRadio($sexo);
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <?php
+                                        $nombre = $form->get('nombre')->setValue($cola->getIdpersona()->getNombres());
+                                        echo $formLabel->openTag() . $nombre->getOption('label') . " ";
+                                        echo $formLabel->closeTag();
+                                        echo $this->formInput($nombre);
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <?php
+                                        $apellido = $form->get('apellido')->setValue($cola->getIdpersona()->getApellidos());
+                                        echo $formLabel->openTag() . $apellido->getOption('label') . " ";
+                                        echo $formLabel->closeTag();
+                                        echo $this->formInput($apellido);
+                                        ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <?php
+                                        $lgbti = $form->get('lgbti')->setValue($cola->getIdpersona()->getLgbti());
+                                        echo "<p>" . $formLabel->openTag() . $lgbti->getOption('label');
+                                        echo $formLabel->closeTag() . "</p>";
+                                        echo $this->formRadio($lgbti);
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <?php
+                                        $prioridad = $form->get('prioridad')->setValue($cola->getPrioridad());
+                                        echo "<p>" . $formLabel->openTag() . $prioridad->getOption('label');
+                                        echo $formLabel->closeTag() . "</p>";
+                                        echo $this->formRadio($prioridad);
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <?php
+                                        $lapiceroverde = $form->get('lapiceroverde')->setValue($cola->getLapiceroverde());
+                                        echo "<p>" . $formLabel->openTag() . $lapiceroverde->getOption('label') . " ";
+                                        echo $formLabel->closeTag() . "</p>";
+                                        echo $this->formRadio($lapiceroverde);
+                                        ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group ">
+                                <?php
+                                $obs = $form->get('obs')->setValue($cola->getObservaciones());
+                                echo $formLabel->openTag() . $obs->getOption('label') . " ";
+                                echo $formLabel->closeTag();
+                                echo $this->formTextarea($obs);
+                                ?>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <?php echo $this->formElement($form->get('guardar')->setValue('Modificar')) ?>
+                        <a href="<?php echo $this->url('recepcion') ?>/cola" class="btn btn-danger">Cancelar</a>
+                    </div>
+                    <?php echo $this->form()->closeTag() ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+
+</script>

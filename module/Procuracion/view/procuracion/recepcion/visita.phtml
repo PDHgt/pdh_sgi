@@ -50,7 +50,10 @@
                                         <a href="<?php echo $this->url('recepcion/procesar', array('action' => 'detallevisita', 'id' => $visita->getId())); ?>" data-toggle="modal" data-target="#detailsModal" data-tt="tooltip" title="Detalles">
                                             <span class="glyphicon glyphicon-search fa-lg"></span>
                                         </a>
-                                        <a href="<?php echo $this->url('recepcion/procesar', array('action' => 'salidavisita', 'id' => $visita->getId())); ?>" data-toggle="modal" data-target="#departureModal" data-tt="tooltip" title="Salida de visita">
+                                        <a href="<?php echo $this->url('recepcion/procesar', array('action' => 'editarvisita', 'id' => $visita->getId())); ?>"  data-tt="tooltip" title="Editar">
+                                            <span class="glyphicon glyphicon-edit green-text fa-lg"></span>
+                                        </a>
+                                        <a href="<?php echo $this->url('recepcion/procesar', array('action' => 'salidavisita', 'id' => $visita->getId())); ?>" data-toggle="modal" data-target="#departureModal" data-tt="tooltip" title="Salida">
                                             <span class="glyphicon glyphicon-log-out red-text fa-lg"></span>
                                         </a>
                                     </td>

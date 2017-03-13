@@ -78,7 +78,7 @@ class PersonaService {
 
     public function updatePersona(EntityManager $em, array $nueva, array $extras, $que) {
         $np = $em->getRepository('Procuracion\Entity\Persona')->find($nueva['id']);
-        var_dump($np);
+        //var_dump($np);
         $np->setNombres($nueva['nombres']);
         $np->setApellidos($nueva['apellidos']);
         $np->setTipoDocumento($nueva['tipo']);

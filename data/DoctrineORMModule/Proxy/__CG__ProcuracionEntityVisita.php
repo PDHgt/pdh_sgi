@@ -64,10 +64,10 @@ class Visita extends \Procuracion\Entity\Visita implements \Doctrine\ORM\Proxy\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'idpersona', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'fechaentrada', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'horaentrada', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'sede', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'empleado', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'institucion', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'tipoinstitucion', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'motivovisita', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'fechasalida', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'horasalida', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'notaalsalir', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'createdBy', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'createdAt', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'updatedAt'];
+            return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'fechaentrada', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'horaentrada', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'sede', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'institucion', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'tipoinstitucion', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'motivovisita', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'fechasalida', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'horasalida', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'notaalsalir', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'createdBy', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'createdAt', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'updatedAt', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'idPersona', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'empleado'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'idpersona', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'fechaentrada', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'horaentrada', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'sede', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'empleado', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'institucion', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'tipoinstitucion', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'motivovisita', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'fechasalida', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'horasalida', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'notaalsalir', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'createdBy', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'createdAt', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'updatedAt'];
+        return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'fechaentrada', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'horaentrada', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'sede', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'institucion', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'tipoinstitucion', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'motivovisita', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'fechasalida', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'horasalida', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'notaalsalir', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'createdBy', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'createdAt', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'updatedAt', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'idPersona', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'empleado'];
     }
 
     /**
@@ -186,28 +186,6 @@ class Visita extends \Procuracion\Entity\Visita implements \Doctrine\ORM\Proxy\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setIdpersona($idpersona)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIdpersona', [$idpersona]);
-
-        return parent::setIdpersona($idpersona);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getIdpersona()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIdpersona', []);
-
-        return parent::getIdpersona();
     }
 
     /**
@@ -411,12 +389,12 @@ class Visita extends \Procuracion\Entity\Visita implements \Doctrine\ORM\Proxy\P
     /**
      * {@inheritDoc}
      */
-    public function setNotaalsalir($nota)
+    public function setNotaalsalir($notaalsalir)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNotaalsalir', [$nota]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNotaalsalir', [$notaalsalir]);
 
-        return parent::setNotaalsalir($nota);
+        return parent::setNotaalsalir($notaalsalir);
     }
 
     /**
@@ -494,6 +472,28 @@ class Visita extends \Procuracion\Entity\Visita implements \Doctrine\ORM\Proxy\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUpdatedAt', []);
 
         return parent::getUpdatedAt();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setIdPersona(\Procuracion\Entity\Persona $idPersona = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIdPersona', [$idPersona]);
+
+        return parent::setIdPersona($idPersona);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIdPersona()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIdPersona', []);
+
+        return parent::getIdPersona();
     }
 
 }

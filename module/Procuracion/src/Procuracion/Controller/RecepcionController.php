@@ -186,6 +186,112 @@ class RecepcionController extends AbstractActionController {
         }
     }
 
+    public function editarvisitaAction() {
+        $id = $this->getEvent()->getRouteMatch()->getParam('id');
+
+        $visitaservice = new VisitaService();
+        $visita = $visitaservice->listOne($this->getEntityManager(), $id);
+
+        $empleadoservice = new EmpleadoService();
+        $empleados = $empleadoservice->listAll($this->getEntityManager());
+
+        $unidadservice = new UnidadadministrativaService();
+        $unidades = $unidadservice->listAll($this->getEntityManager());
+
+        $form = new Formulario("form");
+
+        $header = new ViewModel();
+        $header->setTemplate('recepcion/header');
+
+        $aside = new ViewModel();
+        $aside->setTemplate('recepcion/aside');
+
+        $layout = $this->layout();
+        $layout->addChild($header, 'header')
+                ->addChild($aside, 'aside');
+        $view = new ViewModel(array(
+            'title' => 'Recepción de personas', 'subtitle' => 'Editar visita', 'form' => $form, 'visita' => $visita, 'empleados' => $empleados, 'unidades' => $unidades
+        ));
+        return $view;
+    }
+
+    public function editarcolaAction() {
+        $id = $this->getEvent()->getRouteMatch()->getParam('id');
+
+        $colaservice = new ColaRecepcionService();
+        $cola = $colaservice->listOne($this->getEntityManager(), $id);
+
+        $form = new Formulario("form");
+
+        $header = new ViewModel();
+        $header->setTemplate('recepcion/header');
+
+        $aside = new ViewModel();
+        $aside->setTemplate('recepcion/aside');
+
+        $layout = $this->layout();
+        $layout->addChild($header, 'header')
+                ->addChild($aside, 'aside');
+        $view = new ViewModel(array(
+            'title' => 'Recepción de personas', 'subtitle' => 'Editar solicitud', 'form' => $form, 'cola' => $cola
+        ));
+        return $view;
+    }
+
+    public function actualizarAction() {
+        $data = $this->request->getPost();
+        if (empty($data["nac"])) {
+            $nac = NULL;
+        } else {
+            $nac = date_create_from_format('d/m/Y', $data["nac"]);
+        }
+        $persona = array(
+            'id' => $data["id"],
+            'nombres' => $data["nombre"],
+            'apellidos' => $data["apellido"],
+            'tipo' => $data["tipodoc"],
+            'numero' => $data["numdoc"],
+            'sexo' => $data["sexo"],
+            'nac' => $nac,
+            'lgbti' => $data["lgbti"]
+        );
+        $visita = array(
+            'id' => $data["vid"],
+            'fecha' => date_create($data['fecha']),
+            'hora' => date_create($data['hora']),
+            'sede' => 1, //$data['sede'],
+            'empleado' => $data['empleado'],
+            'institucion' => $data['institucion'],
+            'tipo' => $data['tipo'],
+            'motivo' => $data['motivo'],
+            'prioridad' => $data['prioridad']
+        );
+        $cola = array(
+            'id' => $data["cid"],
+            'fecha' => date_create($data['fecha']),
+            'hora' => date_create($data['hora']),
+            'sede' => 1, //$data['sede'],
+            'prioridad' => $data['prioridad'],
+            'lapiceroverde' => $data['lapiceroverde'],
+            'obs' => $data['obs']
+        );
+        $registro = new PersonaService();
+        //guarda una visita nueva
+
+        switch ($data['tipopersona']) {
+            case 'visitante':
+                $registro->updatePersona($this->getEntityManager(), $persona, $visita, 1);
+                return $this->forward()->dispatch('Procuracion\Controller\Recepcion', array(
+                            'action' => 'visita'
+                ));
+            case 'solicitante':
+                $registro->updatePersona($this->getEntityManager(), $persona, $cola, 2);
+                return $this->forward()->dispatch('Procuracion\Controller\Recepcion', array(
+                            'action' => 'cola'
+                ));
+        }
+    }
+
     public function detallevisitaAction() {
 
         $id = $this->getEvent()->getRouteMatch()->getParam('id');
@@ -231,7 +337,7 @@ class RecepcionController extends AbstractActionController {
         $cola = $colaservice->listOne($this->getEntityManager(), $id);
 
         $this->layout('layout/modal');
-        $view = new ViewModel(array('title' => 'Recepción de personas', 'subtitle' => 'Detalle de solicitante', 'visita' => $cola));
+        $view = new ViewModel(array('title' => 'Recepción de personas', 'subtitle' => 'Detalle de solicitante', 'cola' => $cola));
         return $view;
     }
 

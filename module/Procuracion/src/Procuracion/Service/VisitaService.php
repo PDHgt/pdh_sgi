@@ -36,6 +36,7 @@ class VisitaService {
         $data = $em->getReference('Procuracion\Entity\Visita', $visita['id']);
         $data->setHorasalida(date_create($visita['hora']));
         $data->setFechasalida(date_create($visita['fecha']));
+        $data->setNotaAlSalir($visita['obs']);
         $em->flush();
         return $data->getId();
     }
