@@ -152,15 +152,10 @@
                                 <div class="col-xs-6">
                                     <div class="form-group">
                                         <?php
-                                        $unidades = $this->unidades;
-                                        $unidadesOptions = array();
-                                        foreach ($unidades as $unidadOption) {
-                                            $unidadesOptions[$unidadOption->getId()] = $unidadOption->getNombre();
-                                        }
-                                        $unidad = $form->get('unidad')->setValueOptions($unidadesOptions)->setValue($visita->getEmpleado()->getUnidadadministrativa()->getId());
+                                        $unidad = $form->get('unidad')->setValue($visita->getEmpleado()->getUnidadadministrativa()->getNombre());
                                         echo $formLabel->openTag() . $unidad->getOption('label') . " ";
                                         echo $formLabel->closeTag();
-                                        echo $this->formSelect($unidad);
+                                        echo $this->formInput($unidad);
                                         ?>
                                     </div>
 

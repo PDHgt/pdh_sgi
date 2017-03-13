@@ -179,17 +179,13 @@ class Formulario extends Form {
          * Campo de oficina
          */
         $this->add(array(
-            'type' => 'select',
             'name' => 'unidad',
             'options' => array(
                 'label' => 'Oficina / Unidad',
-                'empty_option' => 'Seleccione una opción',
-                'value_options' => array(
-                ),
             ),
             'attributes' => array(
+                'type' => 'text',
                 'class' => 'form-control',
-                'required' => true
             )
         ));
         /*
