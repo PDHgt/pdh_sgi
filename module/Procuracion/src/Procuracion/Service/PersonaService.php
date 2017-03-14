@@ -117,11 +117,11 @@ class PersonaService {
             $visita->save($em, $nvo);
         } else {
             //turno
-            if ($suTurno != "") {
+            if (!empty($suTurno)) {
                 $miTurno = $suTurno;
             } else {
                 $turnos = new TurnoService();
-                $datost = array('sede' => $extras['sede'], 'prioridad' => $extras['prioridad'], 'fecha' => date_create($extras['fecha']));
+                $datost = array('sede' => $extras['sede'], 'prioridad' => $extras['prioridad'], 'fecha' => $extras['fecha']);
                 $turno = $turnos->initializeToday($em, $datost);
                 $miTurno = $turnos->newTicket($em, $turno);
             }
@@ -147,6 +147,12 @@ class PersonaService {
         $query = $em->createQuery($cadena); //"SELECT p FROM Procuracion\Entity\Persona p WHERE (p.nombres like '%".$parametros['nombres']."%' OR p.apellidos like '%".$parametros['apellidos']."%' OR p.numerodocumento like '%".$parametros['documento']."%')");
         $products = $query->getResult();
         return $products;
+    }
+
+    public function listOne(EntityManager $em, $id) {
+        $persona = $em->getRepository('\Procuracion\Entity\Persona')->find($id);
+        //return new JsonModel($visita);
+        return $persona;
     }
 
 }

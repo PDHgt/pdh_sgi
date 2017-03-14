@@ -22,11 +22,11 @@
                 // Render the opening tag
                 echo $this->form()->openTag($form);
                 $tipo = $form->get('tipopersona')->setValue('visitante');
-                $id = $form->get('id')->setValue($visita->getIdpersona()->getId());
-                $vid = $form->get('vid')->setValue($visita->getId());
+                $pid = $form->get('pid')->setValue($visita->getIdpersona()->getId());
+                $id = $form->get('id')->setValue($visita->getId());
                 echo $this->formInput($tipo);
+                echo $this->formInput($pid);
                 echo $this->formInput($id);
-                echo $this->formInput($vid);
                 ?>
                 <div class="box-body">
                     <div class="row">
@@ -178,14 +178,19 @@
                     </div>
                     <div class="box-footer">
                         <?php echo $this->formElement($form->get('guardar')->setValue('Modificar')) ?>
+                        <a href="<?php
+                        echo $this->url('recepcion/procesar', array(
+                            'action' => 'cambiartipo',
+                            'id' => $visita->getIdpersona()->getId(),
+                            'param1' => 'visita',
+                            'param2' => $visita->getId()));
+                        ?>" class="btn btn-warning">Cambiar tipo</a>
                         <a href="<?php echo $this->url('recepcion') ?>/visita" class="btn btn-danger">Cancelar</a>
                     </div>
-                    <?php echo $this->form()->closeTag() ?>
                 </div>
+                <?php echo $this->form()->closeTag() ?>
             </div>
         </div>
     </div>
 </section>
-<script>
 
-</script>

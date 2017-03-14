@@ -238,6 +238,40 @@ class RecepcionController extends AbstractActionController {
         return $view;
     }
 
+    public function cambiartipoAction() {
+
+        $id = $this->getEvent()->getRouteMatch()->getParam('id');
+        $tipo = $this->getEvent()->getRouteMatch()->getParam('param1');
+        $idtipo = $this->getEvent()->getRouteMatch()->getParam('param2');
+
+        $form = new Formulario("form");
+
+        $personaservice = new PersonaService();
+        $persona = $personaservice->listOne($this->getEntityManager(), $id);
+
+        $visitaservice = new VisitaService();
+        $visita = $visitaservice->listOne($this->getEntityManager(), $idtipo);
+
+        $empleadoservice = new EmpleadoService();
+        $empleados = $empleadoservice->listAll($this->getEntityManager());
+
+        $colaservice = new ColaRecepcionService();
+        $cola = $colaservice->listOne($this->getEntityManager(), $idtipo);
+
+        $header = new ViewModel();
+        $header->setTemplate('recepcion/header');
+
+        $aside = new ViewModel();
+        $aside->setTemplate('recepcion/aside');
+
+        $layout = $this->layout();
+        $layout->addChild($header, 'header')
+                ->addChild($aside, 'aside');
+        $view = new ViewModel(array(
+            'title' => 'Recepción de personas', 'subtitle' => 'Cambiar tipo', 'form' => $form, 'persona' => $persona, 'tipo' => $tipo, 'visita' => $visita, 'empleados' => $empleados, 'cola' => $cola));
+        return $view;
+    }
+
     public function actualizarAction() {
         $data = $this->request->getPost();
         if (empty($data["nac"])) {
@@ -246,7 +280,7 @@ class RecepcionController extends AbstractActionController {
             $nac = date_create_from_format('d/m/Y', $data["nac"]);
         }
         $persona = array(
-            'id' => $data["id"],
+            'id' => $data["pid"],
             'nombres' => $data["nombre"],
             'apellidos' => $data["apellido"],
             'tipo' => $data["tipodoc"],
@@ -256,7 +290,7 @@ class RecepcionController extends AbstractActionController {
             'lgbti' => $data["lgbti"]
         );
         $visita = array(
-            'id' => $data["vid"],
+            'id' => $data["id"],
             'fecha' => date_create($data['fecha']),
             'hora' => date_create($data['hora']),
             'sede' => 1, //$data['sede'],
@@ -267,7 +301,7 @@ class RecepcionController extends AbstractActionController {
             'prioridad' => $data['prioridad']
         );
         $cola = array(
-            'id' => $data["cid"],
+            'id' => $data["id"],
             'fecha' => date_create($data['fecha']),
             'hora' => date_create($data['hora']),
             'sede' => 1, //$data['sede'],

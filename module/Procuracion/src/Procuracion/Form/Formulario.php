@@ -43,10 +43,10 @@ class Formulario extends Form {
             )
         ));
         /*
-         * Campo id hidden
+         * Campo pid hidden
          */
         $this->add(array(
-            'name' => 'id',
+            'name' => 'pid',
             'attributes' => array(
                 'type' => 'hidden',
             )
@@ -55,7 +55,7 @@ class Formulario extends Form {
          * Campo vid hidden
          */
         $this->add(array(
-            'name' => 'vid',
+            'name' => 'id',
             'attributes' => array(
                 'type' => 'hidden',
             )

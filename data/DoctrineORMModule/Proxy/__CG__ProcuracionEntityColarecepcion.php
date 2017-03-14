@@ -64,10 +64,10 @@ class Colarecepcion extends \Procuracion\Entity\Colarecepcion implements \Doctri
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'idPersona', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'fechaentrada', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'horaentrada', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'sede', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'prioridad', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'lapiceroverde', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'turno', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'horaatencion', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'observaciones', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'razonsalida'];
+            return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'fechaentrada', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'horaentrada', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'sede', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'prioridad', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'lapiceroverde', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'turno', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'horaatencion', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'observaciones', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'razonsalida', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'idPersona'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'idPersona', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'fechaentrada', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'horaentrada', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'sede', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'prioridad', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'lapiceroverde', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'turno', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'horaatencion', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'observaciones', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'razonsalida'];
+        return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'fechaentrada', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'horaentrada', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'sede', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'prioridad', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'lapiceroverde', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'turno', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'horaatencion', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'observaciones', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'razonsalida', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'idPersona'];
     }
 
     /**
@@ -191,28 +191,6 @@ class Colarecepcion extends \Procuracion\Entity\Colarecepcion implements \Doctri
     /**
      * {@inheritDoc}
      */
-    public function setIdpersona($idPersona)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIdpersona', [$idPersona]);
-
-        return parent::setIdpersona($idPersona);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getIdpersona()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIdpersona', []);
-
-        return parent::getIdpersona();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setFechaentrada($fechaentrada)
     {
 
@@ -301,28 +279,6 @@ class Colarecepcion extends \Procuracion\Entity\Colarecepcion implements \Doctri
     /**
      * {@inheritDoc}
      */
-    public function setTurno($turno)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTurno', [$turno]);
-
-        return parent::setTurno($turno);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getTurno()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTurno', []);
-
-        return parent::getTurno();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setLapiceroverde($lapiceroverde)
     {
 
@@ -340,6 +296,28 @@ class Colarecepcion extends \Procuracion\Entity\Colarecepcion implements \Doctri
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLapiceroverde', []);
 
         return parent::getLapiceroverde();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTurno($turno)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTurno', [$turno]);
+
+        return parent::setTurno($turno);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTurno()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTurno', []);
+
+        return parent::getTurno();
     }
 
     /**
@@ -406,6 +384,28 @@ class Colarecepcion extends \Procuracion\Entity\Colarecepcion implements \Doctri
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRazonsalida', []);
 
         return parent::getRazonsalida();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setIdPersona(\Procuracion\Entity\Persona $idPersona = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIdPersona', [$idPersona]);
+
+        return parent::setIdPersona($idPersona);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIdPersona()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIdPersona', []);
+
+        return parent::getIdPersona();
     }
 
 }
