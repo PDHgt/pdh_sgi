@@ -42,7 +42,8 @@ class ColaRecepcionService {
     }
 
     public function getEnCola(EntityManager $em, $idPersona) {
-        $visitas = $em->getRepository('Procuracion\Entity\Colarecepcion')->findBy(array('id' => $idPersona));
+        $visitas = $em->getRepository('Procuracion\Entity\Colarecepcion')->findBy(array('idPersona' => $idPersona));
+        // var_dump($visitas);
         return $visitas;
     }
 

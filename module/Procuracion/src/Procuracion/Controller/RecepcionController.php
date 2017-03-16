@@ -46,13 +46,7 @@ class RecepcionController extends AbstractActionController {
         $layout->addChild($header, 'header')
                 ->addChild($aside, 'aside');
 
-        $view = new ViewModel(array(
-            'title' => 'Recepción de personas',
-            'subtitle' => 'Registro de visitas',
-            'form' => $form,
-            'visitas' => $visitas,
-            'usuario' => $this->usuario
-        ));
+        $view = new ViewModel(array('form' => $form, 'visitas' => $visitas, 'usuario' => $this->usuario));
         return $view;
     }
 
@@ -70,11 +64,7 @@ class RecepcionController extends AbstractActionController {
         $layout->addChild($header, 'header')
                 ->addChild($aside, 'aside');
 
-        $view = new ViewModel(array(
-            'title' => 'Recepción de personas',
-            'subtitle' => 'Cola de solicitantes',
-            'cola' => $cola
-        ));
+        $view = new ViewModel(array('cola' => $cola));
         return $view;
     }
 
@@ -89,10 +79,7 @@ class RecepcionController extends AbstractActionController {
         $layout->addChild($header, 'header')
                 ->addChild($aside, 'aside');
 
-        $view = new ViewModel(array(
-            'title' => 'Recepción de personas',
-            'subtitle' => 'Consulta de expedientes'
-        ));
+        $view = new ViewModel(array());
         return $view;
     }
 
@@ -121,7 +108,6 @@ class RecepcionController extends AbstractActionController {
                 ->addChild($aside, 'aside');
 
         $view = new ViewModel(array(
-            'title' => 'Recepción de personas',
             'subtitle' => 'Registro de ' . $currenturl,
             'form' => $form,
             'empleados' => $empleados,
@@ -209,9 +195,7 @@ class RecepcionController extends AbstractActionController {
         $layout = $this->layout();
         $layout->addChild($header, 'header')
                 ->addChild($aside, 'aside');
-        $view = new ViewModel(array(
-            'title' => 'Recepción de personas', 'subtitle' => 'Editar visita', 'form' => $form, 'visita' => $visita, 'empleados' => $empleados, 'unidades' => $unidades
-        ));
+        $view = new ViewModel(array('form' => $form, 'visita' => $visita, 'empleados' => $empleados, 'unidades' => $unidades));
         return $view;
     }
 
@@ -232,9 +216,7 @@ class RecepcionController extends AbstractActionController {
         $layout = $this->layout();
         $layout->addChild($header, 'header')
                 ->addChild($aside, 'aside');
-        $view = new ViewModel(array(
-            'title' => 'Recepción de personas', 'subtitle' => 'Editar solicitud', 'form' => $form, 'cola' => $cola
-        ));
+        $view = new ViewModel(array('form' => $form, 'cola' => $cola));
         return $view;
     }
 
@@ -267,8 +249,7 @@ class RecepcionController extends AbstractActionController {
         $layout = $this->layout();
         $layout->addChild($header, 'header')
                 ->addChild($aside, 'aside');
-        $view = new ViewModel(array(
-            'title' => 'Recepción de personas', 'subtitle' => 'Cambiar tipo', 'form' => $form, 'persona' => $persona, 'tipo' => $tipo, 'visita' => $visita, 'empleados' => $empleados, 'cola' => $cola));
+        $view = new ViewModel(array('form' => $form, 'persona' => $persona, 'tipo' => $tipo, 'visita' => $visita, 'empleados' => $empleados, 'cola' => $cola));
         return $view;
     }
 
@@ -334,7 +315,7 @@ class RecepcionController extends AbstractActionController {
         $visita = $visitaservice->listOne($this->getEntityManager(), $id);
 
         $this->layout('layout/modal');
-        $view = new ViewModel(array('title' => 'Recepción de personas', 'subtitle' => 'Detalle de visita', 'visita' => $visita));
+        $view = new ViewModel(array('visita' => $visita));
 
         return $view;
     }
@@ -346,7 +327,7 @@ class RecepcionController extends AbstractActionController {
         $form = new Formulario();
 
         $this->layout('layout/modal');
-        $view = new ViewModel(array('title' => 'Recepción de personas', 'subtitle' => 'Salida de visita', 'form' => $form, 'id' => $id));
+        $view = new ViewModel(array('form' => $form, 'id' => $id));
 
         return $view;
     }
@@ -371,7 +352,7 @@ class RecepcionController extends AbstractActionController {
         $cola = $colaservice->listOne($this->getEntityManager(), $id);
 
         $this->layout('layout/modal');
-        $view = new ViewModel(array('title' => 'Recepción de personas', 'subtitle' => 'Detalle de solicitante', 'cola' => $cola));
+        $view = new ViewModel(array('cola' => $cola));
         return $view;
     }
 
@@ -399,20 +380,17 @@ class RecepcionController extends AbstractActionController {
         $layout = $this->layout();
         $layout->addChild($header, 'header')
                 ->addChild($aside, 'aside');
-        $view = new ViewModel(array('title' => 'Recepción de personas', 'subtitle' => 'Busqueda de personas', 'form' => $form));
+        $view = new ViewModel(array('form' => $form));
         return $view;
     }
 
     public function resultadoAction() {
         $data = $this->request->getPost();
 
-        if (empty($data['numdoc']) && empty($data['nombre']) && empty($data['apellido'])) {
+        $parametros = array('documento' => $data['numdoc'], 'nombres' => $data['nombre'], 'apellidos' => $data['apellido']);
+        $personaservice = new PersonaService();
+        $personas = $personaservice->searchPersona($this->getEntityManager(), $parametros);
 
-        } else {
-            $parametros = array('documento' => $data['numdoc'], 'nombres' => $data['nombre'], 'apellidos' => $data['apellido']);
-            $personaservice = new PersonaService();
-            $personas = $personaservice->searchPersona($this->getEntityManager(), $parametros);
-        }
         $header = new ViewModel();
         $header->setTemplate('recepcion/header');
 
@@ -423,18 +401,24 @@ class RecepcionController extends AbstractActionController {
         $layout->addChild($header, 'header')
                 ->addChild($aside, 'aside');
 
-        $view = new ViewModel(array('title' => 'Recepción de personas', 'subtitle' => 'Búsqueda de personas', 'personas' => $personas));
+        $view = new ViewModel(array('personas' => $personas));
         return $view;
     }
 
     public function detallebuscarAction() {
         $id = $this->getEvent()->getRouteMatch()->getParam('id');
 
-        $visitas = new VisitaService();
-        $getvisitas = $visitas->getVisitas($this->getEntityManager(), $id);
+        //var_dump($id);
 
-        $solicitudes = new ColaRecepcionService();
-        $getsolicitudes = $solicitudes->getEnCola($this->getEntityManager(), $id);
+        $visitaservice = new VisitaService();
+        $visitas = $visitaservice->getVisitas($this->getEntityManager(), $id);
+
+        //var_dump($visitas);
+
+        $colaservice = new ColaRecepcionService();
+        $cola = $colaservice->getEnCola($this->getEntityManager(), $id);
+
+        // var_dump($cola);
 
         $header = new ViewModel();
         $header->setTemplate('recepcion/header');
@@ -446,14 +430,12 @@ class RecepcionController extends AbstractActionController {
         $layout->addChild($header, 'header')
                 ->addChild($aside, 'aside');
 
-        $view = new ViewModel(array(
-            'title' => 'Recepción de personas',
-            'subtitle_visitas' => 'Bitácora de visitas',
-            'visitas' => $getvisitas,
-            'subtitle_solicitudes' => 'Bitácora de solicitudes',
-            'solicitudes' => $getsolicitudes
-        ));
+        $view = new ViewModel(array('visitas' => $visitas, 'solicitudes' => $cola));
         return $view;
+    }
+
+    public function turnoAction() {
+
     }
 
 }

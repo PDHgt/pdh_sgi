@@ -42,7 +42,7 @@ class VisitaService {
     }
 
     public function getVisitas(EntityManager $em, $idPersona) {
-        $visitas = $em->getRepository('Procuracion\Entity\Visita')->findBy(array('id' => $idPersona));
+        $visitas = $em->getRepository('Procuracion\Entity\Visita')->findBy(array('idPersona' => $idPersona));
         return $visitas;
     }
 

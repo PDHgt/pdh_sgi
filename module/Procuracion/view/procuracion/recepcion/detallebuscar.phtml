@@ -1,12 +1,12 @@
 <section class="content-header">
-    <h1><?php echo $this->title; ?></h1>
+    <h1>Recepción de personas</h1>
 </section>
 <section class="content">
     <div class="row">
         <div class="col-xs-12">
             <div class="box box-info">
                 <div class="box-header">
-                    <h3 class="box-title"><?php echo $this->subtitle_visitas; ?></h3>
+                    <h3 class="box-title">Bitácora de visitas</h3>
                 </div>
                 <div class="box-body">
                     <table id="datatable-visitas" class="table table-bordered table-hover dataTable" cellspacing="0">
@@ -23,6 +23,7 @@
                         </thead>
                         <tbody>
                             <?php
+                            //print_r($this->visitas);
                             $visitas = $this->visitas;
                             foreach ($visitas as $visita):
                                 ?>
@@ -69,7 +70,7 @@
             </div>
             <div class="box box-info">
                 <div class="box-header">
-                    <h3 class="box-title"><?php echo $this->subtitle_solicitudes; ?></h3>
+                    <h3 class="box-title">Bitácora de solicitudes</h3>
                 </div>
                 <div class="box-body">
                     <table id="datatable-solicitudes" class="table table-bordered table-hover dataTable" cellspacing="0">
@@ -86,6 +87,7 @@
                         </thead>
                         <tbody>
                             <?php
+                            //print_r($this->solicitudes);
                             $solicitudes = $this->solicitudes;
                             foreach ($solicitudes as $solicitud):
                                 ?>
@@ -118,7 +120,7 @@
                                         <?php echo $solicitud->getLapiceroverde(); ?>
                                     </td>
                                     <td>
-                                        <?php echo $solicitud->getHoraatencion(); ?>
+                                        <?php echo $solicitud->getHoraatencion()->format("H:i:s"); ?>
                                     </td>
                                     <td>
                                         <?php echo $solicitud->getObservaciones(); ?>

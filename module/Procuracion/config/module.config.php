@@ -7,6 +7,7 @@ return array(
         'invokables' => array(
             'Procuracion\Controller\Index' => 'Procuracion\Controller\IndexController',
             'Procuracion\Controller\Recepcion' => 'Procuracion\Controller\RecepcionController',
+            'Procuracion\Controller\Admin' => 'Procuracion\Controller\AdminController',
         //'Procuracion\Controller\Formulario' => 'Procuracion\Controller\FormularioController'
         ),
     ),
