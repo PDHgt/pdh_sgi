@@ -18,35 +18,44 @@ class RecepcionController extends AbstractActionController {
 
     public function getEntityManager() {
         if (null === $this->em) {
-
             $this->em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
         }
         return $this->em;
     }
 
     public function indexAction() {
-        $this->usuario = $this->getEvent()->getRouteMatch()->getParam('usuario');
 
-        return $this->redirect()->toRoute('visita', array('usuario' => $this->usuario));
+        if (!$this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->hasIdentity()) {
+            return $this->redirect()->toRoute('inicio', array('action' => 'login'));
+        } else {
+            //$this->usuario = $this->getEvent()->getRouteMatch()->getParam('usuario');
+            return $this->redirect()->toRoute('visita');
+        }
     }
 
     public function visitaAction() {
+
+        $identity = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
+        //$usuario = $identity->getIdEmpleado()->getNombres();
+        $usuario = $identity->getUsuario();
 
         $form = new Formulario("form");
         $visitaservice = new VisitaService();
         $visitas = $visitaservice->listToday($this->getEntityManager());
 
         $header = new ViewModel();
+        $header->setVariables(array('usuario' => $usuario));
         $header->setTemplate('recepcion/header');
 
         $aside = new ViewModel();
+        $aside->setVariables(array('usuario' => $usuario));
         $aside->setTemplate('recepcion/aside');
 
         $layout = $this->layout();
         $layout->addChild($header, 'header')
                 ->addChild($aside, 'aside');
 
-        $view = new ViewModel(array('form' => $form, 'visitas' => $visitas, 'usuario' => $this->usuario));
+        $view = new ViewModel(array('form' => $form, 'visitas' => $visitas, 'usuario' => $usuario));
         return $view;
     }
 

@@ -24,7 +24,6 @@ class Formulario extends Form {
                 'type' => 'date',
                 'class' => 'form-control',
                 'readonly' => true
-            //'disabled' => true
             )
         ));
         /*
@@ -39,7 +38,6 @@ class Formulario extends Form {
                 'type' => 'time',
                 'class' => 'form-control',
                 'readonly' => true
-            //'disabled' => true
             )
         ));
         /*
@@ -79,8 +77,7 @@ class Formulario extends Form {
             ),
             'attributes' => array(
                 'type' => 'text',
-                'class' => 'form-control',
-            //'required' => true
+                'class' => 'form-control'
             )
         ));
         /*
@@ -93,8 +90,7 @@ class Formulario extends Form {
             ),
             'attributes' => array(
                 'type' => 'text',
-                'class' => 'form-control',
-            //'required' => true
+                'class' => 'form-control'
             )
         ));
         /*
@@ -109,8 +105,6 @@ class Formulario extends Form {
                 'type' => 'date',
                 'class' => 'form-control',
                 'id' => 'datepicker'
-            //'readonly' => true
-            //'disabled' => true
             )
         ));
         /*
@@ -320,7 +314,6 @@ class Formulario extends Form {
             'attributes' => array(
                 'type' => 'button',
                 'id' => 'historyBack',
-                //'onClick' => 'goBack()',
                 'value' => 'Cancelar',
                 'class' => 'btn btn-danger btn-flat'
             )

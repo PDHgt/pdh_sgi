@@ -120,7 +120,13 @@
                                         <?php echo $solicitud->getLapiceroverde(); ?>
                                     </td>
                                     <td>
-                                        <?php echo $solicitud->getHoraatencion()->format("H:i:s"); ?>
+                                        <?php
+                                        if ($solicitud->getHoraatencion() == NULL) {
+                                            echo "No se registro fecha";
+                                        } else {
+                                            $solicitud->getHoraatencion()->format("H:i:s");
+                                        }
+                                        ?>
                                     </td>
                                     <td>
                                         <?php echo $solicitud->getObservaciones(); ?>
