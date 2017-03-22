@@ -138,7 +138,8 @@ class Formulario extends Form {
             ),
             'attributes' => array(
                 'type' => 'text',
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'id' => 'autocomplete'
             )
         ));
         /*

@@ -35,96 +35,123 @@ class RecepcionController extends AbstractActionController {
 
     public function visitaAction() {
 
-        $identity = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
-        //$usuario = $identity->getIdEmpleado()->getNombres();
-        $usuario = $identity->getUsuario();
+        if (!$this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->hasIdentity()) {
+            return $this->redirect()->toRoute('inicio', array('action' => 'login'));
+        } else {
+            $identity = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
 
-        $form = new Formulario("form");
-        $visitaservice = new VisitaService();
-        $visitas = $visitaservice->listToday($this->getEntityManager());
+            $form = new Formulario("form");
+            $visitaservice = new VisitaService();
+            $visitas = $visitaservice->listToday($this->getEntityManager());
 
-        $header = new ViewModel();
-        $header->setVariables(array('usuario' => $usuario));
-        $header->setTemplate('recepcion/header');
+            $header = new ViewModel();
+            $header->setVariables(array('identity' => $identity));
+            $header->setTemplate('recepcion/header');
 
-        $aside = new ViewModel();
-        $aside->setVariables(array('usuario' => $usuario));
-        $aside->setTemplate('recepcion/aside');
+            $aside = new ViewModel();
+            $aside->setVariables(array('identity' => $identity));
+            $aside->setTemplate('recepcion/aside');
 
-        $layout = $this->layout();
-        $layout->addChild($header, 'header')
-                ->addChild($aside, 'aside');
+            $layout = $this->layout();
+            $layout->addChild($header, 'header')
+                    ->addChild($aside, 'aside');
 
-        $view = new ViewModel(array('form' => $form, 'visitas' => $visitas, 'usuario' => $usuario));
-        return $view;
+            $view = new ViewModel(array('form' => $form, 'visitas' => $visitas, 'indentity' => $identity));
+            return $view;
+        }
     }
 
     public function colaAction() {
-        $colaservice = new ColaRecepcionService();
-        $cola = $colaservice->listToday($this->getEntityManager(), 1); //$usr->sede
 
-        $header = new ViewModel();
-        $header->setTemplate('recepcion/header');
+        if (!$this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->hasIdentity()) {
+            return $this->redirect()->toRoute('inicio', array('action' => 'login'));
+        } else {
+            $identity = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
 
-        $aside = new ViewModel();
-        $aside->setTemplate('recepcion/aside');
+            $colaservice = new ColaRecepcionService();
+            $cola = $colaservice->listToday($this->getEntityManager(), 1); //$usr->sede
 
-        $layout = $this->layout();
-        $layout->addChild($header, 'header')
-                ->addChild($aside, 'aside');
+            $header = new ViewModel();
+            $header->setVariables(array('identity' => $identity));
+            $header->setTemplate('recepcion/header');
 
-        $view = new ViewModel(array('cola' => $cola));
-        return $view;
+            $aside = new ViewModel();
+            $aside->setVariables(array('identity' => $identity));
+            $aside->setTemplate('recepcion/aside');
+
+            $layout = $this->layout();
+            $layout->addChild($header, 'header')
+                    ->addChild($aside, 'aside');
+
+            $view = new ViewModel(array('cola' => $cola, 'identity' => $identity));
+            return $view;
+        }
     }
 
     public function consultaAction() {
-        $header = new ViewModel();
-        $header->setTemplate('recepcion/header');
+        if (!$this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->hasIdentity()) {
+            return $this->redirect()->toRoute('inicio', array('action' => 'login'));
+        } else {
+            $identity = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
 
-        $aside = new ViewModel();
-        $aside->setTemplate('recepcion/aside');
+            $header = new ViewModel();
+            $header->setVariables(array('identity' => $identity));
+            $header->setTemplate('recepcion/header');
 
-        $layout = $this->layout();
-        $layout->addChild($header, 'header')
-                ->addChild($aside, 'aside');
+            $aside = new ViewModel();
+            $aside->setVariables(array('identity' => $identity));
+            $aside->setTemplate('recepcion/aside');
 
-        $view = new ViewModel(array());
-        return $view;
+            $layout = $this->layout();
+            $layout->addChild($header, 'header')
+                    ->addChild($aside, 'aside');
+
+            $view = new ViewModel(array('identity' => $identity));
+            return $view;
+        }
     }
 
     public function registroAction() {
+        if (!$this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->hasIdentity()) {
+            return $this->redirect()->toRoute('inicio', array('action' => 'login'));
+        } else {
+            $identity = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
 
-        $url = $this->getRequest()->getRequestUri();
-        $value = explode("/", $url);
-        $currenturl = end($value);
+            $url = $this->getRequest()->getRequestUri();
+            $value = explode("/", $url);
+            $currenturl = end($value);
 
-        $empleadoservice = new EmpleadoService();
-        $empleados = $empleadoservice->listAll($this->getEntityManager());
+            $empleadoservice = new EmpleadoService();
+            $empleados = $empleadoservice->listAll($this->getEntityManager());
 
-        $unidadservice = new UnidadadministrativaService();
-        $unidades = $unidadservice->listAll($this->getEntityManager());
+            $unidadservice = new UnidadadministrativaService();
+            $unidades = $unidadservice->listAll($this->getEntityManager());
 
-        $form = new Formulario("form");
+            $form = new Formulario("form");
 
-        $header = new ViewModel();
-        $header->setTemplate('recepcion/header');
+            $header = new ViewModel();
+            $header->setVariables(array('identity' => $identity));
+            $header->setTemplate('recepcion/header');
 
-        $aside = new ViewModel();
-        $aside->setTemplate('recepcion/aside');
+            $aside = new ViewModel();
+            $aside->setVariables(array('identity' => $identity));
+            $aside->setTemplate('recepcion/aside');
 
-        $layout = $this->layout();
-        $layout->addChild($header, 'header')
-                ->addChild($aside, 'aside');
+            $layout = $this->layout();
+            $layout->addChild($header, 'header')
+                    ->addChild($aside, 'aside');
 
-        $view = new ViewModel(array(
-            'subtitle' => 'Registro de ' . $currenturl,
-            'form' => $form,
-            'empleados' => $empleados,
-            'unidades' => $unidades,
-            'url' => $currenturl,
-            'page' => $currenturl
-        ));
-        return $view;
+            $view = new ViewModel(array(
+                'subtitle' => 'Registro de ' . $currenturl,
+                'form' => $form,
+                'empleados' => $empleados,
+                'unidades' => $unidades,
+                'url' => $currenturl,
+                'page' => $currenturl,
+                'identity' => $identity
+            ));
+            return $view;
+        }
     }
 
     public function guardarAction() {
@@ -182,84 +209,108 @@ class RecepcionController extends AbstractActionController {
     }
 
     public function editarvisitaAction() {
-        $id = $this->getEvent()->getRouteMatch()->getParam('id');
+        if (!$this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->hasIdentity()) {
+            return $this->redirect()->toRoute('inicio', array('action' => 'login'));
+        } else {
+            $id = $this->getEvent()->getRouteMatch()->getParam('id');
 
-        $visitaservice = new VisitaService();
-        $visita = $visitaservice->listOne($this->getEntityManager(), $id);
+            $identity = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
 
-        $empleadoservice = new EmpleadoService();
-        $empleados = $empleadoservice->listAll($this->getEntityManager());
+            $visitaservice = new VisitaService();
+            $visita = $visitaservice->listOne($this->getEntityManager(), $id);
 
-        $unidadservice = new UnidadadministrativaService();
-        $unidades = $unidadservice->listAll($this->getEntityManager());
+            $empleadoservice = new EmpleadoService();
+            $empleados = $empleadoservice->listAll($this->getEntityManager());
 
-        $form = new Formulario("form");
+            $unidadservice = new UnidadadministrativaService();
+            $unidades = $unidadservice->listAll($this->getEntityManager());
 
-        $header = new ViewModel();
-        $header->setTemplate('recepcion/header');
+            $form = new Formulario("form");
 
-        $aside = new ViewModel();
-        $aside->setTemplate('recepcion/aside');
+            $header = new ViewModel();
+            $header->setVariables(array('identity' => $identity));
+            $header->setTemplate('recepcion/header');
 
-        $layout = $this->layout();
-        $layout->addChild($header, 'header')
-                ->addChild($aside, 'aside');
-        $view = new ViewModel(array('form' => $form, 'visita' => $visita, 'empleados' => $empleados, 'unidades' => $unidades));
-        return $view;
+            $aside = new ViewModel();
+            $aside->setVariables(array('identity' => $identity));
+            $aside->setTemplate('recepcion/aside');
+
+            $layout = $this->layout();
+            $layout->addChild($header, 'header')
+                    ->addChild($aside, 'aside');
+            $view = new ViewModel(array('form' => $form, 'visita' => $visita, 'empleados' => $empleados, 'unidades' => $unidades, 'identity' => $identity));
+            return $view;
+        }
     }
 
     public function editarcolaAction() {
-        $id = $this->getEvent()->getRouteMatch()->getParam('id');
+        if (!$this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->hasIdentity()) {
+            return $this->redirect()->toRoute('inicio', array('action' => 'login'));
+        } else {
+            $id = $this->getEvent()->getRouteMatch()->getParam('id');
 
-        $colaservice = new ColaRecepcionService();
-        $cola = $colaservice->listOne($this->getEntityManager(), $id);
+            $identity = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
 
-        $form = new Formulario("form");
+            $colaservice = new ColaRecepcionService();
+            $cola = $colaservice->listOne($this->getEntityManager(), $id);
 
-        $header = new ViewModel();
-        $header->setTemplate('recepcion/header');
+            $form = new Formulario("form");
 
-        $aside = new ViewModel();
-        $aside->setTemplate('recepcion/aside');
+            $header = new ViewModel();
+            $header->setVariables(array('identity' => $identity));
+            $header->setTemplate('recepcion/header');
 
-        $layout = $this->layout();
-        $layout->addChild($header, 'header')
-                ->addChild($aside, 'aside');
-        $view = new ViewModel(array('form' => $form, 'cola' => $cola));
-        return $view;
+            $aside = new ViewModel();
+            $aside->setVariables(array('identity' => $identity));
+            $aside->setTemplate('recepcion/aside');
+
+            $layout = $this->layout();
+            $layout->addChild($header, 'header')
+                    ->addChild($aside, 'aside');
+            $view = new ViewModel(array('form' => $form, 'cola' => $cola, 'identity' => $identity));
+            return $view;
+        }
     }
 
     public function cambiartipoAction() {
+        if (!$this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->hasIdentity()) {
+            return $this->redirect()->toRoute('inicio', array('action' => 'login'));
+        } else {
 
-        $id = $this->getEvent()->getRouteMatch()->getParam('id');
-        $tipo = $this->getEvent()->getRouteMatch()->getParam('param1');
-        $idtipo = $this->getEvent()->getRouteMatch()->getParam('param2');
+            $identity = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
 
-        $form = new Formulario("form");
+            $id = $this->getEvent()->getRouteMatch()->getParam('id');
+            $tipo = $this->getEvent()->getRouteMatch()->getParam('param1');
+            $idtipo = $this->getEvent()->getRouteMatch()->getParam('param2');
 
-        $personaservice = new PersonaService();
-        $persona = $personaservice->listOne($this->getEntityManager(), $id);
+            $form = new Formulario("form");
 
-        $visitaservice = new VisitaService();
-        $visita = $visitaservice->listOne($this->getEntityManager(), $idtipo);
+            $personaservice = new PersonaService();
+            $persona = $personaservice->listOne($this->getEntityManager(), $id);
 
-        $empleadoservice = new EmpleadoService();
-        $empleados = $empleadoservice->listAll($this->getEntityManager());
+            $visitaservice = new VisitaService();
+            $visita = $visitaservice->listOne($this->getEntityManager(), $idtipo);
 
-        $colaservice = new ColaRecepcionService();
-        $cola = $colaservice->listOne($this->getEntityManager(), $idtipo);
+            $empleadoservice = new EmpleadoService();
+            $empleados = $empleadoservice->listAll($this->getEntityManager());
 
-        $header = new ViewModel();
-        $header->setTemplate('recepcion/header');
+            $colaservice = new ColaRecepcionService();
+            $cola = $colaservice->listOne($this->getEntityManager(), $idtipo);
 
-        $aside = new ViewModel();
-        $aside->setTemplate('recepcion/aside');
+            $header = new ViewModel();
+            $header->setVariables(array('identity' => $identity));
+            $header->setTemplate('recepcion/header');
 
-        $layout = $this->layout();
-        $layout->addChild($header, 'header')
-                ->addChild($aside, 'aside');
-        $view = new ViewModel(array('form' => $form, 'persona' => $persona, 'tipo' => $tipo, 'visita' => $visita, 'empleados' => $empleados, 'cola' => $cola));
-        return $view;
+            $aside = new ViewModel();
+            $aside->setVariables(array('identity' => $identity));
+            $aside->setTemplate('recepcion/aside');
+
+            $layout = $this->layout();
+            $layout->addChild($header, 'header')
+                    ->addChild($aside, 'aside');
+            $view = new ViewModel(array('form' => $form, 'persona' => $persona, 'tipo' => $tipo, 'visita' => $visita, 'empleados' => $empleados, 'cola' => $cola, 'identity' => $identity));
+            return $view;
+        }
     }
 
     public function actualizarAction() {
@@ -317,16 +368,20 @@ class RecepcionController extends AbstractActionController {
     }
 
     public function detallevisitaAction() {
+        if (!$this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->hasIdentity()) {
+            return $this->redirect()->toRoute('inicio', array('action' => 'login'));
+        } else {
 
-        $id = $this->getEvent()->getRouteMatch()->getParam('id');
+            $id = $this->getEvent()->getRouteMatch()->getParam('id');
 
-        $visitaservice = new VisitaService();
-        $visita = $visitaservice->listOne($this->getEntityManager(), $id);
+            $visitaservice = new VisitaService();
+            $visita = $visitaservice->listOne($this->getEntityManager(), $id);
 
-        $this->layout('layout/modal');
-        $view = new ViewModel(array('visita' => $visita));
+            $this->layout('layout/modal');
+            $view = new ViewModel(array('visita' => $visita));
 
-        return $view;
+            return $view;
+        }
     }
 
     public function salidavisitaAction() {
@@ -378,69 +433,93 @@ class RecepcionController extends AbstractActionController {
     }
 
     public function buscarAction() {
-        $form = new Formulario("form");
+        if (!$this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->hasIdentity()) {
+            return $this->redirect()->toRoute('inicio', array('action' => 'login'));
+        } else {
+            $identity = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
 
-        $header = new ViewModel();
-        $header->setTemplate('recepcion/header');
+            $form = new Formulario("form");
 
-        $aside = new ViewModel();
-        $aside->setTemplate('recepcion/aside');
+            $header = new ViewModel();
+            $header->setVariables(array('identity' => $identity));
+            $header->setTemplate('recepcion/header');
 
-        $layout = $this->layout();
-        $layout->addChild($header, 'header')
-                ->addChild($aside, 'aside');
-        $view = new ViewModel(array('form' => $form));
-        return $view;
+            $aside = new ViewModel();
+            $aside->setVariables(array('identity' => $identity));
+            $aside->setTemplate('recepcion/aside');
+
+            $layout = $this->layout();
+            $layout->addChild($header, 'header')
+                    ->addChild($aside, 'aside');
+            $view = new ViewModel(array('form' => $form, 'identity' => $identity));
+            return $view;
+        }
     }
 
     public function resultadoAction() {
-        $data = $this->request->getPost();
+        if (!$this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->hasIdentity()) {
+            return $this->redirect()->toRoute('inicio', array('action' => 'login'));
+        } else {
+            $identity = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
 
-        $parametros = array('documento' => $data['numdoc'], 'nombres' => $data['nombre'], 'apellidos' => $data['apellido']);
-        $personaservice = new PersonaService();
-        $personas = $personaservice->searchPersona($this->getEntityManager(), $parametros);
+            $data = $this->request->getPost();
 
-        $header = new ViewModel();
-        $header->setTemplate('recepcion/header');
+            $parametros = array('documento' => $data['numdoc'], 'nombres' => $data['nombre'], 'apellidos' => $data['apellido']);
+            $personaservice = new PersonaService();
+            $personas = $personaservice->searchPersona($this->getEntityManager(), $parametros);
 
-        $aside = new ViewModel();
-        $aside->setTemplate('recepcion/aside');
+            $header = new ViewModel();
+            $header->setVariables(array('identity' => $identity));
+            $header->setTemplate('recepcion/header');
 
-        $layout = $this->layout();
-        $layout->addChild($header, 'header')
-                ->addChild($aside, 'aside');
+            $aside = new ViewModel();
+            $aside->setVariables(array('identity' => $identity));
+            $aside->setTemplate('recepcion/aside');
 
-        $view = new ViewModel(array('personas' => $personas));
-        return $view;
+            $layout = $this->layout();
+            $layout->addChild($header, 'header')
+                    ->addChild($aside, 'aside');
+
+            $view = new ViewModel(array('personas' => $personas, 'identity' => $identity));
+            return $view;
+        }
     }
 
     public function detallebuscarAction() {
-        $id = $this->getEvent()->getRouteMatch()->getParam('id');
+        if (!$this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->hasIdentity()) {
+            return $this->redirect()->toRoute('inicio', array('action' => 'login'));
+        } else {
+            $identity = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
 
-        //var_dump($id);
+            $id = $this->getEvent()->getRouteMatch()->getParam('id');
 
-        $visitaservice = new VisitaService();
-        $visitas = $visitaservice->getVisitas($this->getEntityManager(), $id);
+            //var_dump($id);
 
-        //var_dump($visitas);
+            $visitaservice = new VisitaService();
+            $visitas = $visitaservice->getVisitas($this->getEntityManager(), $id);
 
-        $colaservice = new ColaRecepcionService();
-        $cola = $colaservice->getEnCola($this->getEntityManager(), $id);
+            //var_dump($visitas);
 
-        // var_dump($cola);
+            $colaservice = new ColaRecepcionService();
+            $cola = $colaservice->getEnCola($this->getEntityManager(), $id);
 
-        $header = new ViewModel();
-        $header->setTemplate('recepcion/header');
+            // var_dump($cola);
 
-        $aside = new ViewModel();
-        $aside->setTemplate('recepcion/aside');
+            $header = new ViewModel();
+            $header->setVariables(array('identity' => $identity));
+            $header->setTemplate('recepcion/header');
 
-        $layout = $this->layout();
-        $layout->addChild($header, 'header')
-                ->addChild($aside, 'aside');
+            $aside = new ViewModel();
+            $aside->setVariables(array('identity' => $identity));
+            $aside->setTemplate('recepcion/aside');
 
-        $view = new ViewModel(array('visitas' => $visitas, 'solicitudes' => $cola));
-        return $view;
+            $layout = $this->layout();
+            $layout->addChild($header, 'header')
+                    ->addChild($aside, 'aside');
+
+            $view = new ViewModel(array('visitas' => $visitas, 'solicitudes' => $cola, 'identity' => $identity));
+            return $view;
+        }
     }
 
     public function turnoAction() {

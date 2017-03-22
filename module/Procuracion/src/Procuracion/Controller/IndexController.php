@@ -44,7 +44,9 @@ class IndexController extends AbstractActionController {
     }
 
     public function logoutAction() {
-        $this->redirect()->toRoute('inicio');
+
+        $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->clearIdentity();
+        return $this->redirect()->toRoute('inicio');
     }
 
 }

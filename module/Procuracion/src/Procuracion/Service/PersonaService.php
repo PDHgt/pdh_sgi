@@ -159,9 +159,9 @@ class PersonaService {
         return $np->getId();
     }
 
-    public function findByDPI(EntityManager $em, string $dpi) {
-        $repository = $em->getRepository('Procuracion\Entity\Persona');
-        $cadena = "SELECT p FROM Procuracion\Entity\Persona p WHERE p.documento = '" . $dpi . "'"; // like '%".$dpi."%'
+    public function findByDPI(EntityManager $em, $dpi) {
+        //$repository = $em->getRepository('Procuracion\Entity\Persona');
+        $cadena = "SELECT p FROM Procuracion\Entity\Persona p WHERE p.numerodocumento LIKE '%" . $dpi . "%'"; // like '%".$dpi."%'
         $query = $em->createQuery($cadena); //"SELECT p FROM Procuracion\Entity\Persona p WHERE (p.nombres like '%".$parametros['nombres']."%' OR p.apellidos like '%".$parametros['apellidos']."%' OR p.numerodocumento like '%".$parametros['documento']."%')");
         $products = $query->getResult();
         return $products;

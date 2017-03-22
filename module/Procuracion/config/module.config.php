@@ -8,6 +8,7 @@ return array(
             'Procuracion\Controller\Index' => 'Procuracion\Controller\IndexController',
             'Procuracion\Controller\Recepcion' => 'Procuracion\Controller\RecepcionController',
             'Procuracion\Controller\Admin' => 'Procuracion\Controller\AdminController',
+            'Procuracion\Controller\Validacion' => 'Procuracion\Controller\ValidacionController',
         //'Procuracion\Controller\Formulario' => 'Procuracion\Controller\FormularioController'
         ),
     ),
@@ -79,6 +80,18 @@ return array(
                             ),
                         ),
                     ),
+                    'visita' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/[:action[/:id]][/:param1][/:param2]',
+                            'constraints' => array(
+                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            ),
+                            'defaults' => array(
+                            ),
+                        ),
+                    ),
                 ),
             ),
             'visita' => array(
@@ -106,7 +119,33 @@ return array(
                         ),
                     ),
                 ),
-            )
+            ),
+            'validacion' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route' => '/validacion',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Procuracion\Controller',
+                        'controller' => 'validacion',
+                        'action' => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'validardpi' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/[:action[/:id]][/:param1][/:param2]',
+                            'constraints' => array(
+                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            ),
+                            'defaults' => array(
+                            ),
+                        ),
+                    ),
+                ),
+            ),
         /* 'formulario' => array(
           'type' => 'Literal',
           'options' => array(
