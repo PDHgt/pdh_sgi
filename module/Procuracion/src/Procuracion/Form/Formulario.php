@@ -55,7 +55,7 @@ class Formulario extends Form {
         $this->add(array(
             'name' => 'id',
             'attributes' => array(
-                'type' => 'hidden',
+                'type' => 'hidden'
             )
         ));
         /*
@@ -77,7 +77,8 @@ class Formulario extends Form {
             ),
             'attributes' => array(
                 'type' => 'text',
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'id' => 'nombres'
             )
         ));
         /*
@@ -90,7 +91,8 @@ class Formulario extends Form {
             ),
             'attributes' => array(
                 'type' => 'text',
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'id' => 'apellidos'
             )
         ));
         /*
@@ -125,7 +127,8 @@ class Formulario extends Form {
                 ),
             ),
             'attributes' => array(
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'id' => 'tipodoc'
             )
         ));
         /*
@@ -139,7 +142,8 @@ class Formulario extends Form {
             'attributes' => array(
                 'type' => 'text',
                 'class' => 'form-control',
-                'id' => 'autocomplete'
+                'id' => 'numdoc',
+                'autocomplete' => false
             )
         ));
         /*
@@ -262,6 +266,9 @@ class Formulario extends Form {
                     '1' => 'Masculino',
                     '2' => 'Femenino',
                 )
+            ),
+            'attributes' => array(
+                'id' => 'sexo'
             )
         ));
         /*

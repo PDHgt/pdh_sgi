@@ -11,6 +11,7 @@
             <file>file:/D:/xampp/htdocs/pdh_sgi/module/Procuracion/src/Procuracion/Controller/RecepcionController.php</file>
             <file>file:/D:/xampp/htdocs/pdh_sgi/module/Procuracion/Module.php</file>
             <file>file:/D:/xampp/htdocs/pdh_sgi/module/Procuracion/view/layout/layout-recepcion.phtml</file>
+            <file>file:/D:/xampp/htdocs/pdh_sgi/module/Procuracion/view/procuracion/recepcion/visita.phtml</file>
             <file>file:/D:/xampp/htdocs/pdh_sgi/module/Procuracion/src/Procuracion/Service/PersonaService.php</file>
             <file>file:/D:/xampp/htdocs/pdh_sgi/module/Procuracion/config/module.config.php</file>
         </group>

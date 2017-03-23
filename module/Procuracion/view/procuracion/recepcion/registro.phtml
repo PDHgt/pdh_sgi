@@ -81,11 +81,10 @@
                                 //echo $this->formElementErrors($name);
                                 echo $formLabel->closeTag();
                                 echo $this->formInput($numdoc);
+
+                                $id = $form->get('id')->setAttribute('id', 'idpersona');
+                                echo $this->formInput($id);
                                 ?>
-                            </div>
-                            <div class="ui-widget" style="margin-top:2em; font-family:Arial">
-                                Result:
-                                <div id="log" style="height: 200px; width: 300px; overflow: auto;" class="ui-widget-content"></div>
                             </div>
                         </div>
                         <div class="col-xs-3">
@@ -251,35 +250,56 @@
 
 
 <script type="text/javascript">
-
-    $(function() {
-        function log(message) {
-            $("<div>").text(message).prependTo("#log");
-            $("#log").scrollTop(0);
-        }
-
-        $("#autocomplete").autocomplete({
+    $(document).ready(function() {
+        $("#numdoc").autocomplete({
             source: function(request, response) {
                 $.ajax({
                     url: "<?php echo $this->basePath(); ?>/validacion/validardpi",
+                    dataType: "json",
                     type: "POST",
-                    dataType: "jsonp",
-                    /*data: request,*/
                     data: {
                         term: request.term
                     },
                     success: function(data) {
-                        response(data);
+                        response($.map(data, function(item) {
+                            return {
+                                label: item,
+                                value: item
+                            };
+                        }));
                     }
+                    /*error: function(a, b, c) {
+                     debugger;
+                     }*/
                 });
-            },
-            minLength: 2,
-            select: function(event, ui) {
-                log("Selected: " + ui.item.value + " aka " + ui.item.id);
+
             }
         });
     });
+    $("#numdoc").focusout(function(request, response) {
+        $.ajax({
+            url: "<?php echo $this->basePath(); ?>/validacion/seleccionardpi",
+            dataType: "json",
+            type: "POST",
+            data: {
+                term: $("#numdoc").val()
+            },
+            success: function(data) {
+                $('#idpersona').val(data[0]);
+                $('#tipodoc').val(data[1]);
+                $('#datepicker').val(data[2]);
+                //$('#sexo').val(data[3]);
+                $('#nombres').val(data[4]);
+                $('#apellidos').val(data[5]);
 
+                var $radios = $('input:radio[name=sexo]');
+                if ($radios.is(':checked') === false) {
+                    $radios.filter('[value=' + data[3] + ']').prop('checked', true);
+                }
+
+            }
+        });
+    });
 </script>
 
 
