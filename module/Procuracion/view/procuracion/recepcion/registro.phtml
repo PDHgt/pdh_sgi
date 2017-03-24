@@ -82,7 +82,7 @@
                                 echo $formLabel->closeTag();
                                 echo $this->formInput($numdoc);
 
-                                $id = $form->get('id')->setAttribute('id', 'idpersona');
+                                $id = $form->get('id')->setAttribute('id', 'id');
                                 echo $this->formInput($id);
                                 ?>
                             </div>
@@ -285,7 +285,7 @@
                 term: $("#numdoc").val()
             },
             success: function(data) {
-                $('#idpersona').val(data[0]);
+                $('#id').val(data[0]);
                 $('#tipodoc').val(data[1]);
                 $('#datepicker').val(data[2]);
                 //$('#sexo').val(data[3]);

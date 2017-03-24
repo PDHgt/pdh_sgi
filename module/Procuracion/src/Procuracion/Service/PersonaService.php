@@ -48,17 +48,23 @@ class PersonaService {
     }
 
     public function savePersona(EntityManager $em, array $nueva, array $extras, $que) {
-        $np = new Persona();
-        $np->setNombres($nueva['nombres']);
-        $np->setApellidos($nueva['apellidos']);
-        $np->setTipoDocumento($nueva['tipo']);
-        $np->setNumeroDocumento($nueva['numero']);
-        $np->setSexo($nueva['sexo']);
-        $np->setLgbti($nueva['lgbti']);
-        $np->setFechaNacimiento($nueva['nac']);
-        $em->persist($np);
-        $em->flush();
-
+        //var_dump($nueva);
+        if($nueva['id'] > 0){
+            $np = $em->getRepository('\Procuracion\Entity\Persona')->find($nueva['id']);
+        }
+        else{
+            $np = new Persona();
+            $np->setNombres($nueva['nombres']);
+            $np->setApellidos($nueva['apellidos']);
+            $np->setTipoDocumento($nueva['tipo']);
+            $np->setNumeroDocumento($nueva['numero']);
+            $np->setSexo($nueva['sexo']);
+            $np->setLgbti($nueva['lgbti']);
+            $np->setFechaNacimiento($nueva['nac']);
+            $em->persist($np);
+            $em->flush();
+        }
+        //var_dump($np);
         if ($que == 1) {
             $emp = $em->getRepository('\Procuracion\Entity\Empleado')->find($extras['empleado']);
             $nvo = new Visita();

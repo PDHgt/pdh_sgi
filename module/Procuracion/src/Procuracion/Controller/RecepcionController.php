@@ -165,6 +165,7 @@ class RecepcionController extends AbstractActionController {
              */
         }
         $persona = array(
+            'id' => $data["id"],
             'nombres' => $data["nombre"],
             'apellidos' => $data["apellido"],
             'tipo' => $data["tipodoc"],

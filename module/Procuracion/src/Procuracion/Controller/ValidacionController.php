@@ -30,10 +30,15 @@ class ValidacionController extends AbstractActionController {
         $personas = $personaservice->selectByDPI($this->getServiceLocator()->get('Doctrine\ORM\EntityManager'), $data["term"]);
 
         foreach ($personas as $personaOption) {
+            if(is_null($personaOption->getFechanacimiento())){
+                $date = NULL;
+            } else {
+                $date = $personaOption->getFechanacimiento()->format("d/m/Y");
+            }
             $item = array(
                 $personasOptions['id'] = $personaOption->getId(),
-                $personasOptions['tipodoc'] = $personaOption->getTipodocumento(),
-                $personasOptions['fechanac'] = $personaOption->getFechanacimiento()->format("d/m/Y"),
+                $personasOptions['tipodoc'] = $personaOption->getTipodocumento(),                
+                $personasOptions['fechanac'] = $date,
                 $personasOptions['sexo'] = $personaOption->getSexo(),
                 //$personasOptions['numdoc'] = $personaOption->getTipodocumento(),
                 $personasOptions['nombres'] = $personaOption->getNombres(),
