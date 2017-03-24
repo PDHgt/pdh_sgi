@@ -47,4 +47,13 @@ class ColaRecepcionService {
         return $visitas;
     }
 
+    public function departure(EntityManager $em, array $cola) {
+        $data = $em->getReference('Procuracion\Entity\Colarecepcion', $cola['id']);
+        $data->setHoraAtencion(date_create($cola['hora']));
+        //$data->setFechasalida(date_create($cola['fecha']));
+        $data->setRazonsalida($cola['razon']);
+        $em->flush();
+        return $data->getId();
+    }
+
 }

@@ -397,7 +397,19 @@ class RecepcionController extends AbstractActionController {
         return $view;
     }
 
-    public function salidaAction() {
+    public function salidacolaAction() {
+
+        $id = $this->getEvent()->getRouteMatch()->getParam('id');
+
+        $form = new Formulario();
+
+        $this->layout('layout/modal');
+        $view = new ViewModel(array('form' => $form, 'id' => $id));
+
+        return $view;
+    }
+
+    public function salidatAction() {
 
         $id = $this->getEvent()->getRouteMatch()->getParam('id');
         $data = $this->request->getPost();
@@ -407,6 +419,21 @@ class RecepcionController extends AbstractActionController {
         $visitaservice->departure($this->getEntityManager(), $departure);
 
         $this->redirect()->toRoute('recepcion', array('action' => 'visita'));
+    }
+
+    public function salidacAction() {
+
+        $id = $this->getEvent()->getRouteMatch()->getParam('id');
+        $data = $this->request->getPost();
+        $departure = array('id' => $id, 'hora' => $data['hora'], 'razon' => $data['obs']);
+
+        $colaservice = new ColaRecepcionService();
+        $colaservice->departure($this->getEntityManager(), $departure);
+
+        return $this->forward()->dispatch('Procuracion\Controller\Recepcion', array(
+                    'action' => 'cola'
+        ));
+        //$this->redirect()->toRoute('recepcion', array('action' => 'cola'));
     }
 
     public function detallecolaAction() {

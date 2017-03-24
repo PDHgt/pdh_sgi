@@ -1,4 +1,4 @@
-<?php $visita = $this->visita; ?>
+<?php $cola = $this->cola; ?>
 <section class="content-header">
     <h1>Recepción de personas</h1>
 </section>
@@ -7,14 +7,14 @@
         <div class="col-xs-12">
             <div class="box box-info">
                 <div class="box-header">
-                    <h3 class="box-title">Salida de visita</h3>
+                    <h3 class="box-title">Salida de turno</h3>
                 </div>
                 <div class="box-body">
                     <?php
                     $form = $this->form;
                     $form->prepare();
                     $form->setAttributes(array(
-                        'action' => $this->url('recepcion/procesar', array('action' => 'salidat', 'id' => $this->id)),
+                        'action' => $this->url('recepcion/procesar', array('action' => 'salidac', 'id' => $this->id)),
                         'method' => 'post'
                     ));
 
