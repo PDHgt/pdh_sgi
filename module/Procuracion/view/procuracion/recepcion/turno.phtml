@@ -1,0 +1,23 @@
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-warning with-border">
+                <div class="box-header with-border">
+                    <h1 class="bigfont"><i class="glyphicon glyphicon-hourglass black-text"></i>Cola de espera</h1>
+                </div>
+                <div class="box-body" id="update">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+    $(document).ready(function() {
+        setInterval(function() {
+            $.get("<?php echo $this->url('recepcion') ?>/getturno", function(result) {
+                $('#update').html(result);
+            });
+        }, 2000);
+    });
+</script>

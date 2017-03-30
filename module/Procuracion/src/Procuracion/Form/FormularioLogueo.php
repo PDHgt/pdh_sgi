@@ -46,7 +46,7 @@ Class FormularioLogueo extends Form {
             'attributes' => array(
                 'type' => 'submit',
                 'value' => 'Entrar',
-                'class' => 'btn btn-primary btn-block btn-flat'
+                'class' => 'btn btn-primary btn-flat'
             )
         ));
         //Checkbox recordar

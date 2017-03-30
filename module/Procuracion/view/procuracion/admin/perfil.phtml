@@ -1,0 +1,158 @@
+<section class="content-header">
+    <h1>Detalles de cuenta</h1>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-xs-3">
+            <div class="box box-primary">
+                <div class="box-body box-profile">
+                    <img class="profile-user-img img-responsive img-circle" src="<?php echo $this->basePath() . '/img/avatars/user32.png' ?>" alt="Foto de usuario">
+                    <h3 class="profile-username text-center"><?php echo $this->identity->getIdEmpleado()->getNombres() . " " . $this->identity->getIdEmpleado()->getApellidos(); ?></h3>
+                    <p class="text-muted text-center"><?php echo $this->identity->getIdEmpleado()->getPuesto(); ?></p>
+                    <ul class="list-group list-group-unbordered">
+                        <li class="list-group-item">
+                            <i class="fa fa-envelope-o"></i>&nbsp;&nbsp;<b>Mensajes</b> <a class="pull-right">1,322</a>
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fa fa-bell-o"></i>&nbsp;&nbsp;<b>Notificaciones</b> <a class="pull-right">543</a>
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fa fa-flag-o"></i>&nbsp;&nbsp;<b>Tareas</b> <a class="pull-right">13,287</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-9">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#activity" data-toggle="tab" aria-expanded="true">Actividad</a></li>
+                    <li class=""><a href="#settings" data-toggle="tab" aria-expanded="true">Información</a></li>
+                    <li class=""><a href="#password" data-toggle="tab" aria-expanded="true">Cambiar contraseña</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="activity">
+                        <!-- Post -->
+                        <div class="post">
+                            <div class="user-block">
+                                <img class="img-circle img-bordered-sm" src="../../dist/img/user1-128x128.jpg" alt="user image">
+                                <span class="username">
+                                    <a href="#">Jonathan Burke Jr.</a>
+                                    <a href="#" class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>
+                                </span>
+                                <span class="description">Shared publicly - 7:30 PM today</span>
+                            </div>
+                            <!-- /.user-block -->
+                            <p>
+                                Lorem ipsum represents a long-held tradition for designers,
+                                typographers and the like. Some people hate it and argue for
+                                its demise, but others ignore the hate as they create awesome
+                                tools to help create filler text for everyone from bacon lovers
+                                to Charlie Sheen fans.
+                            </p>
+                            <ul class="list-inline">
+                                <li><a href="#" class="link-black text-sm"><i class="fa fa-share margin-r-5"></i> Share</a></li>
+                                <li><a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-up margin-r-5"></i> Like</a>
+                                </li>
+                                <li class="pull-right">
+                                    <a href="#" class="link-black text-sm"><i class="fa fa-comments-o margin-r-5"></i> Comments
+                                        (5)</a></li>
+                            </ul>
+
+                            <input class="form-control input-sm" type="text" placeholder="Type a comment">
+                        </div>
+                        <!-- /.post -->
+                    </div>
+                    <div class="tab-pane" id="settings">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label for="inputName" class="col-sm-2 control-label">Nombres</label>
+                                <div class="col-sm-10">
+                                    <input type="text" readonly class="form-control" id="inputName" placeholder="Nombres" name="nombres" value="<?php echo $this->identity->getIdEmpleado()->getNombres(); ?>">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputLasName" class="col-sm-2 control-label">Apellidos</label>
+                                <div class="col-sm-10">
+                                    <input type="text" readonly class="form-control" id="inputLasName" placeholder="Apellidos" name="apelludos" value="<?php echo $this->identity->getIdEmpleado()->getApellidos(); ?>">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmail" class="col-sm-2 control-label">Correo electrónico</label>
+
+                                <div class="col-sm-10">
+                                    <input type="email" readonly class="form-control" id="inputEmail" placeholder="Correo electrónico" name="email" value="<?php echo $this->identity->getIdEmpleado()->getId(); ?>">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputJob" class="col-sm-2 control-label">Puesto</label>
+                                <div class="col-sm-10">
+                                    <input type="text" readonly class="form-control" id="inputJob" placeholder="Puesto" name="puesto" value="<?php echo $this->identity->getIdEmpleado()->getPuesto(); ?>">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputOffice" class="col-sm-2 control-label">Unidad administrativa</label>
+                                <div class="col-sm-10">
+                                    <input type="text" readonly class="form-control" id="inputOffice" placeholder="Unidad administrativa" name="unidad" value="<?php echo $this->identity->getIdEmpleado()->getUnidadadministrativa()->getNombre(); ?>">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.tab-pane -->
+                    <div class="tab-pane" id="password">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label for="currentPass" class="col-sm-2 control-label">Contraseña actual</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" id="currentPass" placeholder="Contraseña actual" name="currentpass">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="newPass" class="col-sm-2 control-label">Contraseña nueva</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control input-password" id="newPass" placeholder="Contraseña nueva" name="newPass">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmPass" class="col-sm-2 control-label">Confirmar contraseña</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control input-password" id="confirmPass" placeholder="Confirmar contraseña" name="confirmPass">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="checkbox-unmask" class="col-sm-2 control-label label-unmask">Mostrar contraseña</label>
+                                <div class="col-sm-10">
+                                    <input id="checkbox-unmask" class="checkbox-unmask" type="checkbox" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" class="btn btn-danger">Actualizar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.tab-pane -->
+                </div>
+                <!-- /.tab-content -->
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+    var pw = $(".input-password"),
+            cb = $("#checkbox-unmask"),
+            mask = true;
+
+    cb.on("click", function() {
+
+        if (mask === true) {
+            mask = false;
+            pw.attr("type", "text");
+        } else {
+            mask = true;
+            pw.attr("type", "password");
+        }
+
+    });
+</script>

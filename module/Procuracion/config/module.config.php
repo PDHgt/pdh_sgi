@@ -9,7 +9,6 @@ return array(
             'Procuracion\Controller\Recepcion' => 'Procuracion\Controller\RecepcionController',
             'Procuracion\Controller\Admin' => 'Procuracion\Controller\AdminController',
             'Procuracion\Controller\Validacion' => 'Procuracion\Controller\ValidacionController',
-        //'Procuracion\Controller\Formulario' => 'Procuracion\Controller\FormularioController'
         ),
     ),
     'router' => array(
@@ -40,10 +39,35 @@ return array(
                     ),
                 ),
             ),
-            // The following is a route to simplify getting started creating
-            // new controllers and actions without needing to create a new
-            // module. Simply drop new controllers in, and you can access them
-            // using the path /application/:controller/:action
+            'admin' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/admin[/:action][/:id][/:param1][/:param2]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Procuracion\Controller',
+                        'controller' => 'admin',
+                        'action' => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'panel' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/[:action[/:id]][/:param1][/:param2]',
+                            'constraints' => array(
+                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            ),
+                            'defaults' => array(
+                            ),
+                        ),
+                    ),
+                ),
+            ),
             'recepcion' => array(
                 'type' => 'Literal',
                 'options' => array(
@@ -81,32 +105,6 @@ return array(
                         ),
                     ),
                     'visita' => array(
-                        'type' => 'Segment',
-                        'options' => array(
-                            'route' => '/[:action[/:id]][/:param1][/:param2]',
-                            'constraints' => array(
-                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                            ),
-                            'defaults' => array(
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-            'visita' => array(
-                'type' => 'Literal',
-                'options' => array(
-                    'route' => '/recepcion/visita',
-                    'defaults' => array(
-                        '__NAMESPACE__' => 'Procuracion\Controller',
-                        'controller' => 'Recepcion',
-                        'action' => 'visita',
-                    ),
-                ),
-                'may_terminate' => true,
-                'child_routes' => array(
-                    'procesar' => array(
                         'type' => 'Segment',
                         'options' => array(
                             'route' => '/[:action[/:id]][/:param1][/:param2]',
