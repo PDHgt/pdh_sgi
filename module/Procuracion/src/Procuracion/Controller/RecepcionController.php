@@ -28,7 +28,7 @@ class RecepcionController extends AbstractActionController {
         if (!$this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->hasIdentity()) {
             return $this->redirect()->toRoute('inicio', array('action' => 'login'));
         } else {
-            //$this->usuario = $this->getEvent()->getRouteMatch()->getParam('usuario');
+//$this->usuario = $this->getEvent()->getRouteMatch()->getParam('usuario');
             return $this->redirect()->toRoute('recepcion/visita', array('action' => 'visita'));
         }
     }
