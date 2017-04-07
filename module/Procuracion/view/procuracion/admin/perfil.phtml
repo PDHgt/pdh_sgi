@@ -9,6 +9,7 @@
                     <img class="profile-user-img img-responsive img-circle" src="<?php echo $this->basePath() . '/img/avatars/user32.png' ?>" alt="Foto de usuario">
                     <h3 class="profile-username text-center"><?php echo $this->identity->getIdEmpleado()->getNombres() . " " . $this->identity->getIdEmpleado()->getApellidos(); ?></h3>
                     <p class="text-muted text-center"><?php echo $this->identity->getIdEmpleado()->getPuesto(); ?></p>
+                    <p class="text-muted text-center"><?php echo $this->identity->getIdPerfil()->getNombre(); ?></p>
                     <ul class="list-group list-group-unbordered">
                         <li class="list-group-item">
                             <i class="fa fa-envelope-o"></i>&nbsp;&nbsp;<b>Mensajes</b> <a class="pull-right">1,322</a>

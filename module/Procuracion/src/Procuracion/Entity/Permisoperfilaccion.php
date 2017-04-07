@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="permisoperfilaccion", indexes={@ORM\Index(name="id_perfil", columns={"id_perfil"}), @ORM\Index(name="id_accion", columns={"id_accion"})})
  * @ORM\Entity
  */
-class Permisoperfilaccion
-{
+class Permisoperfilaccion {
+
     /**
      * @var integer
      *
@@ -48,15 +48,12 @@ class Permisoperfilaccion
      */
     private $idPerfil;
 
-
-
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -67,10 +64,9 @@ class Permisoperfilaccion
      *
      * @return Permisoperfilaccion
      */
-    public function setPermisos($permisos)
-    {
+    public function setPermisos($permisos) {
         $this->permisos = $permisos;
-    
+
         return $this;
     }
 
@@ -79,8 +75,7 @@ class Permisoperfilaccion
      *
      * @return string
      */
-    public function getPermisos()
-    {
+    public function getPermisos() {
         return $this->permisos;
     }
 
@@ -91,10 +86,9 @@ class Permisoperfilaccion
      *
      * @return Permisoperfilaccion
      */
-    public function setIdAccion(\Procuracion\Entity\Accion $idAccion = null)
-    {
+    public function setIdAccion(\Procuracion\Entity\Accion $idAccion = null) {
         $this->idAccion = $idAccion;
-    
+
         return $this;
     }
 
@@ -103,8 +97,7 @@ class Permisoperfilaccion
      *
      * @return \Procuracion\Entity\Accion
      */
-    public function getIdAccion()
-    {
+    public function getIdAccion() {
         return $this->idAccion;
     }
 
@@ -115,10 +108,9 @@ class Permisoperfilaccion
      *
      * @return Permisoperfilaccion
      */
-    public function setIdPerfil(\Procuracion\Entity\Perfil $idPerfil = null)
-    {
+    public function setIdPerfil(\Procuracion\Entity\Perfil $idPerfil = null) {
         $this->idPerfil = $idPerfil;
-    
+
         return $this;
     }
 
@@ -127,8 +119,8 @@ class Permisoperfilaccion
      *
      * @return \Procuracion\Entity\Perfil
      */
-    public function getIdPerfil()
-    {
+    public function getIdPerfil() {
         return $this->idPerfil;
     }
+
 }

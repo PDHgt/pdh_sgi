@@ -23,9 +23,11 @@ $form->prepare();
         <div class="row" id="mensajes">
             <div class="col-xs-12">
                 <?php
-                if ($this->mensajes) {
-                    foreach ($this->mensajes as $message) {
-                        echo "<p class='bg-danger text-center'>" . $this->translate($message) . "<p>";
+                //$translator = new \Zend\I18n\Translator\Translator;
+                //print_r($this->message);
+                if ($this->message) {
+                    foreach ($this->message as $message) {
+                        echo "<p class='bg-danger text-center'>" . $message . "<p>";
                     }
                 }
                 ?>

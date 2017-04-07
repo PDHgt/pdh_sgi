@@ -15,11 +15,11 @@ class AdminController extends AbstractActionController {
 
             $header = new ViewModel();
             $header->setVariables(array('identity' => $identity));
-            $header->setTemplate('recepcion/header');
+            $header->setTemplate('header');
 
             $aside = new ViewModel();
             $aside->setVariables(array('identity' => $identity));
-            $aside->setTemplate('recepcion/aside');
+            $aside->setTemplate('aside');
 
             $layout = $this->layout();
             $layout->addChild($header, 'header')
@@ -36,11 +36,11 @@ class AdminController extends AbstractActionController {
         $identity = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
         $header = new ViewModel();
         $header->setVariables(array('identity' => $identity));
-        $header->setTemplate('recepcion/header');
+        $header->setTemplate('header');
 
         $aside = new ViewModel();
         $aside->setVariables(array('identity' => $identity));
-        $aside->setTemplate('recepcion/aside');
+        $aside->setTemplate('aside');
 
         $layout = $this->layout();
         $layout->addChild($header, 'header')
@@ -56,11 +56,11 @@ class AdminController extends AbstractActionController {
         $identity = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
         $header = new ViewModel();
         $header->setVariables(array('identity' => $identity));
-        $header->setTemplate('recepcion/header');
+        $header->setTemplate('header');
 
         $aside = new ViewModel();
         $aside->setVariables(array('identity' => $identity));
-        $aside->setTemplate('recepcion/aside');
+        $aside->setTemplate('aside');
 
         $layout = $this->layout();
         $layout->addChild($header, 'header')

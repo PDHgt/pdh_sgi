@@ -11,7 +11,7 @@ use Zend\Form\Form;
 class FormularioRecepcion extends Form {
 
     function __construct($name = null) {
-        parent::__construct($name);
+        parent::__construct("recepcion");
         /*
          * Campo fecha
          */
