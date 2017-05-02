@@ -56,4 +56,12 @@ class ColaRecepcionService {
         return $data->getId();
     }
 
+    public function getPorFechas(EntityManager $em, $fechaUno, $fechaDos){
+        $repository = $em->getRepository('Procuracion\Entity\Colarecepcion');
+        $cadena = "SELECT p FROM Procuracion\Entity\Colarecepcion p WHERE p.fechaentrada BETWEEN '".$fechaUno."' AND '".$fechaDos."'";
+        $query = $em->createQuery($cadena);
+        $products = $query->getResult();
+        //var_dump($products);
+        return $products;
+    }
 }

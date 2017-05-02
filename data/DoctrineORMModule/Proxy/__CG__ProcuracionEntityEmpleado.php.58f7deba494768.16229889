@@ -64,10 +64,10 @@ class Empleado extends \Procuracion\Entity\Empleado implements \Doctrine\ORM\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'nombres', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'apellidos', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'puesto', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'unidadadministrativa', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'id_sede', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'correo', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'extension'];
+            return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'nombres', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'apellidos', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'puesto', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'unidadadministrativa'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'nombres', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'apellidos', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'puesto', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'unidadadministrativa', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'id_sede', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'correo', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'extension'];
+        return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'nombres', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'apellidos', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'puesto', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'unidadadministrativa'];
     }
 
     /**
@@ -257,7 +257,7 @@ class Empleado extends \Procuracion\Entity\Empleado implements \Doctrine\ORM\Pro
     /**
      * {@inheritDoc}
      */
-    public function setUnidadadministrativa(\Procuracion\Entity\Unidad $unidadadministrativa = NULL)
+    public function setUnidadadministrativa(\Procuracion\Entity\Unidadadministrativa $unidadadministrativa = NULL)
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUnidadadministrativa', [$unidadadministrativa]);
@@ -274,72 +274,6 @@ class Empleado extends \Procuracion\Entity\Empleado implements \Doctrine\ORM\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUnidadadministrativa', []);
 
         return parent::getUnidadadministrativa();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setIdsede(\Procuracion\Entity\Sede $sede = NULL)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIdsede', [$sede]);
-
-        return parent::setIdsede($sede);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getIdsede()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIdsede', []);
-
-        return parent::getIdsede();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setCorreo($correo)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCorreo', [$correo]);
-
-        return parent::setCorreo($correo);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getCorreo()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCorreo', []);
-
-        return parent::getCorreo();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setExtension($extension)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setExtension', [$extension]);
-
-        return parent::setExtension($extension);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getExtension()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getExtension', []);
-
-        return parent::getExtension();
     }
 
 }

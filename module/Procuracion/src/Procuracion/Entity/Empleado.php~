@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Empleado
  *
- * @ORM\Table(name="empleado", indexes={@ORM\Index(name="UnidadAdministrativa", columns={"UnidadAdministrativa"})})
+ * @ORM\Table(name="empleado", indexes={@ORM\Index(name="Unidad", columns={"UnidadAdministrativa"})})
  * @ORM\Entity
  */
 class Empleado
@@ -43,15 +43,38 @@ class Empleado
     private $puesto;
 
     /**
-     * @var \Procuracion\Entity\Unidadadministrativa
+     * @var \Procuracion\Entity\Unidad
      *
-     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Unidadadministrativa")
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Unidad")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="UnidadAdministrativa", referencedColumnName="id")
      * })
      */
     private $unidadadministrativa;
 
+    /**
+     * @var \Procuracion\Entity\Sede
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Sede")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_sede", referencedColumnName="id")
+     * })
+     */
 
+    private $id_sede;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Correo", type="string", length=255, nullable=true)
+     */
+    private $correo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Extension", type="string", length=10, nullable=true)
+     */
+    private $extension;    
 }
 

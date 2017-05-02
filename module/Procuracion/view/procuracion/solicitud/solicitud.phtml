@@ -1,9 +1,140 @@
-<?php
+<section class="content-header">
+    <h1>Solicitud</h1>
+</section>
+<section class="content">
+    <div class="box box-default color-palette-box">
+        <div class="box-header with-border">
+            <i class="fa fa-file"></i>
+            <h3 class="box-title">Solicitud</h3>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="row">
+                        <div class="col-xs-3"><strong>Fecha:</strong></div>
+                        <div class="col-xs-3"><?php echo $cola->getFechaentrada()->format("d/m/Y"); ?></div>
+                        <div class="col-xs-3"><strong>Hora:</strong></div>
+                        <div class="col-xs-3"><?php echo $cola->getHoraentrada()->format('H:i:s'); ?></div>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="row">
+                        <div class="col-xs-3"><strong>Prioridad:</strong></div>
+                        <div class="col-xs-3">
+                            <?php
+                            switch ($cola->getPrioridad()) {
+                                case '1':
+                                    $class = "red-text";
+                                    $tooltip = "Urgente";
+                                    break;
+                                case '2':
+                                    $class = "yellow-text";
+                                    $tooltip = "Importante";
+                                    break;
+                                case '3':
+                                    $class = "green-text";
+                                    $tooltip = "Normal";
+                            }
+                            echo $tooltip;
+                            ?>
+                            <span class="glyphicon glyphicon-exclamation-sign <?php echo $class ?> fa-lg">
+                            </span>
+                        </div>
+                        <div class="col-xs-3"><strong>Lapicero verde:</strong></div>
+                        <div class="col-xs-3">
+                            <?php
+                            switch ($cola->getLapiceroverde()) {
+                                case '1':
+                                    $lv = "SI";
+                                    break;
+                                case '0':
+                                    $lv = "NO";
+                                    break;
+                            }
+                            echo $lv;
+                            ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box box-default color-palette-box">
+        <div class="box-header with-border">
+            <i class="fa fa-file"></i>
+            <h3 class="box-title">Solicitante</h3>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="row">
+                        <div class="col-xs-3"><strong>Nombres:</strong></div>
+                        <div class="col-xs-3"><?php echo $cola->getIdpersona()->getNombres(); ?></div>
+                        <div class="col-xs-3"><strong>Apellidos:</strong></div>
+                        <div class="col-xs-3"><?php echo $cola->getIdpersona()->getApellidos(); ?></div>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="row">
+                        <div class="col-xs-3"><strong>Tipo de documento:</strong></div>
+                        <div class="col-xs-3"><?php echo $cola->getIdpersona()->getTipodocumento(); ?></div>
+                        <div class="col-xs-3"><strong># documento:</strong></div>
+                        <div class="col-xs-3"><?php echo $cola->getIdpersona()->getNumerodocumento(); ?></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="row">
+                        <div class="col-xs-3"><strong>Fecha de nacimiento:</strong></div>
+                        <div class="col-xs-3"><?php echo $cola->getIdpersona()->getFechanacimiento()->format("d/m/Y"); ?></div>
+                        <div class="col-xs-3"><strong>Edad:</strong></div>
+                        <div class="col-xs-3"><?php echo $cola->getIdpersona()->getEdad(); ?></div>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="row">
+                        <div class="col-xs-3"><strong>Sexo:</strong></div>
+                        <div class="col-xs-3"><?php
+                            switch ($cola->getIdpersona()->getSexo()) {
+                                case 1:
+                                    echo "Masculino";
+                                    break;
+                                case 2:
+                                    echo "Femenino";
+                                    break;
+                                default :
+                                    echo "No especificado";
+                                    break;
+                            }
+                            ?></div>
+                        <div class="col-xs-3"><strong>LGBTI:</strong></div>
+                        <div class="col-xs-3"><?php echo $cola->getIdpersona()->getLgbti(); ?></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="fixed-action-btn">
+    <nav class="fab">
+        <?php
+        $permisos = $this->permisos;
+        foreach ($permisos as $permiso) {
+            echo "<a class = 'fab-button bg-primary' href = " . $this->url('recepcion') . "./registro/" . $permiso["accion"] . "' tooltip='Solicitante'>";
+            /* foreach ($permiso["permiso"] as $perm) {
+              print_r($perm);
+              echo "<br>";
+              } */
+        }
+        ?>
+        <a class="fab-button" href="#"><span class="fab-span"><span class="fab-span rotate"></span></span></a>
+    </nav>
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+    <!--<button class="btn-default btn-floating btn-large waves-effect waves-light"><span class="glyphicon glyphicon-plus"></span></button>
+    <ul>
+        <li><a href="<?php /* echo $this->url('formulario') */ ?>registrovisita"><span class="glyphicon glyphicon-user"></span></a></li>
+    </ul>-->
+</div>
 
 

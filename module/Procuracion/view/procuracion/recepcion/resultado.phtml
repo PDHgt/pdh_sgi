@@ -13,30 +13,70 @@
 
                         <thead>
                             <tr>
-                                <th>Nombres</th>
-                                <th>Apellidos</th>
+                                <th>Fecha</th>
+                                <th>Hora</th>
+                                <th>Tipo</th>
+                                <th>Nombre</th>
+                                <th>Motivo / Observaciones</th>
                                 <th>Detalle</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                            $personas = $this->personas;
-                            foreach ($personas as $persona):
+                            $visitas = $this->visitas;
+                            foreach ($visitas as $visita):
                                 ?>
                                 <tr>
                                     <td>
-                                        <?php echo $persona->getNombres(); ?>
+                                        <?php echo $visita->getFechaentrada()->format("d/m/Y"); ?>
                                     </td>
                                     <td>
-                                        <?php echo $persona->getApellidos(); ?>
+                                        <?php echo $visita->getHoraentrada()->format("H:m:s"); ?>
                                     </td>
                                     <td>
-                                        <a href="<?php echo $this->url('recepcion/procesar', array('action' => 'detallebuscar', 'id' => $persona->getId())); ?>" data-tt="tooltip" title="Detalles">
+                                        <span>Visita</span>
+                                    </td>
+                                    <td>
+                                        <?php echo $visita->getIdpersona()->getNombres() . " " . $visita->getIdpersona()->getApellidos(); ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $visita->getMotivovisita(); ?>
+                                    </td>
+                                    <td class="details-control">
+                                        <a href="<?php echo $this->url('recepcion', array('action' => 'detallevisita', 'id' => $visita->getId())); ?>" data-toggle="modal" data-target="#detailsModal" data-tt="tooltip" title="Detalles">
                                             <span class="glyphicon glyphicon-search fa-lg"></span>
                                         </a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
+                            <?php
+                            $solicitudes = $this->solicitudes;
+                            foreach ($solicitudes as $solicitud):
+                                ?>
+                                <tr>
+                                    <td>
+                                        <?php echo $solicitud->getFechaentrada()->format("d/m/Y"); ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $solicitud->getHoraentrada()->format("H:m:s"); ?>
+                                    </td>
+                                    <td>
+                                        <span>Solicitud</span>
+                                    </td>
+                                    <td>
+                                        <?php echo $solicitud->getIdpersona()->getNombres() . " " . $solicitud->getIdpersona()->getApellidos(); ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $solicitud->getObservaciones(); ?>
+                                    </td>
+                                    <td>
+                                        <a href="<?php echo $this->url('recepcion', array('action' => 'detallecola', 'id' => $solicitud->getId())); ?>" data-toggle="modal" data-target="#detailsModal" data-tt="tooltip" title="Detalles">
+                                            <span class="glyphicon glyphicon-search fa-lg"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+
                         </tbody>
                     </table>
                 </div>
@@ -63,8 +103,20 @@
         </div>
     </div>
 </div>
+<!--<script src="//cdn.datatables.net/plug-ins/1.10.15/sorting/date-euro.js"></script>-->
 
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#datatable').DataTable({
+            "columnDefs": [
+                {"width": "5%", "targets": 5}
+            ],
+            "bSort": true,
+            "order": [[0, "desc"]]
 
+        });
+    });
+</script>
 
 
 

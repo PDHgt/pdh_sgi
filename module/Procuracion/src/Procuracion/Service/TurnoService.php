@@ -44,13 +44,13 @@ class TurnoService {
         //var_dump($turno);
         switch ($nvo->getPrioridad()) {
             case '1':
-                $elTurno = "R-" . $nvo->getNumero();
+                $elTurno = "U-" . $nvo->getNumero();
                 break;
             case '2':
-                $elTurno = "A-" . $nvo->getNumero();
+                $elTurno = "I-" . $nvo->getNumero();
                 break;
             case '3':
-                $elTurno = "V-" . $nvo->getNumero();
+                $elTurno = "N-" . $nvo->getNumero();
                 break;
             default:
                 # code...

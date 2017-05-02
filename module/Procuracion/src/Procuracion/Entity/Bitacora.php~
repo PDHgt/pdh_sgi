@@ -1,0 +1,47 @@
+<?php
+
+namespace Procuracion\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Bitacora
+ *
+ * @ORM\Table(name="bitacora")
+ * @ORM\Entity
+ */
+class Bitacora
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="FechaHora", type="datetime", nullable=true)
+     */
+    private $fechahora;
+
+    /**
+     * @var \Procuracion\Entity\Usuario
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Usuario")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="Usuario", referencedColumnName="id")
+     * })
+     */
+    private $usuario;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Accion", type="string", length=255, nullable=true)
+     */
+    private $accion;
+}

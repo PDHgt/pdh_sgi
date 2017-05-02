@@ -79,7 +79,7 @@
                                         <a href="<?php echo $this->url('recepcion/procesar', array('action' => 'editarcola', 'id' => $cola->getId())); ?>"  data-tt="tooltip" title="Editar">
                                             <span class="glyphicon glyphicon-edit orange-text fa-lg"></span>
                                         </a>
-                                        <a data-toggle="tooltip" title="Atender" href="<?php echo $this->url('recepcion/procesar', array('action' => 'atender', 'id' => $cola->getId())); ?>">
+                                        <a data-toggle="tooltip" title="Atender" href="<?php echo $this->url('solicitud', array('action' => 'atender', 'id' => $cola->getId())); ?>">
                                             <span class="glyphicon glyphicon-log-in green-text fa-lg"></span>
                                         </a>
                                         <a href="<?php echo $this->url('recepcion/procesar', array('action' => 'salidacola', 'id' => $cola->getId())); ?>" data-toggle="modal" data-target="#departureModal" data-tt="tooltip" title="Salida">

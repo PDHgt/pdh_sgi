@@ -13,21 +13,43 @@
 
                         <thead>
                             <tr>
+                                <th></th>
                                 <th>Nombres</th>
                                 <th>Apellidos</th>
                                 <th>Empresa / Institución</th>
                                 <th>Hora</th>
                                 <th>Empleado</th>
-                                <th>Unidad</th>
+                                <th>Extensión</th>
                                 <th>Opciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
                             $visitas = $this->visitas;
+                            $call = 0;
+
                             foreach ($visitas as $visita):
+
+                                switch ($call) {
+                                    case (0 && $call < 2):
+                                        $style = "bg-green";
+                                        break;
+                                    case ($call >= 2 && $call < 5):
+                                        $style = "bg-orange";
+                                        break;
+                                    case ($call >= 5):
+                                        $style = "bg-red";
+                                        break;
+                                }
+                                $call++;
                                 ?>
                                 <tr>
+                                    <td class="notifications-menu">
+                                        <a href="#">
+                                            <span class="fa fa-phone fa-lg black-text"></span>
+                                            <span class="badge badge-notify <?php echo $style; ?>"><?php echo $call; //echo $visita->getId();                                      ?></span>
+                                        </a>
+                                    </td>
                                     <td>
                                         <?php echo $visita->getIdpersona()->getNombres(); ?>
                                     </td>
@@ -44,16 +66,16 @@
                                         <?php echo $visita->getEmpleado()->getNombres() . " " . $visita->getEmpleado()->getApellidos(); ?>
                                     </td>
                                     <td>
-                                        <?php echo $visita->getEmpleado()->getUnidadadministrativa()->getNombre(); ?>
+                                        <?php echo $visita->getEmpleado()->getExtension(); ?>
                                     </td>
                                     <td class="details-control">
-                                        <a href="<?php echo $this->url('recepcion/procesar', array('action' => 'detallevisita', 'id' => $visita->getId())); ?>" data-toggle="modal" data-target="#detailsModal" data-tt="tooltip" title="Detalles">
+                                        <a href="<?php echo $this->url('recepcion', array('action' => 'detallevisita', 'id' => $visita->getId())); ?>" data-toggle="modal" data-target="#detailsModal" data-tt="tooltip" title="Detalles">
                                             <span class="glyphicon glyphicon-search fa-lg"></span>
                                         </a>
-                                        <a href="<?php echo $this->url('recepcion/procesar', array('action' => 'editarvisita', 'id' => $visita->getId())); ?>"  data-tt="tooltip" title="Editar">
-                                            <span class="glyphicon glyphicon-edit green-text fa-lg"></span>
+                                        <a href="<?php echo $this->url('recepcion', array('action' => 'editarvisita', 'id' => $visita->getId())); ?>"  data-tt="tooltip" title="Editar">
+                                            <span class="glyphicon glyphicon-edit orange-text fa-lg"></span>
                                         </a>
-                                        <a href="<?php echo $this->url('recepcion/procesar', array('action' => 'salidavisita', 'id' => $visita->getId())); ?>" data-toggle="modal" data-target="#departureModal" data-tt="tooltip" title="Salida">
+                                        <a href="<?php echo $this->url('recepcion', array('action' => 'salidavisita', 'id' => $visita->getId())); ?>" data-toggle="modal" data-target="#departureModal" data-tt="tooltip" title="Salida">
                                             <span class="glyphicon glyphicon-log-out red-text fa-lg"></span>
                                         </a>
                                     </td>
@@ -69,9 +91,9 @@
 
 <div class="fixed-action-btn">
     <nav class="fab">
-        <a class="fab-button bg-primary" href="<?php $this->url('recepcion'); ?>./registro/solicitante" tooltip="Solicitante">
+        <a class="fab-button bg-primary" href="<?php echo $this->url('recepcion', array('action' => 'registro', 'param1' => 'solicitante')); ?>" tooltip="Solicitante">
         </a>
-        <a class="fab-button bg-primary" href="<?php $this->url('recepcion'); ?>./registro/visitante" tooltip="Visitante">
+        <a class="fab-button bg-primary" href="<?php echo $this->url('recepcion', array('action' => 'registro', 'param1' => 'visitante')); ?>" tooltip="Visitante">
         </a>
         <a class="fab-button" href="#"><span class="fab-span"><span class="fab-span rotate"></span></span></a>
     </nav>
@@ -93,3 +115,12 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#datatable').DataTable({
+            "columnDefs": [
+                {"width": "25px", "targets": 0}
+            ],
+        });
+    });
+</script>

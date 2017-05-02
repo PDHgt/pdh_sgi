@@ -4,7 +4,6 @@
             <th class="bigfont">Turno</th>
             <th class="bigfont">Nombres</th>
             <th class="bigfont">Apellidos</th>
-            <th class="bigfont">Hora</th>
         </tr>
     </thead>
     <tbody>
@@ -37,9 +36,6 @@
                 </td>
                 <td class="bigfont">
                     <?php echo $cola->getIdpersona()->getApellidos(); ?>
-                </td>
-                <td class="bigfont">
-                    <?php echo $cola->getHoraentrada()->format('H:i:s'); ?>
                 </td>
             </tr>
         <?php endforeach; ?>

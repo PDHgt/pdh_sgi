@@ -9,7 +9,7 @@
             </div>
             <div class = "pull-left info">
                 <p><?php echo $this->identity->getUsuario(); ?></p>
-                <p><?php echo $this->identity->getIdEmpleado()->getUnidadadministrativa()->getIdSede()->getNombre(); ?></p>
+                <p><?php echo $this->identity->getIdEmpleado()->getIdsede()->getNombre(); ?></p>
                 <!--Status -->
                 <a href = "#"><i class = "fa fa-circle text-success"></i> En linea</a>
             </div>
@@ -31,11 +31,11 @@
         <ul class = "sidebar-menu">
             <li class = "header">Menú principal</li>
             <!--Optionally, you can add icons to the links -->
-            <li><a href = "<?php echo $this->url('recepcion') ?>/visita"><i class = "glyphicon glyphicon-user"></i><span><?php echo $this->translate('Registro de visitas')
+            <li><a href = "<?php echo $this->url('recepcion', array('action' => 'visita')) ?>"><i class = "glyphicon glyphicon-user"></i><span><?php echo $this->translate('Registro de visitas')
 ?></span></a></li>
-            <li><a href="<?php echo $this->url('recepcion') ?>/cola"><i class="glyphicon glyphicon-edit"></i><span>Cola de solicitantes</span></a></li>
-            <li><a href="<?php echo $this->url('recepcion') ?>/consulta"><i class="glyphicon glyphicon-link"></i><span>Consulta de expedientes</span></a></li>
-            <li><a href="<?php echo $this->url('recepcion') ?>/buscar"><i class="glyphicon glyphicon-search"></i><span>Buscar personas</span></a></li>
+            <li><a href="<?php echo $this->url('recepcion', array('action' => 'cola')) ?>"><i class="glyphicon glyphicon-edit"></i><span>Cola de solicitantes</span></a></li>
+            <li><a href="<?php echo $this->url('recepcion', array('action' => 'consulta')) ?>"><i class="glyphicon glyphicon-link"></i><span>Consulta de expedientes</span></a></li>
+            <li><a href="<?php echo $this->url('recepcion', array('action' => 'buscar')) ?>"><i class="glyphicon glyphicon-search"></i><span>Buscar personas</span></a></li>
             <!--<li class="treeview">
               <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
                 <span class="pull-right-container">

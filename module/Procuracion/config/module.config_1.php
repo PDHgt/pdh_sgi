@@ -77,16 +77,13 @@ return array(
                 ),
             ),
             'recepcion' => array(
-                'type' => 'Segment',
+                'type' => 'Literal',
                 'options' => array(
-                    'route' => '/recepcion[/:action][/:id][/:param1][/:param2]',
+                    'route' => '/recepcion',
                     'defaults' => array(
                         '__NAMESPACE__' => 'Procuracion\Controller',
                         'controller' => 'Recepcion',
                         'action' => 'index',
-                        'id' => '[0-9]+',
-                        'param1' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'param2' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
                 ),
                 'may_terminate' => true,
@@ -103,19 +100,30 @@ return array(
                             ),
                         ),
                     ),
-                /* 'registro' => array(
-                  'type' => 'Segment',
-                  'options' => array(
-                  'route' => '/registro[/:action][/:param1]',
-                  'constraints' => array(
-                  'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                  'param1' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                  ),
-                  'defaults' => array(
-                  'controller' => 'Procuracion\Controller\Recepcion',
-                  ),
-                  ),
-                  ), */
+                    'registro' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/[:action[/:id]][/:param1][/:param2]',
+                            'constraints' => array(
+                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            ),
+                            'defaults' => array(
+                            ),
+                        ),
+                    ),
+                    'visita' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/[:action[/:id]][/:param1][/:param2]',
+                            'constraints' => array(
+                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            ),
+                            'defaults' => array(
+                            ),
+                        ),
+                    ),
                 ),
             ),
             'solicitud' => array(

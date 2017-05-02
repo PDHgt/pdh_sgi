@@ -2,24 +2,24 @@
 
 namespace Procuracion\Controller;
 
+use Procuracion\Form\FormularioLogueo;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Procuracion\Form\FormularioLogueo;
+use Zend\Authentication\AuthenticationService as AuthService;
+use Doctrine\ORM\EntityManager as EntityManager;
 
 class IndexController extends AbstractActionController {
 
-    protected $em;
+    protected $entityManager;
+    protected $authService;
     protected $usuario;
     protected $form;
-    protected $authService;
     protected $authResult;
     protected $messages;
 
-    public function getEntityManager() {
-        if (null === $this->em) {
-            $this->em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
-        }
-        return $this->em;
+    public function __construct(EntityManager $entityManager, AuthService $authService) {
+        $this->entityManager = $entityManager;
+        $this->authService = $authService;
     }
 
     public function indexAction() {
@@ -36,37 +36,29 @@ class IndexController extends AbstractActionController {
         ));
     }
 
-    public function authService() {
-        $this->authService = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService');
-        return $this->authService;
-    }
-
     public function loginAction() {
         $data = $this->getRequest()->getPost();
 
-        $authService = $this->authService();
-
-        $adapter = $authService->getAdapter();
+        //$adapter = $authService->getAdapter();
+        $adapter = $this->authService->getAdapter();
         $adapter->setIdentity($data['usuario']);
         $adapter->setCredential(md5($data['password']));
-        $authResult = $authService->authenticate();
-        $this->authResult = $authResult;
+        $authResult = $this->authService->authenticate();
         $messages = $authResult->getMessages();
 
         if ($authResult->isValid()) {
-            return $this->redirect()->toRoute('recepcion');
+            return $this->redirect()->toRoute('recepcion', array('action' => 'visita'));
         } else {
             return $this->forward()->dispatch('Procuracion\Controller\Index', array(
                         'action' => 'index',
                         'message' => $messages
             ));
-            //return $this->redirect()->toRoute('inicio/procesar', array('action' => 'index', 'param' => $message));
         }
     }
 
     public function logoutAction() {
 
-        $this->authService()->clearIdentity();
+        $this->authService->clearIdentity();
         return $this->redirect()->toRoute('inicio');
     }
 

@@ -231,7 +231,7 @@ class FormularioRecepcion extends Form {
                 )
             ),
             'attributes' => array(
-                'value' => '3'
+                'required' => true
             )
         ));
         /*
@@ -241,7 +241,7 @@ class FormularioRecepcion extends Form {
             'type' => 'Radio',
             'name' => 'lapiceroverde',
             'options' => array(
-                'label' => '¿Es lapicero verde?',
+                'label' => 'Discapacidad Psicosocial',
                 'label_attributes' => array(
                     'class' => 'radio-inline'
                 ),
@@ -249,6 +249,9 @@ class FormularioRecepcion extends Form {
                     '0' => 'No',
                     '1' => 'Si'
                 )
+            ),
+            'attributes' => array(
+                'value' => '0'
             )
         ));
         /*

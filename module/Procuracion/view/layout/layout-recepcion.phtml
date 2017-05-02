@@ -35,7 +35,7 @@
         ;
         ?>
     </head>
-    <body class="hold-transition skin-blue sidebar-mini">
+    <body class="hold-transition skin-blue sidebar-collapse sidebar-mini">
         <div class="wrapper">
             <!-- Main Header -->
             <!-- Left side column. contains the logo and sidebar -->
@@ -64,13 +64,12 @@
         <!-- ./wrapper -->
         <?php echo $this->inlineScript() ?>
         <script type="text/javascript">
-            $(document).ready(function() {
-                $('#datatable').DataTable({
-                    "language": {
-                        "url": "<?php echo $this->basePath(); ?>/js/datatables/spanish.json"
-                    },
-                    "bSort": false
-                });
+            $.extend(true, $.fn.dataTable.defaults, {
+                "language": {
+                    "url": "<?php echo $this->basePath(); ?>/js/datatables/spanish.json"
+                },
+                "bSort": false
+
             });
             $("[data-tt=tooltip]").tooltip();
         </script>

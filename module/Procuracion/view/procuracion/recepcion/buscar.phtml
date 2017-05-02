@@ -4,15 +4,15 @@
 <section class="content">
     <div class="row">
         <div class="col-xs-12">
-            <div class="box box-success">
+            <div class="box box-info">
                 <div class="box-header">
-                    <h3 class="box-title">Busqueda de personas</h3>
+                    <h3 class="box-title">Busqueda de registros</h3>
                 </div>
                 <?php
                 $form = $this->form;
                 $form->prepare();
                 $form->setAttributes(array(
-                    'action' => $this->url('recepcion/procesar', array('action' => 'resultado')),
+                    'action' => $this->url('recepcion', array('action' => 'resultado')),
                     'method' => 'post'
                 ));
                 // Get the form label plugin
@@ -22,39 +22,39 @@
                 ?>
                 <div class="box-body">
                     <div class="row">
+                        <div class="col-xs-8">
+                            <div class="alert alert-info alert-dismissible">
+                                <h4><i class="icon fa fa-info"></i>¡Atención!</h4>
+                                Para realizar una busqueda de registros debe especificar un rango de fechas.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-xs-4">
                             <div class="form-group">
                                 <?php
-                                $numdoc = $form->get('numdoc');
-                                echo $formLabel->openTag() . $numdoc->getOption('label') . " ";
+                                $fechaInicio = $form->get('fecha')->setAttributes(array('name' => 'fechaInicio', 'required' => true, 'readonly' => false, 'id' => 'datepicker1'));
+                                echo $formLabel->openTag() . $fechaInicio->getOption('label') . " inicial";
+
                                 //echo $this->formElementErrors($name);
                                 echo $formLabel->closeTag();
-                                echo $this->formInput($numdoc);
+                                echo $this->formInput($fechaInicio);
                                 ?>
                             </div>
                         </div>
                         <div class="col-xs-4">
                             <div class="form-group">
                                 <?php
-                                $nombre = $form->get('nombre');
-                                echo $formLabel->openTag() . $nombre->getOption('label') . " ";
+                                $fechaFin = $form->get('fecha')->setAttributes(array('name' => 'fechaFin', 'required' => true, 'readonly' => false, 'id' => 'datepicker2'));
+                                echo $formLabel->openTag() . $fechaFin->getOption('label') . " final";
+
                                 //echo $this->formElementErrors($name);
                                 echo $formLabel->closeTag();
-                                echo $this->formInput($nombre);
+                                echo $this->formInput($fechaFin);
                                 ?>
                             </div>
                         </div>
-                        <div class="col-xs-4">
-                            <div class="form-group">
-                                <?php
-                                $apellido = $form->get('apellido');
-                                echo $formLabel->openTag() . $apellido->getOption('label') . " ";
-                                //echo $this->formElementErrors($name);
-                                echo $formLabel->closeTag();
-                                echo $this->formInput($apellido);
-                                ?>
-                            </div>
-                        </div>
+                        <div class="col-xs-4"></div>
                     </div>
                 </div>
                 <div class="box-footer">
@@ -102,13 +102,19 @@
 </div>
 
 <script type="text/javascript">
-    $('form').submit(function() {
-        var numdoc = $.trim($('input[name="numdoc"]').val()),
-                nombre = $.trim($('input[name="nombre"]').val()),
-                apellido = $.trim($('input[name="apellido"]').val());
-        if (numdoc === '' && nombre === '' && apellido === '') {
-            $('#alertModal').modal('show');
-            return false;
-        }
+    /*$('form').submit(function() {
+     var numdoc = $.trim($('input[name="numdoc"]').val()),
+     nombre = $.trim($('input[name="nombre"]').val()),
+     apellido = $.trim($('input[name="apellido"]').val());
+     if (numdoc === '' && nombre === '' && apellido === '') {
+     $('#alertModal').modal('show');
+     return false;
+     }
+     });*/
+    $(function() {
+        $("#datepicker1, #datepicker2").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'dd/mm/yy'});
     });
 </script>

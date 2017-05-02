@@ -46,4 +46,14 @@ class VisitaService {
         return $visitas;
     }
 
+    public function getPorFechas(EntityManager $em, $fechaUno, $fechaDos) {
+        $repository = $em->getRepository('Procuracion\Entity\Visita');
+        $cadena = "SELECT p FROM Procuracion\Entity\Visita p WHERE p.fechaentrada BETWEEN '" . $fechaUno . "' AND '" . $fechaDos . "'";
+
+        $query = $em->createQuery($cadena);
+        $products = $query->getResult();
+        //var_dump($products);
+        return $products;
+    }
+
 }

@@ -2,8 +2,6 @@
 
 namespace Procuracion\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
 use Procuracion\Form\FormularioRecepcion;
 use Procuracion\Service\VisitaService;
 use Procuracion\Service\ColaRecepcionService;
@@ -11,39 +9,41 @@ use Procuracion\Service\EmpleadoService;
 use Procuracion\Service\UnidadadministrativaService;
 use Procuracion\Service\PersonaService;
 use Procuracion\Service\UsuarioService;
+use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\ViewModel;
+use Zend\Authentication\AuthenticationService as AuthService;
+use Doctrine\ORM\EntityManager as EntityManager;
 
 class RecepcionController extends AbstractActionController {
 
-    protected $em;
+    protected $entityManager;
+    protected $authService;
     protected $usuario;
 
-    public function getEntityManager() {
-        if (null === $this->em) {
-            $this->em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
-        }
-        return $this->em;
+    public function __construct(EntityManager $entityManager, AuthService $authService) {
+        $this->entityManager = $entityManager;
+        $this->authService = $authService;
     }
 
     public function indexAction() {
 
-        if (!$this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->hasIdentity()) {
+        if (!$this->authService->hasIdentity()) {
             return $this->redirect()->toRoute('inicio', array('action' => 'login'));
         } else {
-//$this->usuario = $this->getEvent()->getRouteMatch()->getParam('usuario');
-            return $this->redirect()->toRoute('recepcion/visita', array('action' => 'visita'));
+            return $this->redirect()->toRoute('recepcion', array('action' => 'visita'));
         }
     }
 
     public function visitaAction() {
 
-        if (!$this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->hasIdentity()) {
+        if (!$this->authService->hasIdentity()) {
             return $this->redirect()->toRoute('inicio', array('action' => 'login'));
         } else {
-            $identity = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
+            $identity = $this->authService->getIdentity();
 
             $form = new FormularioRecepcion();
             $visitaservice = new VisitaService();
-            $visitas = $visitaservice->listToday($this->getEntityManager());
+            $visitas = $visitaservice->listToday($this->entityManager);
 
             $header = new ViewModel();
             $header->setVariables(array('identity' => $identity));
@@ -64,18 +64,18 @@ class RecepcionController extends AbstractActionController {
 
     public function colaAction() {
 
-        if (!$this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->hasIdentity()) {
+        if (!$this->authService->hasIdentity()) {
             return $this->redirect()->toRoute('inicio', array('action' => 'login'));
         } else {
-            $identity = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
+            $identity = $this->authService->getIdentity();
 
             $usuarioservice = new UsuarioService();
-            $permisos = $usuarioservice->getPermisos($this->getEntityManager(), $identity->getUsuario());
+            $permisos = $usuarioservice->getPermisos($this->entityManager, $identity->getUsuario());
 
-            $sede = $identity->getIdEmpleado()->getUnidadadministrativa()->getIdSede()->getId();
+            $sede = $identity->getIdEmpleado()->getIdsede()->getId();
 
             $colaservice = new ColaRecepcionService();
-            $cola = $colaservice->listToday($this->getEntityManager(), $sede); //$usr->sede
+            $cola = $colaservice->listToday($this->entityManager, $sede); //$usr->sede
 
             $header = new ViewModel();
             $header->setVariables(array('identity' => $identity));
@@ -95,10 +95,10 @@ class RecepcionController extends AbstractActionController {
     }
 
     public function consultaAction() {
-        if (!$this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->hasIdentity()) {
+        if (!$this->authService->hasIdentity()) {
             return $this->redirect()->toRoute('inicio', array('action' => 'login'));
         } else {
-            $identity = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
+            $identity = $this->authService->getIdentity();
 
             $header = new ViewModel();
             $header->setVariables(array('identity' => $identity));
@@ -118,20 +118,22 @@ class RecepcionController extends AbstractActionController {
     }
 
     public function registroAction() {
-        if (!$this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->hasIdentity()) {
+        if (!$this->authService->hasIdentity()) {
             return $this->redirect()->toRoute('inicio', array('action' => 'login'));
         } else {
-            $identity = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
+            $identity = $this->authService->getIdentity();
 
-            $url = $this->getRequest()->getRequestUri();
-            $value = explode("/", $url);
-            $currenturl = end($value);
+            $param = $this->params()->fromRoute('id');
+            //echo $param;
+
+            /* $value = explode("/", $url);
+              $currenturl = end($value); */
 
             $empleadoservice = new EmpleadoService();
-            $empleados = $empleadoservice->listAll($this->getEntityManager());
+            $empleados = $empleadoservice->listAll($this->entityManager);
 
             $unidadservice = new UnidadadministrativaService();
-            $unidades = $unidadservice->listAll($this->getEntityManager());
+            $unidades = $unidadservice->listAll($this->entityManager);
 
             $form = new FormularioRecepcion();
 
@@ -148,12 +150,12 @@ class RecepcionController extends AbstractActionController {
                     ->addChild($aside, 'aside');
 
             $view = new ViewModel(array(
-                'subtitle' => 'Registro de ' . $currenturl,
+                'subtitle' => 'Registro de ' . $param,
                 'form' => $form,
                 'empleados' => $empleados,
                 'unidades' => $unidades,
-                'url' => $currenturl,
-                'page' => $currenturl,
+                'url' => $param,
+                'page' => $param,
                 'identity' => $identity
             ));
             return $view;
@@ -203,34 +205,30 @@ class RecepcionController extends AbstractActionController {
 
         switch ($data['tipopersona']) {
             case 'visitante':
-                $registro->savePersona($this->getEntityManager(), $persona, $visita, 1);
-                return $this->forward()->dispatch('Procuracion\Controller\Recepcion', array(
-                            'action' => 'visita'
-                ));
+                $registro->savePersona($this->entityManager, $persona, $visita, 1);
+                return $this->redirect()->toRoute('recepcion', array('action' => 'visita'));
             case 'solicitante':
-                $registro->savePersona($this->getEntityManager(), $persona, $cola, 2);
-                return $this->forward()->dispatch('Procuracion\Controller\Recepcion', array(
-                            'action' => 'cola'
-                ));
+                $registro->savePersona($this->entityManager, $persona, $cola, 2);
+                return $this->redirect()->toRoute('recepcion', array('action' => 'cola'));
         }
     }
 
     public function editarvisitaAction() {
-        if (!$this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->hasIdentity()) {
+        if (!$this->authService->hasIdentity()) {
             return $this->redirect()->toRoute('inicio', array('action' => 'login'));
         } else {
+            $identity = $this->authService->getIdentity();
+
             $id = $this->getEvent()->getRouteMatch()->getParam('id');
 
-            $identity = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
-
             $visitaservice = new VisitaService();
-            $visita = $visitaservice->listOne($this->getEntityManager(), $id);
+            $visita = $visitaservice->listOne($this->entityManager, $id);
 
             $empleadoservice = new EmpleadoService();
-            $empleados = $empleadoservice->listAll($this->getEntityManager());
+            $empleados = $empleadoservice->listAll($this->entityManager);
 
             $unidadservice = new UnidadadministrativaService();
-            $unidades = $unidadservice->listAll($this->getEntityManager());
+            $unidades = $unidadservice->listAll($this->entityManager);
 
             $form = new FormularioRecepcion();
 
@@ -251,15 +249,13 @@ class RecepcionController extends AbstractActionController {
     }
 
     public function editarcolaAction() {
-        if (!$this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->hasIdentity()) {
+        if (!$this->authService->hasIdentity()) {
             return $this->redirect()->toRoute('inicio', array('action' => 'login'));
         } else {
+            $identity = $this->authService->getIdentity();
             $id = $this->getEvent()->getRouteMatch()->getParam('id');
-
-            $identity = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
-
             $colaservice = new ColaRecepcionService();
-            $cola = $colaservice->listOne($this->getEntityManager(), $id);
+            $cola = $colaservice->listOne($this->entityManager, $id);
 
             $form = new FormularioRecepcion();
 
@@ -280,11 +276,10 @@ class RecepcionController extends AbstractActionController {
     }
 
     public function cambiartipoAction() {
-        if (!$this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->hasIdentity()) {
+        if (!$this->authService->hasIdentity()) {
             return $this->redirect()->toRoute('inicio', array('action' => 'login'));
         } else {
-
-            $identity = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
+            $identity = $this->authService->getIdentity();
 
             $id = $this->getEvent()->getRouteMatch()->getParam('id');
             $tipo = $this->getEvent()->getRouteMatch()->getParam('param1');
@@ -293,16 +288,16 @@ class RecepcionController extends AbstractActionController {
             $form = new FormularioRecepcion();
 
             $personaservice = new PersonaService();
-            $persona = $personaservice->listOne($this->getEntityManager(), $id);
+            $persona = $personaservice->listOne($this->entityManager, $id);
 
             $visitaservice = new VisitaService();
-            $visita = $visitaservice->listOne($this->getEntityManager(), $idtipo);
+            $visita = $visitaservice->listOne($this->entityManager, $idtipo);
 
             $empleadoservice = new EmpleadoService();
-            $empleados = $empleadoservice->listAll($this->getEntityManager());
+            $empleados = $empleadoservice->listAll($this->entityManager);
 
             $colaservice = new ColaRecepcionService();
-            $cola = $colaservice->listOne($this->getEntityManager(), $idtipo);
+            $cola = $colaservice->listOne($this->entityManager, $idtipo);
 
             $header = new ViewModel();
             $header->setVariables(array('identity' => $identity));
@@ -362,12 +357,12 @@ class RecepcionController extends AbstractActionController {
 
         switch ($data['tipopersona']) {
             case 'visitante':
-                $registro->updatePersona($this->getEntityManager(), $persona, $visita, 1);
+                $registro->updatePersona($this->entityManager, $persona, $visita, 1);
                 return $this->forward()->dispatch('Procuracion\Controller\Recepcion', array(
                             'action' => 'visita'
                 ));
             case 'solicitante':
-                $registro->updatePersona($this->getEntityManager(), $persona, $cola, 2);
+                $registro->updatePersona($this->entityManager, $persona, $cola, 2);
                 return $this->forward()->dispatch('Procuracion\Controller\Recepcion', array(
                             'action' => 'cola'
                 ));
@@ -375,14 +370,14 @@ class RecepcionController extends AbstractActionController {
     }
 
     public function detallevisitaAction() {
-        if (!$this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->hasIdentity()) {
+        if (!$this->authService->hasIdentity()) {
             return $this->redirect()->toRoute('inicio', array('action' => 'login'));
         } else {
 
             $id = $this->getEvent()->getRouteMatch()->getParam('id');
 
             $visitaservice = new VisitaService();
-            $visita = $visitaservice->listOne($this->getEntityManager(), $id);
+            $visita = $visitaservice->listOne($this->entityManager, $id);
 
             $this->layout('layout/modal');
             $view = new ViewModel(array('visita' => $visita));
@@ -422,7 +417,7 @@ class RecepcionController extends AbstractActionController {
         $departure = array('id' => $id, 'fecha' => $data['fecha'], 'hora' => $data['hora'], 'obs' => $data['obs']);
 
         $visitaservice = new VisitaService();
-        $visitaservice->departure($this->getEntityManager(), $departure);
+        $visitaservice->departure($this->entityManager, $departure);
 
         $this->redirect()->toRoute('recepcion', array('action' => 'visita'));
     }
@@ -434,12 +429,10 @@ class RecepcionController extends AbstractActionController {
         $departure = array('id' => $id, 'hora' => $data['hora'], 'razon' => $data['obs']);
 
         $colaservice = new ColaRecepcionService();
-        $colaservice->departure($this->getEntityManager(), $departure);
+        $colaservice->departure($this->entityManager, $departure);
 
-        return $this->forward()->dispatch('Procuracion\Controller\Recepcion', array(
-                    'action' => 'cola'
-        ));
-        //$this->redirect()->toRoute('recepcion', array('action' => 'cola'));
+        //return $this->forward()->dispatch('Procuracion\Controller\Recepcion', array('action' => 'cola'));
+        return $this->redirect()->toRoute('recepcion', array('action' => 'cola'));
     }
 
     public function detallecolaAction() {
@@ -447,7 +440,7 @@ class RecepcionController extends AbstractActionController {
         $id = $this->getEvent()->getRouteMatch()->getParam('id');
 
         $colaservice = new ColaRecepcionService();
-        $cola = $colaservice->listOne($this->getEntityManager(), $id);
+        $cola = $colaservice->listOne($this->entityManager, $id);
 
         $this->layout('layout/modal');
         $view = new ViewModel(array('cola' => $cola));
@@ -461,16 +454,16 @@ class RecepcionController extends AbstractActionController {
         $attend = array('id' => $id, 'hora' => $hora);
 
         $colaservice = new ColaRecepcionService();
-        $colaservice->attend($this->getEntityManager(), $attend);
+        $colaservice->attend($this->entityManager, $attend);
 
         $this->redirect()->toRoute('recepcion', array('action' => 'cola'));
     }
 
     public function buscarAction() {
-        if (!$this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->hasIdentity()) {
+        if (!$this->authService->hasIdentity()) {
             return $this->redirect()->toRoute('inicio', array('action' => 'login'));
         } else {
-            $identity = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
+            $identity = $this->authService->getIdentity();
 
             $form = new FormularioRecepcion();
 
@@ -491,16 +484,23 @@ class RecepcionController extends AbstractActionController {
     }
 
     public function resultadoAction() {
-        if (!$this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->hasIdentity()) {
+        if (!$this->authService->hasIdentity()) {
             return $this->redirect()->toRoute('inicio', array('action' => 'login'));
         } else {
-            $identity = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
+            $identity = $this->authService->getIdentity();
 
             $data = $this->request->getPost();
 
-            $parametros = array('documento' => $data['numdoc'], 'nombres' => $data['nombre'], 'apellidos' => $data['apellido']);
-            $personaservice = new PersonaService();
-            $personas = $personaservice->searchPersona($this->getEntityManager(), $parametros);
+            $fechaInicio = date_create_from_format('d/m/Y', $data['fechaInicio']);
+            $fechaFin = date_create_from_format('d/m/Y', $data['fechaFin']);
+
+            $visitaservice = new VisitaService();
+            $visitas = $visitaservice->getPorFechas($this->entityManager, $fechaInicio->format("Y-m-d"), $fechaFin->format("Y-m-d"));
+
+            $solicitudservice = new ColaRecepcionService();
+            $solicitudes = $solicitudservice->getPorFechas($this->entityManager, $fechaInicio->format("Y-m-d"), $fechaFin->format("Y-m-d"));
+
+            //print_r(array_merge($visitas, $cola));
 
             $header = new ViewModel();
             $header->setVariables(array('identity' => $identity));
@@ -514,28 +514,28 @@ class RecepcionController extends AbstractActionController {
             $layout->addChild($header, 'header')
                     ->addChild($aside, 'aside');
 
-            $view = new ViewModel(array('personas' => $personas, 'identity' => $identity));
+            $view = new ViewModel(array('visitas' => $visitas, 'solicitudes' => $solicitudes, 'identity' => $identity));
             return $view;
         }
     }
 
     public function detallebuscarAction() {
-        if (!$this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->hasIdentity()) {
+        if (!$this->authService->hasIdentity()) {
             return $this->redirect()->toRoute('inicio', array('action' => 'login'));
         } else {
-            $identity = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
+            $identity = $this->authService->getIdentity();
 
             $id = $this->getEvent()->getRouteMatch()->getParam('id');
 
             //var_dump($id);
 
             $visitaservice = new VisitaService();
-            $visitas = $visitaservice->getVisitas($this->getEntityManager(), $id);
+            $visitas = $visitaservice->getVisitas($this->entityManager, $id);
 
             //var_dump($visitas);
 
             $colaservice = new ColaRecepcionService();
-            $cola = $colaservice->getEnCola($this->getEntityManager(), $id);
+            $cola = $colaservice->getEnCola($this->entityManager, $id);
 
             // var_dump($cola);
 
@@ -558,7 +558,7 @@ class RecepcionController extends AbstractActionController {
 
     public function getturnoAction() {
         $colaservice = new ColaRecepcionService();
-        $cola = $colaservice->listToday($this->getEntityManager(), 1); //$usr->sede
+        $cola = $colaservice->listToday($this->entityManager, 1); //$usr->sede
 
         $this->layout('layout/index');
 

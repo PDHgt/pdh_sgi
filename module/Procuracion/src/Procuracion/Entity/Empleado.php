@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Empleado
  *
- * @ORM\Table(name="empleado", indexes={@ORM\Index(name="UnidadAdministrativa", columns={"UnidadAdministrativa"})})
+ * @ORM\Table(name="empleado", indexes={@ORM\Index(name="Unidad", columns={"UnidadAdministrativa"})})
  * @ORM\Entity
  */
 class Empleado
@@ -43,17 +43,39 @@ class Empleado
     private $puesto;
 
     /**
-     * @var \Procuracion\Entity\Unidadadministrativa
+     * @var \Procuracion\Entity\Unidad
      *
-     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Unidadadministrativa")
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Unidad")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="UnidadAdministrativa", referencedColumnName="id")
      * })
      */
     private $unidadadministrativa;
 
+    /**
+     * @var \Procuracion\Entity\Sede
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Sede")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_sede", referencedColumnName="id")
+     * })
+     */
+    private $id_sede;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Correo", type="string", length=255, nullable=true)
+     */
+    private $correo;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Extension", type="string", length=10, nullable=true)
+     */
+    private $extension;    
+ 
     /**
      * Get id
      *
@@ -139,11 +161,11 @@ class Empleado
     /**
      * Set unidadadministrativa
      *
-     * @param \Procuracion\Entity\Unidadadministrativa $unidadadministrativa
+     * @param \Procuracion\Entity\Unidad $unidadadministrativa
      *
      * @return Empleado
      */
-    public function setUnidadadministrativa(\Procuracion\Entity\Unidadadministrativa $unidadadministrativa = null)
+    public function setUnidadadministrativa(\Procuracion\Entity\Unidad $unidadadministrativa = null)
     {
         $this->unidadadministrativa = $unidadadministrativa;
     
@@ -153,10 +175,84 @@ class Empleado
     /**
      * Get unidadadministrativa
      *
-     * @return \Procuracion\Entity\Unidadadministrativa
+     * @return \Procuracion\Entity\Unidad
      */
     public function getUnidadadministrativa()
     {
         return $this->unidadadministrativa;
     }
+
+    /**
+     * Set id_sede
+     *
+     * @param \Procuracion\Entity\Sede $sede
+     *
+     * @return Empleado
+     */
+    public function setIdsede(\Procuracion\Entity\Sede $sede = null)
+    {
+        $this->id_sede = $sede;
+    
+        return $this;
+    }
+
+    /**
+     * Get id_sede
+     *
+     * @return \Procuracion\Entity\Sede
+     */
+    public function getIdsede()
+    {
+        return $this->id_sede;
+    }
+
+
+    /**
+     * Set correo
+     *
+     * @param string $correo
+     *
+     * @return Empleado
+     */
+    public function setCorreo($correo)
+    {
+        $this->correo = $correo;
+    
+        return $this;
+    }
+
+    /**
+     * Get correo
+     *
+     * @return string
+     */
+    public function getCorreo()
+    {
+        return $this->correo;
+    }
+
+    /**
+     * Set extension
+     *
+     * @param string $extension
+     *
+     * @return Empleado
+     */
+    public function setExtension($extension)
+    {
+        $this->extension = $extension;
+    
+        return $this;
+    }
+
+    /**
+     * Get extension
+     *
+     * @return string
+     */
+    public function getExtension()
+    {
+        return $this->extension;
+    }
+
 }

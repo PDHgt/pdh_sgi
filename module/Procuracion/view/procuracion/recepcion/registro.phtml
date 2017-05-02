@@ -22,7 +22,7 @@
                 $form = $this->form;
                 $form->prepare();
                 $form->setAttributes(array(
-                    'action' => $this->url('recepcion/procesar', array('action' => 'guardar')),
+                    'action' => $this->url('recepcion', array('action' => 'guardar')),
                     'method' => 'post'
                 ));
                 // Get the form label plugin
@@ -204,7 +204,7 @@
                                         <div class="form-group">
                                             <?php
                                             $lapiceroverde = $form->get('lapiceroverde');
-                                            echo "<p>" . $formLabel->openTag() . $lapiceroverde->getOption('label') . " ";
+                                            echo "<p>" . $formLabel->openTag() . $lapiceroverde->getOption('label');
                                             echo $formLabel->closeTag() . "</p>";
                                             echo $this->formRadio($lapiceroverde);
                                             ?>
@@ -275,31 +275,43 @@
 
             }
         });
-    });
-    $("#numdoc").focusout(function(request, response) {
-        $.ajax({
-            url: "<?php echo $this->basePath(); ?>/validacion/seleccionardpi",
-            dataType: "json",
-            type: "POST",
-            data: {
-                term: $("#numdoc").val()
-            },
-            success: function(data) {
-                $('#id').val(data[0]);
-                $('#tipodoc').val(data[1]);
-                $('#datepicker').val(data[2]);
-                //$('#sexo').val(data[3]);
-                $('#nombres').val(data[4]);
-                $('#apellidos').val(data[5]);
+        $("#numdoc").focusout(function() {
+            $.ajax({
+                url: "<?php echo $this->basePath(); ?>/validacion/seleccionardpi",
+                dataType: "json",
+                type: "POST",
+                data: {
+                    term: $("#numdoc").val()
+                },
+                success: function(data) {
+                    $('#id').val(data[0]);
+                    $('#tipodoc').val(data[1]);
+                    $('#datepicker').val(data[2]);
+                    //$('#sexo').val(data[3]);
+                    $('#nombres').val(data[4]);
+                    $('#apellidos').val(data[5]);
 
-                var $radios = $('input:radio[name=sexo]');
-                if ($radios.is(':checked') === false) {
-                    $radios.filter('[value=' + data[3] + ']').prop('checked', true);
+                    var $radios = $('input:radio[name=sexo]');
+                    if ($radios.is(':checked') === false) {
+                        $radios.filter('[value=' + data[3] + ']').prop('checked', true);
+                    }
+
+                },
+                error: function() {
+                    $('#id').val();
+                    $('#tipodoc').val();
+                    $('#datepicker').val();
+                    //$('#sexo').val(data[3]);
+                    $('#nombres').val();
+                    $('#apellidos').val();
                 }
-
+            });
+            if ($("#numdoc").val() !== '') {
+                $("#tipodoc").attr("required", "true");
             }
         });
     });
+
 </script>
 
 
