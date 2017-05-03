@@ -4,12 +4,13 @@ namespace Procuracion\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Procuracion\Form\Formulario;
+use Procuracion\Form\FormularioRecepcion;
 use Procuracion\Service\VisitaService;
 use Procuracion\Service\ColaRecepcionService;
 use Procuracion\Service\EmpleadoService;
 use Procuracion\Service\UnidadadministrativaService;
 use Procuracion\Service\PersonaService;
+use Procuracion\Service\UsuarioService;
 
 class RecepcionController extends AbstractActionController {
 
@@ -28,8 +29,8 @@ class RecepcionController extends AbstractActionController {
         if (!$this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->hasIdentity()) {
             return $this->redirect()->toRoute('inicio', array('action' => 'login'));
         } else {
-            //$this->usuario = $this->getEvent()->getRouteMatch()->getParam('usuario');
-            return $this->redirect()->toRoute('visita');
+//$this->usuario = $this->getEvent()->getRouteMatch()->getParam('usuario');
+            return $this->redirect()->toRoute('recepcion/visita', array('action' => 'visita'));
         }
     }
 
@@ -40,23 +41,23 @@ class RecepcionController extends AbstractActionController {
         } else {
             $identity = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
 
-            $form = new Formulario("form");
+            $form = new FormularioRecepcion();
             $visitaservice = new VisitaService();
             $visitas = $visitaservice->listToday($this->getEntityManager());
 
             $header = new ViewModel();
             $header->setVariables(array('identity' => $identity));
-            $header->setTemplate('recepcion/header');
+            $header->setTemplate('header');
 
             $aside = new ViewModel();
             $aside->setVariables(array('identity' => $identity));
-            $aside->setTemplate('recepcion/aside');
+            $aside->setTemplate('aside');
 
             $layout = $this->layout();
             $layout->addChild($header, 'header')
                     ->addChild($aside, 'aside');
 
-            $view = new ViewModel(array('form' => $form, 'visitas' => $visitas, 'indentity' => $identity));
+            $view = new ViewModel(array('form' => $form, 'visitas' => $visitas, 'identity' => $identity));
             return $view;
         }
     }
@@ -68,22 +69,27 @@ class RecepcionController extends AbstractActionController {
         } else {
             $identity = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
 
+            $usuarioservice = new UsuarioService();
+            $permisos = $usuarioservice->getPermisos($this->getEntityManager(), $identity->getUsuario());
+
+            $sede = $identity->getIdEmpleado()->getUnidadadministrativa()->getIdSede()->getId();
+
             $colaservice = new ColaRecepcionService();
-            $cola = $colaservice->listToday($this->getEntityManager(), 1); //$usr->sede
+            $cola = $colaservice->listToday($this->getEntityManager(), $sede); //$usr->sede
 
             $header = new ViewModel();
             $header->setVariables(array('identity' => $identity));
-            $header->setTemplate('recepcion/header');
+            $header->setTemplate('header');
 
             $aside = new ViewModel();
             $aside->setVariables(array('identity' => $identity));
-            $aside->setTemplate('recepcion/aside');
+            $aside->setTemplate('aside');
 
             $layout = $this->layout();
             $layout->addChild($header, 'header')
                     ->addChild($aside, 'aside');
 
-            $view = new ViewModel(array('cola' => $cola, 'identity' => $identity));
+            $view = new ViewModel(array('cola' => $cola, 'identity' => $identity, 'permisos' => $permisos));
             return $view;
         }
     }
@@ -96,11 +102,11 @@ class RecepcionController extends AbstractActionController {
 
             $header = new ViewModel();
             $header->setVariables(array('identity' => $identity));
-            $header->setTemplate('recepcion/header');
+            $header->setTemplate('header');
 
             $aside = new ViewModel();
             $aside->setVariables(array('identity' => $identity));
-            $aside->setTemplate('recepcion/aside');
+            $aside->setTemplate('aside');
 
             $layout = $this->layout();
             $layout->addChild($header, 'header')
@@ -127,15 +133,15 @@ class RecepcionController extends AbstractActionController {
             $unidadservice = new UnidadadministrativaService();
             $unidades = $unidadservice->listAll($this->getEntityManager());
 
-            $form = new Formulario("form");
+            $form = new FormularioRecepcion();
 
             $header = new ViewModel();
             $header->setVariables(array('identity' => $identity));
-            $header->setTemplate('recepcion/header');
+            $header->setTemplate('header');
 
             $aside = new ViewModel();
             $aside->setVariables(array('identity' => $identity));
-            $aside->setTemplate('recepcion/aside');
+            $aside->setTemplate('aside');
 
             $layout = $this->layout();
             $layout->addChild($header, 'header')
@@ -226,15 +232,15 @@ class RecepcionController extends AbstractActionController {
             $unidadservice = new UnidadadministrativaService();
             $unidades = $unidadservice->listAll($this->getEntityManager());
 
-            $form = new Formulario("form");
+            $form = new FormularioRecepcion();
 
             $header = new ViewModel();
             $header->setVariables(array('identity' => $identity));
-            $header->setTemplate('recepcion/header');
+            $header->setTemplate('header');
 
             $aside = new ViewModel();
             $aside->setVariables(array('identity' => $identity));
-            $aside->setTemplate('recepcion/aside');
+            $aside->setTemplate('aside');
 
             $layout = $this->layout();
             $layout->addChild($header, 'header')
@@ -255,15 +261,15 @@ class RecepcionController extends AbstractActionController {
             $colaservice = new ColaRecepcionService();
             $cola = $colaservice->listOne($this->getEntityManager(), $id);
 
-            $form = new Formulario("form");
+            $form = new FormularioRecepcion();
 
             $header = new ViewModel();
             $header->setVariables(array('identity' => $identity));
-            $header->setTemplate('recepcion/header');
+            $header->setTemplate('header');
 
             $aside = new ViewModel();
             $aside->setVariables(array('identity' => $identity));
-            $aside->setTemplate('recepcion/aside');
+            $aside->setTemplate('aside');
 
             $layout = $this->layout();
             $layout->addChild($header, 'header')
@@ -284,7 +290,7 @@ class RecepcionController extends AbstractActionController {
             $tipo = $this->getEvent()->getRouteMatch()->getParam('param1');
             $idtipo = $this->getEvent()->getRouteMatch()->getParam('param2');
 
-            $form = new Formulario("form");
+            $form = new FormularioRecepcion();
 
             $personaservice = new PersonaService();
             $persona = $personaservice->listOne($this->getEntityManager(), $id);
@@ -300,11 +306,11 @@ class RecepcionController extends AbstractActionController {
 
             $header = new ViewModel();
             $header->setVariables(array('identity' => $identity));
-            $header->setTemplate('recepcion/header');
+            $header->setTemplate('header');
 
             $aside = new ViewModel();
             $aside->setVariables(array('identity' => $identity));
-            $aside->setTemplate('recepcion/aside');
+            $aside->setTemplate('aside');
 
             $layout = $this->layout();
             $layout->addChild($header, 'header')
@@ -389,7 +395,7 @@ class RecepcionController extends AbstractActionController {
 
         $id = $this->getEvent()->getRouteMatch()->getParam('id');
 
-        $form = new Formulario();
+        $form = new FormularioRecepcion();
 
         $this->layout('layout/modal');
         $view = new ViewModel(array('form' => $form, 'id' => $id));
@@ -401,7 +407,7 @@ class RecepcionController extends AbstractActionController {
 
         $id = $this->getEvent()->getRouteMatch()->getParam('id');
 
-        $form = new Formulario();
+        $form = new FormularioRecepcion();
 
         $this->layout('layout/modal');
         $view = new ViewModel(array('form' => $form, 'id' => $id));
@@ -466,15 +472,15 @@ class RecepcionController extends AbstractActionController {
         } else {
             $identity = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
 
-            $form = new Formulario("form");
+            $form = new FormularioRecepcion();
 
             $header = new ViewModel();
             $header->setVariables(array('identity' => $identity));
-            $header->setTemplate('recepcion/header');
+            $header->setTemplate('header');
 
             $aside = new ViewModel();
             $aside->setVariables(array('identity' => $identity));
-            $aside->setTemplate('recepcion/aside');
+            $aside->setTemplate('aside');
 
             $layout = $this->layout();
             $layout->addChild($header, 'header')
@@ -498,11 +504,11 @@ class RecepcionController extends AbstractActionController {
 
             $header = new ViewModel();
             $header->setVariables(array('identity' => $identity));
-            $header->setTemplate('recepcion/header');
+            $header->setTemplate('header');
 
             $aside = new ViewModel();
             $aside->setVariables(array('identity' => $identity));
-            $aside->setTemplate('recepcion/aside');
+            $aside->setTemplate('aside');
 
             $layout = $this->layout();
             $layout->addChild($header, 'header')
@@ -535,11 +541,11 @@ class RecepcionController extends AbstractActionController {
 
             $header = new ViewModel();
             $header->setVariables(array('identity' => $identity));
-            $header->setTemplate('recepcion/header');
+            $header->setTemplate('header');
 
             $aside = new ViewModel();
             $aside->setVariables(array('identity' => $identity));
-            $aside->setTemplate('recepcion/aside');
+            $aside->setTemplate('aside');
 
             $layout = $this->layout();
             $layout->addChild($header, 'header')
@@ -548,6 +554,16 @@ class RecepcionController extends AbstractActionController {
             $view = new ViewModel(array('visitas' => $visitas, 'solicitudes' => $cola, 'identity' => $identity));
             return $view;
         }
+    }
+
+    public function getturnoAction() {
+        $colaservice = new ColaRecepcionService();
+        $cola = $colaservice->listToday($this->getEntityManager(), 1); //$usr->sede
+
+        $this->layout('layout/index');
+
+        $view = new ViewModel(array('cola' => $cola));
+        return $view;
     }
 
     public function turnoAction() {

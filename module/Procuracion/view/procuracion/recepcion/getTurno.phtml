@@ -1,0 +1,47 @@
+<table id="datatable" class="table table-bordered table-hover dataTable" cellspacing="0">
+    <thead>
+        <tr>
+            <th class="bigfont">Turno</th>
+            <th class="bigfont">Nombres</th>
+            <th class="bigfont">Apellidos</th>
+            <th class="bigfont">Hora</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        $colas = $this->cola;
+        foreach ($colas as $cola):
+            switch ($cola->getPrioridad()) {
+                case '1':
+                    $class = "red-text";
+                    $tooltip = "Urgente";
+                    break;
+                case '2':
+                    $class = "yellow-text";
+                    $tooltip = "Importante";
+                    break;
+                case '3':
+                    $class = "green-text";
+                    $tooltip = "Normal";
+            }
+            ?>
+            <tr>
+                <td class="bigfont">
+                    <a data-toggle="tooltip" title="<?php echo $tooltip ?>">
+                        <span class="glyphicon glyphicon-exclamation-sign <?php echo $class ?> fa-lg">
+                        </span>
+                    </a><strong><?php echo $cola->getTurno(); ?></strong>
+                </td>
+                <td class="bigfont">
+                    <?php echo $cola->getIdpersona()->getNombres(); ?>
+                </td>
+                <td class="bigfont">
+                    <?php echo $cola->getIdpersona()->getApellidos(); ?>
+                </td>
+                <td class="bigfont">
+                    <?php echo $cola->getHoraentrada()->format('H:i:s'); ?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>

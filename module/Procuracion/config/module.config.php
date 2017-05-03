@@ -6,10 +6,10 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'Procuracion\Controller\Index' => 'Procuracion\Controller\IndexController',
-            'Procuracion\Controller\Recepcion' => 'Procuracion\Controller\RecepcionController',
             'Procuracion\Controller\Admin' => 'Procuracion\Controller\AdminController',
             'Procuracion\Controller\Validacion' => 'Procuracion\Controller\ValidacionController',
-        //'Procuracion\Controller\Formulario' => 'Procuracion\Controller\FormularioController'
+            'Procuracion\Controller\Recepcion' => 'Procuracion\Controller\RecepcionController',
+            'Procuracion\Controller\Solicitud' => 'Procuracion\Controller\SolicitudController',
         ),
     ),
     'router' => array(
@@ -29,7 +29,7 @@ return array(
                     'procesar' => array(
                         'type' => 'Segment',
                         'options' => array(
-                            'route' => '/[:action]',
+                            'route' => '/[:action][/:param]',
                             'constraints' => array(
                                 'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
                                 'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
@@ -40,10 +40,35 @@ return array(
                     ),
                 ),
             ),
-            // The following is a route to simplify getting started creating
-            // new controllers and actions without needing to create a new
-            // module. Simply drop new controllers in, and you can access them
-            // using the path /application/:controller/:action
+            'admin' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/admin[/:action][/:id][/:param1][/:param2]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Procuracion\Controller',
+                        'controller' => 'admin',
+                        'action' => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'panel' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/[:action[/:id]][/:param1][/:param2]',
+                            'constraints' => array(
+                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            ),
+                            'defaults' => array(
+                            ),
+                        ),
+                    ),
+                ),
+            ),
             'recepcion' => array(
                 'type' => 'Literal',
                 'options' => array(
@@ -94,29 +119,17 @@ return array(
                     ),
                 ),
             ),
-            'visita' => array(
-                'type' => 'Literal',
+            'solicitud' => array(
+                'type' => 'segment',
                 'options' => array(
-                    'route' => '/recepcion/visita',
-                    'defaults' => array(
-                        '__NAMESPACE__' => 'Procuracion\Controller',
-                        'controller' => 'Recepcion',
-                        'action' => 'visita',
+                    'route' => '/solicitud[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+',
                     ),
-                ),
-                'may_terminate' => true,
-                'child_routes' => array(
-                    'procesar' => array(
-                        'type' => 'Segment',
-                        'options' => array(
-                            'route' => '/[:action[/:id]][/:param1][/:param2]',
-                            'constraints' => array(
-                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                            ),
-                            'defaults' => array(
-                            ),
-                        ),
+                    'defaults' => array(
+                        'controller' => 'Procuracion\Controller\Solicitud',
+                        'action' => 'index',
                     ),
                 ),
             ),
@@ -187,7 +200,8 @@ return array(
             array(
                 'type' => 'gettext',
                 'base_dir' => __DIR__ . '/../language',
-                'pattern' => '%s.mo',
+                'pattern' => '%s.php',
+                'text_domain' => __NAMESPACE__
             ),
         ),
     ),
@@ -201,8 +215,8 @@ return array(
             'layout/index' => __DIR__ . '/../view/layout/layout-index.phtml',
             'layout/layout' => __DIR__ . '/../view/layout/layout-recepcion.phtml',
             'layout/modal' => __DIR__ . '/../view/layout/layout-modal.phtml',
-            'recepcion/header' => __DIR__ . '/../view/procuracion/header.phtml',
-            'recepcion/aside' => __DIR__ . '/../view/procuracion/aside.phtml',
+            'header' => __DIR__ . '/../view/procuracion/header.phtml',
+            'aside' => __DIR__ . '/../view/procuracion/aside.phtml',
             'error/404' => __DIR__ . '/../view/error/404.phtml',
             'error/index' => __DIR__ . '/../view/error/index.phtml',
         ),

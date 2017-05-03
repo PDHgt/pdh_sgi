@@ -3,49 +3,70 @@
 namespace Procuracion\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\ViewModel;
 use Procuracion\Form\FormularioLogueo;
 
 class IndexController extends AbstractActionController {
 
     protected $em;
+    protected $usuario;
     protected $form;
+    protected $authService;
+    protected $authResult;
+    protected $messages;
+
+    public function getEntityManager() {
+        if (null === $this->em) {
+            $this->em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
+        }
+        return $this->em;
+    }
 
     public function indexAction() {
 
-        $form = new FormularioLogueo();
+        $this->form = new FormularioLogueo();
+
+        $messages = $this->getEvent()->getRouteMatch()->getParam('message');
 
         $this->layout('layout/index');
-        return array(
-            'form' => $form
-        );
+
+        return new ViewModel(array(
+            'form' => $this->form,
+            'message' => $messages
+        ));
+    }
+
+    public function authService() {
+        $this->authService = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService');
+        return $this->authService;
     }
 
     public function loginAction() {
         $data = $this->getRequest()->getPost();
 
-        $authService = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService');
+        $authService = $this->authService();
 
         $adapter = $authService->getAdapter();
         $adapter->setIdentity($data['usuario']);
         $adapter->setCredential(md5($data['password']));
         $authResult = $authService->authenticate();
+        $this->authResult = $authResult;
+        $messages = $authResult->getMessages();
 
         if ($authResult->isValid()) {
-            $user = $authResult->getIdentity()->getusuario();
-            //echo $user;
-            return $this->redirect()->toRoute('recepcion', array('usuario' => $user));            //
+            return $this->redirect()->toRoute('recepcion');
         } else {
-            $messages = $authResult->getMessages();
-            foreach ($messages as $message) {
-                echo "<p class='bg-danger text-center'>" . $message . "<p>";
-            }
-            //return $this->redirect()->toRoute('inicio', array('mensajes' => $messages));
+            return $this->forward()->dispatch('Procuracion\Controller\Index', array(
+                        'action' => 'index',
+                        'message' => $messages
+            ));
+            //return $this->redirect()->toRoute('inicio/procesar', array('action' => 'index', 'param' => $message));
         }
     }
 
     public function logoutAction() {
 
-        $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->clearIdentity();
+        $this->authService()->clearIdentity();
         return $this->redirect()->toRoute('inicio');
     }
 

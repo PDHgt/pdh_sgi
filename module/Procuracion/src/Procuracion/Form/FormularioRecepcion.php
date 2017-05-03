@@ -8,10 +8,10 @@ use Zend\Form\Form;
  * Clase que contiene todos los campos de los formularios de registro de recepcion
  */
 
-class Formulario extends Form {
+class FormularioRecepcion extends Form {
 
     function __construct($name = null) {
-        parent::__construct($name);
+        parent::__construct("recepcion");
         /*
          * Campo fecha
          */

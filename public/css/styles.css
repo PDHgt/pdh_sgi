@@ -1,3 +1,14 @@
+.bg-custom1{
+    background-color: #222d32;
+}
+
+.bigfont{
+    font-size: 1.5em;
+}
+h1.bigfont{
+    font-size: 3em;
+}
+
 .fixed-action-btn {
     position: fixed;
     right: 23px;
