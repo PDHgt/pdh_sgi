@@ -33,17 +33,17 @@
                                 $call = $visita->getLlamadasRealizadas();
 
                                 switch ($call) {
+                                    case (0):
+                                        $style = "white-text";
+                                        break;
                                     case (1 && $call < 3):
-                                        $style = "bg-green";
+                                        $style = "badge badge-notify bg-green";
                                         break;
                                     case (3 && $call < 5):
-                                        $style = "bg-orange";
+                                        $style = "badge badge-notify bg-orange";
                                         break;
                                     case ($call >= 5):
-                                        $style = "bg-red";
-                                        break;
-                                    default :
-                                        $style = "bg-blue";
+                                        $style = "badge badge-notify bg-red";
                                         break;
                                     /* case ($call >= 2 and $call < 5):
                                       $style = "bg-orange";
@@ -57,7 +57,7 @@
                                     <td class="notifications-menu">
                                         <a href="<?php echo $this->url('recepcion', array('action' => 'hacellamada', 'id' => $visita->getId())); ?>">
                                             <span class="fa fa-phone fa-lg black-text"></span>
-                                            <span class="badge badge-notify <?php echo $style; ?>"><?php echo $call; ?></span>
+                                            <span class="<?php echo $style; ?>"><?php echo $call; ?></span>
                                         </a>
                                     </td>
                                     <td>
