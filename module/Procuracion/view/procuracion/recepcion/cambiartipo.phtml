@@ -32,26 +32,26 @@
                         echo $this->formInput($id);
                         ?>
                         <div class="row">
-                            <div class="col-xs-6">
+                            <div class="col-xs-12">
                                 <div class="form-group">
                                     <?php
-                                    $fecha = $form->get('fecha')->setValue($cola->getFechaentrada()->format("Y-m-d"));
+                                    $fecha = $form->get('fecha')->setValue($cola->getFechaentrada()->format("Y-m-d H:i:s"));
                                     echo $formLabel->openTag() . $fecha->getOption('label') . " ";
                                     echo $formLabel->closeTag();
                                     echo $this->formInput($fecha);
                                     ?>
                                 </div>
                             </div>
-                            <div class="col-xs-6">
+                            <!--<div class="col-xs-6">
                                 <div class="form-group">
-                                    <?php
-                                    $hora = $form->get('hora')->setValue($cola->getHoraentrada()->format("H:m:s"));
-                                    echo $formLabel->openTag() . $hora->getOption('label') . " ";
-                                    echo $formLabel->closeTag();
-                                    echo $this->formInput($hora);
-                                    ?>
+                            <?php /*
+                              $hora = $form->get('hora')->setValue($cola->getFechaentrada()->format("H:i:s"));
+                              echo $formLabel->openTag() . $hora->getOption('label') . " ";
+                              echo $formLabel->closeTag();
+                              echo $this->formInput($hora); */
+                            ?>
                                 </div>
-                            </div>
+                            </div>-->
                             <div class="col-xs-3">
                                 <div class="form-group">
                                     <?php
@@ -179,26 +179,26 @@
                         echo $this->formInput($id);
                         ?>
                         <div class="row">
-                            <div class="col-xs-6">
+                            <div class="col-xs-12">
                                 <div class="form-group">
                                     <?php
-                                    $fecha = $form->get('fecha')->setValue($visita->getFechaentrada()->format("Y-m-d"));
+                                    $fecha = $form->get('fecha')->setValue($visita->getFechaentrada()->format("Y-m-d H:i:s"));
                                     echo $formLabel->openTag() . $fecha->getOption('label') . " ";
                                     echo $formLabel->closeTag();
                                     echo $this->formInput($fecha);
                                     ?>
                                 </div>
                             </div>
-                            <div class="col-xs-6">
+                            <!--<div class="col-xs-6">
                                 <div class="form-group">
-                                    <?php
-                                    $hora = $form->get('hora')->setValue($visita->getHoraentrada()->format("H:m:s"));
-                                    echo $formLabel->openTag() . $hora->getOption('label') . " ";
-                                    echo $formLabel->closeTag();
-                                    echo $this->formInput($hora);
-                                    ?>
+                            <?php /*
+                              $hora = $form->get('hora')->setValue($visita->getHoraentrada()->format("H:m:s"));
+                              echo $formLabel->openTag() . $hora->getOption('label') . " ";
+                              echo $formLabel->closeTag();
+                              echo $this->formInput($hora); */
+                            ?>
                                 </div>
-                            </div>
+                            </div>-->
                             <div class="col-xs-3">
                                 <div class="form-group">
                                     <?php

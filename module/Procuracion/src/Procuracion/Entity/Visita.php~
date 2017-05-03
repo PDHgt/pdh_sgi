@@ -24,7 +24,7 @@ class Visita
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="FechaEntrada", type="date", nullable=true)
+     * @ORM\Column(name="FechaEntrada", type="datetime", nullable=true)
      */
     private $fechaentrada;
 
@@ -66,7 +66,7 @@ class Visita
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="FechaSalida", type="date", nullable=true)
+     * @ORM\Column(name="FechaSalida", type="datetime", nullable=true)
      */
     private $fechasalida;
 
@@ -83,6 +83,13 @@ class Visita
      * @ORM\Column(name="NotaAlSalir", type="text", length=65535, nullable=true)
      */
     private $notaalsalir;
+
+    /**
+    * @var integer
+    *
+    *@ORM\Column(name="LlamadasRealizadas", type="integer", nullable=true)
+    */
+    private $llamadasrealizadas;
 
     /**
      * @var integer

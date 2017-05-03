@@ -180,7 +180,8 @@ class RecepcionController extends AbstractActionController {
             'numero' => $data["numdoc"],
             'sexo' => $data["sexo"],
             'nac' => $nac,
-            'lgbti' => $data["lgbti"]
+            'lgbti' => $data["lgbti"],
+            'anonimo' => $data["anonimo"]
         );
         $visita = array(
             'fecha' => date_create($data['fecha']),
@@ -330,7 +331,8 @@ class RecepcionController extends AbstractActionController {
             'numero' => $data["numdoc"],
             'sexo' => $data["sexo"],
             'nac' => $nac,
-            'lgbti' => $data["lgbti"]
+            'lgbti' => $data["lgbti"],
+            'anonimo' => $data["anonimo"]
         );
         $visita = array(
             'id' => $data["id"],
@@ -358,14 +360,10 @@ class RecepcionController extends AbstractActionController {
         switch ($data['tipopersona']) {
             case 'visitante':
                 $registro->updatePersona($this->entityManager, $persona, $visita, 1);
-                return $this->forward()->dispatch('Procuracion\Controller\Recepcion', array(
-                            'action' => 'visita'
-                ));
+                return $this->redirect()->toRoute('recepcion', array('action' => 'visita'));
             case 'solicitante':
                 $registro->updatePersona($this->entityManager, $persona, $cola, 2);
-                return $this->forward()->dispatch('Procuracion\Controller\Recepcion', array(
-                            'action' => 'cola'
-                ));
+                return $this->redirect()->toRoute('recepcion', array('action' => 'cola'));
         }
     }
 
@@ -495,10 +493,10 @@ class RecepcionController extends AbstractActionController {
             $fechaFin = date_create_from_format('d/m/Y', $data['fechaFin']);
 
             $visitaservice = new VisitaService();
-            $visitas = $visitaservice->getPorFechas($this->entityManager, $fechaInicio->format("Y-m-d"), $fechaFin->format("Y-m-d"));
+            $visitas = $visitaservice->getPorFechas($this->entityManager, $fechaInicio->format("Y-m-d H:i:s"), $fechaFin->format("Y-m-d H:i:s"));
 
             $solicitudservice = new ColaRecepcionService();
-            $solicitudes = $solicitudservice->getPorFechas($this->entityManager, $fechaInicio->format("Y-m-d"), $fechaFin->format("Y-m-d"));
+            $solicitudes = $solicitudservice->getPorFechas($this->entityManager, $fechaInicio->format("Y-m-d H:i:s"), $fechaFin->format("Y-m-d H:i:s"));
 
             //print_r(array_merge($visitas, $cola));
 
@@ -568,6 +566,15 @@ class RecepcionController extends AbstractActionController {
 
     public function turnoAction() {
 
+    }
+
+    public function hacellamadaAction() {
+
+        $id = $this->getEvent()->getRouteMatch()->getParam('id');
+        echo $id;
+        $llamada = new VisitaService();
+        $llamada->haceLlamada($this->entityManager, $id);
+        return $this->redirect()->toRoute('recepcion', array('action' => 'visita'));
     }
 
 }

@@ -64,10 +64,10 @@ class Visita extends \Procuracion\Entity\Visita implements \Doctrine\ORM\Proxy\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'fechaentrada', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'horaentrada', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'sede', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'institucion', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'tipoinstitucion', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'motivovisita', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'fechasalida', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'horasalida', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'notaalsalir', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'createdBy', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'createdAt', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'updatedAt', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'idPersona', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'empleado'];
+            return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'fechaentrada', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'horaentrada', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'sede', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'institucion', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'tipoinstitucion', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'motivovisita', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'fechasalida', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'horasalida', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'notaalsalir', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'llamadasrealizadas', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'createdBy', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'createdAt', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'updatedAt', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'idPersona', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'empleado'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'fechaentrada', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'horaentrada', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'sede', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'institucion', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'tipoinstitucion', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'motivovisita', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'fechasalida', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'horasalida', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'notaalsalir', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'createdBy', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'createdAt', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'updatedAt', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'idPersona', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'empleado'];
+        return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'fechaentrada', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'horaentrada', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'sede', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'institucion', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'tipoinstitucion', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'motivovisita', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'fechasalida', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'horasalida', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'notaalsalir', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'llamadasrealizadas', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'createdBy', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'createdAt', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'updatedAt', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'idPersona', '' . "\0" . 'Procuracion\\Entity\\Visita' . "\0" . 'empleado'];
     }
 
     /**
@@ -406,6 +406,28 @@ class Visita extends \Procuracion\Entity\Visita implements \Doctrine\ORM\Proxy\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNotaalsalir', []);
 
         return parent::getNotaalsalir();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLlamadasRealizadas($llamadas)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLlamadasRealizadas', [$llamadas]);
+
+        return parent::setLlamadasRealizadas($llamadas);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLlamadasRealizadas()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLlamadasRealizadas', []);
+
+        return parent::getLlamadasRealizadas();
     }
 
     /**

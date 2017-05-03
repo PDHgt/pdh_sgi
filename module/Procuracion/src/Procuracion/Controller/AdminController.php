@@ -2,6 +2,8 @@
 
 namespace Procuracion\Controller;
 
+use Procuracion\Form\FormularioAdmin;
+use Procuracion\Service\UsuarioService;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Authentication\AuthenticationService as AuthService;
@@ -48,6 +50,8 @@ class AdminController extends AbstractActionController {
         } else {
             $identity = $this->authService->getIdentity();
 
+            $form = new FormularioAdmin();
+
             $header = new ViewModel();
             $header->setVariables(array('identity' => $identity));
             $header->setTemplate('header');
@@ -61,7 +65,7 @@ class AdminController extends AbstractActionController {
                     ->addChild($aside, 'aside');
 
 
-            $view = new ViewModel(array('identity' => $identity));
+            $view = new ViewModel(array('identity' => $identity, 'form' => $form));
             return $view;
         }
     }
@@ -72,21 +76,10 @@ class AdminController extends AbstractActionController {
             return $this->redirect()->toRoute('inicio', array('action' => 'login'));
         } else {
             $identity = $this->authService->getIdentity();
-            $header = new ViewModel();
-            $header->setVariables(array('identity' => $identity));
-            $header->setTemplate('header');
 
-            $aside = new ViewModel();
-            $aside->setVariables(array('identity' => $identity));
-            $aside->setTemplate('aside');
-
-            $layout = $this->layout();
-            $layout->addChild($header, 'header')
-                    ->addChild($aside, 'aside');
-
-
-            $view = new ViewModel(array('identity' => $identity));
-            return $view;
+            $registro = new UsuarioService();
+            echo $identity->getId();
+            $registro->changePass($this->entityManager, $identity->getId());
         }
     }
 

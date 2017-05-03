@@ -26,28 +26,38 @@
                         <tbody>
                             <?php
                             $visitas = $this->visitas;
-                            $call = 0;
+
 
                             foreach ($visitas as $visita):
 
+                                $call = $visita->getLlamadasRealizadas();
+
                                 switch ($call) {
-                                    case (0 && $call < 2):
+                                    case (1 && $call < 3):
                                         $style = "bg-green";
                                         break;
-                                    case ($call >= 2 && $call < 5):
+                                    case (3 && $call < 5):
                                         $style = "bg-orange";
                                         break;
                                     case ($call >= 5):
                                         $style = "bg-red";
                                         break;
+                                    default :
+                                        $style = "bg-blue";
+                                        break;
+                                    /* case ($call >= 2 and $call < 5):
+                                      $style = "bg-orange";
+                                      break;
+                                      case ($call >= 5):
+                                      $style = "bg-red";
+                                      break; */
                                 }
-                                $call++;
                                 ?>
                                 <tr>
                                     <td class="notifications-menu">
-                                        <a href="#">
+                                        <a href="<?php echo $this->url('recepcion', array('action' => 'hacellamada', 'id' => $visita->getId())); ?>">
                                             <span class="fa fa-phone fa-lg black-text"></span>
-                                            <span class="badge badge-notify <?php echo $style; ?>"><?php echo $call; //echo $visita->getId();                                      ?></span>
+                                            <span class="badge badge-notify <?php echo $style; ?>"><?php echo $call; ?></span>
                                         </a>
                                     </td>
                                     <td>
@@ -60,7 +70,7 @@
                                         <?php echo $visita->getInstitucion(); ?>
                                     </td>
                                     <td>
-                                        <?php echo $visita->getHoraentrada()->format('H:i:s'); ?>
+                                        <?php echo $visita->getFechaentrada()->format('H:i:s'); ?>
                                     </td>
                                     <td>
                                         <?php echo $visita->getEmpleado()->getNombres() . " " . $visita->getEmpleado()->getApellidos(); ?>
@@ -120,7 +130,7 @@
         $('#datatable').DataTable({
             "columnDefs": [
                 {"width": "25px", "targets": 0}
-            ],
+            ]
         });
     });
 </script>

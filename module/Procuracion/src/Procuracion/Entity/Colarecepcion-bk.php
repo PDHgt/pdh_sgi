@@ -24,7 +24,7 @@ class Colarecepcion
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="FechaEntrada", type="datetime", nullable=true)
+     * @ORM\Column(name="FechaEntrada", type="date", nullable=true)
      */
     private $fechaentrada;
 
@@ -66,7 +66,7 @@ class Colarecepcion
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="HoraAtencion", type="datetime", nullable=true)
+     * @ORM\Column(name="HoraAtencion", type="time", nullable=true)
      */
     private $horaatencion;
 

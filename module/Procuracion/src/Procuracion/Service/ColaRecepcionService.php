@@ -19,13 +19,23 @@ class ColaRecepcionService {
     }
 
     public function listToday(EntityManager $em, $sede) {
-        //var_dump($em);
+        $hoy = date("Y-m-d");
+        $repository = $em->getRepository('Procuracion\Entity\Colarecepcion');
+        $cadena = "SELECT p FROM Procuracion\Entity\Colarecepcion p WHERE ";
+        $cadena .= "( p.fechaentrada like '%$hoy%' and p.sede = $sede and p.horaatencion is null )";
+        $cadena .= " order by p.fechaentrada ASC";
+        $query = $em->createQuery($cadena);
+        $products = $query->getResult();
+        //var_dump($products);
+        return $products;
+    }
+/*        //var_dump($em);
         $hoy = date("Y-m-d");
         $listado = $em->getRepository('\Procuracion\Entity\Colarecepcion')->findBy(array('fechaentrada' => date_create($hoy), 'sede' => $sede, 'horaatencion' => null), array('prioridad' => 'ASC', 'horaentrada' => 'ASC'));
         //var_dump($listado);
         //return new JsonModel($listado);
         return $listado;
-    }
+    }*/
 
     public function listOne(EntityManager $em, $id) {
         $enCola = $em->getRepository('\Procuracion\Entity\Colarecepcion')->find($id);

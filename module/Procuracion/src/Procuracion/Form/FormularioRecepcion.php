@@ -96,6 +96,23 @@ class FormularioRecepcion extends Form {
             )
         ));
         /*
+         * Campo checkbox
+         */
+        $this->add(array(
+            //'name' => 'checkbox',
+            'type' => 'Checkbox',
+            'name' => 'checkbox',
+            'options' => [
+                'label' => 'Si el solicitante no desea ser identificado (Anónimo), haga clic en el cuadro de selección, ',
+                'use_hidden_element' => true,
+                'checked_value' => 1,
+                'unchecked_value' => 0,
+            ],
+            'attributes' => [
+                'value' => 1,
+            ],
+        ));
+        /*
          * Fecha de nacimiento
          */
         $this->add(array(

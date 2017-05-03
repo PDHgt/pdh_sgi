@@ -54,7 +54,6 @@ class PersonaService {
         }
         else{
             $np = new Persona();
-            $np->setAnonimo($nueva['anonimo']);
             $np->setNombres($nueva['nombres']);
             $np->setApellidos($nueva['apellidos']);
             $np->setTipoDocumento($nueva['tipo']);
@@ -76,7 +75,6 @@ class PersonaService {
             $nvo->setInstitucion($extras['institucion']);
             $nvo->setTipoInstitucion($extras['tipo']);
             $nvo->setMotivoVisita($extras['motivo']);
-            $nvo->setLlamadasRealizadas(0);
             $nvo->setIdPersona($np);
             $visita = new VisitaService();
             $visita->save($em, $nvo);

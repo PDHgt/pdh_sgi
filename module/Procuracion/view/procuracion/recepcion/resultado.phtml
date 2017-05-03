@@ -31,7 +31,7 @@
                                         <?php echo $visita->getFechaentrada()->format("d/m/Y"); ?>
                                     </td>
                                     <td>
-                                        <?php echo $visita->getHoraentrada()->format("H:m:s"); ?>
+                                        <?php echo $visita->getFechaentrada()->format("H:i:s"); ?>
                                     </td>
                                     <td>
                                         <span>Visita</span>
@@ -58,7 +58,7 @@
                                         <?php echo $solicitud->getFechaentrada()->format("d/m/Y"); ?>
                                     </td>
                                     <td>
-                                        <?php echo $solicitud->getHoraentrada()->format("H:m:s"); ?>
+                                        <?php echo $solicitud->getFechaentrada()->format("H:i:s"); ?>
                                     </td>
                                     <td>
                                         <span>Solicitud</span>

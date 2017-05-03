@@ -18,12 +18,22 @@ class VisitaService {
     }
 
     public function listToday(EntityManager $em) {
-        //var_dump($em);
+        $hoy = date("Y-m-d");
+        $sede = 1;
+        $repository = $em->getRepository('Procuracion\Entity\Visita');
+        $cadena = "SELECT p FROM Procuracion\Entity\Visita p WHERE ";
+        $cadena .= "( p.fechaentrada like '%$hoy%' and p.sede = $sede and p.fechasalida is null )";
+        $cadena .= " order by p.fechaentrada ASC";
+        $query = $em->createQuery($cadena);
+        $products = $query->getResult();
+        //var_dump($products);
+        return $products;
+/*        //var_dump($em);
         $hoy = date("Y-m-d");
         $listado = $em->getRepository('\Procuracion\Entity\Visita')->findBy(array('fechaentrada' => date_create($hoy), 'horasalida' => null), array('horaentrada' => 'ASC'));
         //var_dump($listado);
         //return new JsonModel($listado);
-        return $listado;
+        return $listado;*/
     }
 
     public function listOne(EntityManager $em, $id) {
@@ -46,14 +56,18 @@ class VisitaService {
         return $visitas;
     }
 
-    public function getPorFechas(EntityManager $em, $fechaUno, $fechaDos) {
+    public function getPorFechas(EntityManager $em, $fechaUno, $fechaDos){
         $repository = $em->getRepository('Procuracion\Entity\Visita');
-        $cadena = "SELECT p FROM Procuracion\Entity\Visita p WHERE p.fechaentrada BETWEEN '" . $fechaUno . "' AND '" . $fechaDos . "'";
-
+        $cadena = "SELECT p FROM Procuracion\Entity\Visita p WHERE p.fechaentrada BETWEEN '".$fechaUno."' AND '".$fechaDos."'";
         $query = $em->createQuery($cadena);
         $products = $query->getResult();
         //var_dump($products);
         return $products;
     }
 
+    public function haceLlamada(EntityManager $em, $id){
+        $visita = $em->getRepository('Procuracion\Entity\Visita')->find($id);
+        $visita->setLlamadasRealizadas($visita->getLlamadasRealizadas() + 1);
+        $em->flush();
+    }
 }

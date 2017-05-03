@@ -22,13 +22,6 @@ class Persona
     private $id;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="Anonimo", type="integer", nullable=true)
-     */
-    private $anonimo;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="Nombres", type="string", length=100, nullable=false)
@@ -121,30 +114,6 @@ class Persona
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set anonimo
-     *
-     * @param integer $anonimo
-     *
-     * @return Persona
-     */
-    public function setAnonimo($anonimo)
-    {
-        $this->anonimo = $anonimo;
-    
-        return $this;
-    }
-
-    /**
-     * Get anonimo
-     *
-     * @return integer
-     */
-    public function getAnonimo()
-    {
-        return $this->anonimo;
     }
 
     /**
