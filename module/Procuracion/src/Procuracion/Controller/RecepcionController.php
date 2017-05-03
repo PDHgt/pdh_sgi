@@ -40,10 +40,11 @@ class RecepcionController extends AbstractActionController {
             return $this->redirect()->toRoute('inicio', array('action' => 'login'));
         } else {
             $identity = $this->authService->getIdentity();
+            $sede = $identity->getIdEmpleado()->getIdsede()->getId();
 
             $form = new FormularioRecepcion();
             $visitaservice = new VisitaService();
-            $visitas = $visitaservice->listToday($this->entityManager);
+            $visitas = $visitaservice->listToday($this->entityManager, $sede);
 
             $header = new ViewModel();
             $header->setVariables(array('identity' => $identity));
@@ -165,6 +166,8 @@ class RecepcionController extends AbstractActionController {
     public function guardarAction() {
 
         $data = $this->request->getPost();
+        $identity = $this->authService->getIdentity();
+        $sede = $identity->getIdEmpleado()->getIdsede()->getId();
         if (empty($data["nac"])) {
             $nac = NULL;
         } else {
@@ -186,7 +189,7 @@ class RecepcionController extends AbstractActionController {
         $visita = array(
             'fecha' => date_create($data['fecha']),
             'hora' => date_create($data['hora']),
-            'sede' => 1, //$data['sede'],
+            'sede' => $sede, //$data['sede'],
             'empleado' => $data['empleado'],
             'institucion' => $data['institucion'],
             'tipo' => $data['tipo'],
@@ -196,7 +199,7 @@ class RecepcionController extends AbstractActionController {
         $cola = array(
             'fecha' => date_create($data['fecha']),
             'hora' => date_create($data['hora']),
-            'sede' => 1, //$data['sede'],
+            'sede' => $sede, //$data['sede'],
             'prioridad' => $data['prioridad'],
             'lapiceroverde' => $data['lapiceroverde'],
             'obs' => $data['obs']
@@ -218,6 +221,7 @@ class RecepcionController extends AbstractActionController {
         if (!$this->authService->hasIdentity()) {
             return $this->redirect()->toRoute('inicio', array('action' => 'login'));
         } else {
+
             $identity = $this->authService->getIdentity();
 
             $id = $this->getEvent()->getRouteMatch()->getParam('id');
@@ -317,7 +321,10 @@ class RecepcionController extends AbstractActionController {
     }
 
     public function actualizarAction() {
+        $identity = $this->authService->getIdentity();
+        $sede = $identity->getIdEmpleado()->getIdsede()->getId();
         $data = $this->request->getPost();
+
         if (empty($data["nac"])) {
             $nac = NULL;
         } else {
@@ -338,7 +345,7 @@ class RecepcionController extends AbstractActionController {
             'id' => $data["id"],
             'fecha' => date_create($data['fecha']),
             'hora' => date_create($data['hora']),
-            'sede' => 1, //$data['sede'],
+            'sede' => $sede, //$data['sede'],
             'empleado' => $data['empleado'],
             'institucion' => $data['institucion'],
             'tipo' => $data['tipo'],
@@ -349,7 +356,7 @@ class RecepcionController extends AbstractActionController {
             'id' => $data["id"],
             'fecha' => date_create($data['fecha']),
             'hora' => date_create($data['hora']),
-            'sede' => 1, //$data['sede'],
+            'sede' => $sede, //$data['sede'],
             'prioridad' => $data['prioridad'],
             'lapiceroverde' => $data['lapiceroverde'],
             'obs' => $data['obs']
@@ -555,8 +562,10 @@ class RecepcionController extends AbstractActionController {
     }
 
     public function getturnoAction() {
+        $identity = $this->authService->getIdentity();
+        $sede = $identity->getIdEmpleado()->getIdsede()->getId();
         $colaservice = new ColaRecepcionService();
-        $cola = $colaservice->listToday($this->entityManager, 1); //$usr->sede
+        $cola = $colaservice->listToday($this->entityManager, $sede); //$usr->sede
 
         $this->layout('layout/index');
 
