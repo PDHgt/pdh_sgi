@@ -48,6 +48,7 @@ class AdminController extends AbstractActionController {
         if (!$this->authService->hasIdentity()) {
             return $this->redirect()->toRoute('inicio', array('action' => 'login'));
         } else {
+
             $identity = $this->authService->getIdentity();
 
             $form = new FormularioAdmin();
@@ -76,10 +77,12 @@ class AdminController extends AbstractActionController {
             return $this->redirect()->toRoute('inicio', array('action' => 'login'));
         } else {
             $identity = $this->authService->getIdentity();
-
+            $pass = md5($this->params()->fromPost('password'));
+            //echo $pass;
+            $usr = array('id' => $identity->getId(), 'password' => $pass);
             $registro = new UsuarioService();
-            echo $identity->getId();
-            $registro->changePass($this->entityManager, $identity->getId());
+            $registro->changePass($this->entityManager, $usr);
+            return $this->redirect()->toRoute('admin', array('action' => 'perfil'));
         }
     }
 

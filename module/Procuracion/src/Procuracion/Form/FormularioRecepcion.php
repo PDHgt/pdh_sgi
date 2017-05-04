@@ -21,7 +21,7 @@ class FormularioRecepcion extends Form {
                 'label' => 'Fecha',
             ),
             'attributes' => array(
-                'type' => 'date',
+                'type' => 'hidden',
                 'class' => 'form-control',
                 'readonly' => true
             )

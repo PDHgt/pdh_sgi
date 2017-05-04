@@ -3,6 +3,7 @@
 namespace Procuracion\Controller;
 
 use Procuracion\Service\PersonaService;
+use Procuracion\Service\EmpleadoService;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 use Zend\Authentication\AuthenticationService as AuthService;
@@ -58,6 +59,17 @@ class ValidacionController extends AbstractActionController {
 
 
         $result = new JsonModel($item);
+        return $result;
+    }
+
+    public function seleccionarempleadoAction() {
+        $empleadoservice = new EmpleadoService();
+        $empleados = $empleadoservice->listAll($this->entityManager);
+        foreach ($empleados as $empleadoOption) {
+            $empleadosOptions[$empleadoOption->getId()] = $empleadoOption->getNombres() . " " . $empleadoOption->getApellidos();
+            //'id' => $personasOptions[$personaOption->getId()] = $personaOption->getId() = 'numdoc' => $personasOptions[$personaOption->getId()] = $personaOption->getNumerodocumento();
+        }
+        $result = new JsonModel($empleadosOptions);
         return $result;
     }
 

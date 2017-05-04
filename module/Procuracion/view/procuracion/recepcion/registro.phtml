@@ -38,10 +38,10 @@
                                 $fecha_actual = date("Y-m-d H:i:s");
                                 //echo $fecha_actual;
                                 $fecha = $form->get('fecha')->setValue($fecha_actual);
-                                echo $formLabel->openTag() . $fecha->getOption('label') . " ";
+                                /* echo $formLabel->openTag() . $fecha->getOption('label') . " ";
 
-                                //echo $this->formElementErrors($name);
-                                echo $formLabel->closeTag();
+                                  //echo $this->formElementErrors($name);
+                                  echo $formLabel->closeTag(); */
                                 echo $this->formInput($fecha);
                                 ?>
                             </div>
@@ -62,7 +62,7 @@
                         </div>-->
                         <?php if ($this->url === 'solicitante') { ?>
                             <div class="col-xs-12">
-                                <div class="form-group">
+                                <div class="form-group alert  alert-warning ">
                                     <?php
                                     $anonimo = $form->get('checkbox')->setAttributes(array('id' => 'anonimo', 'name' => 'anonimo'));
                                     echo $formLabel->openTag();
@@ -265,6 +265,10 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
+        $('#numdoc').on('keypress', function(e) {
+            if (e.which == 32)
+                return false;
+        });
         $("#numdoc").autocomplete({
             source: function(request, response) {
                 $.ajax({
@@ -298,18 +302,20 @@
                     term: $("#numdoc").val()
                 },
                 success: function(data) {
-                    $('#id').val(data[0]);
-                    $('#tipodoc').val(data[1]);
-                    $('#datepicker').val(data[2]);
-                    //$('#sexo').val(data[3]);
-                    $('#nombres').val(data[4]);
-                    $('#apellidos').val(data[5]);
+                    if (!$("#numdoc").val()) {
 
-                    var $radios = $('input:radio[name=sexo]');
-                    if ($radios.is(':checked') === false) {
-                        $radios.filter('[value=' + data[3] + ']').prop('checked', true);
+                    } else {
+                        $('#id').val(data[0]);
+                        $('#tipodoc').val(data[1]);
+                        $('#datepicker').val(data[2]);
+                        //$('#sexo').val(data[3]);
+                        $('#nombres').val(data[4]);
+                        $('#apellidos').val(data[5]);
+                        var $radios = $('input:radio[name=sexo]');
+                        if ($radios.is(':checked') === false) {
+                            $radios.filter('[value=' + data[3] + ']').prop('checked', true);
+                        }
                     }
-
                 },
                 error: function() {
                     $('#id').val();
