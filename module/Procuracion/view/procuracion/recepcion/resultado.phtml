@@ -18,6 +18,7 @@
                                 <th>Tipo</th>
                                 <th>Nombre</th>
                                 <th>Motivo / Observaciones</th>
+                                <th>Sede</th>
                                 <th>Detalle</th>
                             </tr>
                         </thead>
@@ -41,6 +42,9 @@
                                     </td>
                                     <td>
                                         <?php echo $visita->getMotivovisita(); ?>
+                                    </td>
+                                    <td>
+                                        <?php echo ucwords(strtolower($visita->getSede()->getNombre())); ?>
                                     </td>
                                     <td class="details-control">
                                         <a href="<?php echo $this->url('recepcion', array('action' => 'detallevisita', 'id' => $visita->getId())); ?>" data-toggle="modal" data-target="#detailsModal" data-tt="tooltip" title="Detalles">
@@ -68,6 +72,9 @@
                                     </td>
                                     <td>
                                         <?php echo $solicitud->getObservaciones(); ?>
+                                    </td>
+                                    <td>
+                                        <?php echo ucwords(strtolower($solicitud->getSede()->getNombre())); ?>
                                     </td>
                                     <td>
                                         <a href="<?php echo $this->url('recepcion', array('action' => 'detallecola', 'id' => $solicitud->getId())); ?>" data-toggle="modal" data-target="#detailsModal" data-tt="tooltip" title="Detalles">

@@ -64,10 +64,10 @@ class Empleado extends \Procuracion\Entity\Empleado implements \Doctrine\ORM\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'nombres', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'apellidos', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'puesto', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'unidadadministrativa', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'id_sede', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'correo', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'extension'];
+            return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'nombres', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'apellidos', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'puesto', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'unidadadministrativa', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'id_sede', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'correo', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'extension', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'activo'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'nombres', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'apellidos', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'puesto', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'unidadadministrativa', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'id_sede', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'correo', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'extension'];
+        return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'nombres', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'apellidos', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'puesto', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'unidadadministrativa', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'id_sede', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'correo', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'extension', '' . "\0" . 'Procuracion\\Entity\\Empleado' . "\0" . 'activo'];
     }
 
     /**
@@ -340,6 +340,28 @@ class Empleado extends \Procuracion\Entity\Empleado implements \Doctrine\ORM\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getExtension', []);
 
         return parent::getExtension();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setActivo($activo)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setActivo', [$activo]);
+
+        return parent::setActivo($activo);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getActivo()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getActivo', []);
+
+        return parent::getActivo();
     }
 
 }

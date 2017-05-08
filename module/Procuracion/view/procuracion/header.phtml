@@ -129,7 +129,7 @@
                         <!-- The user image in the menu -->
                         <li class="user-header">
                             <img src="<?php echo $this->basePath() . '/img/avatars/user32.png' ?>" class="img-circle" alt="">
-                            <p><?php echo $this->identity->getIdEmpleado()->getNombres() . " " . $this->identity->getIdEmpleado()->getApellidos(); ?></p>
+                            <p><?php echo ucwords(strtolower($this->identity->getIdEmpleado()->getNombres() . " " . $this->identity->getIdEmpleado()->getApellidos())); ?></p>
                             <p><small><?php echo $this->identity->getIdEmpleado()->getPuesto(); ?></small></p>
                         </li>
                         <!-- Menu Body -->

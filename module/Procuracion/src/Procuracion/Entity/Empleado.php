@@ -75,7 +75,14 @@ class Empleado
      * @ORM\Column(name="Extension", type="string", length=10, nullable=true)
      */
     private $extension;    
- 
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Activo", type="integer", nullable=true)
+     */
+    private $activo;
+
     /**
      * Get id
      *
@@ -253,6 +260,30 @@ class Empleado
     public function getExtension()
     {
         return $this->extension;
+    }
+
+    /**
+     * Set activo
+     *
+     * @param integer $activo
+     *
+     * @return Persona
+     */
+    public function setActivo($activo)
+    {
+        $this->activo = $activo;
+    
+        return $this;
+    }
+
+    /**
+     * Get activo
+     *
+     * @return integer
+     */
+    public function getActivo()
+    {
+        return $this->activo;
     }
 
 }

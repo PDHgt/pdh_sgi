@@ -36,9 +36,12 @@ class Visita
     private $horaentrada;
 
     /**
-     * @var integer
+     * @var \Procuracion\Entity\Sede
      *
-     * @ORM\Column(name="Sede", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Sede")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="Sede", referencedColumnName="id")
+     * })
      */
     private $sede;
 

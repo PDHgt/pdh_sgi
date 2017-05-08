@@ -75,6 +75,14 @@ class Empleado
      *
      * @ORM\Column(name="Extension", type="string", length=10, nullable=true)
      */
-    private $extension;    
+    private $extension;   
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Activo", type="integer", nullable=true)
+     */
+    private $activo;
+
 }
 

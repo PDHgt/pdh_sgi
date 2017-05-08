@@ -69,9 +69,10 @@ class PersonaService {
         if ($que == 1) {
             $emp = $em->getRepository('\Procuracion\Entity\Empleado')->find($extras['empleado']);
             $nvo = new Visita();
+            $lasede = $em->getRepository('\Procuracion\Entity\Sede')->find($extras['sede']);
             $nvo->setFechaentrada($extras['fecha']);
             $nvo->setHoraentrada($extras['hora']);
-            $nvo->setSede($extras['sede']);
+            $nvo->setSede($lasede);
             $nvo->setEmpleado($emp);
             $nvo->setInstitucion($extras['institucion']);
             $nvo->setTipoInstitucion($extras['tipo']);
@@ -88,9 +89,10 @@ class PersonaService {
             $miTurno = $turnos->newTicket($em, $turno);
             ////
             $nvo = new Colarecepcion();
+            $lasede = $em->getRepository('\Procuracion\Entity\Sede')->find($extras['sede']);
             $nvo->setFechaentrada($extras['fecha']);
             $nvo->setHoraentrada($extras['hora']);
-            $nvo->setSede($extras['sede']);
+            $nvo->setSede($lasede);
             $nvo->setPrioridad($extras['prioridad']);
             $nvo->setTurno($miTurno);
             $nvo->setObservaciones($extras['obs']);
@@ -130,10 +132,11 @@ class PersonaService {
 
         if ($que == 1) {
             $emp = $em->getRepository('\Procuracion\Entity\Empleado')->find($extras['empleado']);
+            $lasede = $em->getRepository('\Procuracion\Entity\Sede')->find($extras['sede']);
             $nvo = new Visita();
             $nvo->setFechaentrada($extras['fecha']);
             $nvo->setHoraentrada($extras['hora']);
-            $nvo->setSede($extras['sede']);
+            $nvo->setSede($lasede);
             $nvo->setEmpleado($emp);
             $nvo->setInstitucion($extras['institucion']);
             $nvo->setTipoInstitucion($extras['tipo']);
@@ -152,10 +155,11 @@ class PersonaService {
                 $miTurno = $turnos->newTicket($em, $turno);
             }
             ////
+            $lasede = $em->getRepository('\Procuracion\Entity\Sede')->find($extras['sede']);
             $nvo = new Colarecepcion();
             $nvo->setFechaentrada($extras['fecha']);
             $nvo->setHoraentrada($extras['hora']);
-            $nvo->setSede($extras['sede']);
+            $nvo->setSede($lasede);
             $nvo->setPrioridad($extras['prioridad']);
             $nvo->setTurno($miTurno);
             $nvo->setObservaciones($extras['obs']);

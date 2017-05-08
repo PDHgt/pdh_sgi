@@ -15,7 +15,7 @@ class EmpleadoService {
 
     public function listAll(EntityManager $em) {
         //$listado = $em->getRepository('\Procuracion\Entity\Empleado')->findAll(array(), array('Nombres' => 'ASC'));
-        $listado = $em->getRepository('\Procuracion\Entity\Empleado')->findBy(array(), array('nombres' => 'ASC'));
+        $listado = $em->getRepository('\Procuracion\Entity\Empleado')->findByActivo(1, array('nombres' => 'ASC'));
         return $listado;
     }
 

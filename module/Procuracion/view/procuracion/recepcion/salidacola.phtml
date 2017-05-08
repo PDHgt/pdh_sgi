@@ -30,10 +30,10 @@
                                 $fecha_actual = date("Y-m-d H:i:s");
                                 //echo $fecha_actual;
                                 $fecha = $form->get('fecha')->setValue($fecha_actual);
-                                echo $formLabel->openTag() . $fecha->getOption('label') . " ";
+                                /* echo $formLabel->openTag() . $fecha->getOption('label') . " ";
 
-                                //echo $this->formElementErrors($name);
-                                echo $formLabel->closeTag();
+                                  //echo $this->formElementErrors($name);
+                                  echo $formLabel->closeTag(); */
                                 echo $this->formInput($fecha);
                                 ?>
                             </div>

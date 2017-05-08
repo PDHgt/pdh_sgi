@@ -132,7 +132,7 @@
                                     </div>
 
                                 </div>
-                                <div class="col-xs-6">
+                                <div class="col-xs-12">
                                     <div class="form-group">
                                         <?php
                                         $empleados = $this->empleados;
@@ -148,49 +148,49 @@
                                     </div>
 
                                 </div>
-                                <div class="col-xs-6">
+                                <!--<div class="col-xs-6">
                                     <div class="form-group">
-                                        <?php
-                                        $unidad = $form->get('unidad')->setValue($visita->getEmpleado()->getUnidadadministrativa()->getNombre());
-                                        echo $formLabel->openTag() . $unidad->getOption('label') . " ";
-                                        echo $formLabel->closeTag();
-                                        echo $this->formInput($unidad);
-                                        ?>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="form-group ">
-                                <?php
-                                $motivo = $form->get('motivo')->setValue($visita->getMotivoVisita());
-                                echo $formLabel->openTag() . $motivo->getOption('label') . " ";
-                                echo $formLabel->closeTag();
-                                echo $this->formTextarea($motivo);
+                                <?php /*
+                                  $unidad = $form->get('unidad')->setValue($visita->getEmpleado()->getUnidadadministrativa()->getNombre());
+                                  echo $formLabel->openTag() . $unidad->getOption('label') . " ";
+                                  echo $formLabel->closeTag();
+                                  echo $this->formInput($unidad); */
                                 ?>
-                            </div>
+                                    </div>-->
 
+                            </div>
                         </div>
-                    </div>
-                    <div class="box-footer">
-                        <?php echo $this->formElement($form->get('guardar')->setValue('Modificar')) ?>
-                        <a href="<?php
-                        echo $this->url('recepcion', array(
-                            'action' => 'cambiartipo',
-                            'id' => $visita->getIdpersona()->getId(),
-                            'param1' => 'visita',
-                            'param2' => $visita->getId()));
-                        ?>" class="btn btn-warning">Cambiar tipo</a>
-                        <a href="<?php echo $this->url('recepcion') ?>/visita" class="btn btn-danger">Cancelar</a>
                     </div>
                 </div>
-                <?php echo $this->form()->closeTag() ?>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group ">
+                            <?php
+                            $motivo = $form->get('motivo')->setValue($visita->getMotivoVisita());
+                            echo $formLabel->openTag() . $motivo->getOption('label') . " ";
+                            echo $formLabel->closeTag();
+                            echo $this->formTextarea($motivo);
+                            ?>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <?php echo $this->formElement($form->get('guardar')->setValue('Modificar')) ?>
+                    <a href="<?php
+                    echo $this->url('recepcion', array(
+                        'action' => 'cambiartipo',
+                        'id' => $visita->getIdpersona()->getId(),
+                        'param1' => 'visita',
+                        'param2' => $visita->getId()));
+                    ?>" class="btn btn-warning">Cambiar tipo</a>
+                    <a href="<?php echo $this->url('recepcion') ?>/visita" class="btn btn-danger">Cancelar</a>
+                </div>
             </div>
+            <?php echo $this->form()->closeTag() ?>
         </div>
     </div>
+</div>
 </section>
 
 <script type="text/javascript">
