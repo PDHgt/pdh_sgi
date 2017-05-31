@@ -131,6 +131,20 @@ class DetallePersona
      */
     private $idPersona;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="TotalHijos", type="integer", nullable=true)
+     */
+    private $hijos;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="TotalHijas", type="integer", nullable=true)
+     */
+    private $hijas;
+
 
 }
 

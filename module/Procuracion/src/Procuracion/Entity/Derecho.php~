@@ -28,6 +28,19 @@ class Derecho
      */
     private $derecho;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="AreaDerecho", type="text", nullable=true)
+     */
+    private $area;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Activo", type="integer", nullable=true)
+     */
+    private $activo;
 
 }
 

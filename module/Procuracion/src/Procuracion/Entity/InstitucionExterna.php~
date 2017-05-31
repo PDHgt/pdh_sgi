@@ -1,0 +1,33 @@
+<?php
+
+namespace Procuracion\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * InstitucionExterna
+ *
+ * @ORM\Table(name="institucion_externa")
+ * @ORM\Entity
+ */
+class InstitucionExterna
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Institucion", type="string", length=255, nullable=true)
+     */
+    private $institucion;
+
+
+}
+

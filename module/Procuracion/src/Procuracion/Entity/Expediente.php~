@@ -80,9 +80,9 @@ class Expediente
     /**
      * @var string
      *
-     * @ORM\Column(name="RerortadoEn", type="string", length=255, nullable=true)
+     * @ORM\Column(name="ReportadoEn", type="string", length=255, nullable=true)
      */
-    private $rerortadoen;
+    private $reportadoen;
 
     /**
      * @var \Procuracion\Entity\DetalleCatalogo

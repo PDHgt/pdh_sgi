@@ -9,15 +9,52 @@ $(function() {
         changeMonth: true,
         changeYear: true,
         dateFormat: 'dd/mm/yy'});
+    $(".datepicker").datepicker({
+        changeMonth: true,
+        changeYear: true,
+        dateFormat: 'dd/mm/yy'});
 });
+
+function calificadorAdd(url, values) {
+    $.ajax({
+        url: url,
+        dataType: "json",
+        type: "POST",
+        data: {values: values},
+        success: function(data) {
+            $("#hechosviolatorios").html("");
+            $.each(data, function(i, record) {
+                $("#hechosviolatorios").append("<div class='checkbox'><label><input type='checkbox' value='" + i + "' name='hechos[]' /> " + record + "</label></div>");
+            });
+        },
+        error: function() {
+            $("#hechosviolatorios").html("No se ha seleccionado ningun derecho");
+        }
+    });
+}
+function calificadorRemove(url, value) {
+    $.ajax({
+        url: url,
+        dataType: "json",
+        type: "POST",
+        data: {value: value},
+        success: function(data) {
+            $("#hechosviolatorios").html("");
+            $.each(data, function(i, record) {
+                $("#hechosviolatorios").remove("<div class='checkbox'><label><input type='checkbox' value='" + i + "' name='hechos[]' /> " + record + "</label></div>");
+            });
+        },
+        error: function() {
+            $("#hechosviolatorios").html("No se ha seleccionado ningun derecho");
+        }
+    });
+}
 
 
 (function(window) {
     'use strict';
-
     var Waves = Waves || {};
     var $$ = document.querySelectorAll.bind(document);
-
     // Find exact position of element
     function isWindow(obj) {
         return obj !== null && obj === obj.window;
@@ -31,9 +68,7 @@ $(function() {
         var docElem, win,
                 box = {top: 0, left: 0},
                 doc = elem && elem.ownerDocument;
-
         docElem = doc.documentElement;
-
         if (typeof elem.getBoundingClientRect !== typeof undefined) {
             box = elem.getBoundingClientRect();
         }
@@ -46,7 +81,6 @@ $(function() {
 
     function convertStyle(obj) {
         var style = '';
-
         for (var a in obj) {
             if (obj.hasOwnProperty(a)) {
                 style += (a + ':' + obj[a] + ';');
@@ -60,7 +94,6 @@ $(function() {
 
         // Effect delay
         duration: 750,
-
         show: function(e, element) {
 
             // Disable right click
@@ -69,18 +102,15 @@ $(function() {
             }
 
             var el = element || this;
-
             // Create ripple
             var ripple = document.createElement('div');
             ripple.className = 'waves-ripple';
             el.appendChild(ripple);
-
             // Get click coordinate and element witdh
             var pos = offset(el);
             var relativeY = (e.pageY - pos.top);
             var relativeX = (e.pageX - pos.left);
             var scale = 'scale(' + ((el.clientWidth / 100) * 10) + ')';
-
             // Support for touch devices
             if ('touches' in e) {
                 relativeY = (e.touches[0].pageY - pos.top);
@@ -92,17 +122,14 @@ $(function() {
             ripple.setAttribute('data-scale', scale);
             ripple.setAttribute('data-x', relativeX);
             ripple.setAttribute('data-y', relativeY);
-
             // Set ripple position
             var rippleStyle = {
                 'top': relativeY + 'px',
                 'left': relativeX + 'px'
             };
-
             ripple.className = ripple.className + ' waves-notransition';
             ripple.setAttribute('style', convertStyle(rippleStyle));
             ripple.className = ripple.className.replace('waves-notransition', '');
-
             // Scale the ripple
             rippleStyle['-webkit-transform'] = scale;
             rippleStyle['-moz-transform'] = scale;
@@ -110,26 +137,20 @@ $(function() {
             rippleStyle['-o-transform'] = scale;
             rippleStyle.transform = scale;
             rippleStyle.opacity = '1';
-
             rippleStyle['-webkit-transition-duration'] = Effect.duration + 'ms';
             rippleStyle['-moz-transition-duration'] = Effect.duration + 'ms';
             rippleStyle['-o-transition-duration'] = Effect.duration + 'ms';
             rippleStyle['transition-duration'] = Effect.duration + 'ms';
-
             rippleStyle['-webkit-transition-timing-function'] = 'cubic-bezier(0.250, 0.460, 0.450, 0.940)';
             rippleStyle['-moz-transition-timing-function'] = 'cubic-bezier(0.250, 0.460, 0.450, 0.940)';
             rippleStyle['-o-transition-timing-function'] = 'cubic-bezier(0.250, 0.460, 0.450, 0.940)';
             rippleStyle['transition-timing-function'] = 'cubic-bezier(0.250, 0.460, 0.450, 0.940)';
-
             ripple.setAttribute('style', convertStyle(rippleStyle));
         },
-
         hide: function(e) {
             TouchHandler.touchup(e);
-
             var el = this;
             var width = el.clientWidth * 1.4;
-
             // Get first ripple
             var ripple = null;
             var ripples = el.getElementsByClassName('waves-ripple');
@@ -142,11 +163,9 @@ $(function() {
             var relativeX = ripple.getAttribute('data-x');
             var relativeY = ripple.getAttribute('data-y');
             var scale = ripple.getAttribute('data-scale');
-
             // Get delay beetween mousedown and mouse leave
             var diff = Date.now() - Number(ripple.getAttribute('data-hold'));
             var delay = 350 - diff;
-
             if (delay < 0) {
                 delay = 0;
             }
@@ -157,7 +176,6 @@ $(function() {
                     'top': relativeY + 'px',
                     'left': relativeX + 'px',
                     'opacity': '0',
-
                     // Duration
                     '-webkit-transition-duration': Effect.duration + 'ms',
                     '-moz-transition-duration': Effect.duration + 'ms',
@@ -169,9 +187,7 @@ $(function() {
                     '-o-transform': scale,
                     'transform': scale,
                 };
-
                 ripple.setAttribute('style', convertStyle(style));
-
                 setTimeout(function() {
                     try {
                         el.removeChild(ripple);
@@ -181,15 +197,12 @@ $(function() {
                 }, Effect.duration);
             }, delay);
         },
-
         // Little hack to make <input> can perform waves effect
         wrapInput: function(elements) {
             for (var a = 0; a < elements.length; a++) {
                 var el = elements[a];
-
                 if (el.tagName.toLowerCase() === 'input') {
                     var parent = el.parentNode;
-
                     // If input already have parent just pass through
                     if (parent.tagName.toLowerCase() === 'i' && parent.className.indexOf('waves-effect') !== -1) {
                         continue;
@@ -198,18 +211,14 @@ $(function() {
                     // Put element class and style to the specified parent
                     var wrapper = document.createElement('i');
                     wrapper.className = el.className + ' waves-input-wrapper';
-
                     var elementStyle = el.getAttribute('style');
-
                     if (!elementStyle) {
                         elementStyle = '';
                     }
 
                     wrapper.setAttribute('style', elementStyle);
-
                     el.className = 'waves-button-input';
                     el.removeAttribute('style');
-
                     // Put element as child
                     parent.replaceChild(wrapper, el);
                     wrapper.appendChild(el);
@@ -217,8 +226,6 @@ $(function() {
             }
         }
     };
-
-
     /**
      * Disable mousedown event for 500ms during and after touch
      */
@@ -230,7 +237,6 @@ $(function() {
         touches: 0,
         allowEvent: function(e) {
             var allow = true;
-
             if (e.type === 'touchstart') {
                 TouchHandler.touches += 1; //push
             } else if (e.type === 'touchend' || e.type === 'touchcancel') {
@@ -249,8 +255,6 @@ $(function() {
             TouchHandler.allowEvent(e);
         }
     };
-
-
     /**
      * Delegated click handler for .waves-effect element.
      * returns null when .waves-effect element not in "click tree"
@@ -262,7 +266,6 @@ $(function() {
 
         var element = null;
         var target = e.target || e.srcElement;
-
         while (target.parentElement !== null) {
             if (!(target instanceof SVGElement) && target.className.indexOf('waves-effect') !== -1) {
                 element = target;
@@ -282,10 +285,8 @@ $(function() {
      */
     function showEffect(e) {
         var element = getWavesEffectElement(e);
-
         if (element !== null) {
             Effect.show(e, element);
-
             if ('ontouchstart' in window) {
                 element.addEventListener('touchend', Effect.hide, false);
                 element.addEventListener('touchcancel', Effect.hide, false);
@@ -298,21 +299,18 @@ $(function() {
 
     Waves.displayEffect = function(options) {
         options = options || {};
-
         if ('duration' in options) {
             Effect.duration = options.duration;
         }
 
         //Wrap input inside <i> tag
         Effect.wrapInput($$('.waves-effect'));
-
         if ('ontouchstart' in window) {
             document.body.addEventListener('touchstart', showEffect, false);
         }
 
         document.body.addEventListener('mousedown', showEffect, false);
     };
-
     /**
      * Attach Waves to an input element (or any element which doesn't
      * bubble mouseup/mousedown events).
@@ -333,12 +331,10 @@ $(function() {
 
         element.addEventListener('mousedown', showEffect, false);
     };
-
     window.Waves = Waves;
-
     document.addEventListener('DOMContentLoaded', function() {
         Waves.displayEffect();
     }, false);
-
-})(window);
+}
+)(window);
 

@@ -177,7 +177,8 @@
                             'param1' => 'solicitud',
                             'param2' => $cola->getId()));
                         ?>" class="btn btn-warning">Cambiar tipo</a>
-                        <a href="<?php echo $this->url('recepcion') ?>/cola" class="btn btn-danger">Cancelar</a>
+                        <?php echo $this->formElement($form->get('cancelar')); ?>
+
                     </div>
                 </div>
                 <?php echo $this->form()->closeTag() ?>

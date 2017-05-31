@@ -13,11 +13,11 @@ class FormularioSolicitud extends Form {
     function __construct($name = null) {
         parent::__construct("solicitud");
 
-        //Campo numero de expediente
+        //Campo nombres
         $this->add(array(
-            'name' => 'numero',
+            'name' => 'nombres',
             'options' => array(
-                'label' => 'Número',
+                'label' => 'Nombres',
             ),
             'attributes' => array(
                 'type' => 'text',
@@ -25,12 +25,10 @@ class FormularioSolicitud extends Form {
                 'readonly' => true
             )
         ));
-
-        //Campo sede actual
         $this->add(array(
-            'name' => 'sede',
+            'name' => 'apellidos',
             'options' => array(
-                'label' => 'Sede'
+                'label' => 'Apellidos',
             ),
             'attributes' => array(
                 'type' => 'text',
@@ -38,106 +36,15 @@ class FormularioSolicitud extends Form {
                 'readonly' => true
             )
         ));
-
-        //Campo descripcion de los hechos
         $this->add(array(
-            'name' => 'hechos',
+            'name' => 'nac',
             'options' => array(
-                'label' => 'Descripción de los hechos'
-            ),
-            'attributes' => array(
-                'type' => 'textarea',
-                'class' => 'form-control'
-            )
-        ));
-
-        //Campo de departamento
-        $this->add(array(
-            'type' => 'select',
-            'name' => 'departamento',
-            'options' => array(
-                'label' => 'Departamento',
-                'empty_option' => 'Seleccione una opción'
-            ),
-            'attributes' => array(
-                'class' => 'form-control',
-                'required' => true
-            )
-        ));
-
-        //Campo de departamento
-        $this->add(array(
-            'type' => 'select',
-            'name' => 'municipio',
-            'options' => array(
-                'label' => 'Municipio',
-                'empty_option' => 'Seleccione una opción'
-            ),
-            'attributes' => array(
-                'class' => 'form-control',
-                'required' => true
-            )
-        ));
-
-        //Campo direccion
-        $this->add(array(
-            'name' => 'direccion',
-            'options' => array(
-                'label' => 'Direccion / Lugar'
-            ),
-            'attributes' => array(
-                'type' => 'text',
-                'class' => 'form-control',
-                'readonly' => true
-            )
-        ));
-
-        //Campo fecha de los hechos
-        $this->add(array(
-            'name' => 'fecha',
-            'options' => array(
-                'label' => 'Fecha',
+                'label' => 'Fecha de nacimiento',
             ),
             'attributes' => array(
                 'type' => 'date',
                 'class' => 'form-control',
-                'readonly' => true
-            )
-        ));
-
-        //Campo peticion o solicitud
-        $this->add(array(
-            'name' => 'solicitud',
-            'options' => array(
-                'label' => 'Solicitud / Petición',
-            ),
-            'attributes' => array(
-                'type' => 'text',
-                'class' => 'form-control'
-            )
-        ));
-
-        //Campo peticion o solicitud
-        $this->add(array(
-            'name' => 'solicitud',
-            'options' => array(
-                'label' => 'Solicitud / Petición',
-            ),
-            'attributes' => array(
-                'type' => 'text',
-                'class' => 'form-control'
-            )
-        ));
-
-        //Campo de pruebas
-        $this->add(array(
-            'name' => 'pruebas',
-            'options' => array(
-                'label' => 'Pruebas',
-            ),
-            'attributes' => array(
-                'type' => 'text',
-                'class' => 'form-control'
+                'id' => 'datepicker'
             )
         ));
     }

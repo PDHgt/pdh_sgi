@@ -9,7 +9,7 @@
             </div>
             <div class = "pull-left info">
                 <p><?php echo $this->identity->getUsuario(); ?></p>
-                <p><?php echo $this->identity->getIdEmpleado()->getIdsede()->getNombre(); ?></p>
+                <p><?php echo ucwords(strtolower($this->identity->getIdEmpleado()->getIdsede()->getNombre())); ?></p>
                 <!--Status -->
                 <a href = "#"><i class = "fa fa-circle text-success"></i> En linea</a>
             </div>

@@ -28,6 +28,43 @@ class DefHecho
      */
     private $hecho;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Descripcion", type="text", nullable=true)
+     */
+    private $descripcion;
 
+
+    /**
+     * @var \Procuracion\Entity\Derecho
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Derecho")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_derecho", referencedColumnName="id")
+     * })
+     */
+    private $idDerecho;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Competencia", type="integer", nullable=true)
+     */
+    private $competencia;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Orientacion", type="integer", nullable=true)
+     */
+    private $orientacion;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Activo", type="integer", nullable=true)
+     */
+    private $activo;
 }
 

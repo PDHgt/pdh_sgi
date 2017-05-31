@@ -41,6 +41,26 @@ class HechoDerecho
      */
     private $idHecho;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Competencia", type="integer", nullable=true)
+     */
+    private $competencia;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Orientacion", type="integer", nullable=true)
+     */
+    private $orientacion;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Activo", type="integer", nullable=true)
+     */
+    private $activo;
 
 
     /**
@@ -100,4 +120,78 @@ class HechoDerecho
     {
         return $this->idHecho;
     }
+
+    /**
+     * Set competencia
+     *
+     * @param integer $competencia
+     *
+     * @return HechoDerecho
+     */
+    public function setCompetencia($competencia)
+    {
+        $this->competencia = $competencia;
+    
+        return $this;
+    }
+
+    /**
+     * Get competencia
+     *
+     * @return integer
+     */
+    public function getCompetencia()
+    {
+        return $this->competencia;
+    }
+
+    /**
+     * Set orientacion
+     *
+     * @param integer $orientacion
+     *
+     * @return HechoDerecho
+     */
+    public function setOrientacion($orientacion)
+    {
+        $this->orientacion = $orientacion;
+    
+        return $this;
+    }
+
+    /**
+     * Get orientacion
+     *
+     * @return integer
+     */
+    public function getOrientacion()
+    {
+        return $this->orientacion;
+    }
+
+    /**
+     * Set activo
+     *
+     * @param integer $activo
+     *
+     * @return HechoDerecho
+     */
+    public function setActivo($activo)
+    {
+        $this->activo = $activo;
+    
+        return $this;
+    }
+
+    /**
+     * Get activo
+     *
+     * @return integer
+     */
+    public function getActivo()
+    {
+        return $this->activo;
+    }
+
+
 }

@@ -44,7 +44,7 @@ class VisitaService {
 
     public function departure(EntityManager $em, array $visita) {
         $data = $em->getReference('Procuracion\Entity\Visita', $visita['id']);
-        $data->setHorasalida(date_create($visita['hora']));
+        //$data->setHorasalida(date_create($visita['hora']));
         $data->setFechasalida(date_create($visita['fecha']));
         $data->setNotaAlSalir($visita['obs']);
         $em->flush();

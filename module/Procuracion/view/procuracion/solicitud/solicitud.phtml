@@ -2,25 +2,29 @@
     <h1>Solicitud</h1>
 </section>
 <section class="content">
-    <div class="box box-default color-palette-box">
-        <div class="box-header with-border">
-            <i class="fa fa-file"></i>
-            <h3 class="box-title">Solicitud</h3>
-        </div>
-        <div class="box-body">
-            <div class="row">
-                <div class="col-xs-6">
-                    <div class="row">
-                        <div class="col-xs-3"><strong>Fecha:</strong></div>
-                        <div class="col-xs-3"><?php echo $cola->getFechaentrada()->format("d/m/Y"); ?></div>
-                        <div class="col-xs-3"><strong>Hora:</strong></div>
-                        <div class="col-xs-3"><?php echo $cola->getFechaentrada()->format('H:i:s'); ?></div>
-                    </div>
+    <?php
+    $form = $this->form;
+    $form->prepare();
+    $form->setAttributes(array(
+        'action' => $this->url('recepcion', array('action' => 'asda')),
+        'method' => 'post'
+    ));
+    echo $this->form()->openTag($form);
+    $formLabel = $this->plugin('formLabel');
+    ?>
+    <div class="row">
+        <div class = "col-xs-12">
+            <div class = "box box-default color-palette-box">
+                <div class = "box-header with-border">
+                    <i class = "fa fa-file"></i>
+                    <h3 class = "box-title">Solicitud</h3>
                 </div>
-                <div class="col-xs-6">
-                    <div class="row">
-                        <div class="col-xs-3"><strong>Prioridad:</strong></div>
-                        <div class="col-xs-3">
+                <div class = "box-body">
+                    <div class = "row">
+                        <div class = "col-xs-2">
+                            <strong>Fecha </strong><?php echo $cola->getFechaentrada()->format("d/m/Y H:i:s"); ?>
+                        </div>
+                        <div class="col-xs-2">
                             <?php
                             switch ($cola->getPrioridad()) {
                                 case '1':
@@ -35,106 +39,383 @@
                                     $class = "green-text";
                                     $tooltip = "Normal";
                             }
-                            echo $tooltip;
                             ?>
-                            <span class="glyphicon glyphicon-exclamation-sign <?php echo $class ?> fa-lg">
-                            </span>
+                            <strong>Prioridad </strong><?php echo $tooltip; ?>
+                            <span class="glyphicon glyphicon-exclamation-sign <?php echo $class ?> fa-lg"></span>
                         </div>
-                        <div class="col-xs-3"><strong>Lapicero verde:</strong></div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-2">
+                            <?php if ($cola->getLapiceroverde() == 1) { ?>
+                                <strong>Discapacidad Psicosocial </strong>
+                                <span class="glyphicon glyphicon-exclamation-sign green-text fa-lg"></span>
+                            <?php } ?>
+                        </div>
+                        <div class="col-xs-6">
+                            <span><strong>Observaciones </strong><?php echo $cola->getObservaciones(); ?></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="box box-default color-palette-box">
+                <div class="box-header with-border">
+                    <i class="fa fa-user"></i>
+                    <h3 class="box-title">Solicitante</h3>
+                    <div class="pull-right">
+                        <a href="#" data-toggle="" data-tt="tooltip" title="Editar">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                        <a href="#" data-widget="collapse" data-tt="tooltip" title="Minimizar">
+                            <i class="fa fa-minus"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <?php
+                                        $nombres = $form->get('nombre')->setValue($cola->getIdpersona()->getNombres());
+                                        echo $formLabel->openTag() . $nombres->getOption('label') . $formLabel->closeTag();
+                                        echo $this->formInput($nombres);
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <?php
+                                        $apellidos = $form->get('apellido')->setValue($cola->getIdpersona()->getApellidos());
+                                        echo $formLabel->openTag() . $apellidos->getOption('label') . $formLabel->closeTag();
+                                        echo $this->formInput($apellidos);
+                                        ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <?php
+                                        if (($cola->getIdpersona()->getFechanacimiento()) == NULL) {
+                                            $fecha_nac = $form->get('nac')->setValue($cola->getIdpersona()->getFechanacimiento());
+                                        } else {
+                                            $fecha_nac = $form->get('nac')->setValue($cola->getIdpersona()->getFechanacimiento()->format("d/m/Y"));
+                                        }
+                                        echo $formLabel->openTag() . $fecha_nac->getOption('label') . " ";
+                                        echo $formLabel->closeTag();
+                                        echo $this->formInput($fecha_nac);
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <?php
+                                        $fechanacString = $cola->getIdpersona()->getFechanacimiento();
+                                        $hoy = new DateTime('today');
+                                        $edad = $fechanacString->diff($hoy)->y;
+                                        ?>
+                                        <label>Edad</label>
+                                        <input type="text" value="<?php echo $edad; ?>" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <?php
+                                        $tipodoc = $form->get('tipodoc')->setValue($cola->getIdpersona()->getTipoDocumento());
+                                        echo $formLabel->openTag() . $tipodoc->getOption('label') . " ";
+                                        echo $formLabel->closeTag();
+                                        echo $this->formSelect($tipodoc);
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <?php
+                                        $numdoc = $form->get('numdoc')->setValue($cola->getIdpersona()->getNumeroDocumento());
+                                        echo $formLabel->openTag() . $numdoc->getOption('label') . " ";
+                                        echo $formLabel->closeTag();
+                                        echo $this->formInput($numdoc);
+                                        ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <?php
+                                        $sexo = $form->get('sexo')->setValue($cola->getIdpersona()->getSexo());
+                                        echo $formLabel->openTag();
+                                        echo $sexo->getOption('label');
+                                        echo $formLabel->closeTag() . "<br>";
+                                        echo $this->formRadio($sexo);
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <?php
+                                        $lgbti = $form->get('lgbti')->setValue($cola->getIdpersona()->getLgbti());
+                                        echo $formLabel->openTag();
+                                        echo $lgbti->getOption('label');
+                                        echo $formLabel->closeTag() . "</br>";
+                                        echo $this->formRadio($lgbti);
+                                        ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="box box-default color-palette-box">
+                <div class="box-header with-border">
+                    <i class="fa fa-file"></i>
+                    <h3 class="box-title">Hechos</h3>
+                    <div class="pull-right box-tools">
+                        <a href="#" data-widget="collapse" data-tt="tooltip" title="Minimizar">
+                            <i class="fa fa-minus"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="form-group">
+                                <?php
+                                $fecha = $form->get('fecha')->setAttributes(array("type" => "date", "class" => "form-control datepicker", "readonly" => false));
+                                echo $formLabel->openTag() . $fecha->getOption('label') . " ";
+                                echo $formLabel->closeTag();
+                                echo $this->formInput($fecha);
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="form-group">
+                                <?php
+                                $area = $form->get('areaubicacion');
+                                echo $formLabel->openTag() . $area->getOption('label') . $formLabel->closeTag();
+                                echo $this->formSelect($area);
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <?php
+                                $direccion = $form->get('direccion');
+                                echo $formLabel->openTag() . $direccion->getOption('label') . " ";
+                                echo $formLabel->closeTag();
+                                echo $this->formInput($direccion);
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="form-group">
+                                <?php
+                                $depto = $form->get('depto');
+                                echo $formLabel->openTag() . $depto->getOption('label') . $formLabel->closeTag();
+                                echo $this->formSelect($depto);
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="form-group">
+                                <?php
+                                $muni = $form->get('muni');
+                                echo $formLabel->openTag() . $muni->getOption('label') . $formLabel->closeTag();
+                                echo $this->formSelect($muni);
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <?php
+                                $hechos = $form->get('hechos')->setAttributes(array("id" => "hechos"));
+                                echo $formLabel->openTag() . $hechos->getOption('label') . " ";
+                                echo $formLabel->closeTag();
+                                echo $this->formTextarea($hechos);
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="form-group">
+                                <?php
+                                $peticion = $form->get('peticion');
+                                echo $formLabel->openTag() . $peticion->getOption('label') . $formLabel->closeTag();
+                                echo $this->formTextarea($peticion);
+                                ?>
+                            </div>
+                        </div>
+                        <div class = "col-xs-6">
+                            <div class="form-group">
+                                <?php
+                                $pruebas = $form->get('pruebas');
+                                echo $formLabel->openTag() . $pruebas->getOption('label') . $formLabel->closeTag();
+                                echo $this->formTextarea($pruebas);
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class = "row">
+        <div class = "col-xs-12">
+            <div class = "box box-default color-palette-box collapsed-box" id = "calificacion">
+                <div class = "box-header with-border">
+                    <i class = "fa fa-check-circle"></i>
+                    <h3 class = "box-title">Calificación de Derechos</h3>
+                    <div class = "col-xs-6 col-centered">
+                        <div class = "form-group">
                             <?php
-                            switch ($cola->getLapiceroverde()) {
-                                case '1':
-                                    $lv = "SI";
-                                    break;
-                                case '0':
-                                    $lv = "NO";
-                                    break;
-                            }
-                            echo $lv;
+                            $tipoexpediente = $form->get('tipoexpediente');
+                            echo $formLabel->openTag();
+                            echo $tipoexpediente->getOption('label') . "  &nbsp;";
+                            echo $formLabel->closeTag();
+                            echo $this->formRadio($tipoexpediente);
                             ?>
+                        </div>
+                        <!--<div class="radio-inline">
+                            <label>
+                                <input type="radio" name="tipoexpediente" class="tipoexpediente" >
+                                Orientación
+                            </label>
+                        </div>
+                        <div class="checkbox-inline">
+                            <label>
+                                <input type="radio" name="tipoexpediente" class="tipoexpediente">
+                                Investigación
+                            </label>
+                        </div>-->
+                    </div>
+                    <div class="pull-right box-tools">
+                        <a href="#" data-widget="collapse" data-tt="tooltip" title="Minimizar">
+                            <i class="fa fa-minus"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <h4>Civíles y Políticos</h4>
+                            <div class="form-group">
+                                <?php
+                                $derechos = $this->derechos;
+                                //$derechoOptions = array();
+
+                                foreach ($derechos as $derechoOption) {
+                                    if ($derechoOption->getArea() == "DCP") {
+                                        echo "<div class='checkbox'>";
+                                        echo "<label><input type='checkbox' name='derecho[]' value='" . $derechoOption->getId() . "'>";
+                                        echo $derechoOption->getDerecho() . "</label></div>";
+                                    }//$derechoOptions[$derechoOption->getId()] = $derechoOption->getDerecho();
+                                }//$derecho = $form->get('derecho')->setValueOptions($derechoOptions);
+                                //echo $derecho->getLabel()
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <h4>Económicos, Sociales y Culturales</h4>
+                            <div class="form-group checkdiv">
+                                <?php
+                                foreach ($derechos as $derechoOption) {
+                                    if ($derechoOption->getArea() == "DESC") {
+                                        echo "<div class='checkbox'>";
+                                        echo "<label><input type='checkbox' name='derecho[]' value='" . $derechoOption->getId() . "'>";
+                                        echo $derechoOption->getDerecho() . "</label></div>";
+                                    }//$derechoOptions[$derechoOption->getId()] = $derechoOption->getDerecho();
+                                }//$derecho = $form->get('derecho')->setValueOptions($derechoOptions);
+                                //echo $derecho->getLabel()
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <h4>Hechos violatorios</h4>
+                            <div class="form-group" id="hechosviolatorios">
+                                <?php
+                                /* $hechos = $this->hechos;
+                                  //$hechosOptions = array();
+                                  foreach ($hechos as $hechoOption) {
+                                  echo "<div class='checkbox'>";
+                                  echo "<label><input type='checkbox' name='hecho[]' value='" . $hechoOption->getId() . "'>";
+                                  echo $hechoOption->getIdHecho()->getHecho() . "</label></div>";
+                                  //$derechoOptions[$derechoOption->getId()] = $derechoOption->getDerecho();
+                                  } */
+                                ?>
+
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <h4>Calificación</h4>
+                            <div id="resumen" class="padding-lg">
+                                <span></span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="box box-default color-palette-box">
-        <div class="box-header with-border">
-            <i class="fa fa-file"></i>
-            <h3 class="box-title">Solicitante</h3>
-        </div>
-        <div class="box-body">
-            <div class="row">
-                <div class="col-xs-6">
-                    <div class="row">
-                        <div class="col-xs-3"><strong>Nombres:</strong></div>
-                        <div class="col-xs-3"><?php echo $cola->getIdpersona()->getNombres(); ?></div>
-                        <div class="col-xs-3"><strong>Apellidos:</strong></div>
-                        <div class="col-xs-3"><?php echo $cola->getIdpersona()->getApellidos(); ?></div>
-                    </div>
-                </div>
-                <div class="col-xs-6">
-                    <div class="row">
-                        <div class="col-xs-3"><strong>Tipo de documento:</strong></div>
-                        <div class="col-xs-3"><?php echo $cola->getIdpersona()->getTipodocumento(); ?></div>
-                        <div class="col-xs-3"><strong># documento:</strong></div>
-                        <div class="col-xs-3"><?php echo $cola->getIdpersona()->getNumerodocumento(); ?></div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-6">
-                    <div class="row">
-                        <div class="col-xs-3"><strong>Fecha de nacimiento:</strong></div>
-                        <div class="col-xs-3"><?php echo $cola->getIdpersona()->getFechanacimiento()->format("d/m/Y"); ?></div>
-                        <div class="col-xs-3"><strong>Edad:</strong></div>
-                        <div class="col-xs-3"><?php echo $cola->getIdpersona()->getEdad(); ?></div>
-                    </div>
-                </div>
-                <div class="col-xs-6">
-                    <div class="row">
-                        <div class="col-xs-3"><strong>Sexo:</strong></div>
-                        <div class="col-xs-3"><?php
-                            switch ($cola->getIdpersona()->getSexo()) {
-                                case 1:
-                                    echo "Masculino";
-                                    break;
-                                case 2:
-                                    echo "Femenino";
-                                    break;
-                                default :
-                                    echo "No especificado";
-                                    break;
-                            }
-                            ?></div>
-                        <div class="col-xs-3"><strong>LGBTI:</strong></div>
-                        <div class="col-xs-3"><?php echo $cola->getIdpersona()->getLgbti(); ?></div>
-                    </div>
-                </div>
+            <div class="box-footer">
+                <?php echo $this->formElement($form->get('guardar')) ?>
+                <?php echo $this->formElement($form->get('cancelar')) ?>
             </div>
         </div>
     </div>
+    <?php echo $this->form()->closeTag() ?>
 </section>
-<div class="fixed-action-btn">
-    <nav class="fab">
-        <?php
-        $permisos = $this->permisos;
-        foreach ($permisos as $permiso) {
-            echo "<a class = 'fab-button bg-primary' href = " . $this->url('recepcion') . "./registro/" . $permiso["accion"] . "' tooltip='Solicitante'>";
-            /* foreach ($permiso["permiso"] as $perm) {
-              print_r($perm);
-              echo "<br>";
-              } */
+<script>
+    $("input[name='tipoexpediente']").click(function() {
+        //alert(comp);
+        $("#calificacion").removeClass("collapsed-box");
+        $("input[name='derecho[]']").attr('checked', false);
+        $("#hechosviolatorios").empty();
+        $("#resumen").empty();
+    });
+    $("input[name='derecho[]']").click(function() {
+        if ($(this).is(":checked")) {
+            var comp = $("input[name='tipoexpediente']:checked").val();
+            var id = $(this).val();
+            $.ajax({
+                url: "<?php echo $this->basePath(); ?>/validacion/listarhechos",
+                dataType: "json",
+                type: "POST",
+                data: {id: id,
+                    comp: comp
+                },
+                success: function(data) {
+                    $.each(data, function(i, record) {
+                        $("#hechosviolatorios").append("<div class='checkbox " + id + "'><label><input type='checkbox'  value='" + i + "' name='hechos[]' /> " + record + "</label></div>");
+                        $("input[value='" + i + "']").click(function() {
+                            if ($(this).is(":checked")) {
+                                $("#resumen").append("<p class='bg-info " + i + "'>" + record + "</p>");
+                            } else {
+                                $("p." + i + "").remove();
+                            }
+                        });
+                    });
+                }
+            });
+        } else {
+            var id = $(this).val();
+            $("." + id + "").remove();
+            $("p." + index + "").remove();
         }
-        ?>
-        <a class="fab-button" href="#"><span class="fab-span"><span class="fab-span rotate"></span></span></a>
-    </nav>
-
-    <!--<button class="btn-default btn-floating btn-large waves-effect waves-light"><span class="glyphicon glyphicon-plus"></span></button>
-    <ul>
-        <li><a href="<?php /* echo $this->url('formulario') */ ?>registrovisita"><span class="glyphicon glyphicon-user"></span></a></li>
-    </ul>-->
-</div>
+    });
+</script>
 
 

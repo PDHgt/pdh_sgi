@@ -80,9 +80,9 @@ class Expediente
     /**
      * @var string
      *
-     * @ORM\Column(name="RerortadoEn", type="string", length=255, nullable=true)
+     * @ORM\Column(name="ReportadoEn", type="string", length=255, nullable=true)
      */
-    private $rerortadoen;
+    private $reportadoen;
 
     /**
      * @var \Procuracion\Entity\DetalleCatalogo
@@ -359,27 +359,27 @@ class Expediente
     }
 
     /**
-     * Set rerortadoen
+     * Set reportadoen
      *
-     * @param string $rerortadoen
+     * @param string $reportadoen
      *
      * @return Expediente
      */
-    public function setRerortadoen($rerortadoen)
+    public function setRerortadoen($reportadoen)
     {
-        $this->rerortadoen = $rerortadoen;
+        $this->reportadoen = $reportadoen;
     
         return $this;
     }
 
     /**
-     * Get rerortadoen
+     * Get reportadoen
      *
      * @return string
      */
-    public function getRerortadoen()
+    public function getReportadoen()
     {
-        return $this->rerortadoen;
+        return $this->reportadoen;
     }
 
     /**

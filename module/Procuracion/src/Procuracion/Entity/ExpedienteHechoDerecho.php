@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ExpedienteHechoDerecho
  *
- * @ORM\Table(name="expediente_hecho_derecho", indexes={@ORM\Index(name="expediente", columns={"id_expediente"}), @ORM\Index(name="id_hecho_derecho", columns={"id_hecho_derecho"})})
+ * @ORM\Table(name="expediente_hecho_derecho", indexes={@ORM\Index(name="expediente", columns={"id_expediente"}), @ORM\Index(name="id_hecho", columns={"id_hecho"})})
  * @ORM\Entity
  */
 class ExpedienteHechoDerecho
@@ -32,14 +32,14 @@ class ExpedienteHechoDerecho
     private $idExpediente;
 
     /**
-     * @var \Procuracion\Entity\HechoDerecho
+     * @var \Procuracion\Entity\DefHecho
      *
-     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\HechoDerecho")
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\DefHecho")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_hecho_derecho", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="id_hecho", referencedColumnName="id")
      * })
      */
-    private $idHechoDerecho;
+    private $idHecho;
 
 
 
@@ -78,26 +78,26 @@ class ExpedienteHechoDerecho
     }
 
     /**
-     * Set idHechoDerecho
+     * Set idHecho
      *
-     * @param \Procuracion\Entity\HechoDerecho $idHechoDerecho
+     * @param \Procuracion\Entity\DefHecho $idHecho
      *
      * @return ExpedienteHechoDerecho
      */
-    public function setIdHechoDerecho(\Procuracion\Entity\HechoDerecho $idHechoDerecho = null)
+    public function setIdHecho(\Procuracion\Entity\DefHecho $idHecho = null)
     {
-        $this->idHechoDerecho = $idHechoDerecho;
+        $this->idHecho = $idHecho;
     
         return $this;
     }
 
     /**
-     * Get idHechoDerecho
+     * Get idHecho
      *
-     * @return \Procuracion\Entity\HechoDerecho
+     * @return \Procuracion\Entity\DefHecho
      */
-    public function getIdHechoDerecho()
+    public function getIdHecho()
     {
-        return $this->idHechoDerecho;
+        return $this->idHecho;
     }
 }

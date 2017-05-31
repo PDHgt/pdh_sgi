@@ -100,10 +100,16 @@
 
 <div class="fixed-action-btn">
     <nav class="fab">
-        <a class="fab-button bg-primary" href="<?php echo $this->url('recepcion', array('action' => 'registro', 'param1' => 'solicitante')); ?>" tooltip="Solicitante">
-        </a>
-        <a class="fab-button bg-primary" href="<?php echo $this->url('recepcion', array('action' => 'registro', 'param1' => 'visitante')); ?>" tooltip="Visitante">
-        </a>
+        <?php
+        $permisos = $this->permisos;
+        foreach ($permisos as $permiso) {
+            echo "<a class='fab-button bg-primary' href=" . $this->url('solicitud') . "/registro/" . $permiso["accion"] . "' tooltip='" . $permiso["accion"] . "'>";
+            foreach ($permiso["permiso"] as $perm) {
+                print_r($perm);
+                echo "<br>";
+            }
+        }
+        ?>
         <a class="fab-button" href="#"><span class="fab-span"><span class="fab-span rotate"></span></span></a>
     </nav>
 
@@ -112,6 +118,8 @@
         <li><a href="<?php /* echo $this->url('formulario') */ ?>registrovisita"><span class="glyphicon glyphicon-user"></span></a></li>
     </ul>-->
 </div>
+
+
 
 <!-- Modal -->
 <div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -136,7 +144,9 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $('#datatable').DataTable({
-
+            "columnDefs": [
+                {"width": "10%", "targets": 6}
+            ]
         });
     });
 </script>

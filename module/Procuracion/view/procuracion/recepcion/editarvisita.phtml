@@ -184,7 +184,7 @@
                         'param1' => 'visita',
                         'param2' => $visita->getId()));
                     ?>" class="btn btn-warning">Cambiar tipo</a>
-                    <a href="<?php echo $this->url('recepcion') ?>/visita" class="btn btn-danger">Cancelar</a>
+                    <?php echo $this->formElement($form->get('cancelar')) ?>
                 </div>
             </div>
             <?php echo $this->form()->closeTag() ?>

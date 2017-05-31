@@ -131,7 +131,19 @@ class DetallePersona
      */
     private $idPersona;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="TotalHijos", type="integer", nullable=true)
+     */
+    private $hijos;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="TotalHijas", type="integer", nullable=true)
+     */
+    private $hijas;
 
     /**
      * Get id
@@ -406,4 +418,53 @@ class DetallePersona
     {
         return $this->idPersona;
     }
+
+    /**
+     * Set hijos
+     *
+     * @param integer $hijos
+     *
+     * @return DetallePersona
+     */
+    public function setHijos($hijos)
+    {
+        $this->hijos = $hijos;
+    
+        return $this;
+    }
+
+    /**
+     * Get hijos
+     *
+     * @return integer
+     */
+    public function getHijos()
+    {
+        return $this->hijos;
+    }
+
+    /**
+     * Set hijas
+     *
+     * @param integer $hijas
+     *
+     * @return DetallePersona
+     */
+    public function setHijas($hijas)
+    {
+        $this->hijas = $hijas;
+    
+        return $this;
+    }
+
+    /**
+     * Get hijas
+     *
+     * @return integer
+     */
+    public function getHijas()
+    {
+        return $this->hijas;
+    }
+
 }

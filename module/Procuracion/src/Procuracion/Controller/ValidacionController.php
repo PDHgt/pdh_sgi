@@ -4,6 +4,7 @@ namespace Procuracion\Controller;
 
 use Procuracion\Service\PersonaService;
 use Procuracion\Service\EmpleadoService;
+use Procuracion\Service\CuboCalificacionService;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 use Zend\Authentication\AuthenticationService as AuthService;
@@ -71,6 +72,31 @@ class ValidacionController extends AbstractActionController {
         }
         $result = new JsonModel($empleadosOptions);
         return $result;
+    }
+
+    public function listarhechosAction() {
+        $data = $this->request->getPost();
+        $derecho = $data["id"];
+        $competencia = $data["comp"];
+
+        if (!empty($data["id"])) {
+            $calificaService = new CuboCalificacionService();
+
+            $hechos = $calificaService->listarHechos($this->entityManager, $derecho, $competencia);
+            //$derechos = $calificaService->listarDerechos($this->entityManager);
+
+            $hechosOptions = array();
+            foreach ($hechos as $hechoOption) {
+
+                $hechosOptions[$hechoOption->getId()] = $hechoOption->getHecho();
+            }
+
+            $model = new JsonModel($hechosOptions);
+
+            return $model;
+        }
+
+        //print_r($hechosOptions);
     }
 
 }

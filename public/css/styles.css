@@ -8,6 +8,9 @@
 h1.bigfont{
     font-size: 3em;
 }
+.padding-lg p{
+    padding:5px;
+}
 
 .fixed-action-btn {
     position: fixed;
@@ -17,12 +20,14 @@ h1.bigfont{
     margin-bottom: 0;
     z-index: 998;
 }
+.fixed-action-btn ul {display:none;}
+.fixed-action-btn:hover ul {display:block;}
 
 .fab {
-    /*margin: 1em;
+    margin: 1em;
     position: fixed;
     bottom: 0;
-    right: 0;*/
+    right: 0;
 }
 .fab:hover .fab-button:not(:last-of-type) {
     width: 40px;
@@ -2354,6 +2359,31 @@ h1.bigfont{
 
 .stylish-color-dark {
     background-color: #3E4551;
+}
+
+/* centered columns styles */
+.row-centered {
+    text-align:center;
+}
+.col-centered {
+    display:inline-block;
+    float:none;
+    /* reset the text-align */
+    text-align:left;
+    /* inline-block space fix */
+    margin-right:-4px;
+}
+.col-fixed {
+    /* custom width */
+    width:320px;
+}
+.col-min {
+    /* custom min width */
+    min-width:320px;
+}
+.col-max {
+    /* custom max width */
+    max-width:320px;
 }
 
 /*********************

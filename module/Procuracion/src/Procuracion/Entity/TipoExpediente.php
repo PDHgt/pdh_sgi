@@ -28,6 +28,12 @@ class TipoExpediente
      */
     private $tipo;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Activo", type="integer", nullable=true)
+     */
+    private $activo;
 
 
     /**
@@ -63,4 +69,29 @@ class TipoExpediente
     {
         return $this->tipo;
     }
+
+    /**
+     * Set activo
+     *
+     * @param integer $activo
+     *
+     * @return TipoExpediente
+     */
+    public function setActivo($activo)
+    {
+        $this->activo = $activo;
+    
+        return $this;
+    }
+
+    /**
+     * Get activo
+     *
+     * @return integer
+     */
+    public function getActivo()
+    {
+        return $this->activo;
+    }
+
 }

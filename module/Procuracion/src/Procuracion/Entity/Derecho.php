@@ -28,6 +28,19 @@ class Derecho
      */
     private $derecho;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="AreaDerecho", type="text", nullable=true)
+     */
+    private $area;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Activo", type="integer", nullable=true)
+     */
+    private $activo;
 
 
     /**
@@ -63,4 +76,53 @@ class Derecho
     {
         return $this->derecho;
     }
+
+    /**
+     * Set area
+     *
+     * @param string $area
+     *
+     * @return Derecho
+     */
+    public function setArea($area)
+    {
+        $this->area = $area;
+    
+        return $this;
+    }
+
+    /**
+     * Get area
+     *
+     * @return string
+     */
+    public function getArea()
+    {
+        return $this->area;
+    }
+
+    /**
+     * Set activo
+     *
+     * @param integer $activo
+     *
+     * @return Derecho
+     */
+    public function setActivo($activo)
+    {
+        $this->activo = $activo;
+    
+        return $this;
+    }
+
+    /**
+     * Get activo
+     *
+     * @return integer
+     */
+    public function getActivo()
+    {
+        return $this->activo;
+    }
+
 }

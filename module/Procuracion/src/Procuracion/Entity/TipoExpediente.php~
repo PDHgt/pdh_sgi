@@ -28,6 +28,12 @@ class TipoExpediente
      */
     private $tipo;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Activo", type="integer", nullable=true)
+     */
+    private $activo;
 
 }
 

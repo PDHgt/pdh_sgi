@@ -1,0 +1,46 @@
+<?php
+
+namespace Procuracion\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Remision
+ *
+ * @ORM\Table(name="remision")
+ * @ORM\Entity
+ */
+class Remision
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \Procuracion\Entity\Expediente
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Expediente")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_expediente", referencedColumnName="id")
+     * })
+     */
+    private $idExpediente;
+
+    /**
+     * @var \Procuracion\Entity\InstitucionExterna
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\InstitucionExterna")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_institucion", referencedColumnName="id")
+     * })
+     */
+    private $idInstitucion;
+
+
+}
+

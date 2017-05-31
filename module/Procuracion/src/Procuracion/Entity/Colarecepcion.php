@@ -3,12 +3,14 @@
 namespace Procuracion\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Events;
 
 /**
  * Colarecepcion
  *
  * @ORM\Table(name="colarecepcion", indexes={@ORM\Index(name="id_persona", columns={"id_persona"})})
- * @ORM\Entity
+ * @ORM\Entity 
+ * 
  */
 class Colarecepcion
 {
@@ -97,6 +99,12 @@ class Colarecepcion
      */
     private $idPersona;
 
+    /**
+     * @var \DateTime
+     *
+     *@ORM\Column(name="CreatedAt", type="datetime", nullable=true) 
+     */
+    private $createdAt;
 
 
     /**
@@ -348,4 +356,10 @@ class Colarecepcion
     {
         return $this->idPersona;
     }
+/*
+    /** @ORM\PrePersist 
+    public function doStuffOnPrePersist()
+    {
+        $this->createdAt = date_create(date('Y-m-d H:i:s'));
+    }*/
 }

@@ -4,6 +4,8 @@ namespace Procuracion\Controller;
 
 use Procuracion\Service\ColaRecepcionService;
 use Procuracion\Service\UsuarioService;
+use Procuracion\Service\CuboCalificacionService;
+use Procuracion\Form\FormularioRecepcion;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Authentication\AuthenticationService as AuthService;
@@ -34,7 +36,7 @@ class SolicitudController extends AbstractActionController {
             $usuarioservice = new UsuarioService();
             $permisos = $usuarioservice->getPermisos($this->entityManager, $identity->getUsuario());
 
-            $sede = $identity->getIdEmpleado()->getUnidadadministrativa()->getIdSede()->getId();
+            $sede = $identity->getIdEmpleado()->getIdsede()->getId();
 
             $colaservice = new ColaRecepcionService();
             $cola = $colaservice->listToday($this->entityManager, $sede);
@@ -76,6 +78,11 @@ class SolicitudController extends AbstractActionController {
             $identity = $this->authService->getIdentity();
             $id = $this->getEvent()->getRouteMatch()->getParam('id');
 
+            $form = new FormularioRecepcion();
+
+            $derechos = new CuboCalificacionService();
+            $listaderechos = $derechos->listarDerechos($this->entityManager);
+
             $usuarioservice = new UsuarioService();
             $permisos = $usuarioservice->getPermisos($this->entityManager, $identity->getUsuario());
 
@@ -93,9 +100,19 @@ class SolicitudController extends AbstractActionController {
             $layout = $this->layout();
             $layout->addChild($header, 'header')
                     ->addChild($aside, 'aside');
-            $view = new ViewModel(array('cola' => $cola, 'identity' => $identity, 'id' => $id, 'permisos' => $permisos));
+            $view = new ViewModel(array('form' => $form, 'cola' => $cola, 'identity' => $identity, 'id' => $id, 'derechos' => $listaderechos, 'permisos' => $permisos));
             return $view;
         }
+    }
+
+    public function detallecolaAction() {
+        $id = $this->getEvent()->getRouteMatch()->getParam('id');
+        $this->redirect()->toRoute('recepcion', array('action' => 'detallecola', 'id' => $id));
+    }
+
+    public function editarcolaAction() {
+        $id = $this->getEvent()->getRouteMatch()->getParam('id');
+        $this->redirect()->toRoute('recepcion', array('action' => 'editarcola', 'id' => $id));
     }
 
 }

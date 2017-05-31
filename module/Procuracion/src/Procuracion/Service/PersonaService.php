@@ -71,7 +71,7 @@ class PersonaService {
             $nvo = new Visita();
             $lasede = $em->getRepository('\Procuracion\Entity\Sede')->find($extras['sede']);
             $nvo->setFechaentrada($extras['fecha']);
-            $nvo->setHoraentrada($extras['hora']);
+            //$nvo->setHoraentrada($extras['hora']);
             $nvo->setSede($lasede);
             $nvo->setEmpleado($emp);
             $nvo->setInstitucion($extras['institucion']);
@@ -91,7 +91,7 @@ class PersonaService {
             $nvo = new Colarecepcion();
             $lasede = $em->getRepository('\Procuracion\Entity\Sede')->find($extras['sede']);
             $nvo->setFechaentrada($extras['fecha']);
-            $nvo->setHoraentrada($extras['hora']);
+            //$nvo->setHoraentrada($extras['hora']);
             $nvo->setSede($lasede);
             $nvo->setPrioridad($extras['prioridad']);
             $nvo->setTurno($miTurno);
@@ -119,6 +119,7 @@ class PersonaService {
         //deleting extras
         $visitaant = $em->getRepository('Procuracion\Entity\Visita')->find($extras['id']);
         if ($visitaant) {
+            $llamadas = $visitaant->getLlamadasRealizadas();
             $em->remove($visitaant);
             $em->flush();
         }
@@ -141,6 +142,7 @@ class PersonaService {
             $nvo->setInstitucion($extras['institucion']);
             $nvo->setTipoInstitucion($extras['tipo']);
             $nvo->setMotivoVisita($extras['motivo']);
+            $nvo->setLlamadasRealizadas($llamadas);
             $nvo->setIdpersona($np);
             $visita = new VisitaService();
             $visita->save($em, $nvo);
