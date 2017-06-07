@@ -4,6 +4,9 @@ $(document).ready(function() {
     });
 
 });
+
+
+
 $(function() {
     $("#datepicker").datepicker({
         changeMonth: true,
@@ -14,6 +17,7 @@ $(function() {
         changeYear: true,
         dateFormat: 'dd/mm/yy'});
 });
+
 
 function calificadorAdd(url, values) {
     $.ajax({

@@ -22,6 +22,16 @@ class Municipio
     private $id;
 
     /**
+     * @var \Procuracion\Entity\Departamento
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Departamento")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_departamento", referencedColumnName="Codigo")
+     * })
+     */
+    private $id_departamento;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="Codigo", type="integer", nullable=true)

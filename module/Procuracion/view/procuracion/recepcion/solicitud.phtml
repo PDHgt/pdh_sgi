@@ -6,7 +6,7 @@
     $form = $this->form;
     $form->prepare();
     $form->setAttributes(array(
-        'action' => $this->url('recepcion', array('action' => 'asda')),
+        'action' => $this->url('recepcion', array('action' => 'guardarSolicitud')),
         'method' => 'post'
     ));
     echo $this->form()->openTag($form);
@@ -64,7 +64,7 @@
                     <i class="fa fa-user"></i>
                     <h3 class="box-title">Solicitante</h3>
                     <div class="pull-right">
-                        <a href="#" data-toggle="" data-tt="tooltip" title="Editar">
+                        <a href="#" data-toggle="" data-tt="tooltip" title="Editar" id="editarsolicitante">
                             <i class="fa fa-edit"></i>
                         </a>
                         <a href="#" data-widget="collapse" data-tt="tooltip" title="Minimizar">
@@ -79,7 +79,7 @@
                                 <div class="col-xs-6">
                                     <div class="form-group">
                                         <?php
-                                        $nombres = $form->get('nombre')->setValue($cola->getIdpersona()->getNombres());
+                                        $nombres = $form->get('nombre')->setValue($cola->getIdpersona()->getNombres())->setAttribute("disabled", true);
                                         echo $formLabel->openTag() . $nombres->getOption('label') . $formLabel->closeTag();
                                         echo $this->formInput($nombres);
                                         ?>
@@ -88,7 +88,7 @@
                                 <div class="col-xs-6">
                                     <div class="form-group">
                                         <?php
-                                        $apellidos = $form->get('apellido')->setValue($cola->getIdpersona()->getApellidos());
+                                        $apellidos = $form->get('apellido')->setValue($cola->getIdpersona()->getApellidos())->setAttribute("disabled", true);
                                         echo $formLabel->openTag() . $apellidos->getOption('label') . $formLabel->closeTag();
                                         echo $this->formInput($apellidos);
                                         ?>
@@ -102,9 +102,9 @@
                                     <div class="form-group">
                                         <?php
                                         if (($cola->getIdpersona()->getFechanacimiento()) == NULL) {
-                                            $fecha_nac = $form->get('nac')->setValue($cola->getIdpersona()->getFechanacimiento());
+                                            $fecha_nac = $form->get('nac')->setValue($cola->getIdpersona()->getFechanacimiento())->setAttribute("disabled", true);
                                         } else {
-                                            $fecha_nac = $form->get('nac')->setValue($cola->getIdpersona()->getFechanacimiento()->format("d/m/Y"));
+                                            $fecha_nac = $form->get('nac')->setValue($cola->getIdpersona()->getFechanacimiento()->format("d/m/Y"))->setAttribute("disabled", true);
                                         }
                                         echo $formLabel->openTag() . $fecha_nac->getOption('label') . " ";
                                         echo $formLabel->closeTag();
@@ -117,10 +117,14 @@
                                         <?php
                                         $fechanacString = $cola->getIdpersona()->getFechanacimiento();
                                         $hoy = new DateTime('today');
-                                        $edad = $fechanacString->diff($hoy)->y;
+                                        if ($fechanacString == NULL) {
+                                            $edad = "";
+                                        } else {
+                                            $edad = $fechanacString->diff($hoy)->y;
+                                        }
                                         ?>
                                         <label>Edad</label>
-                                        <input type="text" value="<?php echo $edad; ?>" class="form-control">
+                                        <input name="edad" type="text" value="<?php echo $edad; ?>" class="form-control" disabled="disabled">
                                     </div>
                                 </div>
                             </div>
@@ -130,7 +134,7 @@
                                 <div class="col-xs-6">
                                     <div class="form-group">
                                         <?php
-                                        $tipodoc = $form->get('tipodoc')->setValue($cola->getIdpersona()->getTipoDocumento());
+                                        $tipodoc = $form->get('tipodoc')->setValue($cola->getIdpersona()->getTipoDocumento())->setAttribute("disabled", true);
                                         echo $formLabel->openTag() . $tipodoc->getOption('label') . " ";
                                         echo $formLabel->closeTag();
                                         echo $this->formSelect($tipodoc);
@@ -140,7 +144,7 @@
                                 <div class="col-xs-6">
                                     <div class="form-group">
                                         <?php
-                                        $numdoc = $form->get('numdoc')->setValue($cola->getIdpersona()->getNumeroDocumento());
+                                        $numdoc = $form->get('numdoc')->setValue($cola->getIdpersona()->getNumeroDocumento())->setAttribute("disabled", true);
                                         echo $formLabel->openTag() . $numdoc->getOption('label') . " ";
                                         echo $formLabel->closeTag();
                                         echo $this->formInput($numdoc);
@@ -154,7 +158,7 @@
                                 <div class="col-xs-12">
                                     <div class="form-group">
                                         <?php
-                                        $sexo = $form->get('sexo')->setValue($cola->getIdpersona()->getSexo());
+                                        $sexo = $form->get('sexo')->setValue($cola->getIdpersona()->getSexo())->setAttribute("disabled", true);
                                         echo $formLabel->openTag();
                                         echo $sexo->getOption('label');
                                         echo $formLabel->closeTag() . "<br>";
@@ -165,7 +169,7 @@
                                 <div class="col-xs-12">
                                     <div class="form-group">
                                         <?php
-                                        $lgbti = $form->get('lgbti')->setValue($cola->getIdpersona()->getLgbti());
+                                        $lgbti = $form->get('lgbti')->setValue($cola->getIdpersona()->getLgbti())->setAttribute("disabled", true);
                                         echo $formLabel->openTag();
                                         echo $lgbti->getOption('label');
                                         echo $formLabel->closeTag() . "</br>";
@@ -224,7 +228,12 @@
                         <div class="col-xs-6">
                             <div class="form-group">
                                 <?php
-                                $depto = $form->get('depto');
+                                $deptos = $this->deptos;
+                                $deptosOptions = array();
+                                foreach ($deptos as $deptoOption) {
+                                    $deptosOptions[$deptoOption->getId()] = $deptoOption->getNombre();
+                                }
+                                $depto = $form->get('depto')->setValueOptions($deptosOptions);
                                 echo $formLabel->openTag() . $depto->getOption('label') . $formLabel->closeTag();
                                 echo $this->formSelect($depto);
                                 ?>
@@ -317,7 +326,7 @@
                             <div class="form-group">
                                 <?php
                                 $derechos = $this->derechos;
-                                //$derechoOptions = array();
+//$derechoOptions = array();
 
                                 foreach ($derechos as $derechoOption) {
                                     if ($derechoOption->getArea() == "DCP") {
@@ -326,7 +335,7 @@
                                         echo $derechoOption->getDerecho() . "</label></div>";
                                     }//$derechoOptions[$derechoOption->getId()] = $derechoOption->getDerecho();
                                 }//$derecho = $form->get('derecho')->setValueOptions($derechoOptions);
-                                //echo $derecho->getLabel()
+//echo $derecho->getLabel()
                                 ?>
                             </div>
                         </div>
@@ -341,7 +350,7 @@
                                         echo $derechoOption->getDerecho() . "</label></div>";
                                     }//$derechoOptions[$derechoOption->getId()] = $derechoOption->getDerecho();
                                 }//$derecho = $form->get('derecho')->setValueOptions($derechoOptions);
-                                //echo $derecho->getLabel()
+//echo $derecho->getLabel()
                                 ?>
                             </div>
                         </div>
@@ -379,8 +388,17 @@
     <?php echo $this->form()->closeTag() ?>
 </section>
 <script>
+    $("#editarsolicitante").click(function() {
+        $("input[name='nombre']").attr('disabled', !$("input[name='nombre']").attr('disabled'));
+        $("input[name='apellido']").attr('disabled', !$("input[name='apellido']").attr('disabled'));
+        $("input[name='nac']").attr('disabled', !$("input[name='nac']").attr('disabled'));
+        $("input[name='edad']").attr('disabled', !$("input[name='edad']").attr('disabled'));
+        $("select[name='tipodoc']").attr('disabled', !$("select[name='tipodoc']").attr('disabled'));
+        $("input[name='numdoc']").attr('disabled', !$("input[name='numdoc']").attr('disabled'));
+        $("input[name='sexo']").attr('disabled', !$("input[name='sexo']").attr('disabled'));
+        $("input[name='lgbti']").attr('disabled', !$("input[name='lgbti']").attr('disabled'));
+    });
     $("input[name='tipoexpediente']").click(function() {
-        //alert(comp);
         $("#calificacion").removeClass("collapsed-box");
         $("input[name='derecho[]']").attr('checked', false);
         $("#hechosviolatorios").empty();
@@ -398,13 +416,19 @@
                     comp: comp
                 },
                 success: function(data) {
-                    $.each(data, function(i, record) {
-                        $("#hechosviolatorios").append("<div class='checkbox " + id + "'><label><input type='checkbox'  value='" + i + "' name='hechos[]' /> " + record + "</label></div>");
-                        $("input[value='" + i + "']").click(function() {
+                    /*$.each(json.forum, function(i, object) {
+                     $.each(object, function(property, value) {
+                     alert(property + "=" + value);
+                     });
+                     });*/
+                    $.each(data, function(i) {
+                        $("#hechosviolatorios").append("<div class='checkbox' data-group='" + id + "' data-toogle='tooltip' title='" + data[i].desc + "'><label><input type='checkbox'  value='" + data[i].id + "' name='hechos[]'/> " + data[i].hecho + "</label></div>");
+                        $("[data-toogle='tooltip']").tooltip({placement: "left", trigger: "hover"});
+                        $("input[name='hechos[]'][value='" + data[i].id + "']").click(function() {
                             if ($(this).is(":checked")) {
-                                $("#resumen").append("<p class='bg-info " + i + "'>" + record + "</p>");
+                                $("#resumen").append("<div data-group='" + id + "'><p class='bg-info " + data[i].id + "'>" + data[i].hecho + "</p></div>");
                             } else {
-                                $("p." + i + "").remove();
+                                $("p." + data[i].id + "").remove();
                             }
                         });
                     });
@@ -412,9 +436,27 @@
             });
         } else {
             var id = $(this).val();
-            $("." + id + "").remove();
-            $("p." + index + "").remove();
+            $("div[data-group='" + id + "']").empty();
         }
+    });
+    $("select[name='depto']").change(function() {
+        var depto = $(this).val();
+        $.ajax({
+            url: "<?php echo $this->basePath(); ?>/validacion/listarmunicipios",
+            dataType: 'json',
+            type: 'POST',
+            data: {depto: depto},
+            success: function(data) {
+                $.each(data, function(key, value) {
+                    $("select[name='muni']")
+                            .append($("<option></option>")
+                                    .attr("value", key)
+                                    .text(value));
+                });
+
+            }
+        });
+        $("select[name='muni']").empty();
     });
 </script>
 

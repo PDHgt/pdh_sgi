@@ -78,7 +78,7 @@
                                     <td>
                                         <?php echo $visita->getEmpleado()->getExtension(); ?>
                                     </td>
-                                    <td class="details-control">
+                                    <td>
                                         <a href="<?php echo $this->url('recepcion', array('action' => 'detallevisita', 'id' => $visita->getId())); ?>" data-toggle="modal" data-target="#detailsModal" data-tt="tooltip" title="Detalles">
                                             <span class="glyphicon glyphicon-search fa-lg"></span>
                                         </a>
@@ -98,13 +98,19 @@
         </div>
     </div>
 </section>
-
+<!--fab-button-add-->
 <div class="fixed-action-btn">
     <nav class="fab">
-        <a class="fab-button bg-primary" href="<?php echo $this->url('recepcion', array('action' => 'registro', 'param1' => 'solicitante')); ?>" tooltip="Solicitante">
-        </a>
-        <a class="fab-button bg-primary" href="<?php echo $this->url('recepcion', array('action' => 'registro', 'param1' => 'visitante')); ?>" tooltip="Visitante">
-        </a>
+        <?php
+        $permisos = $this->permisos;
+        foreach ($permisos as $permiso) {
+            foreach ($permiso["permiso"] as $perm) {
+                if ($perm == 11) {
+                    echo "<a class='fab-button bg-primary " . $permiso["accion"] . "' href='" . $this->url('recepcion', array('action' => 'registro', 'id' => $permiso["accion"])) . "' tooltip='" . ucfirst($permiso["accion"]) . "'>";
+                }
+            }
+        }
+        ?>
         <a class="fab-button" href="#"><span class="fab-span"><span class="fab-span rotate"></span></span></a>
     </nav>
 </div>

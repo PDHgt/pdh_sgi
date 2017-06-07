@@ -26,5 +26,21 @@
         </div>
     </div>
 </section>
+<!--fab-button-add-->
+<div class="fixed-action-btn">
+    <nav class="fab">
+        <?php
+        $permisos = $this->permisos;
+        foreach ($permisos as $permiso) {
+            foreach ($permiso["permiso"] as $perm) {
+                if ($perm == 11) {
+                    echo "<a class='fab-button bg-primary " . $permiso["accion"] . "' href='" . $this->url('recepcion', array('action' => 'registro', 'id' => $permiso["accion"])) . "' tooltip='" . ucfirst($permiso["accion"]) . "'>";
+                }
+            }
+        }
+        ?>
+        <a class="fab-button" href="#"><span class="fab-span"><span class="fab-span rotate"></span></span></a>
+    </nav>
+</div>
 
 

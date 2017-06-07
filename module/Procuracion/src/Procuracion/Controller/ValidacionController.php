@@ -5,6 +5,7 @@ namespace Procuracion\Controller;
 use Procuracion\Service\PersonaService;
 use Procuracion\Service\EmpleadoService;
 use Procuracion\Service\CuboCalificacionService;
+use Procuracion\Service\GeografiaService;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 use Zend\Authentication\AuthenticationService as AuthService;
@@ -85,18 +86,43 @@ class ValidacionController extends AbstractActionController {
             $hechos = $calificaService->listarHechos($this->entityManager, $derecho, $competencia);
             //$derechos = $calificaService->listarDerechos($this->entityManager);
 
+
+            $tmp = array();
             $hechosOptions = array();
             foreach ($hechos as $hechoOption) {
-
-                $hechosOptions[$hechoOption->getId()] = $hechoOption->getHecho();
+                //$hechosOptions[$hechoOption->getId()][] = $hechoOption->getHecho();
+                $hechosOptions["id"] = $hechoOption->getId();
+                $hechosOptions["hecho"] = $hechoOption->getHecho();
+                $hechosOptions["desc"] = $hechoOption->getDescripcion();
+                $tmp[] = $hechosOptions;
             }
 
-            $model = new JsonModel($hechosOptions);
+            $model = new JsonModel($tmp);
 
             return $model;
         }
 
         //print_r($hechosOptions);
+    }
+
+    public function listarmunicipiosAction() {
+        $data = $this->request->getPost();
+        $depto = $data["depto"];
+        if (!empty($data["depto"])) {
+            $geografiaService = new GeografiaService();
+
+            $municipios = $geografiaService->ListarMunis($this->entityManager, $depto);
+            //$derechos = $calificaService->listarDerechos($this->entityManager);
+
+            $municipiosOptions = array();
+            foreach ($municipios as $municipioOption) {
+                $municipiosOptions[$municipioOption->getId()] = $municipioOption->getNombre();
+            }
+
+            $model = new JsonModel($municipiosOptions);
+
+            return $model;
+        }
     }
 
 }

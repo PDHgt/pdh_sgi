@@ -117,8 +117,16 @@
             "columnDefs": [
                 {"width": "5%", "targets": 5}
             ],
-            "bSort": true,
-            "order": [[0, "desc"]]
+            "order": [[0, "desc"]],
+            "dom": "<'row'<'col-sm-5'l><'col-sm-7'Bf>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+            "buttons": {
+                buttons: [
+                    {extend: 'copy', className: 'btn-sm'},
+                    {extend: 'excel', className: 'btn-sm'}
+                ]
+            }
         });
     });
 </script>

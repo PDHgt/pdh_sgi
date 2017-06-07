@@ -476,8 +476,4 @@ class FormularioRecepcion extends Form {
         ));
     }
 
-    public function getDeptos() {
-
-    }
-
 }

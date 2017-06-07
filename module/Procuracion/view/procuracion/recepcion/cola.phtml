@@ -97,30 +97,22 @@
         </div>
     </div>
 </section>
-
+<!--fab-button-add-->
 <div class="fixed-action-btn">
     <nav class="fab">
         <?php
         $permisos = $this->permisos;
         foreach ($permisos as $permiso) {
-            echo "<a class='fab-button bg-primary' href=" . $this->url('solicitud') . "/registro/" . $permiso["accion"] . "' tooltip='" . $permiso["accion"] . "'>";
             foreach ($permiso["permiso"] as $perm) {
-                print_r($perm);
-                echo "<br>";
+                if ($perm == 11) {
+                    echo "<a class='fab-button bg-primary " . $permiso["accion"] . "' href='" . $this->url('recepcion', array('action' => 'registro', 'id' => $permiso["accion"])) . "' tooltip='" . ucfirst($permiso["accion"]) . "'>";
+                }
             }
         }
         ?>
         <a class="fab-button" href="#"><span class="fab-span"><span class="fab-span rotate"></span></span></a>
     </nav>
-
-    <!--<button class="btn-default btn-floating btn-large waves-effect waves-light"><span class="glyphicon glyphicon-plus"></span></button>
-    <ul>
-        <li><a href="<?php /* echo $this->url('formulario') */ ?>registrovisita"><span class="glyphicon glyphicon-user"></span></a></li>
-    </ul>-->
 </div>
-
-
-
 <!-- Modal -->
 <div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -146,7 +138,8 @@
         $('#datatable').DataTable({
             "columnDefs": [
                 {"width": "10%", "targets": 6}
-            ]
+            ],
+            "bSort": false
         });
     });
 </script>

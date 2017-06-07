@@ -22,6 +22,16 @@ class Municipio
     private $id;
 
     /**
+     * @var \Procuracion\Entity\Departamento
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Departamento")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_departamento", referencedColumnName="Codigo")
+     * })
+     */
+    private $idDepartamento;
+    
+    /**
      * @var integer
      *
      * @ORM\Column(name="Codigo", type="integer", nullable=true)
@@ -45,6 +55,30 @@ class Municipio
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set depto
+     *
+     * @param \Procuracion\Entity\Departamento $depto
+     *
+     * @return Persona
+     */
+    public function setDepto(\Procuracion\Entity\Departamento $depto = null)
+    {
+        $this->idDepartamento = $depto;
+    
+        return $this;
+    }
+
+    /**
+     * Get depto
+     *
+     * @return \Procuracion\Entity\Departamento
+     */
+    public function getDepto()
+    {
+        return $this->idDepartamento;
     }
 
     /**
