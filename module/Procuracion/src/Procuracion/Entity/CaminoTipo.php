@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CaminoTipo
  *
- * @ORM\Table(name="camino_tipo", indexes={@ORM\Index(name="id_actividad", columns={"id_actividad"}), @ORM\Index(name="id_tipo_expediente", columns={"id_tipo_expediente"})})
+ * @ORM\Table(name="camino_tipo", indexes={@ORM\Index(name="id_etapa", columns={"id_etapa"}), @ORM\Index(name="id_tipo_expediente", columns={"id_tipo_expediente"}), @ORM\Index(name="anterior", columns={"Anterior"}), @ORM\Index(name="siguiente", columns={"Siguiente"})})
  * @ORM\Entity
  */
 class CaminoTipo
@@ -36,14 +36,34 @@ class CaminoTipo
     private $activo;
 
     /**
-     * @var \Procuracion\Entity\Actividad
+     * @var \Procuracion\Entity\Etapa
      *
-     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Actividad")
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Etapa")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_actividad", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="id_etapa", referencedColumnName="id")
      * })
      */
-    private $idActividad;
+    private $idEtapa;
+
+    /**
+     * @var \Procuracion\Entity\Etapa
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Etapa")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="Anterior", referencedColumnName="id")
+     * })
+     */
+    private $anterior;    
+
+    /**
+     * @var \Procuracion\Entity\Etapa
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Etapa")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="Siguiente", referencedColumnName="id")
+     * })
+     */
+    private $siguiente;    
 
     /**
      * @var \Procuracion\Entity\TipoExpediente
@@ -54,6 +74,20 @@ class CaminoTipo
      * })
      */
     private $idTipoExpediente;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Regresa", type="integer", nullable=true)
+     */
+    private $regresa;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Revision", type="integer", nullable=true)
+     */
+    private $revision;    
 
 
 
@@ -116,27 +150,75 @@ class CaminoTipo
     }
 
     /**
-     * Set idActividad
+     * Set idEtapa
      *
-     * @param \Procuracion\Entity\Actividad $idActividad
+     * @param \Procuracion\Entity\Etapa $idEtapa
      *
      * @return CaminoTipo
      */
-    public function setIdActividad(\Procuracion\Entity\Actividad $idActividad = null)
+    public function setIdEtapa(\Procuracion\Entity\Etapa $idEtapa = null)
     {
-        $this->idActividad = $idActividad;
+        $this->idEtapa = $idEtapa;
     
         return $this;
     }
 
     /**
-     * Get idActividad
+     * Get idEtapa
      *
-     * @return \Procuracion\Entity\Actividad
+     * @return \Procuracion\Entity\Etapa
      */
-    public function getIdActividad()
+    public function getIdEtapa()
     {
-        return $this->idActividad;
+        return $this->idEtapa;
+    }
+
+    /**
+     * Set anterior
+     *
+     * @param \Procuracion\Entity\Etapa $anterior
+     *
+     * @return CaminoTipo
+     */
+    public function setAnterior(\Procuracion\Entity\Etapa $anterior = null)
+    {
+        $this->anterior = $anterior;
+    
+        return $this;
+    }
+
+    /**
+     * Get anterior
+     *
+     * @return \Procuracion\Entity\Etapa
+     */
+    public function getAnterior()
+    {
+        return $this->anterior;
+    }
+
+    /**
+     * Set siguiente
+     *
+     * @param \Procuracion\Entity\Etapa $siguiente
+     *
+     * @return CaminoTipo
+     */
+    public function setSiguiente(\Procuracion\Entity\Etapa $siguiente = null)
+    {
+        $this->siguiente = $siguiente;
+    
+        return $this;
+    }
+
+    /**
+     * Get siguiente
+     *
+     * @return \Procuracion\Entity\Etapa
+     */
+    public function getSiguiente()
+    {
+        return $this->siguiente;
     }
 
     /**
@@ -162,4 +244,54 @@ class CaminoTipo
     {
         return $this->idTipoExpediente;
     }
+
+    /**
+     * Set regresa
+     *
+     * @param integer $regresa
+     *
+     * @return CaminoTipo
+     */
+    public function setRegresa($regresa)
+    {
+        $this->regresa = $regresa;
+    
+        return $this;
+    }
+
+    /**
+     * Get regresa
+     *
+     * @return integer
+     */
+    public function getRegresa()
+    {
+        return $this->regresa;
+    }
+
+    /**
+     * Set revision
+     *
+     * @param integer $revision
+     *
+     * @return CaminoTipo
+     */
+    public function setRevision($revision)
+    {
+        $this->revision = $revision;
+    
+        return $this;
+    }
+
+    /**
+     * Get revision
+     *
+     * @return integer
+     */
+    public function getRevision()
+    {
+        return $this->revision;
+    }
+
+
 }

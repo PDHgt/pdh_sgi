@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="expediente", indexes={@ORM\Index(name="id_cola", columns={"id_cola"}), @ORM\Index(name="id_tipo", columns={"id_tipo"}), @ORM\Index(name="id_sede", columns={"id_sede"}), @ORM\Index(name="DeptoHechos", columns={"DeptoHechos"}), @ORM\Index(name="MuniHechos", columns={"MuniHechos"}), @ORM\Index(name="Area", columns={"Area"}), @ORM\Index(name="Reportado", columns={"ReportadoAnteriormente"})})
  * @ORM\Entity
+ * @ORM\EntityListeners({"Procuracion\Listener\ExpedienteListener"})
  */
 class Expediente
 {
@@ -89,7 +90,7 @@ class Expediente
      *
      * @ORM\ManyToOne(targetEntity="Procuracion\Entity\DetalleCatalogo")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Area", referencedColumnName="Codigo")
+     *   @ORM\JoinColumn(name="Area", referencedColumnName="id")
      * })
      */
     private $area;
@@ -99,7 +100,7 @@ class Expediente
      *
      * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Departamento")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="DeptoHechos", referencedColumnName="Codigo")
+     *   @ORM\JoinColumn(name="DeptoHechos", referencedColumnName="id")
      * })
      */
     private $deptohechos;
@@ -109,7 +110,7 @@ class Expediente
      *
      * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Municipio")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="MuniHechos", referencedColumnName="Codigo")
+     *   @ORM\JoinColumn(name="MuniHechos", referencedColumnName="id")
      * })
      */
     private $munihechos;
@@ -119,7 +120,7 @@ class Expediente
      *
      * @ORM\ManyToOne(targetEntity="Procuracion\Entity\DetalleCatalogo")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="ReportadoAnteriormente", referencedColumnName="Codigo")
+     *   @ORM\JoinColumn(name="ReportadoAnteriormente", referencedColumnName="id")
      * })
      */
     private $reportadoanteriormente;
@@ -154,7 +155,21 @@ class Expediente
      */
     private $idTipo;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Correlativo", type="integer", nullable=true)
+     */
+    private $correlativo;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Anio", type="integer", nullable=true)
+     */
+    private $anio;
+
+    
 
     /**
      * Get id
@@ -549,4 +564,52 @@ class Expediente
     {
         return $this->idTipo;
     }
+
+    /**
+     * Set correlativo
+     *
+     * @param integer $correlativo
+     *
+     * @return Expediente
+     */
+    public function setCorrelativo($correlativo)
+    {
+        $this->correlativo= $correlativo;
+    
+        return $this;
+    }
+
+    /**
+     * Get correlativo
+     *
+     * @return integer
+     */
+    public function getCorrelativo()
+    {
+        return $this->correlativo;
+    }    
+
+    /**
+     * Set anio
+     *
+     * @param integer $anio
+     *
+     * @return Expediente
+     */
+    public function setAnio($anio)
+    {
+        $this->anio = $anio;
+    
+        return $this;
+    }
+
+    /**
+     * Get anio
+     *
+     * @return integer
+     */
+    public function getAnio()
+    {
+        return $this->anio;
+    }    
 }

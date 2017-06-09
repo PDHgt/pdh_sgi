@@ -1,13 +1,30 @@
+/********************* eventos cargados desde inicio *************************/
+
 $(document).ready(function() {
     $('#historyBack').click(function() {
         window.history.go(-1);
     });
-
-});
-
-
-
-$(function() {
+    $('#numdoc').on('keypress', function(e) {
+        if (e.which === 32)
+            return false;
+    });
+    $("#editarsolicitante").click(function() {
+        $("input[name='nombre']").attr('readonly', !$("input[name='nombre']").attr('readonly'));
+        $("input[name='apellido']").attr('readonly', !$("input[name='apellido']").attr('readonly'));
+        $("input[name='nac']").attr('readonly', !$("input[name='nac']").attr('readonly'));
+        $("input[name='edad']").attr('readonly', !$("input[name='edad']").attr('readonly'));
+        $("select[name='tipodoc']").attr('readonly', !$("select[name='tipodoc']").attr('readonly'));
+        $("input[name='numdoc']").attr('readonly', !$("input[name='numdoc']").attr('readonly'));
+        $("input[name='sexo']").attr('readonly', !$("input[name='sexo']").attr('readonly'));
+        $("input[name='lgbti']").attr('readonly', !$("input[name='lgbti']").attr('readonly'));
+        $("input[name='anonimo']").attr('readonly', !$("input[name='anonimo']").attr('readonly'));
+    });
+    $("input[name='tipoexpediente']").click(function() {
+        $("#calificacion").removeClass("collapsed-box");
+        $("input[name='derecho[]']").attr('checked', false);
+        $("#hechosviolatorios").empty();
+        $("#resumen").empty();
+    });
     $("#datepicker").datepicker({
         changeMonth: true,
         changeYear: true,
@@ -18,41 +35,151 @@ $(function() {
         dateFormat: 'dd/mm/yy'});
 });
 
+/************************* funcion calificador ********************************/
 
-function calificadorAdd(url, values) {
+function calificadorDerecho(input, url, id, comp) {
+    if ($(input).is(":checked")) {
+        $.ajax({
+            url: url,
+            dataType: "json",
+            type: "POST",
+            data: {id: id,
+                comp: comp
+            },
+            success: function(data) {
+                $.each(data, function(i) {
+                    $("#hechosviolatorios").append("<div class='checkbox' data-group='" + id + "' data-toogle='tooltip' title='" + data[i].desc + "'><label><input type='checkbox'  value='" + data[i].id + "' name='hechos[]'/> " + data[i].hecho + "</label></div>");
+                    $("[data-toogle='tooltip']").tooltip({placement: "left", trigger: "hover"});
+                    $("input[name='hechos[]'][value='" + data[i].id + "']").click(function() {
+                        if ($(this).is(":checked")) {
+                            $("#resumen").append("<div data-group='" + id + "'><p class='bg-info " + data[i].id + "'>" + data[i].hecho + "</p></div>");
+                        } else {
+                            $("p." + data[i].id + "").remove();
+                        }
+                    });
+                });
+            }
+        });
+    } else {
+
+        alert(id);
+        $("div[data-group='" + id + "']").empty();
+    }
+}
+
+/***************************** funcion departamento y municipio dependiente ******************************/
+
+function cambiarDepto(url, depto) {
+    $.ajax({
+        url: url,
+        dataType: 'json',
+        type: 'POST',
+        data: {depto: depto},
+        success: function(data) {
+            $.each(data, function(key, value) {
+                $("select[name='muni']")
+                        .append($("<option></option>")
+                                .attr("value", key)
+                                .text(value));
+            });
+
+        }
+    });
+    $("select[name='muni']").empty();
+}
+
+/**************************** funcion validar campos *************************************/
+
+function validarNumdoc() {
+    $("#numdoc").attr("required", "true");
+    if ($("#numdoc").val() !== '') {
+        $("#tipodoc").attr("required", "true");
+    }
+}
+
+/***************************** funcion autocompletar datos con dpi ***************************/
+
+
+function validarDPI(url, request, response) {
     $.ajax({
         url: url,
         dataType: "json",
         type: "POST",
-        data: {values: values},
-        success: function(data) {
-            $("#hechosviolatorios").html("");
-            $.each(data, function(i, record) {
-                $("#hechosviolatorios").append("<div class='checkbox'><label><input type='checkbox' value='" + i + "' name='hechos[]' /> " + record + "</label></div>");
-            });
+        data: {
+            term: request.term
         },
-        error: function() {
-            $("#hechosviolatorios").html("No se ha seleccionado ningun derecho");
+        success: function(data) {
+            response($.map(data, function(item) {
+                return {
+                    label: item,
+                    value: item
+                };
+            }));
         }
     });
 }
-function calificadorRemove(url, value) {
+
+function completarDatosDPI(url) {
     $.ajax({
         url: url,
         dataType: "json",
         type: "POST",
-        data: {value: value},
+        data: {
+            term: $("#numdoc").val()
+        },
         success: function(data) {
-            $("#hechosviolatorios").html("");
-            $.each(data, function(i, record) {
-                $("#hechosviolatorios").remove("<div class='checkbox'><label><input type='checkbox' value='" + i + "' name='hechos[]' /> " + record + "</label></div>");
-            });
+            if (!$("#numdoc").val()) {
+
+            } else {
+                $('#id').val(data[0]);
+                $('input[name="pid"]').val(data[0]);
+                $('#tipodoc').val(data[1]);
+                $('#datepicker').val(data[2]);
+                $('#nombres').val(data[4]);
+                $('#apellidos').val(data[5]);
+                var $radios = $("input[name='sexo']");
+                if ($radios.is(':checked') === false) {
+                    $radios.filter('[value=' + data[3] + ']').prop('checked', true);
+                }
+            }
         },
         error: function() {
-            $("#hechosviolatorios").html("No se ha seleccionado ningun derecho");
+            $('#id').val();
+            $('input[name="pid"]').val();
+            $('#tipodoc').val();
+            $('#datepicker').val();
+            $('#nombres').val();
+            $('#apellidos').val();
         }
     });
+
 }
+
+/************************** funcion para cambiar campos cuando es anonimo ***********************/
+function esAnonimo(input) {
+    if ($(input).is(":checked")) {
+        $("#tipodoc").attr('readonly', true).val('', true);
+        $("#numdoc").attr('readonly', true).val('', true);
+        $("#nombres").attr('readonly', true).val('Anónimo', true);
+        $("#apellidos").attr('readonly', true).val('Anónimo', true);
+        $("input[name='edad']").attr('readonly', true).val('', true);
+        $("#datepicker").attr('readonly', true).val('', true);
+    } else {
+        $('#recepcion').trigger("reset");
+        $("#tipodoc").attr('readonly', false);
+        $("#numdoc").attr('readonly', false);
+        $("#nombres").attr('readonly', false);
+        $("#apellidos").attr('readonly', false);
+        $("input[name='edad']").attr('readonly', false);
+        $("#datepicker").attr('readonly', false);
+    }
+}
+
+
+
+
+
+/**************************** funciones efectos de botones ***********************************/
 
 
 (function(window) {

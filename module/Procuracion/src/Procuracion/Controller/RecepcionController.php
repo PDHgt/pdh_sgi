@@ -11,6 +11,7 @@ use Procuracion\Service\PersonaService;
 use Procuracion\Service\UsuarioService;
 use Procuracion\Service\CuboCalificacionService;
 use Procuracion\Service\GeografiaService;
+use Procuracion\Service\ExpedienteService;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Authentication\AuthenticationService as AuthService;
@@ -25,7 +26,7 @@ class RecepcionController extends AbstractActionController {
     public function __construct(EntityManager $entityManager, AuthService $authService) {
         $this->entityManager = $entityManager;
         $this->authService = $authService;
-        //$this->perfil = $this->authService->getIdentity()->getUsuario();
+//$this->perfil = $this->authService->getIdentity()->getUsuario();
     }
 
     public function indexAction() {
@@ -37,7 +38,7 @@ class RecepcionController extends AbstractActionController {
         }
     }
 
-    ///****************************Métodos para mostrar grids de registros*******************************///
+///****************************Métodos para mostrar grids de registros*******************************///
 
     public function visitaAction() {
 
@@ -174,8 +175,6 @@ class RecepcionController extends AbstractActionController {
             $solicitudservice = new ColaRecepcionService();
             $solicitudes = $solicitudservice->getPorFechas($this->entityManager, $fechaInicio->format("Y-m-d H:i:s"), $fechaFin->format("Y-m-d H:i:s"));
 
-            //print_r(array_merge($visitas, $cola));
-
             $header = new ViewModel();
             $header->setVariables(array('identity' => $identity));
             $header->setTemplate('header');
@@ -193,7 +192,7 @@ class RecepcionController extends AbstractActionController {
         }
     }
 
-    ///********************Métodos para mostrar formularios de captura de datos***************************///
+///********************Métodos para mostrar formularios de captura de datos***************************///
 
 
     public function registroAction() {
@@ -203,10 +202,6 @@ class RecepcionController extends AbstractActionController {
             $identity = $this->authService->getIdentity();
 
             $param = $this->params()->fromRoute('id');
-            //echo $param;
-
-            /* $value = explode("/", $url);
-              $currenturl = end($value); */
 
             $empleadoservice = new EmpleadoService();
             $empleados = $empleadoservice->listAll($this->entityManager);
@@ -246,6 +241,7 @@ class RecepcionController extends AbstractActionController {
             return $this->redirect()->toRoute('inicio', array('action' => 'login'));
         } else {
             $identity = $this->authService->getIdentity();
+
             $id = $this->getEvent()->getRouteMatch()->getParam('id');
 
             $form = new FormularioRecepcion();
@@ -405,7 +401,8 @@ class RecepcionController extends AbstractActionController {
         return $view;
     }
 
-    ///******************* Métodos para guardar datos *********************////
+///******************* Métodos para guardar datos *********************////
+
     public function guardarAction() {
 
         $data = $this->request->getPost();
@@ -448,8 +445,6 @@ class RecepcionController extends AbstractActionController {
             'obs' => $data['obs']
         );
         $registro = new PersonaService();
-        //guarda una visita nueva
-
         switch ($data['tipopersona']) {
             case 'visitante':
                 $registro->savePersona($this->entityManager, $persona, $visita, 1);
@@ -461,11 +456,60 @@ class RecepcionController extends AbstractActionController {
     }
 
     public function guardarSolicitudAction() {
-        print_r($_POST);
+
+        $data = $this->request->getPost();
+        $identity = $this->authService->getIdentity();
+        $sede = $identity->getIdEmpleado()->getIdsede()->getId();
+
+
+        if (empty($data["nac"])) {
+            $nac = NULL;
+        } else {
+            $nac = date_create_from_format('d/m/Y', $data["nac"]);
+        }
+
+        if (empty($data["fecha"])) {
+            $fecha = NULL;
+        } else {
+            $fecha = date_create_from_format('d/m/Y', $data["fecha"]);
+        }
+
+
+        $persona = array(
+            'id' => $data["pid"],
+            'nombres' => $data["nombre"],
+            'apellidos' => $data["apellido"],
+            'tipo' => $data["tipodoc"],
+            'numero' => $data["numdoc"],
+            'sexo' => $data["sexo"],
+            'nac' => $nac,
+            'lgbti' => $data["lgbti"],
+            'anonimo' => $data["anonimo"]
+        );
+
+        $datos = array(
+            'sede' => $sede,
+            'tipo' => $data["tipoexpediente"],
+            'cola' => $data["id"],
+            'departamento' => $data["depto"],
+            'municipio' => $data["muni"],
+            'area' => $data["areaubicacion"],
+            'hechos' => $data["descripcionhechos"],
+            'direccion' => $data["direccion"],
+            'fecha' => $fecha,
+            'peticion' => $data["peticion"],
+            'pruebas' => $data["pruebas"]
+        );
+
+        $calificacion = $data["hechos"];
+
+        $expervice = new ExpedienteService();
+        $expervice->Save($this->entityManager, $datos, $calificacion, $persona);
+
         //return $this->redirect()->toRoute('recepcion', array('action' => 'cola'));
     }
 
-    ///************************Métodos para modificar registros*****************************///
+///************************Métodos para modificar registros*****************************///
 
     public function actualizarAction() {
         $identity = $this->authService->getIdentity();
@@ -509,7 +553,7 @@ class RecepcionController extends AbstractActionController {
             'obs' => $data['obs']
         );
         $registro = new PersonaService();
-        //guarda una visita nueva
+//guarda una visita nueva
 
         switch ($data['tipopersona']) {
             case 'visitante':
@@ -542,7 +586,7 @@ class RecepcionController extends AbstractActionController {
         $colaservice = new ColaRecepcionService();
         $colaservice->departure($this->entityManager, $departure);
 
-        //return $this->forward()->dispatch('Procuracion\Controller\Recepcion', array('action' => 'cola'));
+//return $this->forward()->dispatch('Procuracion\Controller\Recepcion', array('action' => 'cola'));
         return $this->redirect()->toRoute('recepcion', array('action' => 'cola'));
     }
 
@@ -555,11 +599,11 @@ class RecepcionController extends AbstractActionController {
         $colaservice = new ColaRecepcionService();
         $colaservice->attend($this->entityManager, $attend);
 
-        //$this->redirect()->toRoute('recepcion', array('action' => 'cola'));
+//$this->redirect()->toRoute('recepcion', array('action' => 'cola'));
         $this->redirect()->toRoute('recepcion', array('action' => 'solicitud', 'id' => $id));
     }
 
-    ///*****************************Métodos para mostrar detalles*****************************///
+///*****************************Métodos para mostrar detalles*****************************///
 
     public function detallevisitaAction() {
         if (!$this->authService->hasIdentity()) {
@@ -598,17 +642,17 @@ class RecepcionController extends AbstractActionController {
 
             $id = $this->getEvent()->getRouteMatch()->getParam('id');
 
-            //var_dump($id);
+//var_dump($id);
 
             $visitaservice = new VisitaService();
             $visitas = $visitaservice->getVisitas($this->entityManager, $id);
 
-            //var_dump($visitas);
+//var_dump($visitas);
 
             $colaservice = new ColaRecepcionService();
             $cola = $colaservice->getEnCola($this->entityManager, $id);
 
-            // var_dump($cola);
+// var_dump($cola);
 
             $header = new ViewModel();
             $header->setVariables(array('identity' => $identity));

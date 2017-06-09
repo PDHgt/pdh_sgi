@@ -26,11 +26,8 @@ class ValidacionController extends AbstractActionController {
         $data = $this->request->getPost();
         $personaservice = new PersonaService();
         $personas = $personaservice->findByDPI($this->entityManager, $data["term"]);
-        //print_r($personas);
-        //$personasOptions = array();
         foreach ($personas as $personaOption) {
             $personasOptions[$personaOption->getId()] = $personaOption->getNumerodocumento();
-            //'id' => $personasOptions[$personaOption->getId()] = $personaOption->getId() = 'numdoc' => $personasOptions[$personaOption->getId()] = $personaOption->getNumerodocumento();
         }
         $result = new JsonModel($personasOptions);
         return $result;
@@ -53,7 +50,6 @@ class ValidacionController extends AbstractActionController {
                 $personasOptions['tipodoc'] = $personaOption->getTipodocumento(),
                 $personasOptions['fechanac'] = $date,
                 $personasOptions['sexo'] = $personaOption->getSexo(),
-                //$personasOptions['numdoc'] = $personaOption->getTipodocumento(),
                 $personasOptions['nombres'] = $personaOption->getNombres(),
                 $personasOptions['apellidos'] = $personaOption->getApellidos()
             );
@@ -69,7 +65,6 @@ class ValidacionController extends AbstractActionController {
         $empleados = $empleadoservice->listAll($this->entityManager);
         foreach ($empleados as $empleadoOption) {
             $empleadosOptions[$empleadoOption->getId()] = $empleadoOption->getNombres() . " " . $empleadoOption->getApellidos();
-            //'id' => $personasOptions[$personaOption->getId()] = $personaOption->getId() = 'numdoc' => $personasOptions[$personaOption->getId()] = $personaOption->getNumerodocumento();
         }
         $result = new JsonModel($empleadosOptions);
         return $result;
@@ -84,8 +79,6 @@ class ValidacionController extends AbstractActionController {
             $calificaService = new CuboCalificacionService();
 
             $hechos = $calificaService->listarHechos($this->entityManager, $derecho, $competencia);
-            //$derechos = $calificaService->listarDerechos($this->entityManager);
-
 
             $tmp = array();
             $hechosOptions = array();
@@ -101,8 +94,6 @@ class ValidacionController extends AbstractActionController {
 
             return $model;
         }
-
-        //print_r($hechosOptions);
     }
 
     public function listarmunicipiosAction() {
@@ -112,11 +103,10 @@ class ValidacionController extends AbstractActionController {
             $geografiaService = new GeografiaService();
 
             $municipios = $geografiaService->ListarMunis($this->entityManager, $depto);
-            //$derechos = $calificaService->listarDerechos($this->entityManager);
 
             $municipiosOptions = array();
             foreach ($municipios as $municipioOption) {
-                $municipiosOptions[$municipioOption->getId()] = $municipioOption->getNombre();
+                $municipiosOptions[$municipioOption->getCodigo()] = $municipioOption->getNombre();
             }
 
             $model = new JsonModel($municipiosOptions);

@@ -61,15 +61,15 @@ class CuboCalificacionService {
 
     public function setCalificacion(EntityManager $em, array $hechosderechos, $idExpediente) {
         //borrar todo
-        $cadena = "DELETE FROM Procuracion\Entity\ExpedienteHechoDerecho p WHERE p.idExpediente = " . $idExpediente;
+        $cadena = "DELETE FROM Procuracion\Entity\ExpedienteHechoDerecho p WHERE p.idExpediente = " . $idExpediente->getId();
         $query = $em->createQuery($cadena);
         $query->execute();
         //insertar nuevos
-        $exp = $em->getRepository('Procuracion\Entity\Expediente')->find($idExpediente);
+        $exp = $em->getRepository('Procuracion\Entity\Expediente')->find($idExpediente->getId());
         foreach ($hechosderechos as $hechoderecho) {
             $hecho = new ExpedienteHechoDerecho();
             $hecho->setIdExpediente($exp);
-            $hd = $em->getRepository('Procuracion\Entity\DefHecho')->find($hechoderecho['id']);
+            $hd = $em->getRepository('Procuracion\Entity\DefHecho')->find($hechoderecho);
             $hecho->setIdHecho($hd);
             $em->persist($hecho);
             $em->flush();

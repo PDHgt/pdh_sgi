@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * TrabajoExpediente
  *
- * @ORM\Table(name="trabajo_expediente", indexes={@ORM\Index(name="id_exp", columns={"id_expediente"}), @ORM\Index(name="id_act", columns={"id_actividad"}), @ORM\Index(name="id_usr", columns={"id_usuario"}), @ORM\Index(name="id_usr_asig", columns={"id_usuario_asigna"})})
+ * @ORM\Table(name="trabajo_expediente", indexes={@ORM\Index(name="id_exp", columns={"id_expediente"}), @ORM\Index(name="id_etapa", columns={"id_etapa"}), @ORM\Index(name="id_usr", columns={"id_usuario"}), @ORM\Index(name="id_usr_asig", columns={"id_usuario_asigna"})})
  * @ORM\Entity
  */
 class TrabajoExpediente
@@ -43,14 +43,14 @@ class TrabajoExpediente
     private $fechaasignacion;
 
     /**
-     * @var \Procuracion\Entity\Actividad
+     * @var \Procuracion\Entity\Etapa
      *
-     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Actividad")
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Etapa")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_actividad", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="id_etapa", referencedColumnName="id")
      * })
      */
-    private $idActividad;
+    private $idEtapa;
 
     /**
      * @var \Procuracion\Entity\Expediente

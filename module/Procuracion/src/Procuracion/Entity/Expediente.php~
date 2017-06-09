@@ -89,7 +89,7 @@ class Expediente
      *
      * @ORM\ManyToOne(targetEntity="Procuracion\Entity\DetalleCatalogo")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Area", referencedColumnName="Codigo")
+     *   @ORM\JoinColumn(name="Area", referencedColumnName="id")
      * })
      */
     private $area;
@@ -99,7 +99,7 @@ class Expediente
      *
      * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Departamento")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="DeptoHechos", referencedColumnName="Codigo")
+     *   @ORM\JoinColumn(name="DeptoHechos", referencedColumnName="id")
      * })
      */
     private $deptohechos;
@@ -109,7 +109,7 @@ class Expediente
      *
      * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Municipio")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="MuniHechos", referencedColumnName="Codigo")
+     *   @ORM\JoinColumn(name="MuniHechos", referencedColumnName="id")
      * })
      */
     private $munihechos;
@@ -119,7 +119,7 @@ class Expediente
      *
      * @ORM\ManyToOne(targetEntity="Procuracion\Entity\DetalleCatalogo")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="ReportadoAnteriormente", referencedColumnName="Codigo")
+     *   @ORM\JoinColumn(name="ReportadoAnteriormente", referencedColumnName="id")
      * })
      */
     private $reportadoanteriormente;
@@ -153,6 +153,21 @@ class Expediente
      * })
      */
     private $idTipo;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Correlativo", type="integer", nullable=true)
+     */
+    private $correlativo;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Anio", type="integer", nullable=true)
+     */
+    private $anio;
+
 
 
 }

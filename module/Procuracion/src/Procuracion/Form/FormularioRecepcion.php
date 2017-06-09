@@ -173,8 +173,8 @@ class FormularioRecepcion extends Form {
                 'label' => 'Tipo de área',
                 'empty_option' => 'Seleccione una opción',
                 'value_options' => array(
-                    '0' => 'Rural',
-                    '1' => 'Urbana'
+                    '1' => 'Rural',
+                    '2' => 'Urbana'
                 ),
             ),
             'attributes' => array(
@@ -341,7 +341,6 @@ class FormularioRecepcion extends Form {
                 )
             ),
             'attributes' => array(
-                'id' => 'sexo'
             )
         ));
         //Campo lgbti
@@ -372,8 +371,8 @@ class FormularioRecepcion extends Form {
                     'class' => 'radio-inline tipoexpediente'
                 ),
                 'value_options' => array(
-                    '0' => 'Orientación',
-                    '1' => 'Investigación'
+                    '1' => 'Orientación',
+                    '4' => 'Investigación'
                 )
             )
         ));
@@ -403,7 +402,7 @@ class FormularioRecepcion extends Form {
         ));
         //Campo hechos
         $this->add(array(
-            'name' => 'hechos',
+            'name' => 'descripcionhechos',
             'options' => array(
                 'label' => 'Hechos',
             ),

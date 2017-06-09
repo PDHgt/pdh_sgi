@@ -43,14 +43,14 @@ class TrabajoExpediente
     private $fechaasignacion;
 
     /**
-     * @var \Procuracion\Entity\Actividad
+     * @var \Procuracion\Entity\Etapa
      *
-     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Actividad")
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Etapa")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_actividad", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="id_etapa", referencedColumnName="id")
      * })
      */
-    private $idActividad;
+    private $idEtapa;
 
     /**
      * @var \Procuracion\Entity\Expediente
@@ -167,27 +167,27 @@ class TrabajoExpediente
     }
 
     /**
-     * Set idActividad
+     * Set idEtapa
      *
-     * @param \Procuracion\Entity\Actividad $idActividad
+     * @param \Procuracion\Entity\Etapa $idEtapa
      *
      * @return TrabajoExpediente
      */
-    public function setIdActividad(\Procuracion\Entity\Actividad $idActividad = null)
+    public function setIdEtapa(\Procuracion\Entity\Etapa $idEtapa = null)
     {
-        $this->idActividad = $idActividad;
+        $this->idEtapa = $idEtapa;
     
         return $this;
     }
 
     /**
-     * Get idActividad
+     * Get idEtapa
      *
-     * @return \Procuracion\Entity\Actividad
+     * @return \Procuracion\Entity\AEtapa
      */
-    public function getIdActividad()
+    public function getIdEtapa()
     {
-        return $this->idActividad;
+        return $this->idEtapa;
     }
 
     /**

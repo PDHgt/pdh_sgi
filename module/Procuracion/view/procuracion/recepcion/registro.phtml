@@ -36,30 +36,11 @@
                             <div class="form-group">
                                 <?php
                                 $fecha_actual = date("Y-m-d H:i:s");
-                                //echo $fecha_actual;
                                 $fecha = $form->get('fecha')->setValue($fecha_actual);
-                                /* echo $formLabel->openTag() . $fecha->getOption('label') . " ";
-
-                                  //echo $this->formElementErrors($name);
-                                  echo $formLabel->closeTag(); */
                                 echo $this->formInput($fecha);
                                 ?>
                             </div>
                         </div>
-                        <!--<div class="col-xs-6">
-                            <div class="form-group">
-
-                          $hora_actual = date("H:i:s");
-                          //echo $hora_actual;
-                          $hora = $form->get('hora')->setValue($hora_actual);
-                          echo $formLabel->openTag() . $hora->getOption('label') . " ";
-
-                          //echo $this->formElementErrors($name);
-                          echo $formLabel->closeTag();
-                          echo $this->formInput($hora); */
-
-                            </div>
-                        </div>-->
                         <?php if ($this->url === 'solicitud') { ?>
                             <div class="col-xs-12">
                                 <div class="form-group alert  alert-warning ">
@@ -78,8 +59,6 @@
                                 <?php
                                 $tipodoc = $form->get('tipodoc');
                                 echo $formLabel->openTag() . $tipodoc->getOption('label') . " ";
-
-                                //echo $this->formElementErrors($name);
                                 echo $formLabel->closeTag();
                                 echo $this->formSelect($tipodoc);
                                 ?>
@@ -129,8 +108,6 @@
                                         <?php
                                         $nombre = $form->get('nombre');
                                         echo $formLabel->openTag() . $nombre->getOption('label') . " ";
-
-                                        //echo $this->formElementErrors($name);
                                         echo $formLabel->closeTag();
                                         echo $this->formInput($nombre);
                                         ?>
@@ -141,8 +118,6 @@
                                         <?php
                                         $apellido = $form->get('apellido');
                                         echo $formLabel->openTag() . $apellido->getOption('label') . " ";
-
-                                        //echo $this->formElementErrors($name);
                                         echo $formLabel->closeTag();
                                         echo $this->formInput($apellido);
                                         ?>
@@ -163,8 +138,6 @@
                                             <?php
                                             $institucion = $form->get('institucion');
                                             echo $formLabel->openTag() . $institucion->getOption('label') . " ";
-
-                                            //echo $this->formElementErrors($name);
                                             echo $formLabel->closeTag();
                                             echo $this->formInput($institucion);
                                             ?>
@@ -180,8 +153,6 @@
                                             }
                                             $empleado = $form->get('empleado')->setValueOptions($empleadosOptions);
                                             echo $formLabel->openTag() . $empleado->getOption('label') . " ";
-
-                                            //echo $this->formElementErrors($name);
                                             echo $formLabel->closeTag();
                                             echo $this->formSelect($empleado);
                                             ?>
@@ -242,7 +213,6 @@
                                 } else {
                                     $obs = $form->get('obs');
                                     echo $formLabel->openTag() . $obs->getOption('label') . " ";
-                                    //echo $this->formElementErrors($name);
                                     echo $formLabel->closeTag();
                                     echo $this->formTextarea($obs);
                                 }
@@ -264,90 +234,48 @@
 
 
 <script type="text/javascript">
-    $(document).ready(function() {
-        $('#numdoc').on('keypress', function(e) {
-            if (e.which == 32)
-                return false;
-        });
-        $("#numdoc").autocomplete({
-            source: function(request, response) {
-                $.ajax({
-                    url: "<?php echo $this->basePath(); ?>/validacion/validardpi",
-                    dataType: "json",
-                    type: "POST",
-                    data: {
-                        term: request.term
-                    },
-                    success: function(data) {
-                        response($.map(data, function(item) {
-                            return {
-                                label: item,
-                                value: item
-                            };
-                        }));
-                    }
-                    /*error: function(a, b, c) {
-                     debugger;
-                     }*/
-                });
 
-            }
-        });
-        $("#numdoc").focusout(function() {
-            $.ajax({
-                url: "<?php echo $this->basePath(); ?>/validacion/seleccionardpi",
-                dataType: "json",
-                type: "POST",
-                data: {
-                    term: $("#numdoc").val()
-                },
-                success: function(data) {
-                    if (!$("#numdoc").val()) {
+    var input = "#anonimo";
 
-                    } else {
-                        $('#id').val(data[0]);
-                        $('#tipodoc').val(data[1]);
-                        $('#datepicker').val(data[2]);
-                        //$('#sexo').val(data[3]);
-                        $('#nombres').val(data[4]);
-                        $('#apellidos').val(data[5]);
-                        var $radios = $('input:radio[name=sexo]');
-                        if ($radios.is(':checked') === false) {
-                            $radios.filter('[value=' + data[3] + ']').prop('checked', true);
-                        }
-                    }
-                },
-                error: function() {
-                    $('#id').val();
-                    $('#tipodoc').val();
-                    $('#datepicker').val();
-                    //$('#sexo').val(data[3]);
-                    $('#nombres').val();
-                    $('#apellidos').val();
-                }
-            });
-            if ($("#numdoc").val() !== '') {
-                $("#tipodoc").attr("required", "true");
-            }
-        });
-        $("#anonimo").change(function() {
-            if (this.checked) {
-                $("#tipodoc").attr('readonly', true);
-                $("#numdoc").attr('readonly', true);
-                $("#nombres").val('Anónimo', true);
-                $("#apellidos").val('Anónimo', true);
-                $("#datepicker").attr('readonly', true);
-            } else {
-                $('#recepcion').trigger("reset");
-                $("#tipodoc").attr('readonly', false);
-                $("#numdoc").attr('readonly', false);
-                $("#datepicker").attr('readonly', false);
-            }
-        });
-        /*$("#anonimo").change(function() {
-
-         });*/
+    $(input).change(function() {
+        esAnonimo(input);
     });
+
+
+    $("#tipodoc").change(function() {
+        validarNumdoc();
+    });
+
+    var url = "<?php echo $this->basePath(); ?>/validacion/validardpi";
+    $("#numdoc").autocomplete({
+        source: function(request, response) {
+            validarDPI(url, request, response);
+
+        }
+    });
+
+    $("#numdoc").focusout(function() {
+        var url = "<?php echo $this->basePath(); ?>/validacion/seleccionardpi";
+        completarDatosDPI(url);
+
+    });
+
+
+    $("select[name='depto']").change(function() {
+        var url = "<?php echo $this->basePath(); ?>/validacion/listarmunicipios";
+        var depto = $(this).val();
+        cambiarDepto(url, depto);
+    });
+
+    var check = "input[name='derecho[]']";
+    $(check).click(function() {
+        var url = "<?php echo $this->basePath(); ?>/validacion/listarhechos";
+        var id = $(this).val();
+        var comp = $("input[name='tipoexpediente']:checked").val();
+        calificadorDerecho(check, url, id, comp);
+    });
+
+
 
 </script>
 

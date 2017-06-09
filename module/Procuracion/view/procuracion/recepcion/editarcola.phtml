@@ -229,7 +229,7 @@
                     $('#nombres').val(data[4]);
                     $('#apellidos').val(data[5]);
 
-                    var $radios = $('input:radio[name=sexo]');
+                    var $radios = $("input['name=sexo']");
                     if ($radios.is(':checked') === false) {
                         $radios.filter('[value=' + data[3] + ']').prop('checked', true);
                     }

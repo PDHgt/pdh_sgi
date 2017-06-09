@@ -31,6 +31,13 @@ class Sede
     /**
      * @var string
      *
+     * @ORM\Column(name="NombreCorto", type="string", length=10, nullable=true)
+     */
+    private $nombrecorto;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="Direccion", type="string", length=255, nullable=true)
      */
     private $direccion;
@@ -83,6 +90,30 @@ class Sede
     public function getNombre()
     {
         return $this->nombre;
+    }
+
+    /**
+     * Set nombrecorto
+     *
+     * @param string $nombre
+     *
+     * @return Sede
+     */
+    public function setNombreCorto($nombre)
+    {
+        $this->nombrecorto = $nombre;
+    
+        return $this;
+    }
+
+    /**
+     * Get nombrecorto
+     *
+     * @return string
+     */
+    public function getNombreCorto()
+    {
+        return $this->nombrecorto;
     }
 
     /**

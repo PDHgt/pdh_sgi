@@ -73,7 +73,7 @@
         foreach ($permisos as $permiso) {
             foreach ($permiso["permiso"] as $perm) {
                 if ($perm == 11) {
-                    echo "<a class='fab-button bg-primary " . $permiso["accion"] . "' href='" . $this->url('recepcion', array('action' => 'registro', 'id' => $permiso["accion"])) . "' tooltip='" . ucfirst($permiso["accion"]) . "'>";
+                    echo "<a class='fab-button bg-primary " . $permiso["accion"] . "' href='" . $this->url('recepcion', array('action' => 'registro', 'id' => $permiso["accion"])) . "' data-tip='tooltip' title='" . ucfirst($permiso["accion"]) . "'>";
                 }
             }
         }
