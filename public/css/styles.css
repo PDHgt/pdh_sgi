@@ -22,6 +22,12 @@ h1.bigfont{
     display:inline;
 }
 
+.box-header .description{
+    color: #999;
+    font-size: 12px;
+    display: block;
+}
+
 .fixed-action-btn {
     position: fixed;
     right: 15px;

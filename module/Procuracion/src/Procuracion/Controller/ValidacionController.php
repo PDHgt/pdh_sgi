@@ -6,6 +6,7 @@ use Procuracion\Service\PersonaService;
 use Procuracion\Service\EmpleadoService;
 use Procuracion\Service\CuboCalificacionService;
 use Procuracion\Service\GeografiaService;
+use Procuracion\Service\RemisionService;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 use Zend\Authentication\AuthenticationService as AuthService;
@@ -51,7 +52,8 @@ class ValidacionController extends AbstractActionController {
                 $personasOptions['fechanac'] = $date,
                 $personasOptions['sexo'] = $personaOption->getSexo(),
                 $personasOptions['nombres'] = $personaOption->getNombres(),
-                $personasOptions['apellidos'] = $personaOption->getApellidos()
+                $personasOptions['apellidos'] = $personaOption->getApellidos(),
+                $personasOptions['lgbti'] = $personaOption->getLgbti()
             );
         }
 
@@ -96,13 +98,35 @@ class ValidacionController extends AbstractActionController {
         }
     }
 
+    public function listarinstitucionesAction() {
+        $data = $this->request->getPost();
+        $institucion = $data["id"];
+
+
+        if (!empty($data["id"])) {
+            $institcionservice = new RemisionService();
+            $instituciones = $institcionservice->listarInstituciones($this->entityManager, $institucion);
+
+            $tmp = array();
+            $institucionesOptions = array();
+            foreach ($instituciones as $institucionOption) {
+                //$hechosOptions[$hechoOption->getId()][] = $hechoOption->getHecho();
+                $institucionesOptions["id"] = $institucionOption->getId();
+                $institucionesOptions["institucion"] = $institucionOption->getInstitucion();
+                $tmp[] = $institucionesOptions;
+            }
+            $model = new JsonModel($tmp);
+            return $model;
+        }
+    }
+
     public function listarmunicipiosAction() {
         $data = $this->request->getPost();
         $depto = $data["depto"];
         if (!empty($data["depto"])) {
             $geografiaService = new GeografiaService();
 
-            $municipios = $geografiaService->ListarMunis($this->entityManager, $depto);
+            $municipios = $geografiaService->ListarMunisPorDepto($this->entityManager, $depto);
 
             $municipiosOptions = array();
             foreach ($municipios as $municipioOption) {
@@ -110,6 +134,26 @@ class ValidacionController extends AbstractActionController {
             }
 
             $model = new JsonModel($municipiosOptions);
+
+            return $model;
+        }
+    }
+
+    public function listarempleadosAction() {
+        $data = $this->request->getPost();
+        $unidad = $data["unidad"];
+        if (!empty($data["unidad"])) {
+
+            $empleadoservice = new EmpleadoService();
+
+            $empleados = $empleadoservice->getEmpleadosPorUnidad($this->entityManager, $unidad);
+
+            $empleadosOptions = array();
+            foreach ($empleados as $empleadoOption) {
+                $empleadosOptions[$empleadoOption->getId()] = $empleadoOption->getNombres() . " " . $empleadoOption->getApellidos();
+            }
+
+            $model = new JsonModel($empleadosOptions);
 
             return $model;
         }

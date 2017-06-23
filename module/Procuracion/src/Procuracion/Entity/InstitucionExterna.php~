@@ -22,6 +22,16 @@ class InstitucionExterna
     private $id;
 
     /**
+     * @var \Procuracion\Entity\InstitucionPadre
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\InstitucionPadre")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_padre", referencedColumnName="id")
+     * })
+     */
+    private $idPadre;
+    
+    /**
      * @var string
      *
      * @ORM\Column(name="Institucion", type="string", length=255, nullable=true)

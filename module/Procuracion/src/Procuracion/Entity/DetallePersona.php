@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * DetallePersona
  *
- * @ORM\Table(name="detalle_persona", indexes={@ORM\Index(name="id_per", columns={"id_persona"}), @ORM\Index(name="Alfabeta", columns={"Alfabeta"}), @ORM\Index(name="Escolaridad", columns={"Escolaridad"}), @ORM\Index(name="EstadoConyugal", columns={"EstadoConyugal"}), @ORM\Index(name="PuebloPertenencia", columns={"PuebloPertenencia"}), @ORM\Index(name="Nacionalidad", columns={"Nacionalidad"}), @ORM\Index(name="Trabaja", columns={"Trabaja"}), @ORM\Index(name="Ocupacion", columns={"Ocupacion"}), @ORM\Index(name="Dedicacion", columns={"Dedicacion"}), @ORM\Index(name="Discapacidad", columns={"Discapacidad"}), @ORM\Index(name="TipoDiscapacidad", columns={"TipoDiscapacidad"})})
+ * @ORM\Table(name="detalle_persona", indexes={@ORM\Index(name="id_per", columns={"id_persona"}), @ORM\Index(name="Alfabeta", columns={"Alfabeta"}), @ORM\Index(name="Escolaridad", columns={"Escolaridad"}), @ORM\Index(name="EstadoConyugal", columns={"EstadoConyugal"}), @ORM\Index(name="PuebloPertenencia", columns={"PuebloPertenencia"}), @ORM\Index(name="nacionalidad", columns={"nacionalidad"}), @ORM\Index(name="Trabaja", columns={"Trabaja"}), @ORM\Index(name="Ocupacion", columns={"Ocupacion"}), @ORM\Index(name="Dedicacion", columns={"Dedicacion"}), @ORM\Index(name="Discapacidad", columns={"Discapacidad"}), @ORM\Index(name="TipoDiscapacidad", columns={"TipoDiscapacidad"})})
  * @ORM\Entity
  */
 class DetallePersona
@@ -76,7 +76,7 @@ class DetallePersona
      *
      * @ORM\ManyToOne(targetEntity="Procuracion\Entity\DetalleCatalogo")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Nacionalidad", referencedColumnName="Codigo")
+     *   @ORM\JoinColumn(name="nacionalidad", referencedColumnName="Codigo")
      * })
      */
     private $nacionalidad;
@@ -282,7 +282,7 @@ class DetallePersona
      *
      * @return DetallePersona
      */
-    public function setNacionalidad(\Procuracion\Entity\DetalleCatalogo $nacionalidad = null)
+    public function setnacionalidad(\Procuracion\Entity\DetalleCatalogo $nacionalidad = null)
     {
         $this->nacionalidad = $nacionalidad;
     
@@ -294,7 +294,7 @@ class DetallePersona
      *
      * @return \Procuracion\Entity\DetalleCatalogo
      */
-    public function getNacionalidad()
+    public function getnacionalidad()
     {
         return $this->nacionalidad;
     }

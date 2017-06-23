@@ -66,6 +66,108 @@
         <!-- ./wrapper -->
         <?php echo $this->inlineScript() ?>
         <script type="text/javascript">
+            /*
+             *  Llamado a funcion anonimo
+             */
+            var input = "#anonimo";
+            $(input).change(function() {
+                esAnonimo(input);
+            });
+
+            /*
+             *  Llamado a funcion validar dpi para ver si existe en la db
+             */
+            $("#tipodoc").change(function() {
+                validarNumdoc();
+            });
+
+            /*
+             *  Llamado a funcion obtener datos segun el dpi
+             */
+            var url = "<?php echo $this->basePath(); ?>/validacion/validardpi";
+            $("#numdoc").autocomplete({
+                source: function(request, response) {
+                    obtenerDatos(url, request, response);
+
+                },
+                minLength: 6
+            });
+
+            /*
+             *  Llamado a funcion completar datos para llenar formulario
+             */
+            $("#numdoc").focusout(function() {
+                var url = "<?php echo $this->basePath(); ?>/validacion/seleccionardpi";
+                completarDatosDPI(url);
+
+            });
+
+            /*
+             *  Llamado a funcion cambiar departamento para obtener municipios
+             */
+            $("select[name='depto']").change(function() {
+                var url = "<?php echo $this->basePath(); ?>/validacion/listarmunicipios";
+                var depto = $(this).val();
+                cambiarDepto(url, depto);
+            });
+
+            /*
+             *  Llamado a funcion cambiar unidad para obtener empleados
+             */
+            $("select[name='unidad']").change(function() {
+                var url = "<?php echo $this->basePath(); ?>/validacion/listarempleados";
+                var unidad = $(this).val();
+                cambiarUnidad(url, unidad);
+                /*if (($(this).val() == 0)) {
+
+                 }*/
+            });
+
+            /*
+             *  Llamado a funcion calificar derecho y hecho
+             */
+            $("input[name='derecho[]']").click(function() {
+                var url = "<?php echo $this->basePath(); ?>/validacion/listarhechos";
+                var id = $(this).val();
+                var comp = $("input[name='tipoexpediente']:checked").val();
+                if ($(this).is(":checked")) {
+                    //alert(id);
+                    calificadorDerecho(url, id, comp);
+                } else {
+                    //alert(id);
+                    $("div[data-group='" + id + "']").empty();
+                }
+
+            });
+            /*
+             * Muestra y oculta instituciones si hay remision
+             */
+            $('[name="remision"]').on('change', function() {
+                if ($(this).val() === "1") {
+                    $('#instremision').collapse('show');
+                } else {
+                    $('#instremision').collapse('hide');
+                }
+            });
+            /*
+             *  Llamado a funcion checkbox instituciones
+             */
+            $("input[name='institucion[]']").click(function() {
+                var url = "<?php echo $this->basePath(); ?>/validacion/listarinstituciones";
+                var id = $(this).val();
+                //var comp = $("input[name='tipoexpediente']:checked").val();
+                if ($(this).is(":checked")) {
+                    //alert(id);
+                    checkboxInsitucion(url, id);
+                } else {
+                    //alert(id);
+                    $("div[data-group='" + id + "']").empty();
+                }
+
+            });
+
+        </script>
+        <script type="text/javascript">
             $.extend(true, $.fn.dataTable.defaults, {
                 "language": {
                     "url": "<?php echo $this->basePath(); ?>/js/datatables/spanish.json"
@@ -74,7 +176,6 @@
             });
             $("[data-tt=tooltip]").tooltip({trigger: "hover"});
             $("[data-tip=tooltip]").tooltip({placement: "left", trigger: "hover"});
-
         </script>
     </body>
 </html>

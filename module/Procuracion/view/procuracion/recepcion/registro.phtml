@@ -57,16 +57,6 @@
                         <div class="col-xs-3">
                             <div class="form-group">
                                 <?php
-                                $tipodoc = $form->get('tipodoc');
-                                echo $formLabel->openTag() . $tipodoc->getOption('label') . " ";
-                                echo $formLabel->closeTag();
-                                echo $this->formSelect($tipodoc);
-                                ?>
-                            </div>
-                        </div>
-                        <div class="col-xs-3">
-                            <div class="form-group">
-                                <?php
                                 $numdoc = $form->get('numdoc');
                                 echo $formLabel->openTag() . $numdoc->getOption('label') . " ";
 
@@ -82,10 +72,20 @@
                         <div class="col-xs-3">
                             <div class="form-group">
                                 <?php
-                                $fecha_nac = $form->get('nac');
-                                echo $formLabel->openTag() . $fecha_nac->getOption('label') . " ";
+                                $tipodoc = $form->get('tipodoc');
+                                echo $formLabel->openTag() . $tipodoc->getOption('label') . " ";
                                 echo $formLabel->closeTag();
-                                echo $this->formInput($fecha_nac);
+                                echo $this->formSelect($tipodoc);
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div class="form-group">
+                                <?php
+                                $fechanac = $form->get('fechanac');
+                                echo $formLabel->openTag() . $fechanac->getOption('label') . " ";
+                                echo $formLabel->closeTag();
+                                echo $this->formInput($fechanac);
                                 ?>
                             </div>
                         </div>
@@ -143,11 +143,27 @@
                                             ?>
                                         </div>
                                     </div>
-                                    <div class="col-xs-12">
+                                    <div class="col-xs-6">
+                                        <div class="form-group">
+                                            <?php
+                                            $unidades = $this->unidades;
+                                            $unidadesOptions = array();
+                                            foreach ($unidades as $unidadOption) {
+                                                $unidadesOptions[$unidadOption->getId()] = $unidadOption->getNombre();
+                                            }
+                                            $unidad = $form->get('unidad')->setValueOptions($unidadesOptions);
+                                            echo $formLabel->openTag() . $unidad->getOption('label') . " ";
+                                            echo $formLabel->closeTag();
+                                            echo $this->formSelect($unidad);
+                                            ?>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6">
                                         <div class="form-group">
                                             <?php
                                             $empleados = $this->empleados;
                                             $empleadosOptions = array();
+
                                             foreach ($empleados as $empleadoOption) {
                                                 $empleadosOptions[$empleadoOption->getId()] = $empleadoOption->getNombres() . " " . $empleadoOption->getApellidos();
                                             }
@@ -231,52 +247,3 @@
         </div>
     </div>
 </section>
-
-
-<script type="text/javascript">
-
-    var input = "#anonimo";
-
-    $(input).change(function() {
-        esAnonimo(input);
-    });
-
-
-    $("#tipodoc").change(function() {
-        validarNumdoc();
-    });
-
-    var url = "<?php echo $this->basePath(); ?>/validacion/validardpi";
-    $("#numdoc").autocomplete({
-        source: function(request, response) {
-            validarDPI(url, request, response);
-
-        }
-    });
-
-    $("#numdoc").focusout(function() {
-        var url = "<?php echo $this->basePath(); ?>/validacion/seleccionardpi";
-        completarDatosDPI(url);
-
-    });
-
-
-    $("select[name='depto']").change(function() {
-        var url = "<?php echo $this->basePath(); ?>/validacion/listarmunicipios";
-        var depto = $(this).val();
-        cambiarDepto(url, depto);
-    });
-
-    var check = "input[name='derecho[]']";
-    $(check).click(function() {
-        var url = "<?php echo $this->basePath(); ?>/validacion/listarhechos";
-        var id = $(this).val();
-        var comp = $("input[name='tipoexpediente']:checked").val();
-        calificadorDerecho(check, url, id, comp);
-    });
-
-
-
-</script>
-
-

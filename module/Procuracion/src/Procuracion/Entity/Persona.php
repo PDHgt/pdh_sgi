@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="persona", indexes={@ORM\Index(name="Depto", columns={"Depto"}), @ORM\Index(name="Muni", columns={"Muni"})})
  * @ORM\Entity
+ * @ORM\EntityListeners({"Procuracion\Listener\PersonaListener"}) 
  */
 class Persona
 {
@@ -111,6 +112,22 @@ class Persona
      */
     private $muni;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
+     */
+    private $updated_at;
+
+    /**
+     * @var \Procuracion\Entity\Usuario
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Usuario")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="updated_by", referencedColumnName="id")
+     * })
+     */
+    private $updated_by;
 
 
     /**
@@ -409,5 +426,29 @@ class Persona
     public function getMuni()
     {
         return $this->muni;
+    }
+
+    /**
+     * Set updated_by
+     *
+     * @param \Procuracion\Entity\Usuario $usuario
+     *
+     * @return Colarecepcion
+     */
+    public function setUpdatedBy(\Procuracion\Entity\Usuario $usuario = null)
+    {
+        $this->updated_by = $usuario;
+    
+        return $this;
+    }   
+
+    /**
+     * Get updated_by
+     *
+     * @return \Procuracion\Entity\Usuario
+     */
+    public function getUpdatedBy()
+    {
+        return $this->updated_by;
     }
 }

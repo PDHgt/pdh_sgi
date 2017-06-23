@@ -29,10 +29,15 @@ class EmpleadoService {
         return $data;
     }
 
-    public function getUnidadAdministrativa(EntityManager $em, $empleado){
+    public function getUnidadAdministrativa(EntityManager $em, $empleado) {
         $empleado = $em->getRepository('Procuracion\Entity\Empleado')->find($empleado);
         $ua = $empleado->getUnidadadministrativa();
         return $ua;
+    }
+
+    public function getEmpleadosPorUnidad(EntityManager $em, $id) {
+        $listado = $em->getRepository('Procuracion\Entity\Empleado')->findByUnidadadministrativa($id, array('nombres' => 'ASC'));
+        return $listado;
     }
 
 }

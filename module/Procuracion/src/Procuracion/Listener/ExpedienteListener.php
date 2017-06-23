@@ -31,6 +31,7 @@ class ExpedienteListener {
             }
         }
         //$bitacora->setAccion($nuevo);//'probando los listeners');
+        $usuario = $entity->getUpdatedBy();
         $entity->setCorrelativo($nuevo);
         $entity->setAnio($anio);
         $entity->setNumero("$nuevo-$anio");
@@ -43,7 +44,7 @@ class ExpedienteListener {
 
         //Registra el ingreso
         $bitacora = new BitacoraService();
-        $bitacora->Movimiento($entityManager, array('usuario' => 13, 'accion' => "Ingresa nuevo expediente $nuevo-$anio"));
+        $bitacora->Movimiento($entityManager, array('usuario' => $entity->getUpdatedBy(), 'accion' => "Ingresa nuevo expediente $nuevo-$anio"));
     }
 
     public function preUpdate($eventArgs) {

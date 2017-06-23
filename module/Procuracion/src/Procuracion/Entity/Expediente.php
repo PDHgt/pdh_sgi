@@ -169,7 +169,22 @@ class Expediente
      */
     private $anio;
 
-    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
+     */
+    private $updated_at;
+
+    /**
+     * @var \Procuracion\Entity\Usuario
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Usuario")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="updated_by", referencedColumnName="id")
+     * })
+     */
+    private $updated_by;    
 
     /**
      * Get id
@@ -612,4 +627,28 @@ class Expediente
     {
         return $this->anio;
     }    
+
+    /**
+     * Set updated_by
+     *
+     * @param \Procuracion\Entity\Usuario $usuario
+     *
+     * @return Expediente
+     */
+    public function setUpdatedBy(\Procuracion\Entity\Usuario $usuario = null)
+    {
+        $this->updated_by = $usuario;
+    
+        return $this;
+    }     
+    
+    /**
+     * Get updated_by
+     *
+     * @return \Procuracion\Entity\Usuario
+     */
+    public function getUpdatedBy()
+    {
+        return $this->updated_by;
+    }
 }

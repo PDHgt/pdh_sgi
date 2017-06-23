@@ -9,15 +9,16 @@ $(document).ready(function() {
             return false;
     });
     $("#editarsolicitante").click(function() {
-        $("input[name='nombre']").attr('readonly', !$("input[name='nombre']").attr('readonly'));
-        $("input[name='apellido']").attr('readonly', !$("input[name='apellido']").attr('readonly'));
-        $("input[name='nac']").attr('readonly', !$("input[name='nac']").attr('readonly'));
-        $("input[name='edad']").attr('readonly', !$("input[name='edad']").attr('readonly'));
-        $("select[name='tipodoc']").attr('readonly', !$("select[name='tipodoc']").attr('readonly'));
-        $("input[name='numdoc']").attr('readonly', !$("input[name='numdoc']").attr('readonly'));
-        $("input[name='sexo']").attr('readonly', !$("input[name='sexo']").attr('readonly'));
-        $("input[name='lgbti']").attr('readonly', !$("input[name='lgbti']").attr('readonly'));
-        $("input[name='anonimo']").attr('readonly', !$("input[name='anonimo']").attr('readonly'));
+        $("input[name='pid']").attr('disabled', !$("input[name='pid']").attr('disabled'));
+        $("input[name='nombre']").attr('disabled', !$("input[name='nombre']").attr('disabled'));
+        $("input[name='apellido']").attr('disabled', !$("input[name='apellido']").attr('disabled'));
+        $("input[name='fechanac']").attr('disabled', !$("input[name='fechanac']").attr('disabled'));
+        $("input[name='edad']").attr('disabled', !$("input[name='edad']").attr('disabled'));
+        $("select[name='tipodoc']").attr('disabled', !$("select[name='tipodoc']").attr('disabled'));
+        $("input[name='numdoc']").attr('disabled', !$("input[name='numdoc']").attr('disabled'));
+        $("input[name='sexo']").attr('disabled', !$("input[name='sexo']").attr('disabled'));
+        $("input[name='lgbti']").attr('disabled', !$("input[name='lgbti']").attr('disabled'));
+        $("input[name='anonimo']").attr('disabled', !$("input[name='anonimo']").attr('disabled'));
     });
     $("input[name='tipoexpediente']").click(function() {
         $("#calificacion").removeClass("collapsed-box");
@@ -35,37 +36,151 @@ $(document).ready(function() {
         dateFormat: 'dd/mm/yy'});
 });
 
-/************************* funcion calificador ********************************/
+/**************************** funcion validar campos *************************************/
 
-function calificadorDerecho(input, url, id, comp) {
-    if ($(input).is(":checked")) {
-        $.ajax({
-            url: url,
-            dataType: "json",
-            type: "POST",
-            data: {id: id,
-                comp: comp
-            },
-            success: function(data) {
-                $.each(data, function(i) {
-                    $("#hechosviolatorios").append("<div class='checkbox' data-group='" + id + "' data-toogle='tooltip' title='" + data[i].desc + "'><label><input type='checkbox'  value='" + data[i].id + "' name='hechos[]'/> " + data[i].hecho + "</label></div>");
-                    $("[data-toogle='tooltip']").tooltip({placement: "left", trigger: "hover"});
-                    $("input[name='hechos[]'][value='" + data[i].id + "']").click(function() {
-                        if ($(this).is(":checked")) {
-                            $("#resumen").append("<div data-group='" + id + "'><p class='bg-info " + data[i].id + "'>" + data[i].hecho + "</p></div>");
-                        } else {
-                            $("p." + data[i].id + "").remove();
-                        }
-                    });
-                });
+function validarNumdoc() {
+    $("#numdoc").attr("required", "true");
+}
+
+/***************************** funcion obtener datos con dpi ***************************/
+
+
+function obtenerDatos(url, request, response) {
+    $.ajax({
+        url: url,
+        dataType: "json",
+        type: "POST",
+        data: {
+            term: request.term
+        },
+        success: function(data) {
+            response($.map(data, function(item) {
+                return {
+                    label: item,
+                    value: item
+                };
+            }));
+        }
+    });
+}
+/********************* funcion completar formulario con datos obtenidos del dpi **********************/
+function completarDatosDPI(url) {
+    $.ajax({
+        url: url,
+        dataType: "json",
+        type: "POST",
+        data: {
+            term: $("#numdoc").val()
+        },
+        success: function(data) {
+            if (!$("#numdoc").val()) {
+
+            } else {
+                $('#id').val(data[0]);
+                $('input[name="pid"]').val(data[0]);
+                $('#tipodoc').val(data[1]);
+                $('#fechanac').val(data[2]);
+                $('#nombres').val(data[4]);
+                $('#apellidos').val(data[5]);
+                var radios = $("input[name='sexo']");
+                if (radios.is(':checked') === false) {
+                    radios.filter('[value=' + data[3] + ']').prop('checked', true);
+                }
+                var lgbti = $("input[name='lgbti']");
+                if (lgbti.is(':checked') === false) {
+                    lgbti.filter('[value=' + data[6] + ']').prop('checked', true);
+                }
             }
-        });
-    } else {
+        },
+        error: function() {
+            $('#id').val();
+            $('input[name="pid"]').val();
+            $('#tipodoc').val();
+            $('#fechanac').val();
+            $('#nombres').val();
+            $('#apellidos').val();
+        }
+    });
+    if ($("#numdoc").val() !== '') {
+        $("#tipodoc").attr("required", "true");
+    }
 
-        alert(id);
-        $("div[data-group='" + id + "']").empty();
+}
+
+/************************** funcion para cambiar campos cuando es anonimo ***********************/
+function esAnonimo(input) {
+    if ($(input).is(":checked")) {
+        $("#tipodoc").attr('readonly', true).val('', true);
+        $("#numdoc").attr('readonly', true).val('', true);
+        $("#nombres").attr('readonly', true).val('Anónimo', true);
+        $("#apellidos").attr('readonly', true).val('Anónimo', true);
+        $("input[name='edad']").attr('readonly', true).val('', true);
+        $("#fechanac").attr('readonly', true).val('', true);
+    } else {
+        $('#recepcion').trigger("reset");
+        $("#tipodoc").attr('readonly', false);
+        $("#numdoc").attr('readonly', false);
+        $("#nombres").attr('readonly', false);
+        $("#apellidos").attr('readonly', false);
+        $("input[name='edad']").attr('readonly', false);
+        $("#fechanac").attr('readonly', false);
     }
 }
+
+/************************* funcion calificador ********************************/
+
+function calificadorDerecho(url, id, comp) {
+    $.ajax({
+        url: url,
+        dataType: "json",
+        type: "POST",
+        data: {id: id,
+            comp: comp
+        },
+        success: function(data) {
+            $.each(data, function(i) {
+                $("#hechosviolatorios").append("<div class='checkbox' data-group='" + id + "' data-toogle='tooltip' title='" + data[i].desc + "'><label><input type='checkbox'  value='" + data[i].id + "' name='hechos[]'/> " + data[i].hecho + "</label></div>");
+                $("[data-toogle='tooltip']").tooltip({placement: "left", trigger: "hover"});
+                $("input[name='hechos[]'][value='" + data[i].id + "']").click(function() {
+                    if ($(this).is(":checked")) {
+                        $("#resumen").append("<div data-group='" + id + "'><p class='bg-info " + data[i].id + "'>" + data[i].hecho + "</p></div>");
+                    } else {
+                        $("p." + data[i].id + "").remove();
+                    }
+                });
+            });
+        }
+    });
+}
+
+/************************* funcion checkbox instituciones ********************************/
+
+function checkboxInsitucion(url, id) {
+    $.ajax({
+        url: url,
+        dataType: "json",
+        type: "POST",
+        data: {id: id
+
+        },
+        success: function(data) {
+
+            $.each(data, function(i) {
+                $("#instdependientes").append("<div class='checkbox' data-group='" + id + "' data-toogle='tooltip' title='" + data[i].institucion + "'><label><input type='checkbox'  value='" + data[i].id + "' name='instdependientes[]'/> " + data[i].institucion + "</label></div>");
+                $("[data-toogle='tooltip']").tooltip({placement: "left", trigger: "hover"});
+                $("input[name='instdependientes[]'][value='" + data[i].id + "']").click(function() {
+                    if ($(this).is(":checked")) {
+                        $("#resumenremision").append("<div data-group='" + id + "'><p class='bg-info " + data[i].id + "'>" + data[i].institucion + "</p></div>");
+                    } else {
+                        $("p." + data[i].id + "").remove();
+                    }
+                });
+            });
+
+        }
+    });
+}
+
 
 /***************************** funcion departamento y municipio dependiente ******************************/
 
@@ -88,93 +203,27 @@ function cambiarDepto(url, depto) {
     $("select[name='muni']").empty();
 }
 
-/**************************** funcion validar campos *************************************/
+/***************************** funcion unidad y empleado dependiente ******************************/
 
-function validarNumdoc() {
-    $("#numdoc").attr("required", "true");
-    if ($("#numdoc").val() !== '') {
-        $("#tipodoc").attr("required", "true");
-    }
-}
-
-/***************************** funcion autocompletar datos con dpi ***************************/
-
-
-function validarDPI(url, request, response) {
+function cambiarUnidad(url, unidad) {
     $.ajax({
         url: url,
-        dataType: "json",
-        type: "POST",
-        data: {
-            term: request.term
-        },
+        dataType: 'json',
+        type: 'POST',
+        data: {unidad: unidad},
         success: function(data) {
-            response($.map(data, function(item) {
-                return {
-                    label: item,
-                    value: item
-                };
-            }));
+            $.each(data, function(key, value) {
+                $("select[name='empleado']")
+                        .append($("<option></option>")
+                                .attr("value", key)
+                                .text(value));
+            });
+
         }
     });
-}
-
-function completarDatosDPI(url) {
-    $.ajax({
-        url: url,
-        dataType: "json",
-        type: "POST",
-        data: {
-            term: $("#numdoc").val()
-        },
-        success: function(data) {
-            if (!$("#numdoc").val()) {
-
-            } else {
-                $('#id').val(data[0]);
-                $('input[name="pid"]').val(data[0]);
-                $('#tipodoc').val(data[1]);
-                $('#datepicker').val(data[2]);
-                $('#nombres').val(data[4]);
-                $('#apellidos').val(data[5]);
-                var $radios = $("input[name='sexo']");
-                if ($radios.is(':checked') === false) {
-                    $radios.filter('[value=' + data[3] + ']').prop('checked', true);
-                }
-            }
-        },
-        error: function() {
-            $('#id').val();
-            $('input[name="pid"]').val();
-            $('#tipodoc').val();
-            $('#datepicker').val();
-            $('#nombres').val();
-            $('#apellidos').val();
-        }
-    });
+    $("select[name='empleado']").empty();
 
 }
-
-/************************** funcion para cambiar campos cuando es anonimo ***********************/
-function esAnonimo(input) {
-    if ($(input).is(":checked")) {
-        $("#tipodoc").attr('readonly', true).val('', true);
-        $("#numdoc").attr('readonly', true).val('', true);
-        $("#nombres").attr('readonly', true).val('Anónimo', true);
-        $("#apellidos").attr('readonly', true).val('Anónimo', true);
-        $("input[name='edad']").attr('readonly', true).val('', true);
-        $("#datepicker").attr('readonly', true).val('', true);
-    } else {
-        $('#recepcion').trigger("reset");
-        $("#tipodoc").attr('readonly', false);
-        $("#numdoc").attr('readonly', false);
-        $("#nombres").attr('readonly', false);
-        $("#apellidos").attr('readonly', false);
-        $("input[name='edad']").attr('readonly', false);
-        $("#datepicker").attr('readonly', false);
-    }
-}
-
 
 
 

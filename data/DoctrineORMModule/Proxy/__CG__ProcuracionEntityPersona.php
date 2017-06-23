@@ -64,10 +64,10 @@ class Persona extends \Procuracion\Entity\Persona implements \Doctrine\ORM\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'anonimo', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'nombres', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'apellidos', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'tipodocumento', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'numerodocumento', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'sexo', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'lgbti', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'fechanacimiento', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'edad', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'direccion', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'depto', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'muni'];
+            return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'anonimo', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'nombres', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'apellidos', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'tipodocumento', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'numerodocumento', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'sexo', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'lgbti', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'fechanacimiento', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'edad', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'direccion', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'depto', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'muni', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'updated_at', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'updated_by'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'anonimo', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'nombres', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'apellidos', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'tipodocumento', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'numerodocumento', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'sexo', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'lgbti', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'fechanacimiento', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'edad', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'direccion', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'depto', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'muni'];
+        return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'anonimo', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'nombres', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'apellidos', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'tipodocumento', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'numerodocumento', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'sexo', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'lgbti', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'fechanacimiento', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'edad', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'direccion', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'depto', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'muni', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'updated_at', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'updated_by'];
     }
 
     /**
@@ -450,6 +450,28 @@ class Persona extends \Procuracion\Entity\Persona implements \Doctrine\ORM\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMuni', []);
 
         return parent::getMuni();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setUpdatedBy(\Procuracion\Entity\Usuario $usuario = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUpdatedBy', [$usuario]);
+
+        return parent::setUpdatedBy($usuario);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUpdatedBy()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUpdatedBy', []);
+
+        return parent::getUpdatedBy();
     }
 
 }

@@ -108,16 +108,16 @@ class FormularioRecepcion extends Form {
             )
         ));
         //Campo ofician
-        $this->add(array(
-            'name' => 'unidad',
-            'options' => array(
-                'label' => 'Oficina / Unidad',
-            ),
-            'attributes' => array(
-                'type' => 'text',
-                'class' => 'form-control',
-            )
-        ));
+        /* $this->add(array(
+          'name' => 'unidad',
+          'options' => array(
+          'label' => 'Oficina / Unidad',
+          ),
+          'attributes' => array(
+          'type' => 'text',
+          'class' => 'form-control',
+          )
+          )); */
         //Campo direccion
         $this->add(array(
             'name' => 'direccion',
@@ -130,6 +130,17 @@ class FormularioRecepcion extends Form {
             )
         ));
 
+        //Campo lugar remision
+        $this->add(array(
+            'name' => 'lugarremision',
+            'options' => array(
+                'label' => 'Insitución a la que remite',
+            ),
+            'attributes' => array(
+                'type' => 'text',
+                'class' => 'form-control'
+            )
+        ));
 
         //************************INPUTS SELECT*****************************/
         //Campo tipo de documento
@@ -165,6 +176,20 @@ class FormularioRecepcion extends Form {
                 'required' => true
             )
         ));
+        //Campo unidad
+        $this->add(array(
+            'type' => 'select',
+            'name' => 'unidad',
+            'options' => array(
+                'label' => 'Unidad / Oficina',
+                'empty_option' => 'Seleccione una opción'
+            ),
+            'attributes' => array(
+                'class' => 'form-control',
+                'required' => true
+            )
+        ));
+
         //Campo area ubicacion
         $this->add(array(
             'type' => 'select',
@@ -209,6 +234,43 @@ class FormularioRecepcion extends Form {
         ));
 
         //************************INPUTS DATE*****************************/
+        //Fecha solicitud
+        $this->add(array(
+            'name' => 'fechasol',
+            'options' => array(
+                'label' => 'Fecha',
+            ),
+            'attributes' => array(
+                'type' => 'date',
+                'class' => 'form-control'
+            )
+        ));
+        //Campo fecha de nacimiento
+        $this->add(array(
+            'name' => 'fechanac',
+            'options' => array(
+                'label' => 'Fecha de nacimiento',
+            ),
+            'attributes' => array(
+                'type' => 'date',
+                'class' => 'form-control datepicker',
+                'id' => 'fechanac'
+            )
+        ));
+        //Campo fecha hechos
+        $this->add(array(
+            'name' => 'fechahecho',
+            'options' => array(
+                'label' => 'Fecha',
+            ),
+            'attributes' => array(
+                'type' => 'date',
+                'class' => 'form-control datepicker'
+            )
+        ));
+
+
+        //**************************INPUTS TIME********************************/
         //Campo hora
         $this->add(array(
             'name' => 'hora',
@@ -219,18 +281,6 @@ class FormularioRecepcion extends Form {
                 'type' => 'time',
                 'class' => 'form-control',
                 'readonly' => true
-            )
-        ));
-        //Campo fecha de nacimiento
-        $this->add(array(
-            'name' => 'nac',
-            'options' => array(
-                'label' => 'Fecha de nacimiento',
-            ),
-            'attributes' => array(
-                'type' => 'date',
-                'class' => 'form-control',
-                'id' => 'datepicker'
             )
         ));
 
@@ -254,18 +304,7 @@ class FormularioRecepcion extends Form {
         $this->add(array(
             //'name' => 'checkbox',
             'type' => 'Multicheckbox',
-            'name' => 'derecho',
-            'options' => [
-                'label_attributes' => array(
-                ),
-                'label' => 'Seleccione los derechos',
-                'use_hidden_element' => false,
-                'checked_value' => 1,
-                'unchecked_value' => 0,
-            ],
-            'attributes' => [
-            /* 'value' => 1, */
-            ],
+            'name' => 'derecho[]'
         ));
         //Campo HECHOS
         $this->add(array(
@@ -283,6 +322,12 @@ class FormularioRecepcion extends Form {
             'attributes' => [
             /* 'value' => 1, */
             ],
+        ));
+        //Campo INSTITUCIONES
+        $this->add(array(
+            //'name' => 'checkbox',
+            'type' => 'Multicheckbox',
+            'name' => 'institucion[]'
         ));
 
 
@@ -353,6 +398,7 @@ class FormularioRecepcion extends Form {
                     'class' => 'radio-inline'
                 ),
                 'value_options' => array(
+                    'H' => 'Heterosexual',
                     'L' => 'Lesbiana',
                     'G' => 'Gay',
                     'B' => 'Bisexual',
@@ -374,6 +420,40 @@ class FormularioRecepcion extends Form {
                     '1' => 'Orientación',
                     '4' => 'Investigación'
                 )
+            )
+        ));
+
+        //Campo remision
+        $this->add(array(
+            'type' => 'radio',
+            'name' => 'remision',
+            'options' => array(
+                'label' => '¿Necesita remitir a otra institución?',
+                'label_attributes' => array(
+                    'class' => 'radio-inline'
+                ),
+                'value_options' => array(
+                    '1' => 'Si',
+                    '2' => 'No'
+                )
+            /* 'value_options' => array(
+              '1' => array(
+              'label' => 'Si',
+              'value' => 1,
+              'attributes' => array(
+              'data-toggle' => 'collapse',
+              'data-target' => '#instremision'
+              )
+              ),
+              '0' => array(
+              'label' => 'No',
+              'value' => 0,
+              'attributes' => array(
+              'data-toggle' => 'collapse in',
+              'data-target' => '#instremision'
+              )
+              )
+              ) */
             )
         ));
 
@@ -434,11 +514,31 @@ class FormularioRecepcion extends Form {
                 'class' => 'form-control'
             )
         ));
+        //Campo pruebas
+        $this->add(array(
+            'name' => 'detalleorientacion',
+            'options' => array(
+                'label' => 'Detalle de la orientación',
+            ),
+            'attributes' => array(
+                'type' => 'textarea',
+                'class' => 'form-control'
+            )
+        ));
+
+
 
         //*************************INPUTS SUBMIT*******************************/
         //Input Guardar
         $this->add(array(
+            'type' => 'Button',
             'name' => 'guardar',
+            'options' => array(
+                'label' => '<i class="glyphicon glyphicon-floppy-disk"></i> Guardar',
+                'label_options' => array(
+                    'disable_html_escape' => true,
+                )
+            ),
             'attributes' => array(
                 'type' => 'submit',
                 'value' => 'Guardar',

@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="orientacion")
  * @ORM\Entity
  */
-class Orientacion
-{
+class Orientacion {
+
     /**
      * @var integer
      *
@@ -24,7 +24,7 @@ class Orientacion
     /**
      * @var string
      *
-     * @ORM\Column(name="Detalle", type="string" nullable=true)
+     * @ORM\Column(name="Detalle", type="string", nullable=true)
      */
     private $detalle;
 
@@ -38,15 +38,12 @@ class Orientacion
      */
     private $idExpediente;
 
-
-
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -57,10 +54,9 @@ class Orientacion
      *
      * @return Orientacion
      */
-    public function setDetalle($detalle)
-    {
+    public function setDetalle($detalle) {
         $this->detalle = $detalle;
-    
+
         return $this;
     }
 
@@ -69,8 +65,7 @@ class Orientacion
      *
      * @return string
      */
-    public function getDetalle()
-    {
+    public function getDetalle() {
         return $this->detalle;
     }
 
@@ -81,10 +76,9 @@ class Orientacion
      *
      * @return Orientacion
      */
-    public function setIdExpediente(\Procuracion\Entity\Expediente $idExpediente = null)
-    {
+    public function setIdExpediente(\Procuracion\Entity\Expediente $idExpediente = null) {
         $this->idExpediente = $idExpediente;
-    
+
         return $this;
     }
 
@@ -93,8 +87,8 @@ class Orientacion
      *
      * @return \Procuracion\Entity\Expediente
      */
-    public function getIdExpediente()
-    {
+    public function getIdExpediente() {
         return $this->idExpediente;
-    }    
+    }
+
 }

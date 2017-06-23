@@ -111,9 +111,19 @@ class Visita
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="updated_at", type="date", nullable=true)
+     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
-    private $updatedAt;
+    private $updated_at;
+
+    /**
+     * @var \Procuracion\Entity\Usuario
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Usuario")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="updated_by", referencedColumnName="id")
+     * })
+     */
+    private $updated_by;
 
     /**
      * @var \Procuracion\Entity\Persona

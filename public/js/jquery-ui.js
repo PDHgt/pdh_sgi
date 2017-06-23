@@ -2009,7 +2009,7 @@ colors = jQuery.Color.names = {
 /******************************************************************************/
 ( function() {
 
-var classAnimationActions = [ "add", "remove", "toggle" ],
+var classAnimationactions = [ "add", "remove", "toggle" ],
 	shorthandStyles = {
 		border: 1,
 		borderBottom: 1,
@@ -2109,7 +2109,7 @@ $.effects.animateClass = function( value, duration, easing, callback ) {
 
 		// Apply class change
 		applyClassChange = function() {
-			$.each( classAnimationActions, function( i, action ) {
+			$.each( classAnimationactions, function( i, action ) {
 				if ( value[ action ] ) {
 					animated[ action + "Class" ]( value[ action ] );
 				}

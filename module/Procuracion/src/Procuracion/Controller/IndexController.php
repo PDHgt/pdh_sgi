@@ -36,7 +36,7 @@ class IndexController extends AbstractActionController {
         ));
     }
 
-    public function loginAction() {
+    public function loginaction() {
         $data = $this->getRequest()->getPost();
 
         //$adapter = $authService->getAdapter();

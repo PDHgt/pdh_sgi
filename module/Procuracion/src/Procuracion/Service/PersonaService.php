@@ -49,22 +49,25 @@ class PersonaService {
 
     public function savePersona(EntityManager $em, array $nueva, array $extras, $que) {
         //var_dump($nueva);
-        if($nueva['id'] > 0){
+        $usr = $em->getRepository('Procuracion\Entity\Usuario')->find($nueva['usuario']);
+        if ($nueva['id'] > 0) {
             $np = $em->getRepository('\Procuracion\Entity\Persona')->find($nueva['id']);
-        }
-        else{
+        } else {
             $np = new Persona();
-            $np->setAnonimo($nueva['anonimo']);
-            $np->setNombres($nueva['nombres']);
-            $np->setApellidos($nueva['apellidos']);
-            $np->setTipoDocumento($nueva['tipo']);
-            $np->setNumeroDocumento($nueva['numero']);
-            $np->setSexo($nueva['sexo']);
-            $np->setLgbti($nueva['lgbti']);
-            $np->setFechaNacimiento($nueva['nac']);
-            $em->persist($np);
-            $em->flush();
         }
+        $np->setAnonimo($nueva['anonimo']);
+        $np->setNombres($nueva['nombres']);
+        $np->setApellidos($nueva['apellidos']);
+        $np->setTipoDocumento($nueva['tipo']);
+        $np->setNumeroDocumento($nueva['numero']);
+        $np->setSexo($nueva['sexo']);
+        $np->setLgbti($nueva['lgbti']);
+        $np->setFechaNacimiento($nueva['fechanac']);
+        $np->setUpdatedBy($usr);
+
+        $em->persist($np);
+        $em->flush();
+        //}
         //var_dump($np);
         if ($que == 1) {
             $emp = $em->getRepository('\Procuracion\Entity\Empleado')->find($extras['empleado']);
@@ -78,6 +81,7 @@ class PersonaService {
             $nvo->setTipoInstitucion($extras['tipo']);
             $nvo->setMotivoVisita($extras['motivo']);
             $nvo->setLlamadasRealizadas(0);
+            $nvo->setUpdatedBy($usr);
             $nvo->setIdPersona($np);
             $visita = new VisitaService();
             $visita->save($em, $nvo);
@@ -97,6 +101,7 @@ class PersonaService {
             $nvo->setTurno($miTurno);
             $nvo->setObservaciones($extras['obs']);
             $nvo->setLapiceroverde($extras['lapiceroverde']);
+            $nvo->setUpdatedBy($usr);
             $nvo->setIdpersona($np);
             $cola = new ColaRecepcionService();
             $cola->save($em, $nvo);
@@ -105,6 +110,7 @@ class PersonaService {
     }
 
     public function updatePersona(EntityManager $em, array $nueva, array $extras, $que) {
+        $usr = $em->getRepository('Procuracion\Entity\Usuario')->find($nueva['usuario']);
         $np = $em->getRepository('Procuracion\Entity\Persona')->find($nueva['id']);
         //var_dump($np);
         $np->setNombres($nueva['nombres']);
@@ -113,7 +119,8 @@ class PersonaService {
         $np->setNumeroDocumento($nueva['numero']);
         $np->setSexo($nueva['sexo']);
         $np->setLgbti($nueva['lgbti']);
-        $np->setFechaNacimiento($nueva['nac']);
+        $np->setFechaNacimiento($nueva['fechanac']);
+        $np->setUpdatedBy($usr);
         $em->flush();
 
         //deleting extras
@@ -142,6 +149,7 @@ class PersonaService {
             $nvo->setInstitucion($extras['institucion']);
             $nvo->setTipoInstitucion($extras['tipo']);
             $nvo->setMotivoVisita($extras['motivo']);
+            $nvo->setUpdatedBy($usr);
             $nvo->setLlamadasRealizadas($llamadas);
             $nvo->setIdpersona($np);
             $visita = new VisitaService();
@@ -166,6 +174,7 @@ class PersonaService {
             $nvo->setTurno($miTurno);
             $nvo->setObservaciones($extras['obs']);
             $nvo->setLapiceroverde($extras['lapiceroverde']);
+            $nvo->setUpdatedBy($usr);
             $nvo->setIdpersona($np);
             $cola = new ColaRecepcionService();
             $cola->save($em, $nvo);
@@ -193,6 +202,25 @@ class PersonaService {
         $persona = $em->getRepository('\Procuracion\Entity\Persona')->find($id);
         //return new JsonModel($visita);
         return $persona;
+    }
+
+    public function puedeModificarPersona(EntityManager $em, array $datos) {
+        if (isset($datos["id"])) {
+            $usr = $em->getRepository('Procuracion\Entity\Usuario')->find($datos['usuario']);
+            $np = $em->getRepository('Procuracion\Entity\Persona')->find($datos['id']);
+            //var_dump($np);
+            $np->setNombres($datos['nombres']);
+            $np->setApellidos($datos['apellidos']);
+            $np->setTipoDocumento($datos['tipo']);
+            $np->setNumeroDocumento($datos['numero']);
+            $np->setSexo($datos['sexo']);
+            $np->setLgbti($datos['lgbti']);
+            $np->setFechaNacimiento($datos['fechanac']);
+            $np->setUpdatedBy($usr);
+            $em->flush();
+        } else {
+            //no cambia nada
+        }
     }
 
 }

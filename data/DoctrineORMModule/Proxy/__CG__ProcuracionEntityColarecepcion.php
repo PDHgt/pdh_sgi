@@ -64,10 +64,10 @@ class Colarecepcion extends \Procuracion\Entity\Colarecepcion implements \Doctri
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'fechaentrada', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'horaentrada', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'sede', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'prioridad', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'lapiceroverde', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'turno', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'horaatencion', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'observaciones', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'razonsalida', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'idPersona', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'createdAt'];
+            return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'fechaentrada', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'horaentrada', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'sede', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'prioridad', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'lapiceroverde', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'turno', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'horaatencion', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'observaciones', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'razonsalida', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'idPersona', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'updated_at', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'updated_by'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'fechaentrada', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'horaentrada', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'sede', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'prioridad', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'lapiceroverde', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'turno', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'horaatencion', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'observaciones', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'razonsalida', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'idPersona', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'createdAt'];
+        return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'fechaentrada', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'horaentrada', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'sede', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'prioridad', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'lapiceroverde', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'turno', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'horaatencion', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'observaciones', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'razonsalida', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'idPersona', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'updated_at', '' . "\0" . 'Procuracion\\Entity\\Colarecepcion' . "\0" . 'updated_by'];
     }
 
     /**
@@ -406,6 +406,28 @@ class Colarecepcion extends \Procuracion\Entity\Colarecepcion implements \Doctri
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIdPersona', []);
 
         return parent::getIdPersona();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setUpdatedBy(\Procuracion\Entity\Usuario $usuario = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUpdatedBy', [$usuario]);
+
+        return parent::setUpdatedBy($usuario);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUpdatedBy()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUpdatedBy', []);
+
+        return parent::getUpdatedBy();
     }
 
 }

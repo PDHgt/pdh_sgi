@@ -29,13 +29,14 @@ class ColaRecepcionService {
         //var_dump($products);
         return $products;
     }
-/*        //var_dump($em);
-        $hoy = date("Y-m-d");
-        $listado = $em->getRepository('\Procuracion\Entity\Colarecepcion')->findBy(array('fechaentrada' => date_create($hoy), 'sede' => $sede, 'horaatencion' => null), array('prioridad' => 'ASC', 'horaentrada' => 'ASC'));
-        //var_dump($listado);
-        //return new JsonModel($listado);
-        return $listado;
-    }*/
+
+    /*        //var_dump($em);
+      $hoy = date("Y-m-d");
+      $listado = $em->getRepository('\Procuracion\Entity\Colarecepcion')->findBy(array('fechaentrada' => date_create($hoy), 'sede' => $sede, 'horaatencion' => null), array('prioridad' => 'ASC', 'horaentrada' => 'ASC'));
+      //var_dump($listado);
+      //return new JsonModel($listado);
+      return $listado;
+      } */
 
     public function listOne(EntityManager $em, $id) {
         $enCola = $em->getRepository('\Procuracion\Entity\Colarecepcion')->find($id);
@@ -44,10 +45,14 @@ class ColaRecepcionService {
     }
 
     public function attend(EntityManager $em, array $cola) {
-        $nvo = new Colarecepcion();
+        //$nvo = new Colarecepcion();
         $data = $em->getReference('Procuracion\Entity\Colarecepcion', $cola['id']);
         $data->setHoraatencion(date_create($cola['hora']));
         $em->flush();
+        //Registra el ingreso
+        $bitacora = new BitacoraService();
+        $texto = "Atiende al de idCola " . $cola['id'];
+        $bitacora->Movimiento($em, array('usuario' => $cola['usuario'], 'accion' => $texto));
         return $data->getId();
     }
 
@@ -66,12 +71,13 @@ class ColaRecepcionService {
         return $data->getId();
     }
 
-    public function getPorFechas(EntityManager $em, $fechaUno, $fechaDos){
+    public function getPorFechas(EntityManager $em, $fechaUno, $fechaDos) {
         $repository = $em->getRepository('Procuracion\Entity\Colarecepcion');
-        $cadena = "SELECT p FROM Procuracion\Entity\Colarecepcion p WHERE p.fechaentrada BETWEEN '".$fechaUno."' AND '".$fechaDos."'";
+        $cadena = "SELECT p FROM Procuracion\Entity\Colarecepcion p WHERE p.fechaentrada BETWEEN '" . $fechaUno . "' AND '" . $fechaDos . "'";
         $query = $em->createQuery($cadena);
         $products = $query->getResult();
         //var_dump($products);
         return $products;
     }
+
 }

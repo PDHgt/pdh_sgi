@@ -73,13 +73,13 @@
                             <div class="form-group">
                                 <?php
                                 if (($visita->getIdpersona()->getFechanacimiento()) == NULL) {
-                                    $fecha_nac = $form->get('nac')->setValue($visita->getIdpersona()->getFechanacimiento());
+                                    $fechanac = $form->get('fechanac')->setValue($visita->getIdpersona()->getFechanacimiento());
                                 } else {
-                                    $fecha_nac = $form->get('nac')->setValue($visita->getIdpersona()->getFechanacimiento()->format("d/m/Y"));
+                                    $fechanac = $form->get('fechanac')->setValue($visita->getIdpersona()->getFechanacimiento()->format("d/m/Y"));
                                 }
-                                echo $formLabel->openTag() . $fecha_nac->getOption('label') . " ";
+                                echo $formLabel->openTag() . $fechanac->getOption('label') . " ";
                                 echo $formLabel->closeTag();
-                                echo $this->formInput($fecha_nac);
+                                echo $this->formInput($fechanac);
                                 ?>
                             </div>
                         </div>

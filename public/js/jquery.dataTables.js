@@ -14030,7 +14030,7 @@
 	
 		/* Paging buttons */
 		"sPageButton": "paginate_button",
-		"sPageButtonActive": "current",
+		"sPageButtonactive": "current",
 		"sPageButtonDisabled": "disabled",
 	
 		/* Striping classes */
@@ -14104,7 +14104,7 @@
 	$.extend( DataTable.ext.oJUIClasses, DataTable.ext.classes, {
 		/* Full numbers paging buttons */
 		"sPageButton":         "fg-button ui-button "+_stateDefault,
-		"sPageButtonActive":   "ui-state-disabled",
+		"sPageButtonactive":   "ui-state-disabled",
 		"sPageButtonDisabled": "ui-state-disabled",
 	
 		/* Features */
@@ -14258,7 +14258,7 @@
 								default:
 									btnDisplay = button + 1;
 									btnClass = page === button ?
-										classes.sPageButtonActive : '';
+										classes.sPageButtonactive : '';
 									break;
 							}
 	

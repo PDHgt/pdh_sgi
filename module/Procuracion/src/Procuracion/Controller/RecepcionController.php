@@ -12,6 +12,7 @@ use Procuracion\Service\UsuarioService;
 use Procuracion\Service\CuboCalificacionService;
 use Procuracion\Service\GeografiaService;
 use Procuracion\Service\ExpedienteService;
+use Procuracion\Service\RemisionService;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Authentication\AuthenticationService as AuthService;
@@ -249,8 +250,8 @@ class RecepcionController extends AbstractActionController {
             $geografiaService = new GeografiaService();
             $deptos = $geografiaService->ListarDeptos($this->entityManager);
 
-            $derechos = new CuboCalificacionService();
-            $listaderechos = $derechos->listarDerechos($this->entityManager);
+            $derechoservice = new CuboCalificacionService();
+            $derechos = $derechoservice->listarDerechos($this->entityManager);
 
             $usuarioservice = new UsuarioService();
             $permisos = $usuarioservice->getPermisos($this->entityManager, $identity->getUsuario());
@@ -269,7 +270,125 @@ class RecepcionController extends AbstractActionController {
             $layout = $this->layout();
             $layout->addChild($header, 'header')
                     ->addChild($aside, 'aside');
-            $view = new ViewModel(array('form' => $form, 'cola' => $cola, 'identity' => $identity, 'id' => $id, 'derechos' => $listaderechos, 'permisos' => $permisos, 'deptos' => $deptos));
+            $view = new ViewModel(array(
+                'form' => $form,
+                'cola' => $cola,
+                'identity' => $identity,
+                'id' => $id,
+                'derechos' => $derechos,
+                'permisos' => $permisos,
+                'deptos' => $deptos
+            ));
+            return $view;
+        }
+    }
+
+    public function orientacionaction() {
+        if (!$this->authService->hasIdentity()) {
+            return $this->redirect()->toRoute('inicio', array('action' => 'login'));
+        } else {
+            $identity = $this->authService->getIdentity();
+            $id = $this->getEvent()->getRouteMatch()->getParam('id');
+
+            $form = new FormularioRecepcion();
+
+            $geografiaService = new GeografiaService();
+            $deptos = $geografiaService->ListarDeptos($this->entityManager);
+            $munis = $geografiaService->ListarMunis($this->entityManager);
+
+            $derechoservice = new CuboCalificacionService();
+            $derechos = $derechoservice->listarDerechos($this->entityManager);
+
+            $usuarioservice = new UsuarioService();
+            $permisos = $usuarioservice->getPermisos($this->entityManager, $identity->getUsuario());
+
+            /* $colaservice = new ColaRecepcionService();
+              $cola = $colaservice->listOne($this->entityManager, $id); */
+
+            $expedienteservice = new ExpedienteService();
+            $expediente = $expedienteservice->verExpediente($this->entityManager, $id);
+
+            $institucionservice = new RemisionService();
+            $institucion = $institucionservice->listarInstitucionPadre($this->entityManager);
+
+            $header = new ViewModel();
+            $header->setVariables(array('identity' => $identity));
+            $header->setTemplate('header');
+
+            $aside = new ViewModel();
+            $aside->setVariables(array('identity' => $identity));
+            $aside->setTemplate('aside');
+
+            $layout = $this->layout();
+            $layout->addChild($header, 'header')
+                    ->addChild($aside, 'aside');
+            $view = new ViewModel(array(
+                'form' => $form,
+                'expediente' => $expediente,
+                'identity' => $identity,
+                'id' => $id,
+                'derechos' => $derechos,
+                'permisos' => $permisos,
+                'deptos' => $deptos,
+                'munis' => $munis,
+                'institucion' => $institucion
+            ));
+            return $view;
+        }
+    }
+
+    public function resumenAction() {
+        if (!$this->authService->hasIdentity()) {
+            return $this->redirect()->toRoute('inicio', array('action' => 'login'));
+        } else {
+            $identity = $this->authService->getIdentity();
+            $idexpediente = $this->getEvent()->getRouteMatch()->getParam('id');
+
+            echo $idexpediente;
+
+            $form = new FormularioRecepcion();
+
+            $geografiaService = new GeografiaService();
+            $deptos = $geografiaService->ListarDeptos($this->entityManager);
+            $munis = $geografiaService->ListarMunis($this->entityManager);
+
+            $derechoservice = new CuboCalificacionService();
+            $derechos = $derechoservice->listarDerechos($this->entityManager);
+
+            $usuarioservice = new UsuarioService();
+            $permisos = $usuarioservice->getPermisos($this->entityManager, $identity->getUsuario());
+
+            /* $colaservice = new ColaRecepcionService();
+              $cola = $colaservice->listOne($this->entityManager, $id); */
+
+            $expedienteservice = new ExpedienteService();
+            $expediente = $expedienteservice->verExpediente($this->entityManager, $idexpediente);
+
+            $institucionservice = new RemisionService();
+            $institucion = $institucionservice->listarInstitucionPadre($this->entityManager);
+
+            $header = new ViewModel();
+            $header->setVariables(array('identity' => $identity));
+            $header->setTemplate('header');
+
+            $aside = new ViewModel();
+            $aside->setVariables(array('identity' => $identity));
+            $aside->setTemplate('aside');
+
+            $layout = $this->layout();
+            $layout->addChild($header, 'header')
+                    ->addChild($aside, 'aside');
+            $view = new ViewModel(array(
+                'form' => $form,
+                'expediente' => $expediente,
+                'identity' => $identity,
+                'idexpediente' => $idexpediente,
+                'derechos' => $derechos,
+                'permisos' => $permisos,
+                'deptos' => $deptos,
+                'munis' => $munis,
+                'institucion' => $institucion
+            ));
             return $view;
         }
     }
@@ -407,11 +526,12 @@ class RecepcionController extends AbstractActionController {
 
         $data = $this->request->getPost();
         $identity = $this->authService->getIdentity();
+        echo $identity->getId();
         $sede = $identity->getIdEmpleado()->getIdsede()->getId();
-        if (empty($data["nac"])) {
-            $nac = NULL;
+        if (empty($data["fechanac"])) {
+            $fechanac = NULL;
         } else {
-            $nac = date_create_from_format('d/m/Y', $data["nac"]); /*
+            $fechanac = date_create_from_format('d/m/Y', $data["fechanac"]); /*
              * $nac = date_create(date("Y-m-d", ));
              */
         }
@@ -422,9 +542,10 @@ class RecepcionController extends AbstractActionController {
             'tipo' => $data["tipodoc"],
             'numero' => $data["numdoc"],
             'sexo' => $data["sexo"],
-            'nac' => $nac,
+            'fechanac' => $fechanac,
             'lgbti' => $data["lgbti"],
-            'anonimo' => $data["anonimo"]
+            'anonimo' => $data["anonimo"],
+            'usuario' => $identity->getId()
         );
         $visita = array(
             'fecha' => date_create($data['fecha']),
@@ -455,26 +576,24 @@ class RecepcionController extends AbstractActionController {
         }
     }
 
-    public function guardarSolicitudAction() {
+    public function guardarsolicitudAction() {
 
         $data = $this->request->getPost();
         $identity = $this->authService->getIdentity();
         $sede = $identity->getIdEmpleado()->getIdsede()->getId();
 
 
-        if (empty($data["nac"])) {
-            $nac = NULL;
+        if (empty($data["fechanac"])) {
+            $fechanac = NULL;
         } else {
-            $nac = date_create_from_format('d/m/Y', $data["nac"]);
+            $fechanac = date_create_from_format('d/m/Y', $data["fechanac"]);
         }
 
-        if (empty($data["fecha"])) {
-            $fecha = NULL;
+        if (empty($data["fechahecho"])) {
+            $fechahecho = NULL;
         } else {
-            $fecha = date_create_from_format('d/m/Y', $data["fecha"]);
+            $fechahecho = date_create_from_format('d/m/Y', $data["fechahecho"]);
         }
-
-
         $persona = array(
             'id' => $data["pid"],
             'nombres' => $data["nombre"],
@@ -482,12 +601,15 @@ class RecepcionController extends AbstractActionController {
             'tipo' => $data["tipodoc"],
             'numero' => $data["numdoc"],
             'sexo' => $data["sexo"],
-            'nac' => $nac,
+            'fechanac' => $fechanac,
             'lgbti' => $data["lgbti"],
-            'anonimo' => $data["anonimo"]
+            'anonimo' => $data["anonimo"],
+            'usuario' => $identity->getId()
         );
 
         $datos = array(
+            'idpersona' => $data["idpersona"],
+            'usr' => $identity->getId(),
             'sede' => $sede,
             'tipo' => $data["tipoexpediente"],
             'cola' => $data["id"],
@@ -496,17 +618,82 @@ class RecepcionController extends AbstractActionController {
             'area' => $data["areaubicacion"],
             'hechos' => $data["descripcionhechos"],
             'direccion' => $data["direccion"],
-            'fecha' => $fecha,
+            'fecha' => $fechahecho,
             'peticion' => $data["peticion"],
             'pruebas' => $data["pruebas"]
         );
 
         $calificacion = $data["hechos"];
 
-        $expervice = new ExpedienteService();
-        $expervice->Save($this->entityManager, $datos, $calificacion, $persona);
+        //echo $identity->getId();
 
-        //return $this->redirect()->toRoute('recepcion', array('action' => 'cola'));
+        $expservice = new ExpedienteService();
+        $expediente = $expservice->Save($this->entityManager, $datos, $calificacion, $persona);
+
+        return $this->redirect()->toRoute('recepcion', array('action' => 'orientacion', 'id' => $expediente->getId()));
+    }
+
+    public function guardarorientacionaction() {
+
+        $data = $this->request->getPost();
+        $idexpediente = $data["id"];
+        $identity = $this->authService->getIdentity();
+        $sede = $identity->getIdEmpleado()->getIdsede()->getId();
+
+        if (empty($data["fechanac"])) {
+            $fechanac = NULL;
+        } else {
+            $fechanac = date_create_from_format('d/m/Y', $data["fechanac"]);
+        }
+
+        if (empty($data["fechahecho"])) {
+            $fechahecho = NULL;
+        } else {
+            $fechahecho = date_create_from_format('d/m/Y', $data["fechahecho"]);
+        }
+        $persona = array(
+            'id' => $data["pid"],
+            'nombres' => $data["nombre"],
+            'apellidos' => $data["apellido"],
+            'tipo' => $data["tipodoc"],
+            'numero' => $data["numdoc"],
+            'sexo' => $data["sexo"],
+            'fechanac' => $fechanac,
+            'lgbti' => $data["lgbti"],
+            'anonimo' => $data["anonimo"],
+            'usuario' => $identity->getId()
+        );
+
+        $datos = array(
+            'idpersona' => $data["idpersona"],
+            'usr' => $identity->getId(),
+            'sede' => $sede,
+            'tipo' => $data["tipoexpediente"],
+            'cola' => $data["id"],
+            'departamento' => $data["depto"],
+            'municipio' => $data["muni"],
+            'area' => $data["areaubicacion"],
+            'hechos' => $data["descripcionhechos"],
+            'direccion' => $data["direccion"],
+            'fecha' => $fechahecho,
+            'peticion' => $data["peticion"],
+            'pruebas' => $data["pruebas"]
+        );
+
+        $calificacion = $data["hechos"];
+
+        $orientacion = array(
+            'idExpediente' => $data["id"],
+            'detalle' => $data["detalleorientacion"],
+            'remision' => $data["remision"]
+        );
+
+        $instituciones = $data["instdependientes"];
+
+        $expservice = new ExpedienteService();
+        $expservice->guardarOrientacion($this->entityManager, $orientacion, $instituciones);
+
+        return $this->redirect()->toRoute('recepcion', array('action' => 'resumen', 'id' => $idexpediente));
     }
 
 ///************************Métodos para modificar registros*****************************///
@@ -516,10 +703,10 @@ class RecepcionController extends AbstractActionController {
         $sede = $identity->getIdEmpleado()->getIdsede()->getId();
         $data = $this->request->getPost();
 
-        if (empty($data["nac"])) {
-            $nac = NULL;
+        if (empty($data["fechanac"])) {
+            $fechanac = NULL;
         } else {
-            $nac = date_create_from_format('d/m/Y', $data["nac"]);
+            $fechanac = date_create_from_format('d/m/Y', $data["fechanac"]);
         }
         $persona = array(
             'id' => $data["pid"],
@@ -528,9 +715,10 @@ class RecepcionController extends AbstractActionController {
             'tipo' => $data["tipodoc"],
             'numero' => $data["numdoc"],
             'sexo' => $data["sexo"],
-            'nac' => $nac,
+            'fechanac' => $fechanac,
             'lgbti' => $data["lgbti"],
-            'anonimo' => $data["anonimo"]
+            'anonimo' => $data["anonimo"],
+            'usuario' => $identity->getId()
         );
         $visita = array(
             'id' => $data["id"],
@@ -586,20 +774,19 @@ class RecepcionController extends AbstractActionController {
         $colaservice = new ColaRecepcionService();
         $colaservice->departure($this->entityManager, $departure);
 
-//return $this->forward()->dispatch('Procuracion\Controller\Recepcion', array('action' => 'cola'));
         return $this->redirect()->toRoute('recepcion', array('action' => 'cola'));
     }
 
     public function atenderAction() {
 
         $id = $this->getEvent()->getRouteMatch()->getParam('id');
+        $identity = $this->authService->getIdentity();
         $hora = date("h:i:s");
-        $attend = array('id' => $id, 'hora' => $hora);
+        $attend = array('id' => $id, 'hora' => $hora, 'usuario' => $identity->getId());
 
         $colaservice = new ColaRecepcionService();
         $colaservice->attend($this->entityManager, $attend);
 
-//$this->redirect()->toRoute('recepcion', array('action' => 'cola'));
         $this->redirect()->toRoute('recepcion', array('action' => 'solicitud', 'id' => $id));
     }
 
@@ -642,17 +829,11 @@ class RecepcionController extends AbstractActionController {
 
             $id = $this->getEvent()->getRouteMatch()->getParam('id');
 
-//var_dump($id);
-
             $visitaservice = new VisitaService();
             $visitas = $visitaservice->getVisitas($this->entityManager, $id);
 
-//var_dump($visitas);
-
             $colaservice = new ColaRecepcionService();
             $cola = $colaservice->getEnCola($this->entityManager, $id);
-
-// var_dump($cola);
 
             $header = new ViewModel();
             $header->setVariables(array('identity' => $identity));
