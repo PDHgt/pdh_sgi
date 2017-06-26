@@ -1,15 +1,29 @@
 /********************* eventos cargados desde inicio *************************/
 
 $(document).ready(function() {
+    /******************** mostrar calendarios ******************/
+    $("#datepicker").datepicker({
+        changeMonth: true,
+        changeYear: true,
+        dateFormat: 'dd/mm/yy'});
+    $(".datepicker").datepicker({
+        changeMonth: true,
+        changeYear: true,
+        dateFormat: 'dd/mm/yy'});
+
+    /******************** boton regresar *********************/
     $('#historyBack').click(function() {
         window.history.go(-1);
     });
+
+    /************** no permitir espacios en numdoc ****************/
     $('#numdoc').on('keypress', function(e) {
         if (e.which === 32)
             return false;
     });
+    /************** Editar solicitante ******************/
     $("#editarsolicitante").click(function() {
-        $("input[name='pid']").attr('disabled', !$("input[name='pid']").attr('disabled'));
+        $("input[name='idp']").attr('disabled', !$("input[name='idp']").attr('disabled'));
         $("input[name='nombre']").attr('disabled', !$("input[name='nombre']").attr('disabled'));
         $("input[name='apellido']").attr('disabled', !$("input[name='apellido']").attr('disabled'));
         $("input[name='fechanac']").attr('disabled', !$("input[name='fechanac']").attr('disabled'));
@@ -20,31 +34,46 @@ $(document).ready(function() {
         $("input[name='lgbti']").attr('disabled', !$("input[name='lgbti']").attr('disabled'));
         $("input[name='anonimo']").attr('disabled', !$("input[name='anonimo']").attr('disabled'));
     });
+
+    /******************* Editar hechos ********************/
+    $("#editarhechos").click(function() {
+        $("input[name='ide']").attr('disabled', !$("input[name='ide']").attr('disabled'));
+        $("input[name='fechahecho']").attr('disabled', !$("input[name='fechahecho']").attr('disabled'));
+        $("select[name='areaubicacion']").attr('disabled', !$("select[name='areaubicacion']").attr('disabled'));
+        $("input[name='direccion']").attr('disabled', !$("input[name='direccion']").attr('disabled'));
+        $("select[name='depto']").attr('disabled', !$("select[name='depto']").attr('disabled'));
+        $("select[name='muni']").attr('disabled', !$("select[name='muni']").attr('disabled'));
+        $("textarea[name='deschechos']").attr('disabled', !$("textarea[name='deschechos']").attr('disabled'));
+        $("textarea[name='peticion']").attr('disabled', !$("textarea[name='peticion']").attr('disabled'));
+        $("textarea[name='pruebas']").attr('disabled', !$("textarea[name='pruebas']").attr('disabled'));
+    });
+
+    /*************** Editar calificacion *******************/
+    $("#editarcalificacion").click(function() {
+        $("input[name='tipoexpediente']").attr('disabled', !$("input[name='tipoexpediente']").attr('disabled'));
+    });
+
+    /*************** Editar orientacion *******************/
+    $("#editarorientacion").click(function() {
+        $("textarea[name='detalleorientacion']").attr('disabled', !$("textarea[name='detalleorientacion']").attr('disabled'));
+    });
+
+
+    /*************** Tipo de expediente muestra la calificacion *******************/
     $("input[name='tipoexpediente']").click(function() {
         $("#calificacion").removeClass("collapsed-box");
         $("input[name='derecho[]']").attr('checked', false);
         $("#hechosviolatorios").empty();
         $("#resumen").empty();
     });
-    $("#datepicker").datepicker({
-        changeMonth: true,
-        changeYear: true,
-        dateFormat: 'dd/mm/yy'});
-    $(".datepicker").datepicker({
-        changeMonth: true,
-        changeYear: true,
-        dateFormat: 'dd/mm/yy'});
 });
 
 /**************************** funcion validar campos *************************************/
-
 function validarNumdoc() {
     $("#numdoc").attr("required", "true");
 }
 
 /***************************** funcion obtener datos con dpi ***************************/
-
-
 function obtenerDatos(url, request, response) {
     $.ajax({
         url: url,
@@ -63,6 +92,7 @@ function obtenerDatos(url, request, response) {
         }
     });
 }
+
 /********************* funcion completar formulario con datos obtenidos del dpi **********************/
 function completarDatosDPI(url) {
     $.ajax({
@@ -77,7 +107,7 @@ function completarDatosDPI(url) {
 
             } else {
                 $('#id').val(data[0]);
-                $('input[name="pid"]').val(data[0]);
+                $('input[name="idp"]').val(data[0]);
                 $('#tipodoc').val(data[1]);
                 $('#fechanac').val(data[2]);
                 $('#nombres').val(data[4]);
@@ -94,7 +124,7 @@ function completarDatosDPI(url) {
         },
         error: function() {
             $('#id').val();
-            $('input[name="pid"]').val();
+            $('input[name="idp"]').val();
             $('#tipodoc').val();
             $('#fechanac').val();
             $('#nombres').val();
@@ -128,7 +158,6 @@ function esAnonimo(input) {
 }
 
 /************************* funcion calificador ********************************/
-
 function calificadorDerecho(url, id, comp) {
     $.ajax({
         url: url,
@@ -154,7 +183,6 @@ function calificadorDerecho(url, id, comp) {
 }
 
 /************************* funcion checkbox instituciones ********************************/
-
 function checkboxInsitucion(url, id) {
     $.ajax({
         url: url,
@@ -181,9 +209,7 @@ function checkboxInsitucion(url, id) {
     });
 }
 
-
 /***************************** funcion departamento y municipio dependiente ******************************/
-
 function cambiarDepto(url, depto) {
     $.ajax({
         url: url,
@@ -204,7 +230,6 @@ function cambiarDepto(url, depto) {
 }
 
 /***************************** funcion unidad y empleado dependiente ******************************/
-
 function cambiarUnidad(url, unidad) {
     $.ajax({
         url: url,
@@ -225,12 +250,7 @@ function cambiarUnidad(url, unidad) {
 
 }
 
-
-
-
 /**************************** funciones efectos de botones ***********************************/
-
-
 (function(window) {
     'use strict';
     var Waves = Waves || {};

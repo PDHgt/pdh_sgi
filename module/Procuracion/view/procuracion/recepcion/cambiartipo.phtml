@@ -25,10 +25,10 @@
                     <?php if ($this->tipo == 'solicitud') { ?>
                         <?php
                         $tipo = $form->get('tipopersona')->setValue('visitante');
-                        $pid = $form->get('pid')->setValue($cola->getIdpersona()->getId());
+                        $idp = $form->get('idp')->setValue($cola->getIdpersona()->getId());
                         $id = $form->get('id')->setValue($cola->getId());
                         echo $this->formInput($tipo);
-                        echo $this->formInput($pid);
+                        echo $this->formInput($idp);
                         echo $this->formInput($id);
                         ?>
                         <div class="row">
@@ -172,10 +172,10 @@
                     <?php } else { ?>
                         <?php
                         $tipo = $form->get('tipopersona')->setValue('solicitante');
-                        $pid = $form->get('pid')->setValue($visita->getIdpersona()->getId());
+                        $idp = $form->get('idp')->setValue($visita->getIdpersona()->getId());
                         $id = $form->get('id')->setValue($visita->getId());
                         echo $this->formInput($tipo);
-                        echo $this->formInput($pid);
+                        echo $this->formInput($idp);
                         echo $this->formInput($id);
                         ?>
                         <div class="row">

@@ -249,6 +249,7 @@ class RecepcionController extends AbstractActionController {
 
             $geografiaService = new GeografiaService();
             $deptos = $geografiaService->ListarDeptos($this->entityManager);
+            $munis = $geografiaService->ListarMunis($this->entityManager);
 
             $derechoservice = new CuboCalificacionService();
             $derechos = $derechoservice->listarDerechos($this->entityManager);
@@ -277,7 +278,8 @@ class RecepcionController extends AbstractActionController {
                 'id' => $id,
                 'derechos' => $derechos,
                 'permisos' => $permisos,
-                'deptos' => $deptos
+                'deptos' => $deptos,
+                'munis' => $munis
             ));
             return $view;
         }
@@ -344,8 +346,6 @@ class RecepcionController extends AbstractActionController {
             $identity = $this->authService->getIdentity();
             $idexpediente = $this->getEvent()->getRouteMatch()->getParam('id');
 
-            echo $idexpediente;
-
             $form = new FormularioRecepcion();
 
             $geografiaService = new GeografiaService();
@@ -358,11 +358,11 @@ class RecepcionController extends AbstractActionController {
             $usuarioservice = new UsuarioService();
             $permisos = $usuarioservice->getPermisos($this->entityManager, $identity->getUsuario());
 
-            /* $colaservice = new ColaRecepcionService();
-              $cola = $colaservice->listOne($this->entityManager, $id); */
-
             $expedienteservice = new ExpedienteService();
             $expediente = $expedienteservice->verExpediente($this->entityManager, $idexpediente);
+            $verorientacion = $expedienteservice->verOrientacion($this->entityManager, $idexpediente);
+            $orientacion = $verorientacion["orientacion"][0];
+            $remisiones = $verorientacion["remisiones"];
 
             $institucionservice = new RemisionService();
             $institucion = $institucionservice->listarInstitucionPadre($this->entityManager);
@@ -380,14 +380,16 @@ class RecepcionController extends AbstractActionController {
                     ->addChild($aside, 'aside');
             $view = new ViewModel(array(
                 'form' => $form,
-                'expediente' => $expediente,
                 'identity' => $identity,
-                'idexpediente' => $idexpediente,
-                'derechos' => $derechos,
                 'permisos' => $permisos,
+                'idexpediente' => $idexpediente,
+                'expediente' => $expediente,
+                'orientacion' => $orientacion,
+                'remisiones' => $remisiones,
+                'institucion' => $institucion,
+                'derechos' => $derechos,
                 'deptos' => $deptos,
-                'munis' => $munis,
-                'institucion' => $institucion
+                'munis' => $munis
             ));
             return $view;
         }
@@ -566,6 +568,7 @@ class RecepcionController extends AbstractActionController {
             'obs' => $data['obs']
         );
         $registro = new PersonaService();
+
         switch ($data['tipopersona']) {
             case 'visitante':
                 $registro->savePersona($this->entityManager, $persona, $visita, 1);
@@ -595,7 +598,7 @@ class RecepcionController extends AbstractActionController {
             $fechahecho = date_create_from_format('d/m/Y', $data["fechahecho"]);
         }
         $persona = array(
-            'id' => $data["pid"],
+            'id' => $data["idp"],
             'nombres' => $data["nombre"],
             'apellidos' => $data["apellido"],
             'tipo' => $data["tipodoc"],
@@ -616,7 +619,7 @@ class RecepcionController extends AbstractActionController {
             'departamento' => $data["depto"],
             'municipio' => $data["muni"],
             'area' => $data["areaubicacion"],
-            'hechos' => $data["descripcionhechos"],
+            'hechos' => $data["deschechos"],
             'direccion' => $data["direccion"],
             'fecha' => $fechahecho,
             'peticion' => $data["peticion"],
@@ -636,7 +639,7 @@ class RecepcionController extends AbstractActionController {
     public function guardarorientacionaction() {
 
         $data = $this->request->getPost();
-        $idexpediente = $data["id"];
+        $idexpediente = $data["ide"];
         $identity = $this->authService->getIdentity();
         $sede = $identity->getIdEmpleado()->getIdsede()->getId();
 
@@ -652,7 +655,7 @@ class RecepcionController extends AbstractActionController {
             $fechahecho = date_create_from_format('d/m/Y', $data["fechahecho"]);
         }
         $persona = array(
-            'id' => $data["pid"],
+            'id' => $data["idp"],
             'nombres' => $data["nombre"],
             'apellidos' => $data["apellido"],
             'tipo' => $data["tipodoc"],
@@ -666,6 +669,7 @@ class RecepcionController extends AbstractActionController {
 
         $datos = array(
             'idpersona' => $data["idpersona"],
+            'idexpediente' => $data["idexpediente"],
             'usr' => $identity->getId(),
             'sede' => $sede,
             'tipo' => $data["tipoexpediente"],
@@ -673,7 +677,7 @@ class RecepcionController extends AbstractActionController {
             'departamento' => $data["depto"],
             'municipio' => $data["muni"],
             'area' => $data["areaubicacion"],
-            'hechos' => $data["descripcionhechos"],
+            'hechos' => $data["deschechos"],
             'direccion' => $data["direccion"],
             'fecha' => $fechahecho,
             'peticion' => $data["peticion"],
@@ -683,7 +687,7 @@ class RecepcionController extends AbstractActionController {
         $calificacion = $data["hechos"];
 
         $orientacion = array(
-            'idExpediente' => $data["id"],
+            'idExpediente' => $idexpediente,
             'detalle' => $data["detalleorientacion"],
             'remision' => $data["remision"]
         );
@@ -709,7 +713,7 @@ class RecepcionController extends AbstractActionController {
             $fechanac = date_create_from_format('d/m/Y', $data["fechanac"]);
         }
         $persona = array(
-            'id' => $data["pid"],
+            'id' => $data["idp"],
             'nombres' => $data["nombre"],
             'apellidos' => $data["apellido"],
             'tipo' => $data["tipodoc"],

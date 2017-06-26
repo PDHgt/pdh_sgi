@@ -26,7 +26,7 @@ class ExpedientePersona
      *
      * @ORM\ManyToOne(targetEntity="Procuracion\Entity\DetalleCatalogo")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="RelacionAgresor", referencedColumnName="Codigo")
+     *   @ORM\JoinColumn(name="RelacionAgresor", referencedColumnName="id")
      * })
      */
     private $relacionagresor;
@@ -36,7 +36,7 @@ class ExpedientePersona
      *
      * @ORM\ManyToOne(targetEntity="Procuracion\Entity\DetalleCatalogo")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="RelacionVictima", referencedColumnName="Codigo")
+     *   @ORM\JoinColumn(name="RelacionVictima", referencedColumnName="id")
      * })
      */
     private $relacionvictima;
@@ -46,7 +46,7 @@ class ExpedientePersona
      *
      * @ORM\ManyToOne(targetEntity="Procuracion\Entity\DetalleCatalogo")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Tipo", referencedColumnName="Codigo")
+     *   @ORM\JoinColumn(name="Tipo", referencedColumnName="id")
      * })
      */
     private $tipo;

@@ -21,10 +21,10 @@
                 // Render the opening tag
                 echo $this->form()->openTag($form);
                 $tipo = $form->get('tipopersona')->setValue('visitante');
-                $pid = $form->get('pid')->setValue($visita->getIdpersona()->getId());
+                $idp = $form->get('idp')->setValue($visita->getIdpersona()->getId());
                 $id = $form->get('id')->setValue($visita->getId());
                 echo $this->formInput($tipo);
-                echo $this->formInput($pid);
+                echo $this->formInput($idp);
                 echo $this->formInput($id);
                 ?>
                 <div class="box-body">

@@ -62,17 +62,6 @@ class ExpedienteService {
         //persona
         $personaservice = new PersonaService();
         $personaservice->puedeModificarPersona($em, $persona);
-        /* $np = $em->getRepository('Procuracion\Entity\Persona')->find($persona['id']);
-          //var_dump($np);
-          $np->setNombres($persona['nombres']);
-          $np->setApellidos($persona['apellidos']);
-          $np->setTipoDocumento($persona['tipo']);
-          $np->setNumeroDocumento($persona['numero']);
-          $np->setSexo($persona['sexo']);
-          $np->setLgbti($persona['lgbti']);
-          $np->setFechaNacimiento($persona['nac']);
-          $np->setUpdatedBy($queusr);
-          $em->flush(); */
 
         //expediente_persona
         $expPer = new ExpedientePersona();
@@ -153,6 +142,7 @@ class ExpedienteService {
         $nuevo = $em->getRepository('Procuracion\Entity\Orientacion')->findByIdExpediente($id);
         $datos['orientacion'] = $nuevo;
         $datos['remisiones'] = $this->listarRemisiones($em, $id);
+        return $datos;
     }
 
     public function puedeModificarExpediente(EntityManager $em, array $datos, array $calificacion, array $persona) {

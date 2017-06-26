@@ -122,7 +122,12 @@
 
                  }*/
             });
-
+            /*
+             * Muestra y oculta calificacion
+             */
+            $('#editarcalificacion').click(function() {
+                $('.calificacion').toggle();
+            });
             /*
              *  Llamado a funcion calificar derecho y hecho
              */
@@ -138,6 +143,12 @@
                     $("div[data-group='" + id + "']").empty();
                 }
 
+            });
+            /*
+             * Muestra y oculta calificacion
+             */
+            $('#editarremision').click(function() {
+                $('.remisiones').toggle();
             });
             /*
              * Muestra y oculta instituciones si hay remision

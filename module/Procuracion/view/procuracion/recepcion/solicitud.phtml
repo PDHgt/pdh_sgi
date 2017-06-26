@@ -17,11 +17,12 @@
     echo $this->form()->openTag($form);
     $formLabel = $this->plugin('formLabel');
 
-
     $id = $form->get('id')->setValue($cola->getId());
     echo $this->formInput($id);
 
-    $idpersona = $form->get('pid')->setAttributes(array("name" => "idpersona"))->setValue($cola->getIdpersona()->getId());
+    $idpersona = $form->get('id')->setValue($cola->getIdpersona()->getId())->setAttributes(array(
+        "name" => "idpersona"
+    ));
     echo $this->formInput($idpersona);
     ?>
     <div class="row">
@@ -120,14 +121,19 @@
             </div>
         </div>
         <div class="col-xs-6">
+            <!---------------------- Inicia formulario de solicitante -------------------------->
+            <?php
+            $idp = $form->get('id')->setValue($cola->getIdpersona()->getId())->setAttributes(array(
+                "name" => "idp",
+                "disabled" => true
+            ));
+            echo $this->formInput($idp);
+            ?>
             <div class="box box-default color-palette-box collapsed-box">
                 <div class="box-header with-border">
                     <i class="fa fa-user"></i>
                     <h3 class="box-title">Solicitante</h3>
                     <div class="pull-right">
-                        <a href="#" data-toggle="" data-tt="tooltip" title="Editar" id="editarsolicitante">
-                            <i class="fa fa-edit"></i>
-                        </a>
                         <a href="#" data-widget="collapse" data-tt="tooltip" title="Maximizar">
                             <i class="fa fa-plus"></i>
                         </a>
@@ -147,10 +153,6 @@
                     </span>
                 </div>
                 <div class="box-body">
-                    <?php
-                    $pid = $form->get('pid')->setValue($cola->getIdpersona()->getId())->setAttribute("disabled", true);
-                    echo $this->formInput($pid);
-                    ?>
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="row">
@@ -253,11 +255,18 @@
                         </div>
                     </div>
                 </div>
+                <div class="box-footer clearfix">
+                    <a href="#" data-toggle="" data-tt="tooltip" title="Editar" id="editarsolicitante">
+                        <span class="badge bg-red"><i class="fa fa-edit"></i> Editar</span>
+                    </a>
+                </div>
             </div>
+            <!---------------------- Inicia formulario de solicitante -------------------------->
         </div>
     </div>
     <div class="row">
         <div class="col-xs-12">
+            <!---------------------- Inicia formulario de hechos -------------------------->
             <div class="box box-default color-palette-box">
                 <div class="box-header with-border">
                     <i class="fa fa-file"></i>
@@ -316,7 +325,15 @@
                         <div class="col-xs-6">
                             <div class="form-group">
                                 <?php
-                                $muni = $form->get('muni')->setAttributes(array("required" => true));
+                                $munis = $this->munis;
+                                //print_r($munis);
+                                $munisOptions = array();
+                                foreach ($munis as $muniOption) {
+                                    $munisOptions[$muniOption->getCodigo()] = $muniOption->getNombre();
+                                }
+                                $muni = $form->get('muni')->setValueOptions($munisOptions)->setAttributes(array(
+                                    "required" => true
+                                ));
                                 echo $formLabel->openTag() . $muni->getOption('label') . $formLabel->closeTag();
                                 echo $this->formSelect($muni);
                                 ?>
@@ -324,50 +341,52 @@
                         </div>
                         <div class="col-xs-12">
                             <div class="form-group">
-                                <?php
-                                $hechos = $form->get('descripcionhechos')->setAttributes(array("id" => "hechos", "required" => true));
-                                echo $formLabel->openTag() . $hechos->getOption('label') . " ";
-                                echo $formLabel->closeTag();
-                                echo $this->formTextarea($hechos);
-                                ?>
+<?php
+$hechos = $form->get('deschechos')->setAttributes(array("id" => "hechos", "required" => true));
+echo $formLabel->openTag() . $hechos->getOption('label') . " ";
+echo $formLabel->closeTag();
+echo $this->formTextarea($hechos);
+?>
                             </div>
                         </div>
                         <div class="col-xs-6">
                             <div class="form-group">
-                                <?php
-                                $peticion = $form->get('peticion');
-                                echo $formLabel->openTag() . $peticion->getOption('label') . $formLabel->closeTag();
-                                echo $this->formTextarea($peticion);
-                                ?>
+<?php
+$peticion = $form->get('peticion');
+echo $formLabel->openTag() . $peticion->getOption('label') . $formLabel->closeTag();
+echo $this->formTextarea($peticion);
+?>
                             </div>
                         </div>
                         <div class = "col-xs-6">
                             <div class="form-group">
-                                <?php
-                                $pruebas = $form->get('pruebas');
-                                echo $formLabel->openTag() . $pruebas->getOption('label') . $formLabel->closeTag();
-                                echo $this->formTextarea($pruebas);
-                                ?>
+<?php
+$pruebas = $form->get('pruebas');
+echo $formLabel->openTag() . $pruebas->getOption('label') . $formLabel->closeTag();
+echo $this->formTextarea($pruebas);
+?>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <!---------------------- Inicia formulario de solicitante -------------------------->
         </div>
     </div>
     <div class = "row">
         <div class = "col-xs-12">
+            <!---------------------- Inicia formulario de calificacion -------------------------->
             <div class = "box box-default color-palette-box collapsed-box" id = "calificacion">
                 <div class = "box-header with-border">
                     <i class = "fa fa-check-circle"></i>
                     <h3 class = "box-title">Calificación de Derechos</h3>
                     <div class = "col-xs-6 col-centered">
                         <div class = "form-group">
-                            <?php
-                            $tipoexpediente = $form->get('tipoexpediente')->setAttributes(array("required" => true));
-                            echo $formLabel->openTag() . $tipoexpediente->getOption('label') . "  &nbsp;" . $formLabel->closeTag();
-                            echo $this->formRadio($tipoexpediente);
-                            ?>
+<?php
+$tipoexpediente = $form->get('tipoexpediente')->setAttributes(array("required" => true));
+echo $formLabel->openTag() . $tipoexpediente->getOption('label') . "  &nbsp;" . $formLabel->closeTag();
+echo $this->formRadio($tipoexpediente);
+?>
                         </div>
                     </div>
                     <div class="pull-right box-tools">
@@ -378,50 +397,47 @@
                 </div>
                 <div class="box-body">
                     <div class="row">
-
-                    </div>
-                    <div class="row">
                         <div class="col-xs-3">
                             <h4>Civíles y Políticos</h4>
                             <div class="form-group">
-                                <?php
-                                $derechos = $this->derechos;
-                                foreach ($derechos as $derechoOption) {
-                                    if ($derechoOption->getArea() == "DCP") {
-                                        $derecho = $form->get('derecho[]')->setLabel($derechoOption->getDerecho());
-                                        /* echo "<div class='checkbox'>";
-                                          echo $formLabel->openTag();
-                                          echo $this->formCheckbox($derecho);
-                                          echo $derecho->getLabel('label');
-                                          echo $formLabel->closeTag();
-                                          echo "</div>"; */
-                                        echo "<div class='checkbox'>";
-                                        echo "<label><input type='checkbox' name='derecho[]' value='" . $derechoOption->getId() . "'>";
-                                        echo $derechoOption->getDerecho() . "</label></div>";
-                                    }
-                                }
-                                ?>
+<?php
+$derechos = $this->derechos;
+foreach ($derechos as $derechoOption) {
+    if ($derechoOption->getArea() == "DCP") {
+        $derecho = $form->get('derecho[]')->setLabel($derechoOption->getDerecho());
+        /* echo "<div class='checkbox'>";
+          echo $formLabel->openTag();
+          echo $this->formCheckbox($derecho);
+          echo $derecho->getLabel('label');
+          echo $formLabel->closeTag();
+          echo "</div>"; */
+        echo "<div class='checkbox'>";
+        echo "<label><input type='checkbox' name='derecho[]' value='" . $derechoOption->getId() . "'>";
+        echo $derechoOption->getDerecho() . "</label></div>";
+    }
+}
+?>
                             </div>
                         </div>
                         <div class="col-xs-3">
                             <h4>Económicos, Sociales y Culturales</h4>
                             <div class="form-group checkdiv">
-                                <?php
-                                foreach ($derechos as $derechoOption) {
-                                    if ($derechoOption->getArea() == "DESC") {
-                                        $derecho = $form->get('derecho[]')->setLabel($derechoOption->getDerecho());
-                                        /* echo "<div class='checkbox'>";
-                                          echo $formLabel->openTag();
-                                          echo $this->formCheckbox($derecho);
-                                          echo $derecho->getLabel('label');
-                                          echo $formLabel->closeTag();
-                                          echo "</div>"; */
-                                        echo "<div class='checkbox'>";
-                                        echo "<label><input type='checkbox' name='derecho[]' value='" . $derechoOption->getId() . "'>";
-                                        echo $derechoOption->getDerecho() . "</label></div>";
-                                    }
-                                }
-                                ?>
+<?php
+foreach ($derechos as $derechoOption) {
+    if ($derechoOption->getArea() == "DESC") {
+        $derecho = $form->get('derecho[]')->setLabel($derechoOption->getDerecho());
+        /* echo "<div class='checkbox'>";
+          echo $formLabel->openTag();
+          echo $this->formCheckbox($derecho);
+          echo $derecho->getLabel('label');
+          echo $formLabel->closeTag();
+          echo "</div>"; */
+        echo "<div class='checkbox'>";
+        echo "<label><input type='checkbox' name='derecho[]' value='" . $derechoOption->getId() . "'>";
+        echo $derechoOption->getDerecho() . "</label></div>";
+    }
+}
+?>
                             </div>
                         </div>
                         <div class="col-xs-3">
@@ -439,15 +455,15 @@
                     </div>
                 </div>
             </div>
-            <div class="box-footer">
-                <?php
-                echo $this->formElement($form->get('cancelar'));
-                echo $this->formElement($form->get('guardar')
-                                ->setLabel('Siguiente <i class="glyphicon glyphicon-chevron-right"></i>')
-                                ->setAttributes(array("class" => "btn btn-primary btn-flat pull-right")));
-                ?>
-            </div>
+
+            <!---------------------- Inicia formulario de solicitante -------------------------->
         </div>
     </div>
-    <?php echo $this->form()->closeTag() ?>
+    <div class="box-footer">
+<?php
+//echo $this->formElement($form->get('guardar'));
+echo $this->formElement($form->get('siguiente'));
+?>
+    </div>
+        <?php echo $this->form()->closeTag() ?>
 </section>

@@ -28,7 +28,7 @@ class FormularioRecepcion extends Form {
         ));
         //ID persona
         $this->add(array(
-            'name' => 'pid',
+            'name' => 'idp',
             'attributes' => array(
                 'type' => 'hidden',
             )
@@ -482,7 +482,7 @@ class FormularioRecepcion extends Form {
         ));
         //Campo hechos
         $this->add(array(
-            'name' => 'descripcionhechos',
+            'name' => 'deschechos',
             'options' => array(
                 'label' => 'Hechos',
             ),
@@ -545,6 +545,7 @@ class FormularioRecepcion extends Form {
                 'class' => 'btn btn-primary btn-flat'
             )
         ));
+
         //Input Cancelar
         $this->add(array(
             'name' => 'cancelar',
@@ -555,6 +556,24 @@ class FormularioRecepcion extends Form {
                 'class' => 'btn btn-danger btn-flat'
             )
         ));
+
+        //Input siguiente
+        $this->add(array(
+            'type' => 'Button',
+            'name' => 'siguiente',
+            'options' => array(
+                'label' => 'Siguiente <i class="glyphicon glyphicon-chevron-right"></i>',
+                'label_options' => array(
+                    'disable_html_escape' => true,
+                )
+            ),
+            'attributes' => array(
+                'type' => 'submit',
+                'value' => 'Siguiente',
+                'class' => 'btn btn-success btn-flat pull-right'
+            )
+        ));
+
         //Input Modificar
         $this->add(array(
             'name' => 'cambiar',
@@ -571,6 +590,22 @@ class FormularioRecepcion extends Form {
                 'type' => 'submit',
                 'value' => 'Buscar',
                 'class' => 'btn btn-success btn-flat'
+            )
+        ));
+        //Input Imprimir
+        $this->add(array(
+            'type' => 'Button',
+            'name' => 'imprimir',
+            'options' => array(
+                'label' => '<i class="glyphicon glyphicon-print"></i> Imprimir',
+                'label_options' => array(
+                    'disable_html_escape' => true,
+                )
+            ),
+            'attributes' => array(
+                //'type' => 'button',
+                'value' => 'Imprimir',
+                'class' => 'btn btn-primary btn-flat'
             )
         ));
     }
