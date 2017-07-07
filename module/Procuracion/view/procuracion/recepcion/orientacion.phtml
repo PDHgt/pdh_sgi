@@ -52,7 +52,6 @@ $calificacion = $this->expediente["calificacion"];
                     <h3 class = "box-title">Solicitud
                         <small>
                             <?php
-                            echo date("Y-m-d");
                             echo " / " . $cola->getFechaentrada()->format("d/m/Y H:i:s");
                             switch ($cola->getPrioridad()) {
                                 case '1':

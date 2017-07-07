@@ -15,6 +15,7 @@ use Procuracion\Service\ExpedienteService;
 use Procuracion\Service\RemisionService;
 use Procuracion\Service\GeneraDocsService;
 use Procuracion\Service\DocumentoService;
+use Procuracion\Service\CaminoService;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Authentication\AuthenticationService as AuthService;
@@ -930,9 +931,16 @@ class RecepcionController extends AbstractActionController {
     }
 
     public function terminarAction() {
+        $idexpediente = $this->getEvent()->getRouteMatch()->getParam('id');
+        $identity = $this->authService->getIdentity();
+
+        $termina = new CaminoService();
+
+        $termina->TerminarEtapa($this->entityManager, $idexpediente, $identity->getId());
 
 
-        return $this->redirect()->toRoute('recepcion', array('action' => 'cola'));
+
+        //return $this->redirect()->toRoute('recepcion', array('action' => 'cola'));
     }
 
 }

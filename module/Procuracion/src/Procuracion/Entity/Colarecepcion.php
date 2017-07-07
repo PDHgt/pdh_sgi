@@ -6,14 +6,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Events;
 
 /**
- * Colarecepcion
+ * ColaRecepcion
  *
  * @ORM\Table(name="colarecepcion", indexes={@ORM\Index(name="id_persona", columns={"id_persona"})})
- * @ORM\Entity 
- * @ORM\EntityListeners({"Procuracion\Listener\ColaListener"}) 
+ * @ORM\Entity
+ * @ORM\EntityListeners({"Procuracion\Listener\ColaListener"})
  *
  */
-class Colarecepcion {
+class ColaRecepcion {
 
     /**
      * @var integer
@@ -131,7 +131,7 @@ class Colarecepcion {
      *
      * @param \DateTime $fechaentrada
      *
-     * @return Colarecepcion
+     * @return ColaRecepcion
      */
     public function setFechaentrada($fechaentrada) {
         $this->fechaentrada = $fechaentrada;
@@ -153,7 +153,7 @@ class Colarecepcion {
      *
      * @param \DateTime $horaentrada
      *
-     * @return Colarecepcion
+     * @return ColaRecepcion
      */
     public function setHoraentrada($horaentrada) {
         $this->horaentrada = $horaentrada;
@@ -175,7 +175,7 @@ class Colarecepcion {
      *
      * @param integer $sede
      *
-     * @return Colarecepcion
+     * @return ColaRecepcion
      */
     public function setSede($sede) {
         $this->sede = $sede;
@@ -197,7 +197,7 @@ class Colarecepcion {
      *
      * @param string $prioridad
      *
-     * @return Colarecepcion
+     * @return ColaRecepcion
      */
     public function setPrioridad($prioridad) {
         $this->prioridad = $prioridad;
@@ -219,7 +219,7 @@ class Colarecepcion {
      *
      * @param integer $lapiceroverde
      *
-     * @return Colarecepcion
+     * @return ColaRecepcion
      */
     public function setLapiceroverde($lapiceroverde) {
         $this->lapiceroverde = $lapiceroverde;
@@ -241,7 +241,7 @@ class Colarecepcion {
      *
      * @param string $turno
      *
-     * @return Colarecepcion
+     * @return ColaRecepcion
      */
     public function setTurno($turno) {
         $this->turno = $turno;
@@ -263,7 +263,7 @@ class Colarecepcion {
      *
      * @param \DateTime $horaatencion
      *
-     * @return Colarecepcion
+     * @return ColaRecepcion
      */
     public function setHoraatencion($horaatencion) {
         $this->horaatencion = $horaatencion;
@@ -285,7 +285,7 @@ class Colarecepcion {
      *
      * @param string $observaciones
      *
-     * @return Colarecepcion
+     * @return ColaRecepcion
      */
     public function setObservaciones($observaciones) {
         $this->observaciones = $observaciones;
@@ -307,7 +307,7 @@ class Colarecepcion {
      *
      * @param string $razonsalida
      *
-     * @return Colarecepcion
+     * @return ColaRecepcion
      */
     public function setRazonsalida($razonsalida) {
         $this->razonsalida = $razonsalida;
@@ -329,7 +329,7 @@ class Colarecepcion {
      *
      * @param \Procuracion\Entity\Persona $idPersona
      *
-     * @return Colarecepcion
+     * @return ColaRecepcion
      */
     public function setIdPersona(\Procuracion\Entity\Persona $idPersona = null) {
         $this->idPersona = $idPersona;
@@ -351,22 +351,21 @@ class Colarecepcion {
      *
      * @param \Procuracion\Entity\Usuario $usuario
      *
-     * @return Colarecepcion
+     * @return ColaRecepcion
      */
-    public function setUpdatedBy(\Procuracion\Entity\Usuario $usuario = null)
-    {
+    public function setUpdatedBy(\Procuracion\Entity\Usuario $usuario = null) {
         $this->updated_by = $usuario;
-    
+
         return $this;
-    }   
+    }
 
     /**
      * Get updated_by
      *
      * @return \Procuracion\Entity\Usuario
      */
-    public function getUpdatedBy()
-    {
+    public function getUpdatedBy() {
         return $this->updated_by;
     }
+
 }
