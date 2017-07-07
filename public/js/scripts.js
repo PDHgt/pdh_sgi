@@ -11,6 +11,27 @@ $(document).ready(function() {
         changeYear: true,
         dateFormat: 'dd/mm/yy'});
 
+    $(function($) {
+        $.datepicker.regional['es'] = {
+            closeText: 'Cerrar',
+            prevText: '<Ant',
+            nextText: 'Sig>',
+            currentText: 'Hoy',
+            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+            dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+            dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+            weekHeader: 'Sm',
+            dateFormat: 'dd/mm/yy',
+            firstDay: 1,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix: ''
+        };
+        $.datepicker.setDefaults($.datepicker.regional['es']);
+    });
+
     /******************** boton regresar *********************/
     $('#historyBack').click(function() {
         window.history.go(-1);
@@ -23,7 +44,9 @@ $(document).ready(function() {
     });
     /************** Editar solicitante ******************/
     $("#editarsolicitante").click(function() {
-        $("input[name='idp']").attr('disabled', !$("input[name='idp']").attr('disabled'));
+        //$("input[name='idexpediente']").attr('disabled', !$("input[name='idexpediente']").attr('disabled'));
+        $("input[name='idpersona']").attr('disabled', !$("input[name='idpersona']").attr('disabled'));
+        //$("input[name='idpersona']").attr('disabled', !$("input[name='idpersona']").attr('disabled'));
         $("input[name='nombre']").attr('disabled', !$("input[name='nombre']").attr('disabled'));
         $("input[name='apellido']").attr('disabled', !$("input[name='apellido']").attr('disabled'));
         $("input[name='fechanac']").attr('disabled', !$("input[name='fechanac']").attr('disabled'));
@@ -37,7 +60,7 @@ $(document).ready(function() {
 
     /******************* Editar hechos ********************/
     $("#editarhechos").click(function() {
-        $("input[name='ide']").attr('disabled', !$("input[name='ide']").attr('disabled'));
+        $("input[name='idexpediente']").attr('disabled', !$("input[name='idexpediente']").attr('disabled'));
         $("input[name='fechahecho']").attr('disabled', !$("input[name='fechahecho']").attr('disabled'));
         $("select[name='areaubicacion']").attr('disabled', !$("select[name='areaubicacion']").attr('disabled'));
         $("input[name='direccion']").attr('disabled', !$("input[name='direccion']").attr('disabled'));
@@ -46,25 +69,45 @@ $(document).ready(function() {
         $("textarea[name='deschechos']").attr('disabled', !$("textarea[name='deschechos']").attr('disabled'));
         $("textarea[name='peticion']").attr('disabled', !$("textarea[name='peticion']").attr('disabled'));
         $("textarea[name='pruebas']").attr('disabled', !$("textarea[name='pruebas']").attr('disabled'));
-    });
-
-    /*************** Editar calificacion *******************/
-    $("#editarcalificacion").click(function() {
         $("input[name='tipoexpediente']").attr('disabled', !$("input[name='tipoexpediente']").attr('disabled'));
     });
 
     /*************** Editar orientacion *******************/
     $("#editarorientacion").click(function() {
+        $("input[name='idorientacion']").attr('disabled', !$("input[name='idorientacion']").attr('disabled'));
         $("textarea[name='detalleorientacion']").attr('disabled', !$("textarea[name='detalleorientacion']").attr('disabled'));
+        $("input[name='remision']").attr('disabled', !$("input[name='remision']").attr('disabled'));
+        //$("input[name='institucion[]']").attr('disabled', !$("input[name='institucion[]']").attr('disabled'));
     });
 
 
     /*************** Tipo de expediente muestra la calificacion *******************/
     $("input[name='tipoexpediente']").click(function() {
-        $("#calificacion").removeClass("collapsed-box");
+        $('#calificacion').collapse('show');
+        //$("#calificacion").removeClass("collapsed-box");
         $("input[name='derecho[]']").attr('checked', false);
         $("#hechosviolatorios").empty();
         $("#resumen").empty();
+    });
+
+
+
+    /*
+     * Muestra y oculta instituciones si hay remision
+     */
+    $("input[name='remision']").click(function() {
+
+        if ($("input[name='remision']:checked").val() === "2") {
+
+            $("#remisiones").collapse("hide");
+            $("input[name='institucion[]']").attr("disabled", true);
+            $("#instdependientes").empty();
+            $("#resumenremision").empty();
+        } else {
+
+            $("#remisiones").collapse("show");
+            $("input[name='institucion[]']").attr("disabled", false);
+        }
     });
 });
 
@@ -103,11 +146,9 @@ function completarDatosDPI(url) {
             term: $("#numdoc").val()
         },
         success: function(data) {
-            if (!$("#numdoc").val()) {
-
-            } else {
+            if ($("#numdoc").val()) {
                 $('#id').val(data[0]);
-                $('input[name="idp"]').val(data[0]);
+                //$('input[name="id"]').val(data[0]);
                 $('#tipodoc').val(data[1]);
                 $('#fechanac').val(data[2]);
                 $('#nombres').val(data[4]);
@@ -249,6 +290,62 @@ function cambiarUnidad(url, unidad) {
     $("select[name='empleado']").empty();
 
 }
+
+/**************************** funcion validar checkboxlist ***********************************/
+function validateDerecho()
+{
+    var derecho = $("input[name='derecho[]']").serializeArray();
+    var hechos = $("input[name='hechos[]']").serializeArray();
+    if ($("input[name='tipoexpediente']").is(':enabled')) {
+        if (derecho.length == 0)
+        {
+            //alert('nothing selected');
+            // cancel submit
+            $("#calificacion").prepend($("<div class='col-xs-12' id='alertderecho'><div class='alert alert-danger alert-dismissible'>Debe seleccionar un derecho</div></div>").fadeIn('slow', function() {
+                $(this).delay(3000).fadeOut('slow');
+            }));
+            return false;
+        } else {
+            if (hechos.length == 0) {
+                $("#calificacion").prepend($("<div class='col-xs-12' id='alerthecho'><div class='alert alert-danger alert-dismissible'>Debe seleccionar un hecho violatorio</div></div>").fadeIn('slow', function() {
+                    $(this).delay(3000).fadeOut('slow');
+                }));
+                return false;
+            }
+        }
+    }
+}
+
+/**************************** funcion validar checkboxlist ***********************************/
+function validateinstitucion()
+{
+    var institucion = $("input[name='institucion[]']").serializeArray();
+    var instdependientes = $("input[name='instdependientes[]']").serializeArray();
+    var remision = $("input[name='remision']:checked").val();
+    if ($("input[name='remision']").is(':enabled')) {
+        if (remision == 1) {
+            if (institucion.length == 0)
+            {
+
+                // cancel submit
+                $("#remisiones").prepend($("<div class='col-xs-12' id='alertderecho'><div class='alert alert-danger alert-dismissible'>Debe seleccionar un sector</div></div>").fadeIn('slow', function() {
+                    $(this).delay(3000).fadeOut('slow');
+                }));
+                return false;
+            } else {
+                if (instdependientes.length == 0) {
+
+                    $("#remisiones").prepend($("<div class='col-xs-12' id='alerthecho'><div class='alert alert-danger alert-dismissible'>Debe seleccionar una institucion</div></div>").fadeIn('slow', function() {
+                        $(this).delay(3000).fadeOut('slow');
+                    }));
+                    return false;
+                }
+            }
+        }
+    }
+}
+
+
 
 /**************************** funciones efectos de botones ***********************************/
 (function(window) {

@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityRepository;
 use Procuracion\Service\ColaRecepcionService;
 use Procuracion\Service\VisistaService;
 use Procuracion\Entity\Persona;
-use Procuracion\Entity\Colarecepcion;
+use Procuracion\Entity\ColaRecepcion;
 use Procuracion\Entity\Visita;
 use Doctrine\ORM\EntityManager as EntityManager;
 
@@ -48,11 +48,11 @@ class PersonaService {
     }
 
     public function savePersona(EntityManager $em, array $nueva, array $extras, $que) {
-        //var_dump($nueva);
         $usr = $em->getRepository('Procuracion\Entity\Usuario')->find($nueva['usuario']);
-        if ($nueva['id'] > 0) {
-            $np = $em->getRepository('\Procuracion\Entity\Persona')->find($nueva['id']);
-        } else {
+        $lasede = $em->getRepository('\Procuracion\Entity\Sede')->find($extras['sede']);
+        if ($nueva['id'] > 0) {//ya existe la persona
+            $np = $em->getRepository('Procuracion\Entity\Persona')->find($nueva['id']);
+        } else {//es nueva
             $np = new Persona();
         }
         $np->setAnonimo($nueva['anonimo']);
@@ -67,77 +67,27 @@ class PersonaService {
 
         $em->persist($np);
         $em->flush();
-        //}
-        //var_dump($np);
-        if ($que == 1) {
-            $emp = $em->getRepository('\Procuracion\Entity\Empleado')->find($extras['empleado']);
-            $nvo = new Visita();
-            $lasede = $em->getRepository('\Procuracion\Entity\Sede')->find($extras['sede']);
-            $nvo->setFechaentrada($extras['fecha']);
-            //$nvo->setHoraentrada($extras['hora']);
-            $nvo->setSede($lasede);
-            $nvo->setEmpleado($emp);
-            $nvo->setInstitucion($extras['institucion']);
-            $nvo->setTipoInstitucion($extras['tipo']);
-            $nvo->setMotivoVisita($extras['motivo']);
-            $nvo->setLlamadasRealizadas(0);
-            $nvo->setUpdatedBy($usr);
-            $nvo->setIdPersona($np);
-            $visita = new VisitaService();
-            $visita->save($em, $nvo);
-        } else {
-            //turno
-            $turnos = new TurnoService();
-            $datost = array('sede' => $extras['sede'], 'prioridad' => $extras['prioridad'], 'fecha' => $extras['fecha']);
-            $turno = $turnos->initializeToday($em, $datost);
-            $miTurno = $turnos->newTicket($em, $turno);
-            ////
-            $nvo = new Colarecepcion();
-            $lasede = $em->getRepository('\Procuracion\Entity\Sede')->find($extras['sede']);
-            $nvo->setFechaentrada($extras['fecha']);
-            //$nvo->setHoraentrada($extras['hora']);
-            $nvo->setSede($lasede);
-            $nvo->setPrioridad($extras['prioridad']);
-            $nvo->setTurno($miTurno);
-            $nvo->setObservaciones($extras['obs']);
-            $nvo->setLapiceroverde($extras['lapiceroverde']);
-            $nvo->setUpdatedBy($usr);
-            $nvo->setIdpersona($np);
-            $cola = new ColaRecepcionService();
-            $cola->save($em, $nvo);
-        }
-        return $np->getId();
-    }
 
-    public function updatePersona(EntityManager $em, array $nueva, array $extras, $que) {
-        $usr = $em->getRepository('Procuracion\Entity\Usuario')->find($nueva['usuario']);
-        $np = $em->getRepository('Procuracion\Entity\Persona')->find($nueva['id']);
-        //var_dump($np);
-        $np->setNombres($nueva['nombres']);
-        $np->setApellidos($nueva['apellidos']);
-        $np->setTipoDocumento($nueva['tipo']);
-        $np->setNumeroDocumento($nueva['numero']);
-        $np->setSexo($nueva['sexo']);
-        $np->setLgbti($nueva['lgbti']);
-        $np->setFechaNacimiento($nueva['fechanac']);
-        $np->setUpdatedBy($usr);
-        $em->flush();
-
+        //extras
         //deleting extras
-        $visitaant = $em->getRepository('Procuracion\Entity\Visita')->find($extras['id']);
-        if ($visitaant) {
-            $llamadas = $visitaant->getLlamadasRealizadas();
-            $em->remove($visitaant);
-            $em->flush();
-        }
+        $llamadas = 0;
 
-        $colaant = $em->getRepository('Procuracion\Entity\Colarecepcion')->find($extras['id']);
-        if ($colaant) {
-            $suTurno = $colaant->getTurno();
-            $em->remove($colaant);
-            $em->flush();
-        }
+        if ($extras['id'] > 0) {
+            $visitaant = $em->getRepository('Procuracion\Entity\Visita')->find($extras['id']);
+            if ($visitaant) {
+                $llamadas = $visitaant->getLlamadasRealizadas();
+                $em->remove($visitaant);
+                $em->flush();
+            }
 
+            $colaant = $em->getRepository('Procuracion\Entity\ColaRecepcion')->find($extras['id']);
+            if ($colaant) {
+                $suTurno = $colaant->getTurno();
+                $em->remove($colaant);
+                $em->flush();
+            }
+        }
+        //inserting extras
         if ($que == 1) {
             $emp = $em->getRepository('\Procuracion\Entity\Empleado')->find($extras['empleado']);
             $lasede = $em->getRepository('\Procuracion\Entity\Sede')->find($extras['sede']);
@@ -149,8 +99,8 @@ class PersonaService {
             $nvo->setInstitucion($extras['institucion']);
             $nvo->setTipoInstitucion($extras['tipo']);
             $nvo->setMotivoVisita($extras['motivo']);
-            $nvo->setUpdatedBy($usr);
             $nvo->setLlamadasRealizadas($llamadas);
+            $nvo->setUpdatedBy($usr);
             $nvo->setIdpersona($np);
             $visita = new VisitaService();
             $visita->save($em, $nvo);
@@ -166,7 +116,7 @@ class PersonaService {
             }
             ////
             $lasede = $em->getRepository('\Procuracion\Entity\Sede')->find($extras['sede']);
-            $nvo = new Colarecepcion();
+            $nvo = new ColaRecepcion();
             $nvo->setFechaentrada($extras['fecha']);
             $nvo->setHoraentrada($extras['hora']);
             $nvo->setSede($lasede);
@@ -179,7 +129,7 @@ class PersonaService {
             $cola = new ColaRecepcionService();
             $cola->save($em, $nvo);
         }
-        return $np->getId();
+        return $np;
     }
 
     public function findByDPI(EntityManager $em, $dpi) {
@@ -205,9 +155,9 @@ class PersonaService {
     }
 
     public function puedeModificarPersona(EntityManager $em, array $datos) {
-        if (isset($datos["id"])) {
+        if ($datos["idpersona"] > 0) {
             $usr = $em->getRepository('Procuracion\Entity\Usuario')->find($datos['usuario']);
-            $np = $em->getRepository('Procuracion\Entity\Persona')->find($datos['id']);
+            $np = $em->getRepository('Procuracion\Entity\Persona')->find($datos['idp']);
             //var_dump($np);
             $np->setNombres($datos['nombres']);
             $np->setApellidos($datos['apellidos']);

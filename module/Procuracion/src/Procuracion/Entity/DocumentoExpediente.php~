@@ -1,0 +1,121 @@
+<?php
+
+namespace Procuracion\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * DocumentoExpediente
+ *
+ * @ORM\Table(name="documento_expediente", indexes={@ORM\Index(name="doc_usuario", columns={"id_usuario"}), @ORM\Index(name="doc_updated", columns={"updated_by"}), @ORM\Index(name="id_accion", columns={"id_accion"})})
+ * @ORM\Entity
+ */
+class DocumentoExpediente
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \Procuracion\Entity\Usuario
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Usuario")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_usuario", referencedColumnName="id")
+     * })
+     */
+    private $idUsuario;
+
+    /**
+     * @var \Procuracion\Entity\Accion
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Accion")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_accion", referencedColumnName="id")
+     * })
+     */
+    private $idAccion;
+
+    /**
+     * @var \Procuracion\Entity\Expediente
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Expediente")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_expediente", referencedColumnName="id")
+     * })
+     */
+    private $idExpediente;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="Fecha", type="date", nullable=true)
+     */
+    private $fecha;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Destinatario", type="string", length=255, nullable=true)
+     */
+    private $destinatario;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Institucion", type="text", length=255, nullable=true)
+     */
+    private $institucion;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Asunto", type="text", length=255, nullable=true)
+     */
+    private $asunto;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Resumen", type="text", length=65535, nullable=true)
+     */
+    private $resumen;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Ubicacion", type="text", length=255, nullable=true)
+     */
+    private $ubicacion;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated_at", type="date", nullable=true)
+     */
+    private $updated_at;
+
+    /**
+     * @var \Procuracion\Entity\Usuario
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Usuario")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="updated_by", referencedColumnName="id")
+     * })
+     */
+    private $updated_by;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="deleted", type="integer", nullable=true)
+     */
+    private $deleted;
+
+}
+

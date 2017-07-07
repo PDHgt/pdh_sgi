@@ -64,10 +64,10 @@ class Sede extends \Procuracion\Entity\Sede implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Sede' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Sede' . "\0" . 'nombre', '' . "\0" . 'Procuracion\\Entity\\Sede' . "\0" . 'nombrecorto', '' . "\0" . 'Procuracion\\Entity\\Sede' . "\0" . 'direccion', '' . "\0" . 'Procuracion\\Entity\\Sede' . "\0" . 'telefonos', '' . "\0" . 'Procuracion\\Entity\\Sede' . "\0" . 'activa'];
+            return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Sede' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Sede' . "\0" . 'nombre', '' . "\0" . 'Procuracion\\Entity\\Sede' . "\0" . 'nombrecorto', '' . "\0" . 'Procuracion\\Entity\\Sede' . "\0" . 'direccion', '' . "\0" . 'Procuracion\\Entity\\Sede' . "\0" . 'departamento', '' . "\0" . 'Procuracion\\Entity\\Sede' . "\0" . 'municipio', '' . "\0" . 'Procuracion\\Entity\\Sede' . "\0" . 'telefonos', '' . "\0" . 'Procuracion\\Entity\\Sede' . "\0" . 'activa'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Sede' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Sede' . "\0" . 'nombre', '' . "\0" . 'Procuracion\\Entity\\Sede' . "\0" . 'nombrecorto', '' . "\0" . 'Procuracion\\Entity\\Sede' . "\0" . 'direccion', '' . "\0" . 'Procuracion\\Entity\\Sede' . "\0" . 'telefonos', '' . "\0" . 'Procuracion\\Entity\\Sede' . "\0" . 'activa'];
+        return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Sede' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Sede' . "\0" . 'nombre', '' . "\0" . 'Procuracion\\Entity\\Sede' . "\0" . 'nombrecorto', '' . "\0" . 'Procuracion\\Entity\\Sede' . "\0" . 'direccion', '' . "\0" . 'Procuracion\\Entity\\Sede' . "\0" . 'departamento', '' . "\0" . 'Procuracion\\Entity\\Sede' . "\0" . 'municipio', '' . "\0" . 'Procuracion\\Entity\\Sede' . "\0" . 'telefonos', '' . "\0" . 'Procuracion\\Entity\\Sede' . "\0" . 'activa'];
     }
 
     /**
@@ -252,6 +252,50 @@ class Sede extends \Procuracion\Entity\Sede implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDireccion', []);
 
         return parent::getDireccion();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setDepartamento(\Procuracion\Entity\Departamento $departamento = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setDepartamento', [$departamento]);
+
+        return parent::setDepartamento($departamento);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDepartamento()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDepartamento', []);
+
+        return parent::getDepartamento();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setMunicipio(\Procuracion\Entity\Municipio $municipio = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMunicipio', [$municipio]);
+
+        return parent::setMunicipio($municipio);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMunicipio()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMunicipio', []);
+
+        return parent::getMunicipio();
     }
 
     /**

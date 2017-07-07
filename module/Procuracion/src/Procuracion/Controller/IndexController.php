@@ -3,6 +3,7 @@
 namespace Procuracion\Controller;
 
 use Procuracion\Form\FormularioLogueo;
+use Procuracion\Service\BitacoraService;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Authentication\AuthenticationService as AuthService;
@@ -36,7 +37,7 @@ class IndexController extends AbstractActionController {
         ));
     }
 
-    public function loginaction() {
+    public function loginAction() {
         $data = $this->getRequest()->getPost();
 
         //$adapter = $authService->getAdapter();
@@ -47,6 +48,8 @@ class IndexController extends AbstractActionController {
         $messages = $authResult->getMessages();
 
         if ($authResult->isValid()) {
+            $bitacora = new BitacoraService();
+            $bitacora->Movimiento($this->entityManager, array('usuario' => $this->authService->getIdentity(), 'accion' => 'Ingresa al sistema'));            
             return $this->redirect()->toRoute('recepcion', array('action' => 'visita'));
         } else {
             return $this->forward()->dispatch('Procuracion\Controller\Index', array(
@@ -58,6 +61,8 @@ class IndexController extends AbstractActionController {
 
     public function logoutAction() {
 
+        $bitacora = new BitacoraService();
+        $bitacora->Movimiento($this->entityManager, array('usuario' => $this->authService->getIdentity(), 'accion' => 'Sale del sistema'));            
         $this->authService->clearIdentity();
         return $this->redirect()->toRoute('inicio');
     }

@@ -28,27 +28,27 @@ class Extension extends AbstractValidator
     /**
      * @var array Error message templates
      */
-    protected $messageTemplates = array(
+    protected $messageTemplates = [
         self::FALSE_EXTENSION => "File has an incorrect extension",
         self::NOT_FOUND       => "File is not readable or does not exist",
-    );
+    ];
 
     /**
      * Options for this validator
      *
      * @var array
      */
-    protected $options = array(
+    protected $options = [
         'case'      => false,   // Validate case sensitive
         'extension' => '',      // List of extensions
-    );
+    ];
 
     /**
      * @var array Error message template variables
      */
-    protected $messageVariables = array(
-        'extension' => array('options' => 'extension'),
-    );
+    protected $messageVariables = [
+        'extension' => ['options' => 'extension'],
+    ];
 
     /**
      * Sets validator options
@@ -72,11 +72,11 @@ class Extension extends AbstractValidator
                 unset($options['case']);
             }
 
-            if (!array_key_exists('extension', $options)) {
-                $options = array('extension' => $options);
+            if (! array_key_exists('extension', $options)) {
+                $options = ['extension' => $options];
             }
         } else {
-            $options = array('extension' => $options);
+            $options = ['extension' => $options];
         }
 
         if ($case !== null) {
@@ -147,7 +147,7 @@ class Extension extends AbstractValidator
         }
 
         foreach ($extension as $content) {
-            if (empty($content) || !is_string($content)) {
+            if (empty($content) || ! is_string($content)) {
                 continue;
             }
 
@@ -182,7 +182,7 @@ class Extension extends AbstractValidator
             $filename = $file['name'];
             $file     = $file['tmp_name'];
         } elseif (is_array($value)) {
-            if (!isset($value['tmp_name']) || !isset($value['name'])) {
+            if (! isset($value['tmp_name']) || ! isset($value['name'])) {
                 throw new Exception\InvalidArgumentException(
                     'Value array must be in $_FILES format'
                 );
@@ -206,7 +206,7 @@ class Extension extends AbstractValidator
 
         if ($this->getCase() && (in_array($extension, $extensions))) {
             return true;
-        } elseif (!$this->getCase()) {
+        } elseif (! $this->getCase()) {
             foreach ($extensions as $ext) {
                 if (strtolower($ext) == strtolower($extension)) {
                     return true;

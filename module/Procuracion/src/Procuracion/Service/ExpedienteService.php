@@ -26,7 +26,6 @@ use Procuracion\Service\CuboCalificacionService;
 class ExpedienteService {
 
     public function Save(EntityManager $em, array $datos, array $calificacion, array $persona) {
-        //var_dump($persona);
         //sede
         $sede = $em->getRepository('Procuracion\Entity\Sede')->find($datos['sede']);
         //tipo
@@ -43,7 +42,28 @@ class ExpedienteService {
         $queusr = $em->getRepository('Procuracion\Entity\Usuario')->find($datos['usr']);
 
         //asignar datos
-        $expediente = new Expediente();
+        if ($datos['idexpediente'] > 0) {
+            $expediente = $em->getRepository('Procuracion\Entity\Expediente')->find($datos['idexpediente']);
+        } else {
+            $expediente = new Expediente();
+            //expediente_persona
+
+            $hoy = new \DateTime();
+            //var_dump($hoy);
+            $fechaexp = $hoy->format("Y-m-d");
+            $expediente->setFechaIngreso(date_create($fechaexp));
+            $expPer = new ExpedientePersona();
+            $idPersona = $em->getRepository('Procuracion\Entity\Persona')->find($persona['idp']);
+            $catalogoservice = new CatalogoService();
+            $tipopersona = $catalogoservice->obtenerDato($em, 'Solicitante', 'TipoPersona');
+            //var_dump($tipopersona[0]);
+            //exit(1);
+            $expPer->setTipo($tipopersona[0]);
+            $expPer->setIdPersona($idPersona);
+            $expPer->setIdExpediente($expediente);
+            $em->persist($expPer);
+            //$em->flush();
+        }
         $expediente->setIdCola($cola);
         $expediente->setIdSede($sede);
         $expediente->setIdTipo($tipo);
@@ -63,55 +83,53 @@ class ExpedienteService {
         $personaservice = new PersonaService();
         $personaservice->puedeModificarPersona($em, $persona);
 
-        //expediente_persona
-        $expPer = new ExpedientePersona();
-        $idPersona = $em->getRepository('Procuracion\Entity\Persona')->find($datos['idpersona']);
-        $catalogoservice = new CatalogoService();
-        $tipopersona = $catalogoservice->obtenerDato($em, 'Solicitante', 'TipoPersona');
-        $expPer->setTipo($tipopersona[0]);
-        $expPer->setIdPersona($idPersona);
-        $expPer->setIdExpediente($expediente);
-        $em->persist($expPer);
-        $em->flush();
-
         //calificación
         $cubo = new CuboCalificacionService();
-        $guardar = $cubo->setCalificacion($em, $calificacion, $expediente);
+        if ($datos["idexpediente"] > 0) {
+            $cubo->setCalificacion($em, $calificacion["hechos"], $calificacion["ide"]);
+        } else {
+            $cubo->setCalificacion($em, $calificacion["hechos"], $expediente->getId());
+        }
+
 
         return $expediente;
     }
 
-    public function guardarOrientacion(EntityManager $em, array $datos, array $instituciones) {
-        $exp = $em->getRepository('Procuracion\Entity\Expediente')->find($datos['idExpediente']);
-        if ($datos['id'] > 0) {//update
-            $nuevo = $em->getRepository('Procuracion\Entity\Orientacion')->find($datos['id']);
-            $nuevo->setDetalle($datos['detalle']);
+    public function puedeModificarExpediente(EntityManager $em, array $datos, array $calificacion, array $persona) {
+        if ($datos['idexpediente'] > 0) {
+            $this->Save($em, $datos, $calificacion, $persona);
+        } elseif ($persona['idpersona'] > 0) {
+            $personaservice = new PersonaService();
+            $personaservice->puedeModificarPersona($em, $persona);
+        } else {
+
+        }
+    }
+
+    public function guardarOrientacion(EntityManager $em, array $orientacion, array $instituciones, array $datos, array $calificacion, array $persona) {
+        $exp = $em->getRepository('Procuracion\Entity\Expediente')->find($datos['ide']);
+        if ($orientacion['idorientacion'] > 0) {//update
+            $nuevo = $em->getRepository('Procuracion\Entity\Orientacion')->find($orientacion['ido']);
+            $nuevo->setDetalle($orientacion['detalle']);
+            $nuevo->setRemite($orientacion['remision']);
             $em->flush();
         } else {//new
             //expediente
             // echo "here";
             $nuevo = new Orientacion();
-            $nuevo->setDetalle($datos['detalle']);
+            $nuevo->setDetalle($orientacion['detalle']);
+            $nuevo->setRemite($orientacion['remision']);
             $nuevo->setIdExpediente($exp);
             $em->persist($nuevo);
             $em->flush();
         }
 
         //remisiones
-
+        //if ($orientacion['remision'] == 1) {
         $remi = new RemisionService();
         $remi->setRemision($em, $instituciones, $exp);
-        /*   $cadena = "DELETE FROM Procuracion\Entity\Remision p WHERE p.idExpediente = " . $exp->getId();
-          $query = $em->createQuery($cadena);
-          $query->execute();
-          foreach ($instituciones as $institucion) {
-          $hecho = new Remision();
-          $hecho->setIdExpediente($exp);
-          $hd = $em->getRepository('Procuracion\Entity\InstitucionExterna')->find($institucion);
-          $hecho->setIdInstitucion($hd);
-          $em->persist($hecho);
-          $em->flush();
-          } */
+        //}
+        $this->puedeModificarExpediente($em, $datos, $calificacion, $persona);
         return $nuevo;
     }
 
@@ -143,50 +161,6 @@ class ExpedienteService {
         $datos['orientacion'] = $nuevo;
         $datos['remisiones'] = $this->listarRemisiones($em, $id);
         return $datos;
-    }
-
-    public function puedeModificarExpediente(EntityManager $em, array $datos, array $calificacion, array $persona) {
-        if ($datos['id'] > 0) {
-            //sede
-            $sede = $em->getRepository('Procuracion\Entity\Sede')->find($datos['sede']);
-            //tipo
-            $tipo = $em->getRepository('Procuracion\Entity\TipoExpediente')->find($datos['tipo']);
-            //cola
-            $cola = $em->getRepository('Procuracion\Entity\ColaRecepcion')->find($datos['cola']);
-            //departamento
-            $depto = $em->getRepository('Procuracion\Entity\Departamento')->findByCodigo($datos['departamento']);
-            //municipio
-            $muni = $em->getRepository('Procuracion\Entity\Municipio')->findByCodigo($datos['municipio']);
-            //area
-            $area = $em->getRepository('Procuracion\Entity\DetalleCatalogo')->findByCodigo($datos['area']);
-            //usuario
-            $queusr = $em->getRepository('Procuracion\Entity\Usuario')->find($datos['usr']);
-
-            //asignar datos
-            $expediente = $em->getRepository('Procuracion\Entity\Expediente')->find($datos['id']);
-            $expediente->setIdCola($cola);
-            $expediente->setIdSede($sede);
-            $expediente->setIdTipo($tipo);
-            $expediente->setHechos($datos['hechos']);
-            $expediente->setDeptohechos($depto[0]);
-            $expediente->setMunihechos($muni[0]);
-            $expediente->setLugarhechos($datos['direccion']);
-            $expediente->setArea($area[0]);
-            $expediente->setFechahechos($datos['fecha']);
-            $expediente->setPeticion($datos['peticion']);
-            $expediente->setPruebas($datos['pruebas']);
-            $expediente->setUpdatedBy($queusr);
-            $em->flush();
-
-            //persona
-            $personaservice = new PersonaService();
-            $guardarPer = $personaservice->puedeModificarPersona($em, $persona);
-            //calificación
-            $cubo = new CuboCalificacionService();
-            $guardar = $cubo->setCalificacion($em, $calificacion, $expediente);
-        } else {
-            //nada
-        }
     }
 
     public function guardarDocumento(EntityManager $em, $datos) {

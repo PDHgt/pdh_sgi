@@ -41,16 +41,19 @@ class RemisionService {
         $query = $em->createQuery($cadena);
         $query->execute();
         //insertar nuevos
-        $exp = $em->getRepository('Procuracion\Entity\Expediente')->find($idExpediente->getId());
-        foreach ($instituciones as $institucion) {
-            $remi = new Remision();
-            $remi->setIdExpediente($exp);
-            $hd = $em->getRepository('Procuracion\Entity\InstitucionExterna')->find($institucion);
-            $remi->setIdInstitucion($hd);
-            $em->persist($remi);
-            $em->flush();
-            //echo $hechoderecho['id'];
-        } //exit(1);
+        $inst = $instituciones["instituciones"];
+        if ($inst > 0) {
+            $exp = $em->getRepository('Procuracion\Entity\Expediente')->find($idExpediente->getId());
+            foreach ($inst as $institucion) {
+                $remi = new Remision();
+                $remi->setIdExpediente($exp);
+                $hd = $em->getRepository('Procuracion\Entity\InstitucionExterna')->find($institucion);
+                $remi->setIdInstitucion($hd);
+                $em->persist($remi);
+                $em->flush();
+                //echo $hechoderecho['id'];
+            } //exit(1);
+        }
     }
 
 }

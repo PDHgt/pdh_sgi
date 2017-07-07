@@ -43,6 +43,26 @@ class Sede
     private $direccion;
 
     /**
+     * @var \Procuracion\Entity\Departamento
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Departamento")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="Departamento", referencedColumnName="id")
+     * })
+     */
+    private $departamento;
+
+    /**
+     * @var \Procuracion\Entity\Municipio
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Municipio")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="Municipio", referencedColumnName="id")
+     * })
+     */
+    private $municipio;
+    
+    /**
      * @var string
      *
      * @ORM\Column(name="Telefonos", type="string", length=255, nullable=true)

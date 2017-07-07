@@ -3,21 +3,20 @@ $expediente = $this->expediente["datos"];
 $cola = $expediente->getIdCola();
 $persona = $this->expediente["persona"];
 $calificacion = $this->expediente["calificacion"];
-//$orientacion = $this->orientacion["orientacion"][0];
 $orientacion = $this->orientacion;
 $remisiones = $this->remisiones;
 ?>
 <section class="content-header">
-    <h1>Resumen<small>Orientacion # <?php echo $expediente->getNumero(); ?></small></h1>
+    <h1><?php echo ucwords(strtolower($expediente->getIdTipo()->getTipo())); ?> #<?php echo $expediente->getNumero(); ?></h1>
     <div class="progress">
         <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width: 33%">
-            <span>(Solicitud) Etapa 1 de 3</span>
+            <span>(Hechos / Calificación) Etapa 1 de 3</span>
         </div>
         <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width: 33%">
-            <span>(Orientación) Etapa 2 de 3</span>
+            <span>(Orientación / Remisión) Etapa 2 de 3</span>
         </div>
         <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width: 34%">
-            <span>(Resumen) Etapa 3 de 3</span>
+            <span>(Resumen / Impresión) Etapa 3 de 3</span>
         </div>
     </div>
 </section>
@@ -26,16 +25,32 @@ $remisiones = $this->remisiones;
     $form = $this->form;
     $form->prepare();
     $form->setAttributes(array(
-        'action' => $this->url('recepcion', array('action' => 'cola')),
+        'action' => $this->url('recepcion', array('action' => 'guardarorientacion')),
         'method' => 'post'
     ));
     echo $this->form()->openTag($form);
     $formLabel = $this->plugin('formLabel');
 
-    //$idp = $form->get('idp')->setValue($cola->getIdpersona()->getId());
-    $id = $form->get('id')->setValue($this->id);
-    //echo $this->formInput($idp);
-    echo $this->formInput($id);
+    $idcola = $form->get('id')->setValue($cola->getId())->setAttributes(array("name" => "idcola"));
+    echo $this->formInput($idcola);
+
+    $idexpediente = $form->get('id')->setValue($expediente->getId())->setAttributes(array("name" => "idexpediente", "disabled" => true));
+    echo $this->formInput($idexpediente);
+
+    $idpersona = $form->get('id')->setValue($cola->getIdpersona()->getId())->setAttributes(array("name" => "idpersona", "disabled" => true));
+    echo $this->formInput($idpersona);
+
+    $idorientacion = $form->get('id')->setValue($orientacion->getId())->setAttributes(array("name" => "idorientacion", "disabled" => true));
+    echo $this->formInput($idorientacion);
+
+    $ide = $form->get('id')->setValue($expediente->getId())->setAttributes(array("name" => "ide", "disabled" => false));
+    echo $this->formInput($ide);
+
+    $idp = $form->get('id')->setValue($cola->getIdpersona()->getId())->setAttributes(array("name" => "idp", "disabled" => false));
+    echo $this->formInput($idp);
+
+    $ido = $form->get('id')->setValue($orientacion->getId())->setAttributes(array("name" => "ido", "disabled" => false));
+    echo $this->formInput($ido);
     ?>
     <div class="row">
         <div class = "col-xs-6">
@@ -43,31 +58,32 @@ $remisiones = $this->remisiones;
             <div class = "box box-default color-palette-box collapsed-box">
                 <div class = "box-header with-border">
                     <i class = "fa fa-file"></i>
-                    <h3 class = "box-title">Solicitud</h3>
+                    <h3 class = "box-title">Solicitud
+                        <small>
+                            <?php
+                            echo " / " . $cola->getFechaentrada()->format("d/m/Y H:i:s");
+                            switch ($cola->getPrioridad()) {
+                                case '1':
+                                    $class = "red-text";
+                                    $prioridad = "Urgente";
+                                    break;
+                                case '2':
+                                    $class = "yellow-text";
+                                    $prioridad = "Importante";
+                                    break;
+                                case '3':
+                                    $class = "green-text";
+                                    $prioridad = "Normal";
+                            }
+                            echo " / " . $prioridad;
+                            ?>
+                        </small>
+                    </h3>
                     <div class="pull-right">
                         <a href="#" data-widget="collapse" data-tt="tooltip" title="Maximizar">
                             <i class="fa fa-plus"></i>
                         </a>
                     </div>
-                    <span class="description">
-                        <?php
-                        echo $cola->getFechaentrada()->format("d/m/Y H:i:s");
-                        switch ($cola->getPrioridad()) {
-                            case '1':
-                                $class = "red-text";
-                                $prioridad = "Urgente";
-                                break;
-                            case '2':
-                                $class = "yellow-text";
-                                $prioridad = "Importante";
-                                break;
-                            case '3':
-                                $class = "green-text";
-                                $prioridad = "Normal";
-                        }
-                        echo " - " . $prioridad;
-                        ?>
-                    </span>
                 </div>
                 <div class = "box-body">
                     <div class = "row">
@@ -76,7 +92,7 @@ $remisiones = $this->remisiones;
                                 <?php
                                 $fechasol = $form->get('fecha')->setValue($cola->getFechaentrada()->format("d/m/Y H:i:s"))->setAttributes(array(
                                     "name" => "fechasol",
-                                    "type" => "date",
+                                    "type" => "text",
                                     "class" => "form-control datepicker",
                                     "disabled" => true
                                 ));
@@ -104,7 +120,6 @@ $remisiones = $this->remisiones;
                                 $lapiceroverde = $form->get('lapiceroverde')->setValue($cola->getLapiceroverde())->setAttributes(array(
                                     "disabled" => true
                                 ));
-                                ;
                                 echo "<p>" . $formLabel->openTag() . $lapiceroverde->getOption('label');
                                 echo $formLabel->closeTag() . "</p>";
                                 echo $this->formRadio($lapiceroverde);
@@ -117,7 +132,6 @@ $remisiones = $this->remisiones;
                                 $obs = $form->get('obs')->setValue($cola->getObservaciones())->setAttributes(array(
                                     "disabled" => true
                                 ));
-                                ;
                                 echo $formLabel->openTag() . $obs->getOption('label') . " ";
                                 echo $formLabel->closeTag();
                                 echo $this->formTextarea($obs);
@@ -131,35 +145,29 @@ $remisiones = $this->remisiones;
         </div>
         <div class="col-xs-6">
             <!---------------------- Inicia formulario de solicitante -------------------------->
-            <?php
-            $idp = $form->get('idp')->setValue($cola->getIdpersona()->getId())->setAttributes(array(
-                "name" => "idp",
-                "disabled" => true
-            ));
-            echo $this->formInput($idp);
-            ?>
             <div class="box box-default color-palette-box collapsed-box">
                 <div class="box-header with-border">
                     <i class="fa fa-user"></i>
-                    <h3 class="box-title">Solicitante</h3>
+                    <h3 class="box-title">Solicitante
+                        <small>
+                            <?php
+                            echo " / " . $persona->getNombres() . " " . $persona->getApellidos();
+                            $fechanacString = $persona->getFechanacimiento();
+                            $hoy = new DateTime('today');
+                            if ($fechanacString == NULL) {
+                                $edad = "";
+                            } else {
+                                $edad = $fechanacString->diff($hoy)->y;
+                            }
+                            echo " / " . $edad . " años";
+                            ?>
+                        </small>
+                    </h3>
                     <div class="pull-right">
                         <a href="#" data-widget="collapse" data-tt="tooltip" title="Maximizar">
                             <i class="fa fa-plus"></i>
                         </a>
                     </div>
-                    <span class="description">
-                        <?php
-                        echo $persona->getNombres() . " " . $persona->getApellidos();
-                        $fechanacString = $persona->getFechanacimiento();
-                        $hoy = new DateTime('today');
-                        if ($fechanacString == NULL) {
-                            $edad = "";
-                        } else {
-                            $edad = $fechanacString->diff($hoy)->y;
-                        }
-                        echo " - " . $edad . " años";
-                        ?>
-                    </span>
                 </div>
                 <div class="box-body">
                     <div class="row">
@@ -278,26 +286,26 @@ $remisiones = $this->remisiones;
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-6">
+        <div class="col-xs-12">
             <!------------- Inicia formulario hechos ----------------->
             <div class="box box-default color-palette-box collapsed-box">
                 <div class="box-header with-border">
                     <i class="fa fa-calendar"></i>
-                    <h3 class="box-title">Hechos</h3>
+                    <h3 class="box-title">Hechos y Calificación
+                        <small>
+                            <?php
+                            echo " / " . $expediente->getFechahechos()->format("d/m/Y");
+                            echo " / " . $expediente->getDeptohechos()->getNombre();
+                            echo " / " . $expediente->getMunihechos()->getNombre();
+                            echo " / " . ucwords(strtolower($expediente->getIdTipo()->getTipo()));
+                            ?>
+                        </small>
+                    </h3>
                     <div class="pull-right box-tools">
                         <a href="#" data-widget="collapse" data-tt="tooltip" title="Maximizar">
                             <i class="fa fa-plus"></i>
                         </a>
                     </div>
-                    <span class="description">
-                        <?php
-                        echo $expediente->getFechahechos()->format("d/m/Y");
-                        echo " - ";
-                        echo $expediente->getDeptohechos()->getNombre();
-                        echo " - ";
-                        echo $expediente->getMunihechos()->getNombre();
-                        ?>
-                    </span>
                 </div>
                 <div class="box-body">
                     <div class="row">
@@ -305,7 +313,7 @@ $remisiones = $this->remisiones;
                             <div class="form-group">
                                 <?php
                                 $fecha = $form->get('fechahecho')->setValue($expediente->getFechahechos()->format("d/m/Y"))->setAttributes(array(
-                                    "type" => "date",
+                                    "type" => "text",
                                     "class" => "form-control datepicker",
                                     "readonly" => false,
                                     "disabled" => true,
@@ -342,13 +350,14 @@ $remisiones = $this->remisiones;
                         </div>
                         <div class="col-xs-6">
                             <div class="form-group">
+
                                 <?php
                                 $deptos = $this->deptos;
                                 $deptosOptions = array();
                                 foreach ($deptos as $deptoOption) {
                                     $deptosOptions[$deptoOption->getCodigo()] = $deptoOption->getNombre();
                                 }
-                                $depto = $form->get('depto')->setValueOptions($deptosOptions)->setValue($expediente->getMunihechos())->setAttributes(array(
+                                $depto = $form->get('depto')->setValueOptions($deptosOptions)->setValue($expediente->getDeptohechos()->getCodigo())->setAttributes(array(
                                     "required" => true,
                                     "disabled" => true
                                 ));
@@ -363,10 +372,10 @@ $remisiones = $this->remisiones;
                                 $munis = $this->munis;
                                 //print_r($munis);
                                 $munisOptions = array();
-                                foreach ($munisOptions as $muniOption) {
+                                foreach ($munis as $muniOption) {
                                     $munisOptions[$muniOption->getCodigo()] = $muniOption->getNombre();
                                 }
-                                $muni = $form->get('muni')->setValueOptions($deptosOptions)->setValue($expediente->getMunihechos())->setAttributes(array(
+                                $muni = $form->get('muni')->setValueOptions($munisOptions)->setValue($expediente->getMunihechos()->getCodigo())->setAttributes(array(
                                     "required" => true,
                                     "disabled" => true
                                 ));
@@ -412,34 +421,7 @@ $remisiones = $this->remisiones;
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="box-footer clearfix">
-                    <a href="#" data-toggle="" data-tt="tooltip" title="Editar" id="editarhechos">
-                        <span class="badge bg-red"><i class="fa fa-edit"></i> Editar</span>
-                    </a>
-                </div>
-            </div>
-            <!------------- Finaliza formulario hechos ----------------->
-        </div>
-        <div class="col-xs-6">
-            <!------------- Inicia formulario calificacion ----------------->
-            <div class="box box-default color-palette-box collapsed-box">
-                <div class="box-header with-border">
-                    <i class="fa fa-check-circle"></i>
-                    <h3 class="box-title">Calificación de Derechos</h3>
-                    <div class="pull-right box-tools">
-                        <a href="#" data-widget="collapse" data-tt="tooltip" title="Maximizar">
-                            <i class="fa fa-plus"></i>
-                        </a>
-                    </div>
-                    <span class="description">
-                        <?php
-                        echo ucwords(strtolower($expediente->getIdTipo()->getTipo()));
-                        ?>
-                    </span>
-                </div>
-                <div class="box-body">
-                    <div class="row">
+                    <div class="row" id="calificacion">
                         <div class="col-xs-12">
                             <div class="form-group">
                                 <?php
@@ -498,7 +480,13 @@ $remisiones = $this->remisiones;
                                 <div class="col-xs-3">
                                     <h4>Hechos violatorios</h4>
                                     <div class="form-group" id="hechosviolatorios">
-
+                                        <?php
+                                        foreach ($calificacion as $hecho) {
+                                            echo "<div class='checkbox'>";
+                                            echo "<label><input type='checkbox' name ='hechos[]' checked='checked' value='" . $hecho->getIdHecho()->getId() . "'>";
+                                            echo $hecho->getIdHecho()->getHecho() . "</label></div>";
+                                        }
+                                        ?>
                                     </div>
                                 </div>
                                 <div class="col-xs-3">
@@ -512,31 +500,36 @@ $remisiones = $this->remisiones;
                     </div>
                 </div>
                 <div class="box-footer clearfix">
-                    <a href="#" data-toggle="" data-tt="tooltip" title="Editar" id="editarcalificacion">
+                    <a href="#" data-toggle="" data-tt="tooltip" title="Editar" id="editarhechos">
                         <span class="badge bg-red"><i class="fa fa-edit"></i> Editar</span>
                     </a>
                 </div>
             </div>
-            <!------------- Finaliza formulario calificacion ----------------->
+            <!------------- Finaliza formulario hechos ----------------->
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-6">
+        <div class="col-xs-12">
             <!------------- Inicia formulario orientacion ----------------->
             <div class="box box-default color-palette-box collapsed-box">
                 <div class="box-header with-border">
                     <i class="fa fa-compass"></i>
-                    <h3 class="box-title">Orientación</h3>
+                    <h3 class="box-title">Orientación y Remisiones
+                        <small>
+                            <?php
+                            echo " / " . $orientacion->getDetalle();
+                            echo " / ";
+                            foreach ($remisiones as $remision) {
+                                echo "<span>" . $remision->getIdInstitucion()->getInstitucion() . " - </span>";
+                            }
+                            ?>
+                        </small>
+                    </h3>
                     <div class="pull-right box-tools">
                         <a href="#" data-widget="collapse" data-tt="tooltip" title="Maximizar">
                             <i class="fa fa-plus"></i>
                         </a>
                     </div>
-                    <span class="description">
-                        <?php
-                        echo $orientacion->getDetalle();
-                        ?>
-                    </span>
                 </div>
                 <div class="box-body">
                     <div class="row">
@@ -553,47 +546,30 @@ $remisiones = $this->remisiones;
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="box-footer clearfix">
-                    <a href="#" data-toggle="" data-tt="tooltip" title="Editar" id="editarorientacion">
-                        <span class="badge bg-red"><i class="fa fa-edit"></i> Editar</span>
-                    </a>
-                </div>
-            </div>
-            <!------------- Finaliza formulario orientacion ----------------->
-        </div>
-        <div class="col-xs-6">
-            <!------------- Inicia formulario remisión ----------------->
-            <div class="box box-default color-palette-box collapsed-box">
-                <div class="box-header with-border">
-                    <i class="fa fa-external-link-square"></i>
-                    <h3 class="box-title">Remisión</h3>
-                    <div class="pull-right box-tools">
-                        <a href="#" data-widget="collapse" data-tt="tooltip" title="Maximizar">
-                            <i class="fa fa-plus"></i>
-                        </a>
-                    </div>
-                    <span class="description">
-                        <?php
-                        foreach ($remisiones as $remision) {
-                            echo "<span>" . $remision->getIdInstitucion()->getInstitucion() . " - </span>";
-                        }
-                        ?>
-                    </span>
-                </div>
-                <div class="box-body">
                     <div class="row">
-                        <div class="col-xs-12 remisiones">
+                        <div class="col-xs-12">
                             <div class="form-group">
-                                <strong>Instituciones</strong>
-                                <ul>
-                                    <?php
-                                    foreach ($remisiones as $remision) {
-                                        echo "<li>" . $remision->getIdInstitucion()->getInstitucion() . "</li>";
-                                    }
-                                    ?>
-                                </ul>
+                                <?php
+                                $remision = $form->get('remision')->setValue($orientacion->getRemite())->setAttributes(array(
+                                    "required" => true,
+                                    "disabled" => true
+                                ));
+                                echo $formLabel->openTag() . $remision->getOption('label') . " &nbsp; " . $formLabel->closeTag();
+                                echo $this->formRadio($remision);
+                                ?>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row" id="remisiones">
+                        <div class="col-xs-12 remisiones">
+                            <strong>Remisiones</strong>
+                            <ul>
+                                <?php
+                                foreach ($remisiones as $remision) {
+                                    echo "<li>" . $remision->getIdInstitucion()->getInstitucion() . "</li>";
+                                }
+                                ?>
+                            </ul>
                         </div>
                         <div class="col-xs-12 remisiones" style="display: none">
                             <div class="row">
@@ -614,7 +590,13 @@ $remisiones = $this->remisiones;
                                 <div class="col-xs-4">
                                     <h4>Instituciones</h4>
                                     <div class="form-group" id="instdependientes">
-
+                                        <?php
+                                        foreach ($remisiones as $remision) {
+                                            echo "<div class='checkbox'>";
+                                            echo "<label><input type='checkbox' name ='instdependientes[]' checked='checked' value='" . $remision->getIdInstitucion()->getId() . "'>";
+                                            echo $remision->getIdInstitucion()->getInstitucion() . "</label></div>";
+                                        }
+                                        ?>
                                     </div>
                                 </div>
                                 <div class="col-xs-4">
@@ -628,23 +610,96 @@ $remisiones = $this->remisiones;
                     </div>
                 </div>
                 <div class="box-footer clearfix">
-                    <a href="#" data-toggle="" data-tt="tooltip" title="Editar" id="editarremision">
+                    <a href="#" data-toggle="" data-tt="tooltip" title="Editar" id="editarorientacion">
                         <span class="badge bg-red"><i class="fa fa-edit"></i> Editar</span>
                     </a>
                 </div>
             </div>
-            <!------------- Finaliza formulario remisión ----------------->
+            <!------------- Finaliza formulario orientacion ----------------->
         </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-default color-palette-box">
+                <div class="box-header with-border">
+                    <i class="fa fa-files-o"></i>
+                    <h3 class="box-title">Documentos
+                        <small>
+                            <?php
+                            $docs = $this->docs;
+                            $count = count($docs);
+                            echo "El expediente tiene (" . $count . ") documentos";
+                            ?>
+                        </small>
+                    </h3>
+                    <div class="pull-right box-tools">
+                        <a href="#" data-widget="collapse" data-tt="tooltip" title="Maximizar">
+                            <i class="fa fa-minus"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="box-body table-responsive no-padding">
+                    <?php
+                    if ($count > 0) {
+                        $value = false;
+                        echo "<table class='table table-hover'>"
+                        . "<tbody>"
+                        . "<tr>"
+                        . "<th>Fecha</th>"
+                        . "<th>Nombre</th>"
+                        . "<th>Descargar</th>"
+                        . "</tr>";
+                        foreach ($docs as $doc) {
+                            echo "<tr>";
+                            echo "<td>" . $doc->getFecha()->format("d/m/Y") . "</td>";
+                            echo "<td>" . $doc->getIdAccion()->getAccion() . "</td>";
+                            echo "<td><a href='" . $this->basePath() . $doc->getUbicacion() . "' target='_blank'>" . $doc->getIdAccion()->getAccion() . "<a></td>";
+                            echo "<tr>";
+                        }
+                        echo "</tbody>"
+                        . "</table>";
+                    } else {
+                        $value = true;
+                        echo "<div class='col-xs-12 text-center'>"
+                        . "<span class='text-muted'>Aún no existe ningún documento</span>"
+                        . "</div>";
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
+
     </div>
     <div class="box-footer">
         <?php
-        echo $this->formElement($form->get('imprimir'));
+        if ($this->flashMessenger()->hasMessages()) {
+
+            echo '<div class="alert-message alert alert-success alert-dismissible fade in" role="alert">';
+            echo '<button type="button" class="close" data-dismiss="alert" aria-label="Cerrar"><span aria-hidden="true">×</span></button>';
+            $messages = $this->flashMessenger()->getMessages();
+            foreach ($messages as $message) {
+                echo $message;
+            }
+
+            echo '</div>';
+        }
+        $url = $this->url;
+
+        echo $this->formElement($form->get('guardar'));
+        echo "<a href='" . $url . "' class='btn btn-default btn-flat'><i class='glyphicon glyphicon-print'></i> Generar PDF</a>";
         echo $this->formElement($form->get('siguiente')
                         ->setLabel("Terminar")
                         ->setAttributes(array(
-                            "disabled" => true
+                            "type" => "button",
+                            "disabled" => $value,
+                            "onclick" => 'window.location="' . $this->basePath() . '/recepcion/terminar/' . $expediente->getId() . '"'
         )));
         ?>
     </div>
     <?php echo $this->form()->closeTag(); ?>
 </section>
+<script>
+
+    $('#recepcion').submit(validateDerecho);
+    $('#recepcion').submit(validateinstitucion);
+</script>

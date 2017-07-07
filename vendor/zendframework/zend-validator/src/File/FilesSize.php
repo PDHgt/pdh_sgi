@@ -30,11 +30,11 @@ class FilesSize extends Size
     /**
      * @var array Error message templates
      */
-    protected $messageTemplates = array(
+    protected $messageTemplates = [
         self::TOO_BIG      => "All files in sum should have a maximum size of '%max%' but '%size%' were detected",
         self::TOO_SMALL    => "All files in sum should have a minimum size of '%min%' but '%size%' were detected",
         self::NOT_READABLE => "One or more files can not be read",
-    );
+    ];
 
     /**
      * Internal file array
@@ -54,14 +54,14 @@ class FilesSize extends Size
      */
     public function __construct($options = null)
     {
-        $this->files = array();
+        $this->files = [];
         $this->setSize(0);
 
         if ($options instanceof Traversable) {
             $options = ArrayUtils::iteratorToArray($options);
         } elseif (is_scalar($options)) {
-            $options = array('max' => $options);
-        } elseif (!is_array($options)) {
+            $options = ['max' => $options];
+        } elseif (! is_array($options)) {
             throw new Exception\InvalidArgumentException('Invalid options to validator provided');
         }
 
@@ -69,7 +69,7 @@ class FilesSize extends Size
             $argv = func_get_args();
             array_shift($argv);
             $options['max'] = array_shift($argv);
-            if (!empty($argv)) {
+            if (! empty($argv)) {
                 $options['useByteString'] = array_shift($argv);
             }
         }
@@ -88,9 +88,9 @@ class FilesSize extends Size
     public function isValid($value, $file = null)
     {
         if (is_string($value)) {
-            $value = array($value);
+            $value = [$value];
         } elseif (is_array($value) && isset($value['tmp_name'])) {
-            $value = array($value);
+            $value = [$value];
         }
 
         $min  = $this->getMin(true);
@@ -98,7 +98,7 @@ class FilesSize extends Size
         $size = $this->getSize();
         foreach ($value as $files) {
             if (is_array($files)) {
-                if (!isset($files['tmp_name']) || !isset($files['name'])) {
+                if (! isset($files['tmp_name']) || ! isset($files['name'])) {
                     throw new Exception\InvalidArgumentException(
                         'Value array must be in $_FILES format'
                     );
@@ -113,7 +113,7 @@ class FilesSize extends Size
                 continue;
             }
 
-            if (!isset($this->files[$files])) {
+            if (! isset($this->files[$files])) {
                 $this->files[$files] = $files;
             } else {
                 // file already counted... do not count twice

@@ -10,7 +10,7 @@
                     <h3 class="box-title">Cola de solicitantes</h3>
                 </div>
                 <div class="box-body">
-                    <table id="datatable" class="table table-bordered table-hover dataTable" cellspacing="0">
+                    <table id="datatable" class="table table-bordered table-hover table-responsive dataTable" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>Turno</th>
@@ -25,6 +25,7 @@
                         <tbody>
                             <?php
                             $colas = $this->cola;
+                            $i = 0;
                             foreach ($colas as $cola):
                                 switch ($cola->getPrioridad()) {
                                     case '1':
@@ -73,24 +74,46 @@
 
                                     </td>
                                     <td>
-                                        <?php echo $cola->getObservaciones(); ?>
+                                        <?php
+                                        $string = strip_tags($cola->getObservaciones());
+                                        if (strlen($string) > 95) {
+                                            // truncate string
+                                            $stringCut = substr($string, 0, 95);
+                                            // make sure it ends in a word so assassinate doesn't become ass...
+                                            $string = substr($stringCut, 0, strrpos($stringCut, ' ')) . '... <small class="text-muted"><em>ver detalle</em></small>';
+                                        }
+                                        echo $string;
+                                        ?>
                                     </td>
                                     <td>
-                                        <a href="<?php echo $this->url('recepcion', array('action' => 'detallecola', 'id' => $cola->getId())); ?>" data-toggle="modal" data-target="#detailsModal" data-tt="tooltip" title="Detalles">
-                                            <span class="glyphicon glyphicon-search fa-lg"></span>
+                                        <a href="<?php echo $this->url('recepcion', array('action' => 'detallecola', 'id' => $cola->getId())); ?>" data-toggle="modal" data-target="#detailsModal">
+                                            <span class="badge bg-blue">Detalle</span>
                                         </a>
-                                        <a href="<?php echo $this->url('recepcion', array('action' => 'editarcola', 'id' => $cola->getId())); ?>"  data-tt="tooltip" title="Editar">
-                                            <span class="glyphicon glyphicon-edit orange-text fa-lg"></span>
+                                        <a href="<?php echo $this->url('recepcion', array('action' => 'editarcola', 'id' => $cola->getId())); ?>">
+                                            <span class="badge bg-orange">Editar</span>
                                         </a>
-                                        <a href="<?php echo $this->url('recepcion', array('action' => 'atender', 'id' => $cola->getId())); ?>" data-toggle="tooltip" title="Atender" >
-                                            <span class="glyphicon glyphicon-log-in green-text fa-lg"></span>
+
+                                        <a href="<?php echo $this->url('recepcion', array('action' => 'salidacola', 'id' => $cola->getId())); ?>" data-toggle="modal" data-target="#departureModal">
+                                            <span class="badge bg-red">Retirar</span>
                                         </a>
-                                        <a href="<?php echo $this->url('recepcion', array('action' => 'salidacola', 'id' => $cola->getId())); ?>" data-toggle="modal" data-target="#departureModal" data-tt="tooltip" title="Salida">
-                                            <span class="glyphicon glyphicon-log-out red-text fa-lg"></span>
-                                        </a>
+                                        <?php
+                                        if ($i == 0) {
+                                            $linkclass = "bg-green";
+                                            echo "<a href='" . $this->url('recepcion', array('action' => 'atender', 'id' => $cola->getId())) . "'>"
+                                            . "<span class='badge " . $linkclass . "'>Atender</span>"
+                                            . "</a>";
+                                            //$link = $this->url('recepcion', array('action' => 'atender', 'id' => $cola->getId()));
+                                        } else {
+                                            /* $link = "#";
+                                              $linkclass = "bg-gray"; */
+                                        }
+                                        ?>
                                     </td>
                                 </tr>
-                            <?php endforeach; ?>
+                                <?php
+                                $i++;
+                            endforeach;
+                            ?>
                         </tbody>
                     </table>
                 </div>
@@ -137,9 +160,6 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $('#datatable').DataTable({
-            "columnDefs": [
-                {"width": "10%", "targets": 6}
-            ],
             "bSort": false
         });
     });

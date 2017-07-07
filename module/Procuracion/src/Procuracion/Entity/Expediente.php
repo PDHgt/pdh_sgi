@@ -11,8 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\EntityListeners({"Procuracion\Listener\ExpedienteListener"})
  */
-class Expediente
-{
+class Expediente {
+
     /**
      * @var integer
      *
@@ -126,9 +126,9 @@ class Expediente
     private $reportadoanteriormente;
 
     /**
-     * @var \Procuracion\Entity\Colarecepcion
+     * @var \Procuracion\Entity\ColaRecepcion
      *
-     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Colarecepcion")
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\ColaRecepcion")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_cola", referencedColumnName="id")
      * })
@@ -184,15 +184,14 @@ class Expediente
      *   @ORM\JoinColumn(name="updated_by", referencedColumnName="id")
      * })
      */
-    private $updated_by;    
+    private $updated_by;
 
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -203,10 +202,9 @@ class Expediente
      *
      * @return Expediente
      */
-    public function setNumero($numero)
-    {
+    public function setNumero($numero) {
         $this->numero = $numero;
-    
+
         return $this;
     }
 
@@ -215,8 +213,7 @@ class Expediente
      *
      * @return string
      */
-    public function getNumero()
-    {
+    public function getNumero() {
         return $this->numero;
     }
 
@@ -227,10 +224,9 @@ class Expediente
      *
      * @return Expediente
      */
-    public function setHechos($hechos)
-    {
+    public function setHechos($hechos) {
         $this->hechos = $hechos;
-    
+
         return $this;
     }
 
@@ -239,8 +235,7 @@ class Expediente
      *
      * @return string
      */
-    public function getHechos()
-    {
+    public function getHechos() {
         return $this->hechos;
     }
 
@@ -251,10 +246,9 @@ class Expediente
      *
      * @return Expediente
      */
-    public function setLugarhechos($lugarhechos)
-    {
+    public function setLugarhechos($lugarhechos) {
         $this->lugarhechos = $lugarhechos;
-    
+
         return $this;
     }
 
@@ -263,8 +257,7 @@ class Expediente
      *
      * @return string
      */
-    public function getLugarhechos()
-    {
+    public function getLugarhechos() {
         return $this->lugarhechos;
     }
 
@@ -275,10 +268,9 @@ class Expediente
      *
      * @return Expediente
      */
-    public function setFechahechos($fechahechos)
-    {
+    public function setFechahechos($fechahechos) {
         $this->fechahechos = $fechahechos;
-    
+
         return $this;
     }
 
@@ -287,8 +279,7 @@ class Expediente
      *
      * @return \DateTime
      */
-    public function getFechahechos()
-    {
+    public function getFechahechos() {
         return $this->fechahechos;
     }
 
@@ -299,10 +290,9 @@ class Expediente
      *
      * @return Expediente
      */
-    public function setPeticion($peticion)
-    {
+    public function setPeticion($peticion) {
         $this->peticion = $peticion;
-    
+
         return $this;
     }
 
@@ -311,8 +301,7 @@ class Expediente
      *
      * @return string
      */
-    public function getPeticion()
-    {
+    public function getPeticion() {
         return $this->peticion;
     }
 
@@ -323,10 +312,9 @@ class Expediente
      *
      * @return Expediente
      */
-    public function setPruebas($pruebas)
-    {
+    public function setPruebas($pruebas) {
         $this->pruebas = $pruebas;
-    
+
         return $this;
     }
 
@@ -335,8 +323,7 @@ class Expediente
      *
      * @return string
      */
-    public function getPruebas()
-    {
+    public function getPruebas() {
         return $this->pruebas;
     }
 
@@ -347,10 +334,9 @@ class Expediente
      *
      * @return Expediente
      */
-    public function setFechaingreso($fechaingreso)
-    {
+    public function setFechaingreso($fechaingreso) {
         $this->fechaingreso = $fechaingreso;
-    
+
         return $this;
     }
 
@@ -359,8 +345,7 @@ class Expediente
      *
      * @return \DateTime
      */
-    public function getFechaingreso()
-    {
+    public function getFechaingreso() {
         return $this->fechaingreso;
     }
 
@@ -371,10 +356,9 @@ class Expediente
      *
      * @return Expediente
      */
-    public function setTipoagresion($tipoagresion)
-    {
+    public function setTipoagresion($tipoagresion) {
         $this->tipoagresion = $tipoagresion;
-    
+
         return $this;
     }
 
@@ -383,8 +367,7 @@ class Expediente
      *
      * @return string
      */
-    public function getTipoagresion()
-    {
+    public function getTipoagresion() {
         return $this->tipoagresion;
     }
 
@@ -395,10 +378,9 @@ class Expediente
      *
      * @return Expediente
      */
-    public function setRerortadoen($reportadoen)
-    {
+    public function setRerortadoen($reportadoen) {
         $this->reportadoen = $reportadoen;
-    
+
         return $this;
     }
 
@@ -407,8 +389,7 @@ class Expediente
      *
      * @return string
      */
-    public function getReportadoen()
-    {
+    public function getReportadoen() {
         return $this->reportadoen;
     }
 
@@ -419,10 +400,9 @@ class Expediente
      *
      * @return Expediente
      */
-    public function setArea(\Procuracion\Entity\DetalleCatalogo $area = null)
-    {
+    public function setArea(\Procuracion\Entity\DetalleCatalogo $area = null) {
         $this->area = $area;
-    
+
         return $this;
     }
 
@@ -431,8 +411,7 @@ class Expediente
      *
      * @return \Procuracion\Entity\DetalleCatalogo
      */
-    public function getArea()
-    {
+    public function getArea() {
         return $this->area;
     }
 
@@ -443,10 +422,9 @@ class Expediente
      *
      * @return Expediente
      */
-    public function setDeptohechos(\Procuracion\Entity\Departamento $deptohechos = null)
-    {
+    public function setDeptohechos(\Procuracion\Entity\Departamento $deptohechos = null) {
         $this->deptohechos = $deptohechos;
-    
+
         return $this;
     }
 
@@ -455,8 +433,7 @@ class Expediente
      *
      * @return \Procuracion\Entity\Departamento
      */
-    public function getDeptohechos()
-    {
+    public function getDeptohechos() {
         return $this->deptohechos;
     }
 
@@ -467,10 +444,9 @@ class Expediente
      *
      * @return Expediente
      */
-    public function setMunihechos(\Procuracion\Entity\Municipio $munihechos = null)
-    {
+    public function setMunihechos(\Procuracion\Entity\Municipio $munihechos = null) {
         $this->munihechos = $munihechos;
-    
+
         return $this;
     }
 
@@ -479,8 +455,7 @@ class Expediente
      *
      * @return \Procuracion\Entity\Municipio
      */
-    public function getMunihechos()
-    {
+    public function getMunihechos() {
         return $this->munihechos;
     }
 
@@ -491,10 +466,9 @@ class Expediente
      *
      * @return Expediente
      */
-    public function setReportadoanteriormente(\Procuracion\Entity\DetalleCatalogo $reportadoanteriormente = null)
-    {
+    public function setReportadoanteriormente(\Procuracion\Entity\DetalleCatalogo $reportadoanteriormente = null) {
         $this->reportadoanteriormente = $reportadoanteriormente;
-    
+
         return $this;
     }
 
@@ -503,32 +477,29 @@ class Expediente
      *
      * @return \Procuracion\Entity\DetalleCatalogo
      */
-    public function getReportadoanteriormente()
-    {
+    public function getReportadoanteriormente() {
         return $this->reportadoanteriormente;
     }
 
     /**
      * Set idCola
      *
-     * @param \Procuracion\Entity\Colarecepcion $idCola
+     * @param \Procuracion\Entity\ColaRecepcion $idCola
      *
      * @return Expediente
      */
-    public function setIdCola(\Procuracion\Entity\Colarecepcion $idCola = null)
-    {
+    public function setIdCola(\Procuracion\Entity\ColaRecepcion $idCola = null) {
         $this->idCola = $idCola;
-    
+
         return $this;
     }
 
     /**
      * Get idCola
      *
-     * @return \Procuracion\Entity\Colarecepcion
+     * @return \Procuracion\Entity\ColaRecepcion
      */
-    public function getIdCola()
-    {
+    public function getIdCola() {
         return $this->idCola;
     }
 
@@ -539,10 +510,9 @@ class Expediente
      *
      * @return Expediente
      */
-    public function setIdSede(\Procuracion\Entity\Sede $idSede = null)
-    {
+    public function setIdSede(\Procuracion\Entity\Sede $idSede = null) {
         $this->idSede = $idSede;
-    
+
         return $this;
     }
 
@@ -551,8 +521,7 @@ class Expediente
      *
      * @return \Procuracion\Entity\Sede
      */
-    public function getIdSede()
-    {
+    public function getIdSede() {
         return $this->idSede;
     }
 
@@ -563,10 +532,9 @@ class Expediente
      *
      * @return Expediente
      */
-    public function setIdTipo(\Procuracion\Entity\TipoExpediente $idTipo = null)
-    {
+    public function setIdTipo(\Procuracion\Entity\TipoExpediente $idTipo = null) {
         $this->idTipo = $idTipo;
-    
+
         return $this;
     }
 
@@ -575,8 +543,7 @@ class Expediente
      *
      * @return \Procuracion\Entity\TipoExpediente
      */
-    public function getIdTipo()
-    {
+    public function getIdTipo() {
         return $this->idTipo;
     }
 
@@ -587,10 +554,9 @@ class Expediente
      *
      * @return Expediente
      */
-    public function setCorrelativo($correlativo)
-    {
-        $this->correlativo= $correlativo;
-    
+    public function setCorrelativo($correlativo) {
+        $this->correlativo = $correlativo;
+
         return $this;
     }
 
@@ -599,10 +565,9 @@ class Expediente
      *
      * @return integer
      */
-    public function getCorrelativo()
-    {
+    public function getCorrelativo() {
         return $this->correlativo;
-    }    
+    }
 
     /**
      * Set anio
@@ -611,10 +576,9 @@ class Expediente
      *
      * @return Expediente
      */
-    public function setAnio($anio)
-    {
+    public function setAnio($anio) {
         $this->anio = $anio;
-    
+
         return $this;
     }
 
@@ -623,10 +587,9 @@ class Expediente
      *
      * @return integer
      */
-    public function getAnio()
-    {
+    public function getAnio() {
         return $this->anio;
-    }    
+    }
 
     /**
      * Set updated_by
@@ -635,20 +598,19 @@ class Expediente
      *
      * @return Expediente
      */
-    public function setUpdatedBy(\Procuracion\Entity\Usuario $usuario = null)
-    {
+    public function setUpdatedBy(\Procuracion\Entity\Usuario $usuario = null) {
         $this->updated_by = $usuario;
-    
+
         return $this;
-    }     
-    
+    }
+
     /**
      * Get updated_by
      *
      * @return \Procuracion\Entity\Usuario
      */
-    public function getUpdatedBy()
-    {
+    public function getUpdatedBy() {
         return $this->updated_by;
     }
+
 }

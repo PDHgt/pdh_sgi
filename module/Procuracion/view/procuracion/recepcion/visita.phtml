@@ -10,7 +10,7 @@
                     <h3 class="box-title">Registro de visitas</h3>
                 </div>
                 <div class="box-body">
-                    <table id="datatable" class="table table-bordered table-hover dataTable" cellspacing="0">
+                    <table id="datatable" class="table table-bordered table-hover table-responsive dataTable" cellspacing="0">
 
                         <thead>
                             <tr>
@@ -46,12 +46,6 @@
                                     case ($call >= 5):
                                         $style = "badge badge-notify bg-red";
                                         break;
-                                    /* case ($call >= 2 and $call < 5):
-                                      $style = "bg-orange";
-                                      break;
-                                      case ($call >= 5):
-                                      $style = "bg-red";
-                                      break; */
                                 }
                                 ?>
                                 <tr>
@@ -80,14 +74,14 @@
                                         <?php echo $visita->getEmpleado()->getExtension(); ?>
                                     </td>
                                     <td>
-                                        <a href="<?php echo $this->url('recepcion', array('action' => 'detallevisita', 'id' => $visita->getId())); ?>" data-toggle="modal" data-target="#detailsModal" data-tt="tooltip" title="Detalles">
-                                            <span class="glyphicon glyphicon-search fa-lg"></span>
+                                        <a href="<?php echo $this->url('recepcion', array('action' => 'detallevisita', 'id' => $visita->getId())); ?>" data-toggle="modal" data-target="#detailsModal">
+                                            <span class="badge bg-blue">Detalle</span>
                                         </a>
-                                        <a href="<?php echo $this->url('recepcion', array('action' => 'editarvisita', 'id' => $visita->getId())); ?>"  data-tt="tooltip" title="Editar">
-                                            <span class="glyphicon glyphicon-edit orange-text fa-lg"></span>
+                                        <a href="<?php echo $this->url('recepcion', array('action' => 'editarvisita', 'id' => $visita->getId())); ?>">
+                                            <span class="badge bg-orange">Editar</span>
                                         </a>
-                                        <a href="<?php echo $this->url('recepcion', array('action' => 'salidavisita', 'id' => $visita->getId())); ?>" data-toggle="modal" data-target="#departureModal" data-tt="tooltip" title="Salida">
-                                            <span class="glyphicon glyphicon-log-out red-text fa-lg"></span>
+                                        <a href="<?php echo $this->url('recepcion', array('action' => 'salidavisita', 'id' => $visita->getId())); ?>" data-toggle="modal" data-target="#departureModal">
+                                            <span class="badge bg-red">Retirar</span>
                                         </a>
                                     </td>
                                 </tr>
@@ -135,9 +129,7 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $('#datatable').DataTable({
-            "columnDefs": [
-                {"width": "10%", "targets": 7}
-            ]
+
         });
     });
 </script>

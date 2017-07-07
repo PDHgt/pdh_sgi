@@ -106,7 +106,7 @@
                                 <div class="col-xs-12">
                                     <div class="form-group">
                                         <?php
-                                        $nombre = $form->get('nombre');
+                                        $nombre = $form->get('nombre')->setAttributes(array("required" => true));
                                         echo $formLabel->openTag() . $nombre->getOption('label') . " ";
                                         echo $formLabel->closeTag();
                                         echo $this->formInput($nombre);
@@ -116,7 +116,7 @@
                                 <div class="col-xs-12">
                                     <div class="form-group">
                                         <?php
-                                        $apellido = $form->get('apellido');
+                                        $apellido = $form->get('apellido')->setAttributes(array("required" => true));
                                         echo $formLabel->openTag() . $apellido->getOption('label') . " ";
                                         echo $formLabel->closeTag();
                                         echo $this->formInput($apellido);
@@ -219,7 +219,7 @@
                         <div class="col-xs-12">
                             <div class="form-group">
                                 <?php
-                                if ($this->url === 'visitante') {
+                                if ($this->url === 'visita') {
                                     $motivo = $form->get('motivo');
                                     echo $formLabel->openTag() . $motivo->getOption('label') . " ";
 

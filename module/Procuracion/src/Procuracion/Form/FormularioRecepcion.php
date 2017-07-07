@@ -241,7 +241,7 @@ class FormularioRecepcion extends Form {
                 'label' => 'Fecha',
             ),
             'attributes' => array(
-                'type' => 'date',
+                'type' => 'text',
                 'class' => 'form-control'
             )
         ));
@@ -252,7 +252,7 @@ class FormularioRecepcion extends Form {
                 'label' => 'Fecha de nacimiento',
             ),
             'attributes' => array(
-                'type' => 'date',
+                'type' => 'text',
                 'class' => 'form-control datepicker',
                 'id' => 'fechanac'
             )
@@ -264,7 +264,7 @@ class FormularioRecepcion extends Form {
                 'label' => 'Fecha',
             ),
             'attributes' => array(
-                'type' => 'date',
+                'type' => 'text',
                 'class' => 'form-control datepicker'
             )
         ));
@@ -605,7 +605,7 @@ class FormularioRecepcion extends Form {
             'attributes' => array(
                 //'type' => 'button',
                 'value' => 'Imprimir',
-                'class' => 'btn btn-primary btn-flat'
+                'class' => 'btn btn-default btn-flat'
             )
         ));
     }

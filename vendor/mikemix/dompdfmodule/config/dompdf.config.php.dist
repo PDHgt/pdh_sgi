@@ -1,0 +1,26 @@
+<?php
+
+$dompdfDir = realpath('vendor/dompdf/dompdf');
+
+return [
+    'logOutputFile' => false,
+    'defaultMediaType' => 'screen',
+    'defaultPaperSize' => 'A4',
+    'defaultFont' => 'serif',
+    'dpi' => 96,
+    'pdfBackend' => 'CPDF',
+    'fontHeightRatio' => 1.1,
+    'isPhpEnabled' => false,
+    'isRemoteEnabled' => false,
+    'isJavascriptEnabled' => false,
+    'isHtml5ParserEnabled' => true,
+    'isFontSubsettingEnabled' => false,
+    'debugPng' => false,
+    'debugKeepTemp' => false,
+    'debugCss' => false,
+    'debugLayout' => false,
+    'debugLayoutLines' => false,
+    'debugLayoutBlocks' => false,
+    'debugLayoutInline' => false,
+    'debugLayoutPaddingBox' => false,
+];

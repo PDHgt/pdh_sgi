@@ -125,7 +125,7 @@
             /*
              * Muestra y oculta calificacion
              */
-            $('#editarcalificacion').click(function() {
+            $('#editarhechos').click(function() {
                 $('.calificacion').toggle();
             });
             /*
@@ -147,35 +147,24 @@
             /*
              * Muestra y oculta calificacion
              */
-            $('#editarremision').click(function() {
+            $('#editarorientacion').click(function() {
                 $('.remisiones').toggle();
             });
-            /*
-             * Muestra y oculta instituciones si hay remision
-             */
-            $('[name="remision"]').on('change', function() {
-                if ($(this).val() === "1") {
-                    $('#instremision').collapse('show');
-                } else {
-                    $('#instremision').collapse('hide');
-                }
-            });
+
             /*
              *  Llamado a funcion checkbox instituciones
              */
             $("input[name='institucion[]']").click(function() {
                 var url = "<?php echo $this->basePath(); ?>/validacion/listarinstituciones";
                 var id = $(this).val();
-                //var comp = $("input[name='tipoexpediente']:checked").val();
                 if ($(this).is(":checked")) {
-                    //alert(id);
                     checkboxInsitucion(url, id);
                 } else {
-                    //alert(id);
                     $("div[data-group='" + id + "']").empty();
                 }
 
             });
+
 
         </script>
         <script type="text/javascript">

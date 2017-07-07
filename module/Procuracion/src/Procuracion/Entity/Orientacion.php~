@@ -38,6 +38,12 @@ class Orientacion
      */
     private $idExpediente;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Remite", type="integer", nullable=true)
+     */
+    private $remite;    
 
 }
 

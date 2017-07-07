@@ -13,20 +13,25 @@ use Procuracion\Service\CuboCalificacionService;
 use Procuracion\Service\GeografiaService;
 use Procuracion\Service\ExpedienteService;
 use Procuracion\Service\RemisionService;
+use Procuracion\Service\GeneraDocsService;
+use Procuracion\Service\DocumentoService;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Authentication\AuthenticationService as AuthService;
 use Doctrine\ORM\EntityManager as EntityManager;
+use Dompdf\Dompdf;
 
 class RecepcionController extends AbstractActionController {
 
     protected $entityManager;
     protected $authService;
+    protected $pdfService;
     protected $usuario;
 
-    public function __construct(EntityManager $entityManager, AuthService $authService) {
+    public function __construct(EntityManager $entityManager, AuthService $authService, Dompdf $pdfService) {
         $this->entityManager = $entityManager;
         $this->authService = $authService;
+        $this->pdfService = $pdfService;
 //$this->perfil = $this->authService->getIdentity()->getUsuario();
     }
 
@@ -367,6 +372,11 @@ class RecepcionController extends AbstractActionController {
             $institucionservice = new RemisionService();
             $institucion = $institucionservice->listarInstitucionPadre($this->entityManager);
 
+            $docservice = new DocumentoService();
+            $docs = $docservice->getDocumentos($this->entityManager, $idexpediente);
+
+            $url = $this->url()->fromRoute('recepcion', array('action' => 'imprimirdoc', 'id' => $idexpediente));
+
             $header = new ViewModel();
             $header->setVariables(array('identity' => $identity));
             $header->setTemplate('header');
@@ -389,7 +399,9 @@ class RecepcionController extends AbstractActionController {
                 'institucion' => $institucion,
                 'derechos' => $derechos,
                 'deptos' => $deptos,
-                'munis' => $munis
+                'munis' => $munis,
+                'docs' => $docs,
+                'url' => $url
             ));
             return $view;
         }
@@ -528,7 +540,7 @@ class RecepcionController extends AbstractActionController {
 
         $data = $this->request->getPost();
         $identity = $this->authService->getIdentity();
-        echo $identity->getId();
+        //echo $identity->getId();
         $sede = $identity->getIdEmpleado()->getIdsede()->getId();
         if (empty($data["fechanac"])) {
             $fechanac = NULL;
@@ -598,7 +610,8 @@ class RecepcionController extends AbstractActionController {
             $fechahecho = date_create_from_format('d/m/Y', $data["fechahecho"]);
         }
         $persona = array(
-            'id' => $data["idp"],
+            'idpersona' => $data["idpersona"],
+            'idp' => $data["idp"],
             'nombres' => $data["nombre"],
             'apellidos' => $data["apellido"],
             'tipo' => $data["tipodoc"],
@@ -611,7 +624,8 @@ class RecepcionController extends AbstractActionController {
         );
 
         $datos = array(
-            'idpersona' => $data["idpersona"],
+            'idexpediente' => NULL,
+            'ide' => NULL,
             'usr' => $identity->getId(),
             'sede' => $sede,
             'tipo' => $data["tipoexpediente"],
@@ -626,20 +640,18 @@ class RecepcionController extends AbstractActionController {
             'pruebas' => $data["pruebas"]
         );
 
-        $calificacion = $data["hechos"];
-
-        //echo $identity->getId();
+        $calificacion = array(
+            'hechos' => $data["hechos"]
+        );
 
         $expservice = new ExpedienteService();
         $expediente = $expservice->Save($this->entityManager, $datos, $calificacion, $persona);
-
         return $this->redirect()->toRoute('recepcion', array('action' => 'orientacion', 'id' => $expediente->getId()));
     }
 
-    public function guardarorientacionaction() {
+    public function guardarorientacionAction() {
 
         $data = $this->request->getPost();
-        $idexpediente = $data["ide"];
         $identity = $this->authService->getIdentity();
         $sede = $identity->getIdEmpleado()->getIdsede()->getId();
 
@@ -655,7 +667,8 @@ class RecepcionController extends AbstractActionController {
             $fechahecho = date_create_from_format('d/m/Y', $data["fechahecho"]);
         }
         $persona = array(
-            'id' => $data["idp"],
+            'idpersona' => $data["idpersona"],
+            'idp' => $data["idp"],
             'nombres' => $data["nombre"],
             'apellidos' => $data["apellido"],
             'tipo' => $data["tipodoc"],
@@ -668,12 +681,12 @@ class RecepcionController extends AbstractActionController {
         );
 
         $datos = array(
-            'idpersona' => $data["idpersona"],
             'idexpediente' => $data["idexpediente"],
+            'ide' => $data["ide"],
+            'cola' => $data["idcola"],
             'usr' => $identity->getId(),
             'sede' => $sede,
             'tipo' => $data["tipoexpediente"],
-            'cola' => $data["id"],
             'departamento' => $data["depto"],
             'municipio' => $data["muni"],
             'area' => $data["areaubicacion"],
@@ -684,20 +697,28 @@ class RecepcionController extends AbstractActionController {
             'pruebas' => $data["pruebas"]
         );
 
-        $calificacion = $data["hechos"];
+
+        $calificacion = array(
+            'ide' => $data["ide"],
+            'hechos' => $data["hechos"]
+        );
 
         $orientacion = array(
-            'idExpediente' => $idexpediente,
+            'idorientacion' => $data["idorientacion"],
+            'ido' => $data["ido"],
             'detalle' => $data["detalleorientacion"],
             'remision' => $data["remision"]
         );
 
-        $instituciones = $data["instdependientes"];
+        $instituciones = array(
+            'idorientacion' => $data["idorientacion"],
+            'ide' => $data["ide"],
+            'instituciones' => $data["instdependientes"]
+        );
 
         $expservice = new ExpedienteService();
-        $expservice->guardarOrientacion($this->entityManager, $orientacion, $instituciones);
-
-        return $this->redirect()->toRoute('recepcion', array('action' => 'resumen', 'id' => $idexpediente));
+        $expservice->guardarOrientacion($this->entityManager, $orientacion, $instituciones, $datos, $calificacion, $persona);
+        return $this->redirect()->toRoute('recepcion', array('action' => 'resumen', 'id' => $datos["ide"]));
     }
 
 ///************************Métodos para modificar registros*****************************///
@@ -749,10 +770,10 @@ class RecepcionController extends AbstractActionController {
 
         switch ($data['tipopersona']) {
             case 'visitante':
-                $registro->updatePersona($this->entityManager, $persona, $visita, 1);
+                $registro->savePersona($this->entityManager, $persona, $visita, 1);
                 return $this->redirect()->toRoute('recepcion', array('action' => 'visita'));
             case 'solicitante':
-                $registro->updatePersona($this->entityManager, $persona, $cola, 2);
+                $registro->savePersona($this->entityManager, $persona, $cola, 2);
                 return $this->redirect()->toRoute('recepcion', array('action' => 'cola'));
         }
     }
@@ -879,6 +900,39 @@ class RecepcionController extends AbstractActionController {
         $llamada = new VisitaService();
         $llamada->haceLlamada($this->entityManager, $id);
         return $this->redirect()->toRoute('recepcion', array('action' => 'visita'));
+    }
+
+    public function imprimirdocAction() {
+
+        $idexpediente = $this->getEvent()->getRouteMatch()->getParam('id');
+        $identity = $this->authService->getIdentity();
+
+        /** @var \Dompdf\Dompdf $dompdf */
+        //$dompdf = $this->getServiceLocator()->get('dompdf');
+        $nvoService = new GeneraDocsService();
+        $pdftext = $nvoService->GenerarOrientacion($this->entityManager, $idexpediente, $identity->getId());
+        //$text = '<strong>hello world!</strong>';
+        $this->pdfService->set_paper('folio', 'portrait');
+        $this->pdfService->load_html($pdftext);
+        $this->pdfService->render();
+
+        $ruta = $nvoService->makeDir($this->entityManager, $idexpediente, $identity->getId()); //exit();
+        if ($ruta) {
+            $nombreDoc = $ruta . "/actaOrientacion.pdf";
+            $pdftext = $nvoService->GenerarOrientacion($this->entityManager, $idexpediente, $identity->getId(), $nombreDoc);
+            file_put_contents($nombreDoc, $this->pdfService->output());
+            $this->flashMessenger()->addMessage("Se generó exitósamente el archivo");
+            return $this->redirect()->toRoute('recepcion', array('action' => 'resumen', 'id' => $idexpediente));
+        } else {
+            $this->flashMessenger()->addMessage("Error al generar el archivo");
+            return $this->redirect()->toRoute('recepcion', array('action' => 'resumen', 'id' => $idexpediente));
+        }
+    }
+
+    public function terminarAction() {
+
+
+        return $this->redirect()->toRoute('recepcion', array('action' => 'cola'));
     }
 
 }

@@ -39,6 +39,13 @@ class Orientacion {
     private $idExpediente;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="Remite", type="integer", nullable=true)
+     */
+    private $remite;    
+
+    /**
      * Get id
      *
      * @return integer
@@ -91,4 +98,27 @@ class Orientacion {
         return $this->idExpediente;
     }
 
+    /**
+     * Set remite
+     *
+     * @param integer $remite
+     *
+     * @return Orientacion
+     */
+    public function setRemite($remite)
+    {
+        $this->remite = $remite;
+    
+        return $this;
+    }
+
+    /**
+     * Get remite
+     *
+     * @return integer
+     */
+    public function getRemite()
+    {
+        return $this->remite;
+    }
 }

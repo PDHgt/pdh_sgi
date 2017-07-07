@@ -1,0 +1,69 @@
+<?php
+
+namespace Procuracion\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * AsignaTrabajo
+ *
+ * @ORM\Table(name="asigna_trabajo", indexes={@ORM\Index(name="fk_trabajo", columns={"id_trabajo"}), @ORM\Index(name="fk_asignado", columns={"id_usuario_asignado"}), @ORM\Index(name="fk_asigna", columns={"id_usuario_asigna"})})
+ * @ORM\Entity
+ */
+class AsignaTrabajo
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \Procuracion\Entity\TrabajoExpediente
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\TrabajoExpediente")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_trabajo", referencedColumnName="id")
+     * })
+     */
+    private $idTrabajo;
+
+    /**
+     * @var \Procuracion\Entity\Usuario
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Usuario")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_usuario_asignado", referencedColumnName="id")
+     * })
+     */
+    private $idUsuarioAsignado;
+
+    /**
+     * @var \Procuracion\Entity\Usuario
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Usuario")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_usuario_asigna", referencedColumnName="id")
+     * })
+     */
+    private $idUsuarioAsigna;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_asignacion", type="datetime", nullable=true)
+     */
+    private $fechaasignacion;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="funcion", type="string", length=255, nullable=true)
+     */
+    private $funcion;
+
+}
+

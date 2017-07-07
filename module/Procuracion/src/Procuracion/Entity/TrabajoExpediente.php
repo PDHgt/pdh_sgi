@@ -183,7 +183,7 @@ class TrabajoExpediente
     /**
      * Get idEtapa
      *
-     * @return \Procuracion\Entity\AEtapa
+     * @return \Procuracion\Entity\Etapa
      */
     public function getIdEtapa()
     {

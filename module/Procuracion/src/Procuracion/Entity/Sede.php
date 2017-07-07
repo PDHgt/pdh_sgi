@@ -43,6 +43,26 @@ class Sede
     private $direccion;
 
     /**
+     * @var \Procuracion\Entity\Departamento
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Departamento")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="Departamento", referencedColumnName="id")
+     * })
+     */
+    private $departamento;
+
+    /**
+     * @var \Procuracion\Entity\Municipio
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Municipio")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="Municipio", referencedColumnName="id")
+     * })
+     */
+    private $municipio;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="Telefonos", type="string", length=255, nullable=true)
@@ -138,6 +158,54 @@ class Sede
     public function getDireccion()
     {
         return $this->direccion;
+    }
+
+    /**
+     * Set departamento
+     *
+     * @param \Procuracion\Entity\Departamento $departamento
+     *
+     * @return Expediente
+     */
+    public function setDepartamento(\Procuracion\Entity\Departamento $departamento = null)
+    {
+        $this->departamento = $departamento;
+    
+        return $this;
+    }
+
+    /**
+     * Get departamento
+     *
+     * @return \Procuracion\Entity\Departamento
+     */
+    public function getDepartamento()
+    {
+        return $this->departamento;
+    }
+
+    /**
+     * Set municipio
+     *
+     * @param \Procuracion\Entity\Municipio $municipio
+     *
+     * @return Expediente
+     */
+    public function setMunicipio(\Procuracion\Entity\Municipio $municipio = null)
+    {
+        $this->municipio = $municipio;
+    
+        return $this;
+    }
+
+    /**
+     * Get municipio
+     *
+     * @return \Procuracion\Entity\Municipio
+     */
+    public function getMunicipio()
+    {
+        return $this->municipio;
     }
 
     /**
