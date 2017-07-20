@@ -35,6 +35,10 @@
                 ->prependFile($this->basePath() . '/js/jquery.js')
         ;
         ?>
+        <script language="javascript">
+            //window.location = "page3.html"
+            //window.history.forward(2);
+        </script>
     </head>
     <body class="hold-transition skin-blue sidebar-collapse sidebar-mini">
         <div class="wrapper">
@@ -170,7 +174,8 @@
         <script type="text/javascript">
             $.extend(true, $.fn.dataTable.defaults, {
                 "language": {
-                    "url": "<?php echo $this->basePath(); ?>/js/datatables/spanish.json"
+                    "url": "<?php echo $this->basePath(); ?>/js/datatables/spanish.json",
+                    "autoWidth": true
                 }
 
             });

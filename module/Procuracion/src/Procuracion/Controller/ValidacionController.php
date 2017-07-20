@@ -159,4 +159,43 @@ class ValidacionController extends AbstractActionController {
         }
     }
 
+    public function guardardenunciadoAction() {
+
+        $data = $this->request->getPost();
+
+        $item = array(
+            'numdoc' => $data['numdoc'],
+            'tipodoc' => $data['tipodoc'],
+            'nombres' => $data['nombre'],
+            'apellidos' => $data['apellido'],
+            'correo' => $data['correo'],
+            'telefono' => $data['telefono'],
+            'direccion' => $data['direccion']
+        );
+        //print_r($item);
+
+        $result = new JsonModel($item);
+        return $result;
+    }
+
+    public function guardarvictimaAction() {
+
+        $data = $this->request->getPost();
+
+
+        /* $item = array(
+          'numdoc' => $data['numdoc'],
+          'tipodoc' => $data['tipodoc'],
+          'nombres' => $data['nombre'],
+          'apellidos' => $data['apellido'],
+          'correo' => $data['correo'],
+          'telefono' => $data['telefono'],
+          'direccion' => $data['direccion']
+          ); */
+        //print_r($data); /*
+
+        $result = new JsonModel($data);
+        return $result;
+    }
+
 }

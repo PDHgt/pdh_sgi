@@ -29,6 +29,27 @@ class Persona
     private $anonimo;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="TipoPersona", type="integer", nullable=true)
+     */
+    private $tipo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="NombreColectivo", type="string", length=255, nullable=false)
+     */
+    private $nombreColectivo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="NombreContacto", type="string", length=255, nullable=false)
+     */
+    private $nombreContacto;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="Nombres", type="string", length=100, nullable=false)
@@ -71,6 +92,13 @@ class Persona
     private $lgbti;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="NombreUsual", type="string", length=255, nullable=false)
+     */
+    private $nombreUsual;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="FechaNacimiento", type="date", nullable=true)
@@ -110,6 +138,20 @@ class Persona
      * })
      */
     private $muni;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Telefono", type="string", length=25, nullable=false)
+     */
+    private $telefono;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="CorreoElectronico", type="string", length=100, nullable=false)
+     */
+    private $correoElectronico;    
 
     /**
      * @var \DateTime

@@ -41,6 +41,9 @@ class ExpedienteListener {
         //llamada a generar el recorrido del expediente...según el tipo
         $camino = new CaminoService();
         $camino->CrearRutaExpediente($entityManager, $entity);
+        if ($entity->getIdTipo() <> 1) {
+            $camino->TerminarEtapa($entityManager, $entity, $entity->getUpdatedBy());
+        }
 
         //Registra el ingreso
         $bitacora = new BitacoraService();

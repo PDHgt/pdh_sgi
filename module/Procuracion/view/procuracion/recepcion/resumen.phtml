@@ -173,6 +173,19 @@ $remisiones = $this->remisiones;
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <?php
+                                        $anonimo = $form->get('checkbox')->setValue($persona->getAnonimo())->setAttributes(array(
+                                            'id' => 'anonimo',
+                                            'name' => 'anonimo',
+                                            'disabled' => true
+                                        ));
+                                        echo $formLabel->openTag() . $anonimo->getOption('label') . $formLabel->closeTag();
+                                        echo "  " . $this->formInput($anonimo);
+                                        ?>
+                                    </div>
+                                </div>
                                 <div class="col-xs-6">
                                     <div class="form-group">
                                         <?php
@@ -256,19 +269,6 @@ $remisiones = $this->remisiones;
                                         $lgbti = $form->get('lgbti')->setValue($persona->getLgbti())->setAttribute("disabled", true);
                                         echo $formLabel->openTag() . $lgbti->getOption('label') . $formLabel->closeTag() . "</br>";
                                         echo $this->formRadio($lgbti);
-                                        ?>
-                                    </div>
-                                </div>
-                                <div class="col-xs-12">
-                                    <div class="form-group">
-                                        <?php
-                                        $anonimo = $form->get('checkbox')->setValue($persona->getAnonimo())->setAttributes(array(
-                                            'id' => 'anonimo',
-                                            'name' => 'anonimo',
-                                            'disabled' => true
-                                        ));
-                                        echo $formLabel->openTag() . $anonimo->getOption('label') . $formLabel->closeTag();
-                                        echo "  " . $this->formInput($anonimo);
                                         ?>
                                     </div>
                                 </div>

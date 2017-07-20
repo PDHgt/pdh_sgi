@@ -3,15 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/xampp/htdocs/pdh_sgi/module/Procuracion/src/Procuracion/Service/ExpedienteService.php</file>
-            <file>file:/D:/xampp/htdocs/pdh_sgi/module/Procuracion/view/procuracion/recepcion/resumen.phtml</file>
-            <file>file:/D:/xampp/htdocs/pdh_sgi/module/Procuracion/src/Procuracion/Service/GeneraDocsService.php</file>
+            <file>file:/D:/xampp/htdocs/pdh_sgi/module/Procuracion/view/procuracion/recepcion/registro.phtml</file>
+            <file>file:/D:/xampp/htdocs/pdh_sgi/module/Procuracion/src/Procuracion/Controller/ValidacionController.php</file>
             <file>file:/D:/xampp/htdocs/pdh_sgi/module/Procuracion/src/Procuracion/Controller/RecepcionController.php</file>
-            <file>file:/D:/xampp/htdocs/pdh_sgi/module/Procuracion/src/Procuracion/Service/CaminoService.php</file>
-            <file>file:/D:/xampp/htdocs/pdh_sgi/module/Procuracion/view/layout/layout-recepcion.phtml</file>
-            <file>file:/D:/xampp/htdocs/pdh_sgi/module/Procuracion/src/Procuracion/Service/RemisionService.php</file>
-            <file>file:/D:/xampp/htdocs/pdh_sgi/module/Procuracion/view/procuracion/recepcion/orientacion.phtml</file>
-            <file>file:/D:/xampp/htdocs/pdh_sgi/module/Procuracion/src/Procuracion/Service/ColaRecepcionService.php</file>
+            <file>file:/D:/xampp/htdocs/pdh_sgi/module/Procuracion/view/procuracion/recepcion/registrovictima.phtml</file>
+            <file>file:/D:/xampp/htdocs/pdh_sgi/module/Procuracion/view/procuracion/recepcion/investigacion.phtml</file>
+            <file>file:/D:/xampp/htdocs/pdh_sgi/module/Procuracion/view/procuracion/recepcion/registrodenunciado.phtml</file>
+            <file>file:/D:/xampp/htdocs/pdh_sgi/module/Procuracion/src/Procuracion/Form/FormularioPersona.php</file>
         </group>
     </open-files>
 </project-private>

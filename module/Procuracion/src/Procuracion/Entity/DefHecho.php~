@@ -63,8 +63,15 @@ class DefHecho
     /**
      * @var integer
      *
+     * @ORM\Column(name="SeReporta", type="integer", nullable=true)
+     */
+    private $seReporta;
+
+    /**
+     * @var integer
+     *
      * @ORM\Column(name="Activo", type="integer", nullable=true)
      */
-    private $activo;
+    private $activo;    
 }
 

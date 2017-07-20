@@ -16,4 +16,10 @@ class CatalogoService {
         return $dato;
     }
 
+    public function obtenerCatalogo(EntityManager $em, $nombrecatalogo) {
+        $catalogo = $em->getRepository('Procuracion\Entity\CatalogoDatos')->findBy(array('catalogo' => $nombrecatalogo));
+        $listado = $em->getRepository('Procuracion\Entity\DetalleCatalogo')->findByIdCatalogo($catalogo);
+        return $listado;
+    }
+
 }

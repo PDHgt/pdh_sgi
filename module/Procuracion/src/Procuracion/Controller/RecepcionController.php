@@ -3,6 +3,7 @@
 namespace Procuracion\Controller;
 
 use Procuracion\Form\FormularioRecepcion;
+use Procuracion\Form\FormularioPersona;
 use Procuracion\Service\VisitaService;
 use Procuracion\Service\ColaRecepcionService;
 use Procuracion\Service\EmpleadoService;
@@ -16,6 +17,7 @@ use Procuracion\Service\RemisionService;
 use Procuracion\Service\GeneraDocsService;
 use Procuracion\Service\DocumentoService;
 use Procuracion\Service\CaminoService;
+use Procuracion\Service\CatalogoService;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Authentication\AuthenticationService as AuthService;
@@ -291,7 +293,7 @@ class RecepcionController extends AbstractActionController {
         }
     }
 
-    public function orientacionaction() {
+    public function orientacionAction() {
         if (!$this->authService->hasIdentity()) {
             return $this->redirect()->toRoute('inicio', array('action' => 'login'));
         } else {
@@ -312,6 +314,57 @@ class RecepcionController extends AbstractActionController {
 
             /* $colaservice = new ColaRecepcionService();
               $cola = $colaservice->listOne($this->entityManager, $id); */
+
+            $expedienteservice = new ExpedienteService();
+            $expediente = $expedienteservice->verExpediente($this->entityManager, $id);
+
+            $institucionservice = new RemisionService();
+            $institucion = $institucionservice->listarInstitucionPadre($this->entityManager);
+
+            $header = new ViewModel();
+            $header->setVariables(array('identity' => $identity));
+            $header->setTemplate('header');
+
+            $aside = new ViewModel();
+            $aside->setVariables(array('identity' => $identity));
+            $aside->setTemplate('aside');
+
+            $layout = $this->layout();
+            $layout->addChild($header, 'header')
+                    ->addChild($aside, 'aside');
+            $view = new ViewModel(array(
+                'form' => $form,
+                'expediente' => $expediente,
+                'identity' => $identity,
+                'id' => $id,
+                'derechos' => $derechos,
+                'permisos' => $permisos,
+                'deptos' => $deptos,
+                'munis' => $munis,
+                'institucion' => $institucion
+            ));
+            return $view;
+        }
+    }
+
+    public function investigacionAction() {
+        if (!$this->authService->hasIdentity()) {
+            return $this->redirect()->toRoute('inicio', array('action' => 'login'));
+        } else {
+            $identity = $this->authService->getIdentity();
+            $id = $this->getEvent()->getRouteMatch()->getParam('id');
+
+            $form = new FormularioRecepcion();
+
+            $geografiaService = new GeografiaService();
+            $deptos = $geografiaService->ListarDeptos($this->entityManager);
+            $munis = $geografiaService->ListarMunis($this->entityManager);
+
+            $derechoservice = new CuboCalificacionService();
+            $derechos = $derechoservice->listarDerechos($this->entityManager);
+
+            $usuarioservice = new UsuarioService();
+            $permisos = $usuarioservice->getPermisos($this->entityManager, $identity->getUsuario());
 
             $expedienteservice = new ExpedienteService();
             $expediente = $expedienteservice->verExpediente($this->entityManager, $id);
@@ -647,7 +700,25 @@ class RecepcionController extends AbstractActionController {
 
         $expservice = new ExpedienteService();
         $expediente = $expservice->Save($this->entityManager, $datos, $calificacion, $persona);
-        return $this->redirect()->toRoute('recepcion', array('action' => 'orientacion', 'id' => $expediente->getId()));
+
+        switch ($data["tipoexpediente"]) {
+            case 1:
+                $action = "orientacion";
+                break;
+            case 2:
+                $action = "mediacion";
+                break;
+            case 3:
+                $action = "accionespecifica";
+                break;
+            case 4:
+                $action = "investigacion";
+                break;
+            default:
+                break;
+        }
+
+        return $this->redirect()->toRoute('recepcion', array('action' => $action, 'id' => $expediente->getId()));
     }
 
     public function guardarorientacionAction() {
@@ -717,8 +788,15 @@ class RecepcionController extends AbstractActionController {
             'instituciones' => $data["instdependientes"]
         );
 
+        //echo $data["ide"];
+
+
         $expservice = new ExpedienteService();
         $expservice->guardarOrientacion($this->entityManager, $orientacion, $instituciones, $datos, $calificacion, $persona);
+
+        $caminoservice = new CaminoService();
+        $caminoservice->TerminarEtapa($this->entityManager, $data["ide"], $identity);
+
         return $this->redirect()->toRoute('recepcion', array('action' => 'resumen', 'id' => $datos["ide"]));
     }
 
@@ -897,7 +975,6 @@ class RecepcionController extends AbstractActionController {
     public function hacellamadaAction() {
 
         $id = $this->getEvent()->getRouteMatch()->getParam('id');
-        echo $id;
         $llamada = new VisitaService();
         $llamada->haceLlamada($this->entityManager, $id);
         return $this->redirect()->toRoute('recepcion', array('action' => 'visita'));
@@ -934,13 +1011,57 @@ class RecepcionController extends AbstractActionController {
         $idexpediente = $this->getEvent()->getRouteMatch()->getParam('id');
         $identity = $this->authService->getIdentity();
 
-        $termina = new CaminoService();
+        $caminoservice = new CaminoService();
+        $caminoservice->TerminarEtapa($this->entityManager, $idexpediente, $identity);
 
-        $termina->TerminarEtapa($this->entityManager, $idexpediente, $identity->getId());
+        //$termina->TerminarEtapa($this->entityManager, $idexpediente, $identity->getId());
+        return $this->redirect()->toRoute('recepcion', array('action' => 'cola'));
+    }
 
+    public function registrovictimaAction() {
 
+        if (!$this->authService->hasIdentity()) {
+            return $this->redirect()->toRoute('inicio', array('action' => 'login'));
+        } else {
+            $identity = $this->authService->getIdentity();
 
-        //return $this->redirect()->toRoute('recepcion', array('action' => 'cola'));
+            $form = new FormularioPersona("victima");
+
+            $catalogoservice = new CatalogoService();
+            $relacionvicagr = $catalogoservice->obtenerCatalogo($this->entityManager, "RelacionVicAgr");
+            $comunidadlinguistica = $catalogoservice->obtenerCatalogo($this->entityManager, "ComunidadLinguistica");
+            $pueblopertenencia = $catalogoservice->obtenerCatalogo($this->entityManager, "PuebloPertenencia");
+
+            $this->layout('layout/modal');
+
+            $view = new ViewModel(array(
+                'form' => $form,
+                'identity' => $identity,
+                'relacionvicagr' => $relacionvicagr,
+                'comunidadlinguistica' => $comunidadlinguistica,
+                'pueblopertenencia' => $pueblopertenencia
+            ));
+            return $view;
+        }
+    }
+
+    public function registrodenunciadoAction() {
+
+        if (!$this->authService->hasIdentity()) {
+            return $this->redirect()->toRoute('inicio', array('action' => 'login'));
+        } else {
+            $identity = $this->authService->getIdentity();
+
+            $form = new FormularioPersona("denunciado");
+
+            $this->layout('layout/modal');
+
+            $view = new ViewModel(array(
+                'form' => $form,
+                'identity' => $identity
+            ));
+            return $view;
+        }
     }
 
 }

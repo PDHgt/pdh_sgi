@@ -34,7 +34,7 @@ $(document).ready(function() {
 
     /******************** boton regresar *********************/
     $('#historyBack').click(function() {
-        window.history.go(-1);
+        window.history.back();
     });
 
     /************** no permitir espacios en numdoc ****************/
@@ -230,7 +230,6 @@ function checkboxInsitucion(url, id) {
         dataType: "json",
         type: "POST",
         data: {id: id
-
         },
         success: function(data) {
 
@@ -345,6 +344,26 @@ function validateinstitucion()
     }
 }
 
+/*************************** funcion para guardar datos **************************************/
+function guardarPersona(url)
+{
+    var inputs = $('#denunciante :input').serializeArray();
+    $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        url: url,
+        data: {inputs: inputs},
+        success: function(data) {
+            //alert(data['nombres']);
+            alert('success');
+        },
+        error: function() {
+            alert('error');
+
+        }
+    })
+    //$.post(url, data);
+}
 
 
 /**************************** funciones efectos de botones ***********************************/

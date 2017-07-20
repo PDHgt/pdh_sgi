@@ -30,6 +30,27 @@ class Persona
     private $anonimo;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="TipoPersona", type="integer", nullable=true)
+     */
+    private $tipo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="NombreColectivo", type="string", length=255, nullable=false)
+     */
+    private $nombreColectivo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="NombreContacto", type="string", length=255, nullable=false)
+     */
+    private $nombreContacto;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="Nombres", type="string", length=100, nullable=false)
@@ -72,6 +93,13 @@ class Persona
     private $lgbti;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="NombreUsual", type="string", length=255, nullable=false)
+     */
+    private $nombreUsual;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="FechaNacimiento", type="date", nullable=true)
@@ -111,6 +139,20 @@ class Persona
      * })
      */
     private $muni;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Telefono", type="string", length=25, nullable=false)
+     */
+    private $telefono;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="CorreoElectronico", type="string", length=100, nullable=false)
+     */
+    private $correoElectronico;    
 
     /**
      * @var \DateTime
@@ -165,6 +207,30 @@ class Persona
     }
 
     /**
+     * Set tipo
+     *
+     * @param integer $tipo
+     *
+     * @return Persona
+     */
+    public function setTipo($tipo)
+    {
+        $this->tipo = $tipo;
+    
+        return $this;
+    }
+
+    /**
+     * Get tipo
+     *
+     * @return integer
+     */
+    public function getTipo()
+    {
+        return $this->tipo;
+    }
+
+    /**
      * Set nombres
      *
      * @param string $nombres
@@ -186,6 +252,54 @@ class Persona
     public function getNombres()
     {
         return $this->nombres;
+    }
+
+    /**
+     * Set nombreColectivo
+     *
+     * @param string $nombres
+     *
+     * @return Persona
+     */
+    public function setNombreColectivo($nombres)
+    {
+        $this->nombreColectivo = $nombres;
+    
+        return $this;
+    }
+
+    /**
+     * Get nombreColectivo
+     *
+     * @return string
+     */
+    public function getNombreColectivo()
+    {
+        return $this->nombreColectivo;
+    }
+
+    /**
+     * Set nombreContacto
+     *
+     * @param string $nombres
+     *
+     * @return Persona
+     */
+    public function setNombreContacto($nombres)
+    {
+        $this->nombreContacto = $nombres;
+    
+        return $this;
+    }
+
+    /**
+     * Get nombreContacto
+     *
+     * @return string
+     */
+    public function getNombreContacto()
+    {
+        return $this->nombreContacto;
     }
 
     /**
@@ -309,6 +423,30 @@ class Persona
     }
 
     /**
+     * Set nombreUsual
+     *
+     * @param string $nombres
+     *
+     * @return Persona
+     */
+    public function setNombreUsual($nombres)
+    {
+        $this->nombreUsual = $nombres;
+    
+        return $this;
+    }
+
+    /**
+     * Get nombreUsual
+     *
+     * @return string
+     */
+    public function getNombreUsual()
+    {
+        return $this->nombreUsual;
+    }
+
+    /**
      * Set fechanacimiento
      *
      * @param \DateTime $fechanacimiento
@@ -426,6 +564,54 @@ class Persona
     public function getMuni()
     {
         return $this->muni;
+    }
+
+    /**
+     * Set telefono
+     *
+     * @param string $numero
+     *
+     * @return Persona
+     */
+    public function setTelefono($numero)
+    {
+        $this->telefono = $numero;
+    
+        return $this;
+    }
+
+    /**
+     * Get telefono
+     *
+     * @return string
+     */
+    public function getTelefono()
+    {
+        return $this->telefono;
+    }
+
+    /**
+     * Set correoElectronico
+     *
+     * @param string $correo
+     *
+     * @return Persona
+     */
+    public function setCorreoElectronico($correo)
+    {
+        $this->correoElectronico = $correo;
+    
+        return $this;
+    }
+
+    /**
+     * Get correoElectronico
+     *
+     * @return string
+     */
+    public function getCorreoElectronico()
+    {
+        return $this->correoElectronico;
     }
 
     /**

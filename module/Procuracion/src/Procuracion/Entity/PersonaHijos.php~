@@ -1,0 +1,55 @@
+<?php
+
+namespace Procuracion\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * PersonaHijos
+ *
+ * @ORM\Table(name="persona_hijos", indexes={@ORM\Index(name="hijo_persona", columns={"id_persona"}), @ORM\Index(name="sexo_hijo", columns={"SexoHijo"}), @ORM\Index(name="edad_hijo", columns={"EdadHijo"})})
+ * @ORM\Entity
+ */
+class PersonaHijos
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \Procuracion\Entity\DetalleCatalogo
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\DetalleCatalogo")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="EdadHijo", referencedColumnName="id")
+     * })
+     */
+    private $edadHijo;
+
+    /**
+     * @var \Procuracion\Entity\DetalleCatalogo
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\DetalleCatalogo")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="SexoHijo", referencedColumnName="id")
+     * })
+     */
+    private $sexoHijo;
+
+    /**
+     * @var \Procuracion\Entity\Persona
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Persona")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_persona", referencedColumnName="id")
+     * })
+     */
+    private $idPersona;
+
+}
+

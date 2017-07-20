@@ -107,20 +107,21 @@ class FormularioRecepcion extends Form {
                 'class' => 'form-control'
             )
         ));
-        //Campo ofician
-        /* $this->add(array(
-          'name' => 'unidad',
-          'options' => array(
-          'label' => 'Oficina / Unidad',
-          ),
-          'attributes' => array(
-          'type' => 'text',
-          'class' => 'form-control',
-          )
-          )); */
         //Campo direccion
         $this->add(array(
             'name' => 'direccion',
+            'options' => array(
+                'label' => 'Dirección',
+            ),
+            'attributes' => array(
+                'type' => 'text',
+                'class' => 'form-control'
+            )
+        ));
+
+        //Campo direccion denunciante
+        $this->add(array(
+            'name' => 'direccionden',
             'options' => array(
                 'label' => 'Dirección',
             ),
@@ -141,6 +142,32 @@ class FormularioRecepcion extends Form {
                 'class' => 'form-control'
             )
         ));
+
+        //Campo telefono
+        $this->add(array(
+            'name' => 'telefono',
+            'options' => array(
+                'label' => 'Teléfono',
+            ),
+            'attributes' => array(
+                'type' => 'text',
+                'class' => 'form-control'
+            )
+        ));
+
+
+        //Campo correo
+        $this->add(array(
+            'name' => 'correo',
+            'options' => array(
+                'label' => 'Correo electrónico',
+            ),
+            'attributes' => array(
+                'type' => 'Zend\Form\Element\Email',
+                'class' => 'form-control'
+            )
+        ));
+
 
         //************************INPUTS SELECT*****************************/
         //Campo tipo de documento

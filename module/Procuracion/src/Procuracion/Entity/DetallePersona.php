@@ -26,7 +26,7 @@ class DetallePersona
      *
      * @ORM\ManyToOne(targetEntity="Procuracion\Entity\DetalleCatalogo")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Alfabeta", referencedColumnName="Codigo")
+     *   @ORM\JoinColumn(name="Alfabeta", referencedColumnName="id")
      * })
      */
     private $alfabeta;
@@ -36,7 +36,7 @@ class DetallePersona
      *
      * @ORM\ManyToOne(targetEntity="Procuracion\Entity\DetalleCatalogo")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Dedicacion", referencedColumnName="Codigo")
+     *   @ORM\JoinColumn(name="Dedicacion", referencedColumnName="id")
      * })
      */
     private $dedicacion;
@@ -46,7 +46,7 @@ class DetallePersona
      *
      * @ORM\ManyToOne(targetEntity="Procuracion\Entity\DetalleCatalogo")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Discapacidad", referencedColumnName="Codigo")
+     *   @ORM\JoinColumn(name="Discapacidad", referencedColumnName="id")
      * })
      */
     private $discapacidad;
@@ -56,7 +56,7 @@ class DetallePersona
      *
      * @ORM\ManyToOne(targetEntity="Procuracion\Entity\DetalleCatalogo")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Escolaridad", referencedColumnName="Codigo")
+     *   @ORM\JoinColumn(name="Escolaridad", referencedColumnName="id")
      * })
      */
     private $escolaridad;
@@ -66,7 +66,7 @@ class DetallePersona
      *
      * @ORM\ManyToOne(targetEntity="Procuracion\Entity\DetalleCatalogo")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="EstadoConyugal", referencedColumnName="Codigo")
+     *   @ORM\JoinColumn(name="EstadoConyugal", referencedColumnName="id")
      * })
      */
     private $estadoconyugal;
@@ -76,7 +76,7 @@ class DetallePersona
      *
      * @ORM\ManyToOne(targetEntity="Procuracion\Entity\DetalleCatalogo")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="nacionalidad", referencedColumnName="Codigo")
+     *   @ORM\JoinColumn(name="nacionalidad", referencedColumnName="id")
      * })
      */
     private $nacionalidad;
@@ -86,7 +86,7 @@ class DetallePersona
      *
      * @ORM\ManyToOne(targetEntity="Procuracion\Entity\DetalleCatalogo")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Ocupacion", referencedColumnName="Codigo")
+     *   @ORM\JoinColumn(name="Ocupacion", referencedColumnName="id")
      * })
      */
     private $ocupacion;
@@ -96,7 +96,7 @@ class DetallePersona
      *
      * @ORM\ManyToOne(targetEntity="Procuracion\Entity\DetalleCatalogo")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="PuebloPertenencia", referencedColumnName="Codigo")
+     *   @ORM\JoinColumn(name="PuebloPertenencia", referencedColumnName="id")
      * })
      */
     private $pueblopertenencia;
@@ -106,7 +106,7 @@ class DetallePersona
      *
      * @ORM\ManyToOne(targetEntity="Procuracion\Entity\DetalleCatalogo")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="TipoDiscapacidad", referencedColumnName="Codigo")
+     *   @ORM\JoinColumn(name="TipoDiscapacidad", referencedColumnName="id")
      * })
      */
     private $tipodiscapacidad;
@@ -116,10 +116,20 @@ class DetallePersona
      *
      * @ORM\ManyToOne(targetEntity="Procuracion\Entity\DetalleCatalogo")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Trabaja", referencedColumnName="Codigo")
+     *   @ORM\JoinColumn(name="Trabaja", referencedColumnName="id")
      * })
      */
     private $trabaja;
+
+    /**
+     * @var \Procuracion\Entity\DetalleCatalogo
+     *
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\DetalleCatalogo")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="ComunidadLinguistica", referencedColumnName="id")
+     * })
+     */
+    private $comunidadLinguistica;
 
     /**
      * @var \Procuracion\Entity\Persona
@@ -130,20 +140,6 @@ class DetallePersona
      * })
      */
     private $idPersona;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="TotalHijos", type="integer", nullable=true)
-     */
-    private $hijos;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="TotalHijas", type="integer", nullable=true)
-     */
-    private $hijas;
 
     /**
      * Get id
@@ -396,6 +392,30 @@ class DetallePersona
     }
 
     /**
+     * Set comunidadLinguistica
+     *
+     * @param \Procuracion\Entity\DetalleCatalogo $comu
+     *
+     * @return DetallePersona
+     */
+    public function setComunidadLinguistica(\Procuracion\Entity\DetalleCatalogo $comu = null)
+    {
+        $this->comunidadLinguistica = $comu;
+    
+        return $this;
+    }
+
+    /**
+     * Get comunidadLinguistica
+     *
+     * @return \Procuracion\Entity\DetalleCatalogo
+     */
+    public function getComunidadLinguistica()
+    {
+        return $this->comunidadLinguistica;
+    }
+
+    /**
      * Set idPersona
      *
      * @param \Procuracion\Entity\Persona $idPersona
@@ -417,54 +437,6 @@ class DetallePersona
     public function getIdPersona()
     {
         return $this->idPersona;
-    }
-
-    /**
-     * Set hijos
-     *
-     * @param integer $hijos
-     *
-     * @return DetallePersona
-     */
-    public function setHijos($hijos)
-    {
-        $this->hijos = $hijos;
-    
-        return $this;
-    }
-
-    /**
-     * Get hijos
-     *
-     * @return integer
-     */
-    public function getHijos()
-    {
-        return $this->hijos;
-    }
-
-    /**
-     * Set hijas
-     *
-     * @param integer $hijas
-     *
-     * @return DetallePersona
-     */
-    public function setHijas($hijas)
-    {
-        $this->hijas = $hijas;
-    
-        return $this;
-    }
-
-    /**
-     * Get hijas
-     *
-     * @return integer
-     */
-    public function getHijas()
-    {
-        return $this->hijas;
     }
 
 }
