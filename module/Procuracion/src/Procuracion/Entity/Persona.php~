@@ -38,42 +38,42 @@ class Persona
     /**
      * @var string
      *
-     * @ORM\Column(name="NombreColectivo", type="string", length=255, nullable=false)
+     * @ORM\Column(name="NombreColectivo", type="string", length=255, nullable=true)
      */
     private $nombreColectivo;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="NombreContacto", type="string", length=255, nullable=false)
+     * @ORM\Column(name="NombreContacto", type="string", length=255, nullable=true)
      */
     private $nombreContacto;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Nombres", type="string", length=100, nullable=false)
+     * @ORM\Column(name="Nombres", type="string", length=100, nullable=true)
      */
     private $nombres;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Apellidos", type="string", length=100, nullable=false)
+     * @ORM\Column(name="Apellidos", type="string", length=100, nullable=true)
      */
     private $apellidos;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="TipoDocumento", type="string", length=50, nullable=false)
+     * @ORM\Column(name="TipoDocumento", type="string", length=50, nullable=true)
      */
     private $tipodocumento;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="NumeroDocumento", type="string", length=50, nullable=false)
+     * @ORM\Column(name="NumeroDocumento", type="string", length=50, nullable=true)
      */
     private $numerodocumento;
 
@@ -94,7 +94,7 @@ class Persona
     /**
      * @var string
      *
-     * @ORM\Column(name="NombreUsual", type="string", length=255, nullable=false)
+     * @ORM\Column(name="NombreUsual", type="string", length=255, nullable=true)
      */
     private $nombreUsual;
 
@@ -119,12 +119,12 @@ class Persona
      */
     private $direccion;
 
-    /**
+     /**
      * @var \Procuracion\Entity\Departamento
      *
      * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Departamento")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Depto", referencedColumnName="Codigo")
+     *   @ORM\JoinColumn(name="Depto", referencedColumnName="id")
      * })
      */
     private $depto;
@@ -134,7 +134,7 @@ class Persona
      *
      * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Municipio")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Muni", referencedColumnName="Codigo")
+     *   @ORM\JoinColumn(name="Muni", referencedColumnName="id")
      * })
      */
     private $muni;

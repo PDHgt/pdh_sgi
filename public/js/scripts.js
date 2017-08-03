@@ -1,7 +1,9 @@
 /********************* eventos cargados desde inicio *************************/
 
-$(document).ready(function() {
+$(function() {
     /******************** mostrar calendarios ******************/
+    $('#recepcion').validator();
+
     $("#datepicker").datepicker({
         changeMonth: true,
         changeYear: true,
@@ -44,31 +46,34 @@ $(document).ready(function() {
     });
     /************** Editar solicitante ******************/
     $("#editarsolicitante").click(function() {
-        //$("input[name='idexpediente']").attr('disabled', !$("input[name='idexpediente']").attr('disabled'));
         $("input[name='idpersona']").attr('disabled', !$("input[name='idpersona']").attr('disabled'));
-        //$("input[name='idpersona']").attr('disabled', !$("input[name='idpersona']").attr('disabled'));
-        $("input[name='nombre']").attr('disabled', !$("input[name='nombre']").attr('disabled'));
-        $("input[name='apellido']").attr('disabled', !$("input[name='apellido']").attr('disabled'));
-        $("input[name='fechanac']").attr('disabled', !$("input[name='fechanac']").attr('disabled'));
-        $("input[name='edad']").attr('disabled', !$("input[name='edad']").attr('disabled'));
-        $("select[name='tipodoc']").attr('disabled', !$("select[name='tipodoc']").attr('disabled'));
-        $("input[name='numdoc']").attr('disabled', !$("input[name='numdoc']").attr('disabled'));
-        $("input[name='sexo']").attr('disabled', !$("input[name='sexo']").attr('disabled'));
-        $("input[name='lgbti']").attr('disabled', !$("input[name='lgbti']").attr('disabled'));
-        $("input[name='anonimo']").attr('disabled', !$("input[name='anonimo']").attr('disabled'));
+        $("input[name='solicitante_nombre']").attr('disabled', !$("input[name='solicitante_nombre']").attr('disabled'));
+        $("input[name='solicitante_apellido']").attr('disabled', !$("input[name='solicitante_apellido']").attr('disabled'));
+        $("input[name='solicitante_fechanac']").attr('disabled', !$("input[name='solicitante_fechanac']").attr('disabled'));
+        $("input[name='solicitante_edad']").attr('disabled', !$("input[name='solicitante_edad']").attr('disabled'));
+        $("select[name='solicitante_tipodoc']").attr('disabled', !$("select[name='solicitante_tipodoc']").attr('disabled'));
+        $("input[name='solicitante_numdoc']").attr('disabled', !$("input[name='solicitante_numdoc']").attr('disabled'));
+        $("input[name='solicitante_sexo']").attr('disabled', !$("input[name='solicitante_sexo']").attr('disabled'));
+        $("input[name='solicitante_lgbti']").attr('disabled', !$("input[name='solicitante_lgbti']").attr('disabled'));
+        $("input[name='solicitante_correo']").attr('disabled', !$("input[name='solicitante_correo']").attr('disabled'));
+        $("input[name='solicitante_telefono']").attr('disabled', !$("input[name='solicitante_telefono']").attr('disabled'));
+        $("input[name='solicitante_direccion']").attr('disabled', !$("input[name='solicitante_direccion']").attr('disabled'));
+        $("select[name='solicitante_depto']").attr('disabled', !$("select[name='solicitante_depto']").attr('disabled'));
+        $("select[name='solicitante_muni']").attr('disabled', !$("select[name='solicitante_muni']").attr('disabled'));
+        $("input[name='solicitante_anonimo']").attr('disabled', !$("input[name='solicitante_anonimo']").attr('disabled'));
     });
 
     /******************* Editar hechos ********************/
     $("#editarhechos").click(function() {
         $("input[name='idexpediente']").attr('disabled', !$("input[name='idexpediente']").attr('disabled'));
-        $("input[name='fechahecho']").attr('disabled', !$("input[name='fechahecho']").attr('disabled'));
-        $("select[name='areaubicacion']").attr('disabled', !$("select[name='areaubicacion']").attr('disabled'));
-        $("input[name='direccion']").attr('disabled', !$("input[name='direccion']").attr('disabled'));
-        $("select[name='depto']").attr('disabled', !$("select[name='depto']").attr('disabled'));
-        $("select[name='muni']").attr('disabled', !$("select[name='muni']").attr('disabled'));
-        $("textarea[name='deschechos']").attr('disabled', !$("textarea[name='deschechos']").attr('disabled'));
-        $("textarea[name='peticion']").attr('disabled', !$("textarea[name='peticion']").attr('disabled'));
-        $("textarea[name='pruebas']").attr('disabled', !$("textarea[name='pruebas']").attr('disabled'));
+        $("input[name='hechos_fecha']").attr('disabled', !$("input[name='hechos_fecha']").attr('disabled'));
+        $("select[name='hechos_ubicacion']").attr('disabled', !$("select[name='hechos_ubicacion']").attr('disabled'));
+        $("input[name='hechos_direccion']").attr('disabled', !$("input[name='hechos_direccion']").attr('disabled'));
+        $("select[name='hechos_depto']").attr('disabled', !$("select[name='hechos_depto']").attr('disabled'));
+        $("select[name='hechos_muni']").attr('disabled', !$("select[name='hechos_muni']").attr('disabled'));
+        $("textarea[name='hechos_descripcion']").attr('disabled', !$("textarea[name='hechos_descripcion']").attr('disabled'));
+        $("textarea[name='hechos_peticion']").attr('disabled', !$("textarea[name='hechos_peticion']").attr('disabled'));
+        $("textarea[name='hechos_pruebas']").attr('disabled', !$("textarea[name='hechos_pruebas']").attr('disabled'));
         $("input[name='tipoexpediente']").attr('disabled', !$("input[name='tipoexpediente']").attr('disabled'));
     });
 
@@ -108,6 +113,16 @@ $(document).ready(function() {
             $("#remisiones").collapse("show");
             $("input[name='institucion[]']").attr("disabled", false);
         }
+    });
+
+
+    $("#editarhechos").click(function(e) {
+        $("#guardarhechos").toggle("show");
+        e.preventDefault();
+    });
+    $("#editarsolicitante").click(function(e) {
+        $("#guardardenunciante").toggle("show");
+        e.preventDefault();
     });
 });
 
@@ -250,15 +265,16 @@ function checkboxInsitucion(url, id) {
 }
 
 /***************************** funcion departamento y municipio dependiente ******************************/
-function cambiarDepto(url, depto) {
+function cambiarDepto(url, depto, prefix) {
     $.ajax({
         url: url,
         dataType: 'json',
         type: 'POST',
         data: {depto: depto},
         success: function(data) {
+            $("select[name='" + prefix + "_muni']").append($("<option>Seleccione una opción</option>"));
             $.each(data, function(key, value) {
-                $("select[name='muni']")
+                $("select[name='" + prefix + "_muni']")
                         .append($("<option></option>")
                                 .attr("value", key)
                                 .text(value));
@@ -266,7 +282,7 @@ function cambiarDepto(url, depto) {
 
         }
     });
-    $("select[name='muni']").empty();
+    $("select[name='" + prefix + "_muni']").empty();
 }
 
 /***************************** funcion unidad y empleado dependiente ******************************/
@@ -363,6 +379,44 @@ function guardarPersona(url)
         }
     })
     //$.post(url, data);
+}
+
+/*************************** funcion para guardar datos **************************************/
+function guardarhechos(url, newURL)
+{
+    var inputs = $('#recepcion').serializeArray();
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: inputs,
+        success: function() {
+            $('#messagesuccessmodal').modal('toggle');
+            top.location.href = newURL;
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            $('#messageerrormodal').modal('toggle');
+            console.log(textStatus, errorThrown);
+        }
+    });
+}
+
+/*************************** funcion para guardar datos **************************************/
+function guardardenunciante(url, newURL)
+{
+    var inputs = $('#recepcion').serializeArray();
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: inputs,
+        success: function() {
+            $('#messagesuccessmodal').modal('toggle');
+            top.location.href = newURL;
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            $('#messageerrormodal').modal('toggle');
+            console.log(textStatus, errorThrown);
+        }
+    });
 }
 
 

@@ -90,8 +90,6 @@ class ExpedienteService {
         } else {
             $cubo->setCalificacion($em, $calificacion["hechos"], $expediente->getId());
         }
-
-
         return $expediente;
     }
 
@@ -101,8 +99,6 @@ class ExpedienteService {
         } elseif ($persona['idpersona'] > 0) {
             $personaservice = new PersonaService();
             $personaservice->puedeModificarPersona($em, $persona);
-        } else {
-
         }
     }
 

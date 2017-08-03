@@ -23,7 +23,9 @@
                 $form->prepare();
                 $form->setAttributes(array(
                     'action' => $this->url('recepcion', array('action' => 'guardar')),
-                    'method' => 'post'
+                    'method' => 'post',
+                    'data-toggle' => 'validator',
+                    'role' => 'form'
                 ));
                 // Get the form label plugin
                 $formLabel = $this->plugin('formLabel');

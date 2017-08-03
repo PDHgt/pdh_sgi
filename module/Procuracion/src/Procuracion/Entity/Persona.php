@@ -7,12 +7,12 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Persona
  *
- * @ORM\Table(name="persona", indexes={@ORM\Index(name="Depto", columns={"Depto"}), @ORM\Index(name="Muni", columns={"Muni"})})
+ * @ORM\Table(name="persona", indexes={@ORM\Index(name="Depto", columns={"Depto"}), @ORM\Index(name="Muni", columns={"Muni"}), @ORM\Index(name="persona_ibfk_3", columns={"updated_by"})})
  * @ORM\Entity
- * @ORM\EntityListeners({"Procuracion\Listener\PersonaListener"}) 
+ * @ORM\EntityListeners({"Procuracion\Listener\PersonaListener"})
  */
-class Persona
-{
+class Persona {
+
     /**
      * @var integer
      *
@@ -39,42 +39,42 @@ class Persona
     /**
      * @var string
      *
-     * @ORM\Column(name="NombreColectivo", type="string", length=255, nullable=false)
+     * @ORM\Column(name="NombreColectivo", type="string", length=255, nullable=true)
      */
     private $nombreColectivo;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="NombreContacto", type="string", length=255, nullable=false)
+     * @ORM\Column(name="NombreContacto", type="string", length=255, nullable=true)
      */
     private $nombreContacto;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Nombres", type="string", length=100, nullable=false)
+     * @ORM\Column(name="Nombres", type="string", length=100, nullable=true)
      */
     private $nombres;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Apellidos", type="string", length=100, nullable=false)
+     * @ORM\Column(name="Apellidos", type="string", length=100, nullable=true)
      */
     private $apellidos;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="TipoDocumento", type="string", length=50, nullable=false)
+     * @ORM\Column(name="TipoDocumento", type="string", length=50, nullable=true)
      */
     private $tipodocumento;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="NumeroDocumento", type="string", length=50, nullable=false)
+     * @ORM\Column(name="NumeroDocumento", type="string", length=50, nullable=true)
      */
     private $numerodocumento;
 
@@ -95,7 +95,7 @@ class Persona
     /**
      * @var string
      *
-     * @ORM\Column(name="NombreUsual", type="string", length=255, nullable=false)
+     * @ORM\Column(name="NombreUsual", type="string", length=255, nullable=true)
      */
     private $nombreUsual;
 
@@ -125,7 +125,7 @@ class Persona
      *
      * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Departamento")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Depto", referencedColumnName="Codigo")
+     *   @ORM\JoinColumn(name="Depto", referencedColumnName="id")
      * })
      */
     private $depto;
@@ -135,7 +135,7 @@ class Persona
      *
      * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Municipio")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Muni", referencedColumnName="Codigo")
+     *   @ORM\JoinColumn(name="Muni", referencedColumnName="id")
      * })
      */
     private $muni;
@@ -143,16 +143,16 @@ class Persona
     /**
      * @var string
      *
-     * @ORM\Column(name="Telefono", type="string", length=25, nullable=false)
+     * @ORM\Column(name="Telefono", type="string", length=25, nullable=true)
      */
     private $telefono;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="CorreoElectronico", type="string", length=100, nullable=false)
+     * @ORM\Column(name="CorreoElectronico", type="string", length=100, nullable=true)
      */
-    private $correoElectronico;    
+    private $correoElectronico;
 
     /**
      * @var \DateTime
@@ -171,14 +171,12 @@ class Persona
      */
     private $updated_by;
 
-
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -189,10 +187,9 @@ class Persona
      *
      * @return Persona
      */
-    public function setAnonimo($anonimo)
-    {
+    public function setAnonimo($anonimo) {
         $this->anonimo = $anonimo;
-    
+
         return $this;
     }
 
@@ -201,8 +198,7 @@ class Persona
      *
      * @return integer
      */
-    public function getAnonimo()
-    {
+    public function getAnonimo() {
         return $this->anonimo;
     }
 
@@ -213,10 +209,9 @@ class Persona
      *
      * @return Persona
      */
-    public function setTipo($tipo)
-    {
+    public function setTipo($tipo) {
         $this->tipo = $tipo;
-    
+
         return $this;
     }
 
@@ -225,8 +220,7 @@ class Persona
      *
      * @return integer
      */
-    public function getTipo()
-    {
+    public function getTipo() {
         return $this->tipo;
     }
 
@@ -237,10 +231,9 @@ class Persona
      *
      * @return Persona
      */
-    public function setNombres($nombres)
-    {
+    public function setNombres($nombres) {
         $this->nombres = $nombres;
-    
+
         return $this;
     }
 
@@ -249,8 +242,7 @@ class Persona
      *
      * @return string
      */
-    public function getNombres()
-    {
+    public function getNombres() {
         return $this->nombres;
     }
 
@@ -261,10 +253,9 @@ class Persona
      *
      * @return Persona
      */
-    public function setNombreColectivo($nombres)
-    {
+    public function setNombreColectivo($nombres) {
         $this->nombreColectivo = $nombres;
-    
+
         return $this;
     }
 
@@ -273,22 +264,20 @@ class Persona
      *
      * @return string
      */
-    public function getNombreColectivo()
-    {
+    public function getNombreColectivo() {
         return $this->nombreColectivo;
     }
 
     /**
      * Set nombreContacto
      *
-     * @param string $nombres
+     * @param string $nombrecontacto
      *
      * @return Persona
      */
-    public function setNombreContacto($nombres)
-    {
-        $this->nombreContacto = $nombres;
-    
+    public function setNombreContacto($nombrecontacto) {
+        $this->nombreContacto = $nombrecontacto;
+
         return $this;
     }
 
@@ -297,8 +286,7 @@ class Persona
      *
      * @return string
      */
-    public function getNombreContacto()
-    {
+    public function getNombreContacto() {
         return $this->nombreContacto;
     }
 
@@ -309,10 +297,9 @@ class Persona
      *
      * @return Persona
      */
-    public function setApellidos($apellidos)
-    {
+    public function setApellidos($apellidos) {
         $this->apellidos = $apellidos;
-    
+
         return $this;
     }
 
@@ -321,8 +308,7 @@ class Persona
      *
      * @return string
      */
-    public function getApellidos()
-    {
+    public function getApellidos() {
         return $this->apellidos;
     }
 
@@ -333,10 +319,9 @@ class Persona
      *
      * @return Persona
      */
-    public function setTipodocumento($tipodocumento)
-    {
+    public function setTipodocumento($tipodocumento) {
         $this->tipodocumento = $tipodocumento;
-    
+
         return $this;
     }
 
@@ -345,8 +330,7 @@ class Persona
      *
      * @return string
      */
-    public function getTipodocumento()
-    {
+    public function getTipodocumento() {
         return $this->tipodocumento;
     }
 
@@ -357,10 +341,9 @@ class Persona
      *
      * @return Persona
      */
-    public function setNumerodocumento($numerodocumento)
-    {
+    public function setNumerodocumento($numerodocumento) {
         $this->numerodocumento = $numerodocumento;
-    
+
         return $this;
     }
 
@@ -369,8 +352,7 @@ class Persona
      *
      * @return string
      */
-    public function getNumerodocumento()
-    {
+    public function getNumerodocumento() {
         return $this->numerodocumento;
     }
 
@@ -381,10 +363,9 @@ class Persona
      *
      * @return Persona
      */
-    public function setSexo($sexo)
-    {
+    public function setSexo($sexo) {
         $this->sexo = $sexo;
-    
+
         return $this;
     }
 
@@ -393,8 +374,7 @@ class Persona
      *
      * @return integer
      */
-    public function getSexo()
-    {
+    public function getSexo() {
         return $this->sexo;
     }
 
@@ -405,10 +385,9 @@ class Persona
      *
      * @return Persona
      */
-    public function setLgbti($lgbti)
-    {
+    public function setLgbti($lgbti) {
         $this->lgbti = $lgbti;
-    
+
         return $this;
     }
 
@@ -417,22 +396,20 @@ class Persona
      *
      * @return string
      */
-    public function getLgbti()
-    {
+    public function getLgbti() {
         return $this->lgbti;
     }
 
     /**
      * Set nombreUsual
      *
-     * @param string $nombres
+     * @param string $nombreusual
      *
      * @return Persona
      */
-    public function setNombreUsual($nombres)
-    {
-        $this->nombreUsual = $nombres;
-    
+    public function setNombreUsual($nombreusual) {
+        $this->nombreUsual = $nombreusual;
+
         return $this;
     }
 
@@ -441,8 +418,7 @@ class Persona
      *
      * @return string
      */
-    public function getNombreUsual()
-    {
+    public function getNombreUsual() {
         return $this->nombreUsual;
     }
 
@@ -453,10 +429,9 @@ class Persona
      *
      * @return Persona
      */
-    public function setFechanacimiento($fechanacimiento)
-    {
+    public function setFechanacimiento($fechanacimiento) {
         $this->fechanacimiento = $fechanacimiento;
-    
+
         return $this;
     }
 
@@ -465,8 +440,7 @@ class Persona
      *
      * @return \DateTime
      */
-    public function getFechanacimiento()
-    {
+    public function getFechanacimiento() {
         return $this->fechanacimiento;
     }
 
@@ -477,10 +451,9 @@ class Persona
      *
      * @return Persona
      */
-    public function setEdad($edad)
-    {
+    public function setEdad($edad) {
         $this->edad = $edad;
-    
+
         return $this;
     }
 
@@ -489,8 +462,7 @@ class Persona
      *
      * @return integer
      */
-    public function getEdad()
-    {
+    public function getEdad() {
         return $this->edad;
     }
 
@@ -501,10 +473,9 @@ class Persona
      *
      * @return Persona
      */
-    public function setDireccion($direccion)
-    {
+    public function setDireccion($direccion) {
         $this->direccion = $direccion;
-    
+
         return $this;
     }
 
@@ -513,8 +484,7 @@ class Persona
      *
      * @return string
      */
-    public function getDireccion()
-    {
+    public function getDireccion() {
         return $this->direccion;
     }
 
@@ -525,10 +495,9 @@ class Persona
      *
      * @return Persona
      */
-    public function setDepto(\Procuracion\Entity\Departamento $depto = null)
-    {
+    public function setDepto(\Procuracion\Entity\Departamento $depto = null) {
         $this->depto = $depto;
-    
+
         return $this;
     }
 
@@ -537,8 +506,7 @@ class Persona
      *
      * @return \Procuracion\Entity\Departamento
      */
-    public function getDepto()
-    {
+    public function getDepto() {
         return $this->depto;
     }
 
@@ -549,10 +517,9 @@ class Persona
      *
      * @return Persona
      */
-    public function setMuni(\Procuracion\Entity\Municipio $muni = null)
-    {
+    public function setMuni(\Procuracion\Entity\Municipio $muni = null) {
         $this->muni = $muni;
-    
+
         return $this;
     }
 
@@ -561,8 +528,7 @@ class Persona
      *
      * @return \Procuracion\Entity\Municipio
      */
-    public function getMuni()
-    {
+    public function getMuni() {
         return $this->muni;
     }
 
@@ -573,10 +539,9 @@ class Persona
      *
      * @return Persona
      */
-    public function setTelefono($numero)
-    {
+    public function setTelefono($numero) {
         $this->telefono = $numero;
-    
+
         return $this;
     }
 
@@ -585,8 +550,7 @@ class Persona
      *
      * @return string
      */
-    public function getTelefono()
-    {
+    public function getTelefono() {
         return $this->telefono;
     }
 
@@ -597,10 +561,9 @@ class Persona
      *
      * @return Persona
      */
-    public function setCorreoElectronico($correo)
-    {
+    public function setCorreoElectronico($correo) {
         $this->correoElectronico = $correo;
-    
+
         return $this;
     }
 
@@ -609,8 +572,7 @@ class Persona
      *
      * @return string
      */
-    public function getCorreoElectronico()
-    {
+    public function getCorreoElectronico() {
         return $this->correoElectronico;
     }
 
@@ -621,20 +583,19 @@ class Persona
      *
      * @return Colarecepcion
      */
-    public function setUpdatedBy(\Procuracion\Entity\Usuario $usuario = null)
-    {
+    public function setUpdatedBy(\Procuracion\Entity\Usuario $usuario = null) {
         $this->updated_by = $usuario;
-    
+
         return $this;
-    }   
+    }
 
     /**
      * Get updated_by
      *
      * @return \Procuracion\Entity\Usuario
      */
-    public function getUpdatedBy()
-    {
+    public function getUpdatedBy() {
         return $this->updated_by;
     }
+
 }

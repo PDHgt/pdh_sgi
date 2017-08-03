@@ -1,13 +1,20 @@
 <!---------------------- Inicia formulario de denunciado -------------------------->
 <?php
+$expediente = $this->expediente;
 $form = $this->form;
 $form->prepare();
 $form->setAttributes(array(
+    'action' => $this->url('recepcion', array('action' => 'guardardenunciado')),
     'method' => 'post',
-    'id' => 'denunciado'
+    'data-toggle' => 'validator',
+    'id' => 'denunciado',
+    'role' => 'form'
 ));
 $formLabel = $this->plugin('formLabel');
 echo $this->form()->openTag($form);
+
+$id = $form->get('id')->setValue($expediente)->setAttributes(array("name" => "idexpediente"));
+echo $this->formInput($id);
 ?>
 <div class="modal-header bg-primary">
     <button type="button" class="close" data-dismiss="modal">
@@ -24,9 +31,12 @@ echo $this->form()->openTag($form);
         <div class="col-xs-12">
             <div class="form-group">
                 <?php
-                $tipopersona = $form->get('tipodenunciado');
+                $tipopersona = $form->get('tipodenunciado')->setAttributes(array(
+                    "name" => "denunciado_tipo",
+                    "id" => "denunciado_tipo"
+                ));
                 echo $formLabel->openTag() . $tipopersona->getOption('label') . $formLabel->closeTag() . " ";
-                echo $this->formMultiCheckbox($tipopersona);
+                echo $this->formCheckbox($tipopersona);
                 echo " - Haga clic en la casilla de verificación, si es persona no individual. (Representante legal, Grupo social, etc.)";
                 ?>
             </div>
@@ -36,7 +46,10 @@ echo $this->form()->openTag($form);
         <div class="col-xs-6">
             <div class="form-group">
                 <?php
-                $numdoc = $form->get('numdoc');
+                $numdoc = $form->get('numdoc')->setAttributes(array(
+                    "name" => "denunciado_numdoc",
+                    "id" => "denunciado_numdoc"
+                ));
                 echo $formLabel->openTag() . $numdoc->getOption('label') . $formLabel->closeTag();
                 echo $this->formInput($numdoc);
                 ?>
@@ -45,7 +58,10 @@ echo $this->form()->openTag($form);
         <div class="col-xs-6">
             <div class="form-group">
                 <?php
-                $tipodoc = $form->get('tipodoc');
+                $tipodoc = $form->get('tipodoc')->setAttributes(array(
+                    "name" => "denunciado_tipodoc",
+                    "id" => "denunciado_tipodoc"
+                ));
                 echo $formLabel->openTag() . $tipodoc->getOption('label') . $formLabel->closeTag();
                 echo $this->formSelect($tipodoc);
                 ?>
@@ -54,7 +70,11 @@ echo $this->form()->openTag($form);
         <div class="col-xs-6">
             <div class="form-group">
                 <?php
-                $nombre = $form->get('nombre')->setAttributes(array("required" => true));
+                $nombre = $form->get('nombres')->setAttributes(array(
+                    "name" => "denunciado_nombres",
+                    "id" => "denunciado_nombres",
+                    "required" => true
+                ));
                 echo $formLabel->openTag() . $nombre->getOption('label') . $formLabel->closeTag();
                 echo $this->formInput($nombre);
                 ?>
@@ -63,27 +83,26 @@ echo $this->form()->openTag($form);
         <div class="col-xs-6">
             <div class="form-group">
                 <?php
-                $apellido = $form->get('apellido')->setAttributes(array("required" => true));
+                $apellido = $form->get('apellidos')->setAttributes(array(
+                    "name" => "denunciado_apellidos",
+                    "id" => "denunciado_apellidos",
+                    "required" => true
+                ));
                 echo $formLabel->openTag() . $apellido->getOption('label') . $formLabel->closeTag();
                 echo $this->formInput($apellido);
                 ?>
             </div>
         </div>
-        <div class="col-xs-6">
+        <div class="col-xs-12">
             <div class="form-group">
                 <?php
-                $sexo = $form->get('sexo');
+                $sexo = $form->get('sexo')->setAttributes(array(
+                    "name" => "denunciado_sexo",
+                    "id" => "denunciado_sexo",
+                    "required" => true
+                ));
                 echo "<p>" . $formLabel->openTag() . $sexo->getOption('label') . $formLabel->closeTag() . "</p>";
                 echo $this->formRadio($sexo);
-                ?>
-            </div>
-        </div>
-        <div class="col-xs-6">
-            <div class="form-group">
-                <?php
-                $relacion = $form->get('relacion');
-                echo $formLabel->openTag() . $relacion->getOption('label') . $formLabel->closeTag();
-                echo $this->formSelect($relacion);
                 ?>
             </div>
         </div>
@@ -92,16 +111,22 @@ echo $this->form()->openTag($form);
         <div class="col-xs-6">
             <div class="form-group">
                 <?php
-                $nombrenoin = $form->get('nombrenoin');
-                echo $formLabel->openTag() . $nombrenoin->getOption('label') . $formLabel->closeTag();
-                echo $this->formInput($nombrenoin);
+                $nombrecolectivo = $form->get('nombrecolectivo')->setAttributes(array(
+                    "name" => "denunciado_nombrecolectivo",
+                    "id" => "denunciado_nombrecolectivo"
+                ));
+                echo $formLabel->openTag() . $nombrecolectivo->getOption('label') . $formLabel->closeTag();
+                echo $this->formInput($nombrecolectivo);
                 ?>
             </div>
         </div>
         <div class="col-xs-6">
             <div class="form-group">
                 <?php
-                $contacto = $form->get('contacto');
+                $contacto = $form->get('contacto')->setAttributes(array(
+                    "name" => "denunciado_contacto",
+                    "id" => "denunciado_contacto"
+                ));
                 echo $formLabel->openTag() . $contacto->getOption('label') . $formLabel->closeTag();
                 echo $this->formInput($contacto);
                 ?>
@@ -109,10 +134,84 @@ echo $this->form()->openTag($form);
         </div>
     </div>
     <div class="row">
+        <div class="col-xs-6">
+            <div class="form-group">
+                <?php
+                $relacionvicagr = $this->relacionvicagr;
+                $relacionOptions = array();
+                foreach ($relacionvicagr as $relacionOption) {
+                    $relacionOptions[$relacionOption->getId()] = $relacionOption->getValor();
+                }
+                $relacion = $form->get('relacion')->setValueOptions($relacionOptions)->setAttributes(array(
+                    "name" => "denunciado_relacion",
+                    "id" => "denunciado_relacion"
+                ));
+                echo $formLabel->openTag() . $relacion->getOption('label') . $formLabel->closeTag();
+                echo $this->formSelect($relacion);
+                ?>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="form-group">
+                <?php
+                $comunidadlinguistica = $this->comunidadlinguistica;
+                $comunidadOptions = array();
+                foreach ($comunidadlinguistica as $comunidadOption) {
+                    $comunidadOptions[$comunidadOption->getId()] = $comunidadOption->getValor();
+                }
+                $comunidad = $form->get('comunidad')->setValueOptions($comunidadOptions)->setAttributes(array(
+                    "name" => "denunciado_comunidad",
+                    "id" => "denunciado_comunidad",
+                    "required" => true
+                ));
+                echo $formLabel->openTag() . $comunidad->getOption('label') . $formLabel->closeTag();
+                echo $this->formSelect($comunidad);
+                ?>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="form-group">
+                <?php
+                $pueblopertenencia = $this->pueblopertenencia;
+                $puebloOptions = array();
+                foreach ($pueblopertenencia as $puebloOption) {
+                    $puebloOptions[$puebloOption->getId()] = $puebloOption->getValor();
+                }
+                $pertenencia = $form->get('pertenencia')->setValueOptions($puebloOptions)->setAttributes(array(
+                    "name" => "denunciado_pertenencia",
+                    "id" => "denunciado_pertenencia",
+                    "required" => true
+                ));
+                echo $formLabel->openTag() . $pertenencia->getOption('label') . $formLabel->closeTag();
+                echo $this->formSelect($pertenencia);
+                ?>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="form-group">
+                <?php
+                $nacionalidad = $this->nacionalidad;
+                $nacionalidadOptions = array();
+                foreach ($nacionalidad as $nacionalidadOption) {
+                    $nacionalidadOptions[$nacionalidadOption->getId()] = $nacionalidadOption->getValor();
+                }
+                $nac = $form->get('nacionalidad')->setValueOptions($nacionalidadOptions)->setAttributes(array(
+                    "name" => "denunciado_nacionalidad",
+                    "id" => "denunciado_nacionalidad",
+                    "required" => true
+                ));
+                echo $formLabel->openTag() . $nac->getOption('label') . $formLabel->closeTag();
+                echo $this->formSelect($nac);
+                ?>
+            </div>
+        </div>
         <div class="col-xs-12">
             <div class="form-group">
                 <?php
-                $direccion = $form->get('direccion');
+                $direccion = $form->get('direccion')->setAttributes(array(
+                    "name" => "denunciado_direccion",
+                    "id" => "denunciado_direccion"
+                ));
                 echo $formLabel->openTag() . $direccion->getOption('label') . $formLabel->closeTag();
                 echo $this->formInput($direccion);
                 ?>
@@ -121,7 +220,15 @@ echo $this->form()->openTag($form);
         <div class="col-xs-6">
             <div class="form-group">
                 <?php
-                $depto = $form->get('depto');
+                $deptos = $this->deptos;
+                $deptosOptions = array();
+                foreach ($deptos as $deptoOption) {
+                    $deptosOptions[$deptoOption->getCodigo()] = $deptoOption->getNombre();
+                }
+                $depto = $form->get('depto')->setValueOptions($deptosOptions)->setAttributes(array(
+                    "name" => "denunciado_depto",
+                    "id" => "denunciado_depto"
+                ));
                 echo $formLabel->openTag() . $depto->getOption('label') . $formLabel->closeTag();
                 echo $this->formSelect($depto);
                 ?>
@@ -130,7 +237,15 @@ echo $this->form()->openTag($form);
         <div class="col-xs-6">
             <div class="form-group">
                 <?php
-                $muni = $form->get('muni');
+                $munis = $this->munis;
+                $munisOptions = array();
+                foreach ($munis as $muniOption) {
+                    $munisOptions[$muniOption->getCodigo()] = $muniOption->getNombre();
+                }
+                $muni = $form->get('muni')->setValueOptions($munisOptions)->setAttributes(array(
+                    "name" => "denunciado_muni",
+                    "id" => "denunciado_muni"
+                ));
                 echo $formLabel->openTag() . $muni->getOption('label') . $formLabel->closeTag();
                 echo $this->formSelect($muni);
                 ?>
@@ -139,7 +254,10 @@ echo $this->form()->openTag($form);
         <div class="col-xs-6">
             <div class="form-group">
                 <?php
-                $telefono = $form->get('telefono');
+                $telefono = $form->get('telefono')->setAttributes(array(
+                    "name" => "denunciado_telefono",
+                    "id" => "denunciado_telefono"
+                ));
                 echo $formLabel->openTag() . $telefono->getOption('label') . $formLabel->closeTag();
                 echo $this->formInput($telefono);
                 ?>
@@ -148,7 +266,10 @@ echo $this->form()->openTag($form);
         <div class="col-xs-6">
             <div class="form-group">
                 <?php
-                $correo = $form->get('correo');
+                $correo = $form->get('correo')->setAttributes(array(
+                    "name" => "denunciado_correo",
+                    "id" => "denunciado_correo"
+                ));
                 echo $formLabel->openTag() . $correo->getOption('label') . $formLabel->closeTag();
                 echo $this->formInput($correo);
                 ?>
@@ -157,7 +278,10 @@ echo $this->form()->openTag($form);
         <div class="col-xs-6">
             <div class="form-group">
                 <?php
-                $cargo = $form->get('cargo');
+                $cargo = $form->get('cargo')->setAttributes(array(
+                    "name" => "denunciado_cargo",
+                    "id" => "denunciado_cargo"
+                ));
                 echo $formLabel->openTag() . $cargo->getOption('label') . $formLabel->closeTag();
                 echo $this->formInput($cargo);
                 ?>
@@ -166,7 +290,10 @@ echo $this->form()->openTag($form);
         <div class="col-xs-6">
             <div class="form-group">
                 <?php
-                $institucion = $form->get('institucion');
+                $institucion = $form->get('institucion')->setAttributes(array(
+                    "name" => "denunciado_institucion",
+                    "id" => "denunciado_institucion"
+                ));
                 echo $formLabel->openTag() . $institucion->getOption('label') . $formLabel->closeTag();
                 echo $this->formInput($institucion);
                 ?>
@@ -175,38 +302,92 @@ echo $this->form()->openTag($form);
     </div>
 </div>
 <div class="modal-footer">
-    <button type="submit"  id="guardardenunciado" class="btn btn-primary btn-flat" data-dismiss="modal"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+    <button type="submit"  id="guardardenunciado" class="btn btn-primary btn-flat"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
 </div>
 <?php echo $this->form()->closeTag() ?>
 <!------------- Finaliza formulario denunciado ----------------->
 <script>
-    $('#guardardenunciado').click(function() {
+
+    $(document).ready(function() {
+        $("#noindividual").hide();
+        $("#noindividual :input").attr("disabled", true);
+    });
+
+    $('#newdenunciadoModal').on('hidden.bs.modal', function() {
+        $('form[name="denunciado"]')[0].reset();
+        $('#noindividual').hide();
+        $("#noindividual :input").attr("disabled", true);
+        $('#individual').show();
+        $("#individual :input").attr("disabled", false);
+    });
+
+    $("select[name='denunciado_depto']").change(function() {
+        var depto = $(this).val();
         $.ajax({
-            type: 'POST',
+            url: "<?php echo $this->basePath(); ?>/validacion/listarmunicipios",
             dataType: 'json',
-            url: '<?php echo $this->basePath() . "/validacion/guardardenunciado"; ?>',
-            data: $('#denunciado').serialize(),
+            type: 'POST',
+            data: {depto: depto},
             success: function(data) {
-                $('#denunciados').append("<tr>\n\
-                        <td>" + data.numdoc + "</td>\n\
-                        <td>" + data.nombres + " " + data.apellidos + "</td>\n\
-                        <td>" + data.correo + "</td>\n\
-                        <td>" + data.correo + "</td>\n\
-                        <td><a href='' class='badge bg-yellow'>Editar</a></td>\n\
-                        </tr>");
-            },
-            error: function() {
-                alert('error');
+                $("select[name='denunciado_muni']").append($("<option>Seleccione una opción</option>"));
+                $.each(data, function(key, value) {
+                    $("select[name='denunciado_muni']")
+                            .append($("<option></option>")
+                                    .attr("value", key)
+                                    .text(value));
+                });
 
             }
         });
+        $("select[name='denunciado_muni']").empty().prop("selectedIndex", -1);
     });
-    $('#newdenunciadoModal').on('hidden.bs.modal', function() {
-        $('form[name="denunciado"]')[0].reset();
-        $('#noindividual').css("display", "none");
-        $('#individual').css("display", "block");
-    });
-    $('input[name="tipodenunciado[]"]').click(function() {
-        $('.datos').toggle();
-    });
+    /*$('#guardardenunciado').click(function() {
+     $.ajax({
+     type: 'POST',
+     dataType: 'json',
+     url: '<?php echo $this->basePath() . "/validacion/guardardenunciado"; ?>',
+     data: $('#denunciado').serialize(),
+     success: function(data) {
+     $('#denunciados').append("<tr>\n\
+     <td>" + data.denunciado_numdoc + "</td>\n\
+     <td>" + data.denunciado_nombres + " " + data.denunciado_apellidos + "</td>\n\
+     <td>" + data.denunciado_correo + "</td>\n\
+     <td>" + data.denunciado_correo + "</td>\n\
+     <td><a href='' class='badge bg-yellow'>Editar</a></td>\n\
+     </tr>");
+     },
+     error: function() {
+     alert('error');
+
+     }
+     });
+     });
+     $('#newdenunciadoModal').on('hidden.bs.modal', function() {
+     $('form[name="denunciado"]')[0].reset();
+     $('#noindividual').css("display", "none");
+     $('#individual').css("display", "block");
+     });
+     $('input[name="tipodenunciado[]"]').click(function() {
+     $('.datos').toggle();
+     });
+     $("select[name='denunciado_depto']").change(function() {
+     var depto = $(this).val();
+     $.ajax({
+     url: "<?php echo $this->basePath(); ?>/validacion/listarmunicipios",
+     dataType: 'json',
+     type: 'POST',
+     data: {depto: depto},
+     success: function(data) {
+     $("select[name='denunciado_muni']").append($("<option>Seleccione una opción</option>"));
+     $.each(data, function(key, value) {
+     $("select[name='denunciado_muni']")
+     .append($("<option></option>")
+     .attr("value", key)
+     .text(value));
+     });
+
+     }
+     });
+     $("select[name='denunciado_muni']").empty().prop("selectedIndex", -1);
+     });*/
 </script>

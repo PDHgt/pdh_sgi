@@ -53,7 +53,7 @@ $remisiones = $this->remisiones;
     echo $this->formInput($ido);
     ?>
     <div class="row">
-        <div class = "col-xs-6">
+        <div class = "col-xs-12">
             <!------------- Inicia formulario solicitud ----------------->
             <div class = "box box-default color-palette-box collapsed-box">
                 <div class = "box-header with-border">
@@ -143,7 +143,7 @@ $remisiones = $this->remisiones;
             </div>
             <!------------- Finaliza formulario solicitud ----------------->
         </div>
-        <div class="col-xs-6">
+        <div class="col-xs-12">
             <!---------------------- Inicia formulario de solicitante -------------------------->
             <div class="box box-default color-palette-box collapsed-box">
                 <div class="box-header with-border">
@@ -152,7 +152,7 @@ $remisiones = $this->remisiones;
                         <small>
                             <?php
                             echo " / " . $persona->getNombres() . " " . $persona->getApellidos();
-                            $fechanacString = $persona->getFechanacimiento();
+                            $fechanacString = $cola->getIdpersona()->getFechanacimiento();
                             $hoy = new DateTime('today');
                             if ($fechanacString == NULL) {
                                 $edad = "";
@@ -169,27 +169,30 @@ $remisiones = $this->remisiones;
                         </a>
                     </div>
                 </div>
-                <div class="box-body">
+                <div class="box-body" id="denunciante">
                     <div class="row">
                         <div class="col-xs-12">
+                            <div class="form-group">
+                                <?php
+                                $anonimo = $form->get('checkbox')->setValue($persona->getAnonimo())->setAttributes(array(
+                                    "id" => "anonimo",
+                                    "name" => "solicitante_anonimo",
+                                    "disabled" => true
+                                ));
+                                echo $formLabel->openTag() . $anonimo->getOption('label') . $formLabel->closeTag();
+                                echo "  " . $this->formInput($anonimo);
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
                             <div class="row">
-                                <div class="col-xs-12">
-                                    <div class="form-group">
-                                        <?php
-                                        $anonimo = $form->get('checkbox')->setValue($persona->getAnonimo())->setAttributes(array(
-                                            'id' => 'anonimo',
-                                            'name' => 'anonimo',
-                                            'disabled' => true
-                                        ));
-                                        echo $formLabel->openTag() . $anonimo->getOption('label') . $formLabel->closeTag();
-                                        echo "  " . $this->formInput($anonimo);
-                                        ?>
-                                    </div>
-                                </div>
                                 <div class="col-xs-6">
                                     <div class="form-group">
                                         <?php
-                                        $numdoc = $form->get('numdoc')->setValue($persona->getNumeroDocumento())->setAttribute("disabled", true);
+                                        $numdoc = $form->get('numdoc')->setValue($persona->getNumeroDocumento())->setAttributes(array(
+                                            "name" => "solicitante_numdoc",
+                                            "disabled" => true
+                                        ));
                                         echo $formLabel->openTag() . $numdoc->getOption('label') . $formLabel->closeTag();
                                         echo $this->formInput($numdoc);
                                         ?>
@@ -198,20 +201,23 @@ $remisiones = $this->remisiones;
                                 <div class="col-xs-6">
                                     <div class="form-group">
                                         <?php
-                                        $tipodoc = $form->get('tipodoc')->setValue($persona->getTipoDocumento())->setAttribute("disabled", true);
+                                        $tipodoc = $form->get('tipodoc')->setValue($persona->getTipoDocumento())->setAttributes(array(
+                                            "name" => "solicitante_tipodoc",
+                                            "disabled" => true
+                                        ));
+                                        ;
                                         echo $formLabel->openTag() . $tipodoc->getOption('label') . $formLabel->closeTag();
                                         echo $this->formSelect($tipodoc);
                                         ?>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-12">
-                            <div class="row">
                                 <div class="col-xs-6">
                                     <div class="form-group">
                                         <?php
-                                        $nombres = $form->get('nombre')->setValue($persona->getNombres())->setAttribute("disabled", true);
+                                        $nombres = $form->get('nombre')->setValue($persona->getNombres())->setAttributes(array(
+                                            "name" => "solicitante_nombre",
+                                            "disabled" => true
+                                        ));
                                         echo $formLabel->openTag() . $nombres->getOption('label') . $formLabel->closeTag();
                                         echo $this->formInput($nombres);
                                         ?>
@@ -220,24 +226,27 @@ $remisiones = $this->remisiones;
                                 <div class="col-xs-6">
                                     <div class="form-group">
                                         <?php
-                                        $apellidos = $form->get('apellido')->setValue($persona->getApellidos())->setAttribute("disabled", true);
+                                        $apellidos = $form->get('apellido')->setValue($persona->getApellidos())->setAttributes(array(
+                                            "name" => "solicitante_apellido",
+                                            "disabled" => true
+                                        ));
                                         echo $formLabel->openTag() . $apellidos->getOption('label') . $formLabel->closeTag();
                                         echo $this->formInput($apellidos);
                                         ?>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-12">
-                            <div class="row">
                                 <div class="col-xs-6">
                                     <div class="form-group">
                                         <?php
                                         if (($cola->getIdpersona()->getFechanacimiento()) == NULL) {
-                                            $fechanac = $form->get('fechanac')->setValue($persona->getFechanacimiento())->setAttribute("disabled", true);
+                                            $value = $persona->getFechanacimiento();
                                         } else {
-                                            $fechanac = $form->get('fechanac')->setValue($persona->getFechanacimiento()->format("d/m/Y"))->setAttribute("disabled", true);
+                                            $value = $persona->getFechanacimiento()->format("d/m/Y");
                                         }
+                                        $fechanac = $form->get('fechanac')->setValue($value)->setAttributes(array(
+                                            "name" => "solicitante_fechanac",
+                                            "disabled" => true
+                                        ));
                                         echo $formLabel->openTag() . $fechanac->getOption('label') . " ";
                                         echo $formLabel->closeTag();
                                         echo $this->formInput($fechanac);
@@ -246,18 +255,23 @@ $remisiones = $this->remisiones;
                                 </div>
                                 <div class="col-xs-6">
                                     <div class="form-group">
-                                        <label>Edad</label>
-                                        <input name="edad" type="text" value="<?php echo $edad; ?>" class="form-control" disabled="disabled">
+                                        <?php
+                                        $edad = $form->get('edad')->setValue($persona->getEdad())->setAttributes(array(
+                                            "name" => "solicitante_edad",
+                                            "disabled" => true
+                                        ));
+                                        echo $formLabel->openTag() . $edad->getOption('label') . $formLabel->closeTag() . "<br>";
+                                        echo $this->formNumber($edad);
+                                        ?>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-12">
-                            <div class="row">
                                 <div class="col-xs-12">
                                     <div class="form-group">
                                         <?php
-                                        $sexo = $form->get('sexo')->setValue($persona->getSexo())->setAttribute("disabled", true);
+                                        $sexo = $form->get('sexo')->setValue($persona->getSexo())->setAttributes(array(
+                                            "name" => "solicitante_sexo",
+                                            "disabled" => true
+                                        ));
                                         echo $formLabel->openTag() . $sexo->getOption('label') . $formLabel->closeTag() . "<br>";
                                         echo $this->formRadio($sexo);
                                         ?>
@@ -266,9 +280,92 @@ $remisiones = $this->remisiones;
                                 <div class="col-xs-12">
                                     <div class="form-group">
                                         <?php
-                                        $lgbti = $form->get('lgbti')->setValue($persona->getLgbti())->setAttribute("disabled", true);
+                                        $lgbti = $form->get('lgbti')->setValue($persona->getLgbti())->setAttributes(array(
+                                            "name" => "solicitante_lgbti",
+                                            "disabled" => true
+                                        ));
                                         echo $formLabel->openTag() . $lgbti->getOption('label') . $formLabel->closeTag() . "</br>";
                                         echo $this->formRadio($lgbti);
+                                        ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <?php
+                                        $correo = $form->get('correo')->setValue($persona->getCorreoElectronico())->setAttributes(array(
+                                            "name" => "solicitante_correo",
+                                            "disabled" => true
+                                        ));
+                                        echo $formLabel->openTag() . $correo->getOption('label') . $formLabel->closeTag();
+                                        echo "  " . $this->formEmail($correo);
+                                        echo $this->formElementErrors($correo);
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <?php
+                                        $telefono = $form->get('telefono')->setValue($persona->getTelefono())->setAttributes(array(
+                                            "name" => "solicitante_telefono",
+                                            "disabled" => true
+                                        ));
+                                        echo $formLabel->openTag() . $telefono->getOption('label') . $formLabel->closeTag();
+                                        echo "  " . $this->formInput($telefono);
+                                        echo $this->formElementErrors($telefono);
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <?php
+                                        $direccionden = $form->get('direccion')->setValue($persona->getDireccion())->setAttributes(array(
+                                            "name" => "solicitante_direccion",
+                                            "required" => true,
+                                            "disabled" => true
+                                        ));
+                                        echo $formLabel->openTag() . $direccionden->getOption('label') . $formLabel->closeTag();
+                                        echo "  " . $this->formInput($direccionden);
+                                        echo $this->formElementErrors($direccionden);
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <?php
+                                        $deptos = $this->deptos;
+                                        $deptosOptions = array();
+                                        foreach ($deptos as $deptoOption) {
+                                            $deptosOptions[$deptoOption->getCodigo()] = $deptoOption->getNombre();
+                                        }
+                                        $depto = $form->get('depto')->setValueOptions($deptosOptions)->setValue($persona->getDepto()->getCodigo())->setAttributes(array(
+                                            "name" => "solicitante_depto",
+                                            "required" => true,
+                                            "disabled" => true
+                                        ));
+                                        echo $formLabel->openTag() . $depto->getOption('label') . $formLabel->closeTag();
+                                        echo $this->formSelect($depto);
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <?php
+                                        $munis = $this->munis;
+                                        $munisOptions = array();
+                                        foreach ($munis as $muniOption) {
+                                            $munisOptions[$muniOption->getCodigo()] = $muniOption->getNombre();
+                                        }
+                                        $muni = $form->get('muni')->setValueOptions($munisOptions)->setValue($persona->getMuni()->getCodigo())->setAttributes(array(
+                                            "name" => "solicitante_muni",
+                                            "required" => true,
+                                            "disabled" => true
+                                        ));
+                                        echo $formLabel->openTag() . $muni->getOption('label') . $formLabel->closeTag();
+                                        echo $this->formSelect($muni);
                                         ?>
                                     </div>
                                 </div>
@@ -313,8 +410,8 @@ $remisiones = $this->remisiones;
                             <div class="form-group">
                                 <?php
                                 $fecha = $form->get('fechahecho')->setValue($expediente->getFechahechos()->format("d/m/Y"))->setAttributes(array(
-                                    "type" => "text",
                                     "class" => "form-control datepicker",
+                                    "name" => "hechos_fecha",
                                     "readonly" => false,
                                     "disabled" => true,
                                     "required" => true
@@ -329,6 +426,7 @@ $remisiones = $this->remisiones;
                             <div class="form-group">
                                 <?php
                                 $area = $form->get('areaubicacion')->setValue($expediente->getArea())->setAttributes(array(
+                                    "name" => "hechos_ubicacion",
                                     "disabled" => true
                                 ));
                                 echo $formLabel->openTag() . $area->getOption('label') . $formLabel->closeTag();
@@ -340,6 +438,7 @@ $remisiones = $this->remisiones;
                             <div class="form-group">
                                 <?php
                                 $direccion = $form->get('direccion')->setValue($expediente->getLugarhechos())->setAttributes(array(
+                                    "name" => "hechos_direccion",
                                     "disabled" => true
                                 ));
                                 echo $formLabel->openTag() . $direccion->getOption('label') . " ";
@@ -358,6 +457,7 @@ $remisiones = $this->remisiones;
                                     $deptosOptions[$deptoOption->getCodigo()] = $deptoOption->getNombre();
                                 }
                                 $depto = $form->get('depto')->setValueOptions($deptosOptions)->setValue($expediente->getDeptohechos()->getCodigo())->setAttributes(array(
+                                    "name" => "hechos_depto",
                                     "required" => true,
                                     "disabled" => true
                                 ));
@@ -376,6 +476,7 @@ $remisiones = $this->remisiones;
                                     $munisOptions[$muniOption->getCodigo()] = $muniOption->getNombre();
                                 }
                                 $muni = $form->get('muni')->setValueOptions($munisOptions)->setValue($expediente->getMunihechos()->getCodigo())->setAttributes(array(
+                                    "name" => "hechos_muni",
                                     "required" => true,
                                     "disabled" => true
                                 ));
@@ -389,6 +490,7 @@ $remisiones = $this->remisiones;
                                 <?php
                                 $hechos = $form->get('deschechos')->setValue($expediente->getHechos())->setAttributes(array(
                                     "id" => "hechos",
+                                    "name" => "hechos_descripcion",
                                     "required" => true,
                                     "disabled" => true
                                 ));
@@ -402,6 +504,7 @@ $remisiones = $this->remisiones;
                             <div class="form-group">
                                 <?php
                                 $peticion = $form->get('peticion')->setValue($expediente->getPeticion())->setAttributes(array(
+                                    "name" => "hechos_peticion",
                                     "disabled" => true
                                 ));
                                 echo $formLabel->openTag() . $peticion->getOption('label') . $formLabel->closeTag();
@@ -413,6 +516,7 @@ $remisiones = $this->remisiones;
                             <div class="form-group">
                                 <?php
                                 $pruebas = $form->get('pruebas')->setValue($expediente->getPruebas())->setAttributes(array(
+                                    "name" => "hechos_pruebas",
                                     "disabled" => true
                                 ));
                                 echo $formLabel->openTag() . $pruebas->getOption('label') . $formLabel->closeTag();

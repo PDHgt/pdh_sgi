@@ -132,6 +132,20 @@ class DetallePersona
     private $comunidadLinguistica;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="Cargo", type="string", length=255, nullable=false)
+     */
+    private $cargo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Institucion", type="string", length=255, nullable=false)
+     */
+    private $institucion;
+
+    /**
      * @var \Procuracion\Entity\Persona
      *
      * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Persona")
@@ -413,6 +427,54 @@ class DetallePersona
     public function getComunidadLinguistica()
     {
         return $this->comunidadLinguistica;
+    }
+
+    /**
+     * Set cargo
+     *
+     * @param string $nombres
+     *
+     * @return Persona
+     */
+    public function setCargo($nombres)
+    {
+        $this->cargo = $nombres;
+    
+        return $this;
+    }
+
+    /**
+     * Get cargo
+     *
+     * @return string
+     */
+    public function getCargo()
+    {
+        return $this->cargo;
+    }
+
+    /**
+     * Set institucion
+     *
+     * @param string $nombres
+     *
+     * @return Persona
+     */
+    public function setInstitucion($nombres)
+    {
+        $this->institucion = $nombres;
+    
+        return $this;
+    }
+
+    /**
+     * Get institucion
+     *
+     * @return string
+     */
+    public function getInstitucion()
+    {
+        return $this->institucion;
     }
 
     /**

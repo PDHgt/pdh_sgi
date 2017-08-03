@@ -1,13 +1,61 @@
 <!---------------------- Inicia formulario de victima -------------------------->
 <?php
+$denunciante = $this->denunciante;
+$expediente = $this->expediente;
 $form = $this->form;
 $form->prepare();
 $form->setAttributes(array(
+    'action' => $this->url('recepcion', array('action' => 'guardarvictima')),
     'method' => 'post',
-    'id' => 'victima'
+    'data-toggle' => 'validator',
+    'id' => 'victima',
+    'role' => 'form'
 ));
+
 $formLabel = $this->plugin('formLabel');
 echo $this->form()->openTag($form);
+
+if (!empty($denunciante)) {
+    $idp = $form->get('id')->setValue($denunciante->getId())->setAttributes(array(
+        "name" => "idpersona",
+        "id" => "idpersona"
+    ));
+    echo $this->formInput($idp);
+    $victima_numdoc = $denunciante->getNumeroDocumento();
+    $victima_tipodoc = $denunciante->getTipoDocumento();
+    $victima_nombres = $denunciante->getNombres();
+    $victima_apellidos = $denunciante->getApellidos();
+    $victima_fechanac = $denunciante->getFechanacimiento()->format("d/m/Y");
+    $victima_edad = $denunciante->getEdad();
+    $victima_sexo = $denunciante->getSexo();
+    $victima_lgbti = $denunciante->getLgbti();
+    $victima_direccion = $denunciante->getDireccion();
+    $victima_departamento = $denunciante->getDepto()->getCodigo();
+    $victima_municipio = $denunciante->getMuni()->getCodigo();
+    $victima_telefono = $denunciante->getTelefono();
+    $victima_correo = $denunciante->getCorreoElectronico();
+    $victima_relacion = 5;
+} else {
+    $victima_numdoc = NULL;
+    $victima_tipodoc = NULL;
+    $victima_nombres = NULL;
+    $victima_apellidos = NULL;
+    $victima_fechanac = NULL;
+    $victima_edad = NULL;
+    $victima_sexo = NULL;
+    $victima_lgbti = NULL;
+    $victima_direccion = NULL;
+    $victima_departamento = NULL;
+    $victima_municipio = NULL;
+    $victima_telefono = NULL;
+    $victima_correo = NULL;
+    $victima_relacion = NULL;
+}
+$id = $form->get('id')->setValue($expediente)->setAttributes(array(
+    "name" => "idexpediente",
+    "id" => "idexpediente"
+        ));
+echo $this->formInput($id);
 ?>
 <div class="modal-header bg-primary">
     <button type="button" class="close" data-dismiss="modal">
@@ -24,19 +72,25 @@ echo $this->form()->openTag($form);
         <div class="col-xs-12">
             <div class="form-group">
                 <?php
-                $tipopersona = $form->get('tipovictima');
+                $tipopersona = $form->get('tipovictima')->setAttributes(array(
+                    "name" => "victima_tipo",
+                    "id" => "victima_tipo"
+                ));
                 echo $formLabel->openTag() . $tipopersona->getOption('label') . $formLabel->closeTag() . " ";
-                echo $this->formMultiCheckbox($tipopersona);
+                echo $this->formCheckbox($tipopersona);
                 echo " - Haga clic en la casilla de verificación, si es persona no individual. (Representante legal, Grupo social, etc.)";
                 ?>
             </div>
         </div>
     </div>
-    <div class="row datos" id="individual">
+    <div class="row" id="individual">
         <div class="col-xs-6">
             <div class="form-group">
                 <?php
-                $numdoc = $form->get('numdoc');
+                $numdoc = $form->get('numdoc')->setValue($victima_numdoc)->setAttributes(array(
+                    "name" => "victima_numdoc",
+                    "id" => "victima_numdoc"
+                ));
                 echo $formLabel->openTag() . $numdoc->getOption('label') . $formLabel->closeTag();
                 echo $this->formInput($numdoc);
                 ?>
@@ -45,7 +99,10 @@ echo $this->form()->openTag($form);
         <div class="col-xs-6">
             <div class="form-group">
                 <?php
-                $tipodoc = $form->get('tipodoc');
+                $tipodoc = $form->get('tipodoc')->setValue($victima_tipodoc)->setAttributes(array(
+                    "name" => "victima_tipodoc",
+                    "id" => "victima_tipodoc"
+                ));
                 echo $formLabel->openTag() . $tipodoc->getOption('label') . $formLabel->closeTag();
                 echo $this->formSelect($tipodoc);
                 ?>
@@ -54,7 +111,11 @@ echo $this->form()->openTag($form);
         <div class="col-xs-6">
             <div class="form-group">
                 <?php
-                $nombre = $form->get('nombre')->setAttributes(array("required" => true));
+                $nombre = $form->get('nombres')->setValue($victima_nombres)->setAttributes(array(
+                    "name" => "victima_nombres",
+                    "id" => "victima_nombres",
+                    "required" => true
+                ));
                 echo $formLabel->openTag() . $nombre->getOption('label') . $formLabel->closeTag();
                 echo $this->formInput($nombre);
                 ?>
@@ -63,7 +124,11 @@ echo $this->form()->openTag($form);
         <div class="col-xs-6">
             <div class="form-group">
                 <?php
-                $apellido = $form->get('apellido')->setAttributes(array("required" => true));
+                $apellido = $form->get('apellidos')->setValue($victima_apellidos)->setAttributes(array(
+                    "name" => "victima_apellidos",
+                    "id" => "victima_apellidos",
+                    "required" => true
+                ));
                 echo $formLabel->openTag() . $apellido->getOption('label') . $formLabel->closeTag();
                 echo $this->formInput($apellido);
                 ?>
@@ -72,7 +137,10 @@ echo $this->form()->openTag($form);
         <div class="col-xs-6">
             <div class="form-group">
                 <?php
-                $fechanac = $form->get('fechanac');
+                $fechanac = $form->get('fechanac')->setValue($victima_fechanac)->setAttributes(array(
+                    "name" => "victima_fechanac",
+                    "id" => "victima_fechanac"
+                ));
                 echo $formLabel->openTag() . $fechanac->getOption('label') . $formLabel->closeTag();
                 echo $this->formInput($fechanac);
                 ?>
@@ -81,7 +149,11 @@ echo $this->form()->openTag($form);
         <div class="col-xs-3">
             <div class="form-group">
                 <?php
-                $edad = $form->get('edad');
+                $edad = $form->get('edad')->setValue($victima_edad)->setAttributes(array(
+                    "name" => "victima_edad",
+                    "id" => "victima_edad",
+                    "required" => true
+                ));
                 echo $formLabel->openTag() . $edad->getOption('label') . $formLabel->closeTag();
                 echo $this->formInput($edad);
                 ?>
@@ -90,7 +162,11 @@ echo $this->form()->openTag($form);
         <div class="col-xs-3">
             <div class="form-group">
                 <?php
-                $sexo = $form->get('sexo');
+                $sexo = $form->get('sexo')->setValue($victima_sexo)->setAttributes(array(
+                    "name" => "victima_sexo",
+                    "id" => "victima_sexo",
+                    "required" => true
+                ));
                 echo "<p>" . $formLabel->openTag() . $sexo->getOption('label') . $formLabel->closeTag() . "</p>";
                 echo $this->formRadio($sexo);
                 ?>
@@ -99,7 +175,10 @@ echo $this->form()->openTag($form);
         <div class="col-xs-6">
             <div class="form-group">
                 <?php
-                $lgbti = $form->get('lgbti');
+                $lgbti = $form->get('lgbti')->setValue($victima_lgbti)->setAttributes(array(
+                    "name" => "victima_lgbti",
+                    "id" => "victima_lgbti"
+                ));
                 echo "<p>" . $formLabel->openTag() . $lgbti->getOption('label') . $formLabel->closeTag() . "</p>";
                 echo $this->formRadio($lgbti);
                 ?>
@@ -108,7 +187,10 @@ echo $this->form()->openTag($form);
         <div class="col-xs-6">
             <div class="form-group">
                 <?php
-                $nombreusual = $form->get('nombreusual');
+                $nombreusual = $form->get('nombreusual')->setAttributes(array(
+                    "name" => "victima_nombreusual",
+                    "id" => "victima_nombreusual"
+                ));
                 echo $formLabel->openTag() . $nombreusual->getOption('label') . $formLabel->closeTag();
                 echo $this->formInput($nombreusual);
                 ?>
@@ -117,12 +199,16 @@ echo $this->form()->openTag($form);
         <div class="col-xs-6">
             <div class="form-group">
                 <?php
-                $relacionvicagr = $this->relacionvicagr;
+                $relaciondtevic = $this->relaciondtevic;
                 $relacionOptions = array();
-                foreach ($relacionvicagr as $relacionOption) {
+                foreach ($relaciondtevic as $relacionOption) {
                     $relacionOptions[$relacionOption->getId()] = $relacionOption->getValor();
                 }
-                $relacion = $form->get('relacion')->setValueOptions($relacionOptions);
+                $relacion = $form->get('relacion')->setValueOptions($relacionOptions)->setValue($victima_relacion)->setAttributes(array(
+                    "name" => "victima_relacion",
+                    "id" => "victima_relacion",
+                    "required" => true,
+                ));
                 echo $formLabel->openTag() . $relacion->getOption('label') . $formLabel->closeTag();
                 echo $this->formSelect($relacion);
                 ?>
@@ -136,7 +222,11 @@ echo $this->form()->openTag($form);
                 foreach ($comunidadlinguistica as $comunidadOption) {
                     $comunidadOptions[$comunidadOption->getId()] = $comunidadOption->getValor();
                 }
-                $comunidad = $form->get('comunidad')->setValueOptions($comunidadOptions);
+                $comunidad = $form->get('comunidad')->setValueOptions($comunidadOptions)->setAttributes(array(
+                    "name" => "victima_comunidad",
+                    "id" => "victima_comunidad",
+                    "required" => true
+                ));
                 echo $formLabel->openTag() . $comunidad->getOption('label') . $formLabel->closeTag();
                 echo $this->formSelect($comunidad);
                 ?>
@@ -150,7 +240,11 @@ echo $this->form()->openTag($form);
                 foreach ($pueblopertenencia as $puebloOption) {
                     $puebloOptions[$puebloOption->getId()] = $puebloOption->getValor();
                 }
-                $pertenencia = $form->get('pertenencia')->setValueOptions($puebloOptions);
+                $pertenencia = $form->get('pertenencia')->setValueOptions($puebloOptions)->setAttributes(array(
+                    "name" => "victima_pertenencia",
+                    "id" => "victima_pertenencia",
+                    "required" => true
+                ));
                 echo $formLabel->openTag() . $pertenencia->getOption('label') . $formLabel->closeTag();
                 echo $this->formSelect($pertenencia);
                 ?>
@@ -159,36 +253,63 @@ echo $this->form()->openTag($form);
         <div class="col-xs-6">
             <div class="form-group">
                 <?php
-                $nacionalidad = $form->get('nacionalidad');
-                echo $formLabel->openTag() . $nacionalidad->getOption('label') . $formLabel->closeTag();
-                echo $this->formSelect($nacionalidad);
+                $nacionalidad = $this->nacionalidad;
+                $nacionalidadOptions = array();
+                foreach ($nacionalidad as $nacionalidadOption) {
+                    $nacionalidadOptions[$nacionalidadOption->getId()] = $nacionalidadOption->getValor();
+                }
+                $nac = $form->get('nacionalidad')->setValueOptions($nacionalidadOptions)->setAttributes(array(
+                    "name" => "victima_nacionalidad",
+                    "id" => "victima_nacionalidad",
+                    "required" => true
+                ));
+                echo $formLabel->openTag() . $nac->getOption('label') . $formLabel->closeTag();
+                echo $this->formSelect($nac);
                 ?>
             </div>
         </div>
         <div class="col-xs-12">
             <div class="form-group">
+                <p>
+                    <label>Grupo Vulnerable</label>
+                </p>
                 <?php
-                $grupo = $form->get('grupovulnerable');
-                echo "<p>" . $formLabel->openTag() . $grupo->getOption('label') . $formLabel->closeTag() . "</p>";
-                echo $this->formMultiCheckbox($grupo);
+                $grupovulnerable = $this->grupovulnerable;
+                $grupoOptions = array();
+                foreach ($grupovulnerable as $grupoOption) {
+                    $grupo = $form->get('grupovulnerable')->setLabel($grupoOption->getValor())->setAttributes(array(
+                        "required" => true
+                    ));
+                    echo "<div class='checkbox col-xs-6'>";
+                    echo "<label><input type='checkbox' name='victima_grupovulnerable[]' value='" . $grupoOption->getId() . "'>" . $grupoOption->getValor() . "</label>";
+                    echo "</div>";
+                }
                 ?>
             </div>
         </div>
     </div>
-    <div class="row datos" id="noindividual" style="display: none">
+    <div class="row" id="noindividual" style="display: none">
         <div class="col-xs-6">
             <div class="form-group">
                 <?php
-                $nombrenoin = $form->get('nombrenoin');
-                echo $formLabel->openTag() . $nombrenoin->getOption('label') . $formLabel->closeTag();
-                echo $this->formInput($nombrenoin);
+                $nombrecolectivo = $form->get('nombrecolectivo')->setAttributes(array(
+                    "name" => "victima_nombrecolectivo",
+                    "id" => "victima_nombrecolectivo",
+                    "required" => true
+                ));
+                echo $formLabel->openTag() . $nombrecolectivo->getOption('label') . $formLabel->closeTag();
+                echo $this->formInput($nombrecolectivo);
                 ?>
             </div>
         </div>
         <div class="col-xs-6">
             <div class="form-group">
                 <?php
-                $contacto = $form->get('contacto');
+                $contacto = $form->get('contacto')->setAttributes(array(
+                    "name" => "victima_contacto",
+                    "id" => "victima_contacto",
+                    "required" => true
+                ));
                 echo $formLabel->openTag() . $contacto->getOption('label') . $formLabel->closeTag();
                 echo $this->formInput($contacto);
                 ?>
@@ -199,7 +320,10 @@ echo $this->form()->openTag($form);
         <div class="col-xs-12">
             <div class="form-group">
                 <?php
-                $direccion = $form->get('direccion');
+                $direccion = $form->get('direccion')->setValue($victima_direccion)->setAttributes(array(
+                    "name" => "victima_direccion",
+                    "id" => "victima_direccion"
+                ));
                 echo $formLabel->openTag() . $direccion->getOption('label') . $formLabel->closeTag();
                 echo $this->formInput($direccion);
                 ?>
@@ -208,7 +332,16 @@ echo $this->form()->openTag($form);
         <div class="col-xs-6">
             <div class="form-group">
                 <?php
-                $depto = $form->get('depto');
+                $deptos = $this->deptos;
+                $deptosOptions = array();
+                foreach ($deptos as $deptoOption) {
+                    $deptosOptions[$deptoOption->getCodigo()] = $deptoOption->getNombre();
+                }
+                $depto = $form->get('depto')->setValueOptions($deptosOptions)->setValue($victima_departamento)->setAttributes(array(
+                    "name" => "victima_depto",
+                    "id" => "victima_depto",
+                    "required" => true
+                ));
                 echo $formLabel->openTag() . $depto->getOption('label') . $formLabel->closeTag();
                 echo $this->formSelect($depto);
                 ?>
@@ -217,7 +350,16 @@ echo $this->form()->openTag($form);
         <div class="col-xs-6">
             <div class="form-group">
                 <?php
-                $muni = $form->get('muni');
+                $munis = $this->munis;
+                $munisOptions = array();
+                foreach ($munis as $muniOption) {
+                    $munisOptions[$muniOption->getCodigo()] = $muniOption->getNombre();
+                }
+                $muni = $form->get('muni')->setValueOptions($munisOptions)->setValue($victima_municipio)->setAttributes(array(
+                    "name" => "victima_muni",
+                    "id" => "victima_muni",
+                    "required" => true
+                ));
                 echo $formLabel->openTag() . $muni->getOption('label') . $formLabel->closeTag();
                 echo $this->formSelect($muni);
                 ?>
@@ -226,7 +368,10 @@ echo $this->form()->openTag($form);
         <div class="col-xs-6">
             <div class="form-group">
                 <?php
-                $telefono = $form->get('telefono');
+                $telefono = $form->get('telefono')->setValue($victima_telefono)->setAttributes(array(
+                    "name" => "victima_telefono",
+                    "id" => "victima_telefono"
+                ));
                 echo $formLabel->openTag() . $telefono->getOption('label') . $formLabel->closeTag();
                 echo $this->formInput($telefono);
                 ?>
@@ -235,7 +380,10 @@ echo $this->form()->openTag($form);
         <div class="col-xs-6">
             <div class="form-group">
                 <?php
-                $correo = $form->get('correo');
+                $correo = $form->get('correo')->setValue($victima_correo)->setAttributes(array(
+                    "name" => "victima_correo",
+                    "id" => "victima_correo"
+                ));
                 echo $formLabel->openTag() . $correo->getOption('label') . $formLabel->closeTag();
                 echo $this->formInput($correo);
                 ?>
@@ -244,40 +392,43 @@ echo $this->form()->openTag($form);
     </div>
 </div>
 <div class="modal-footer">
-    <button type="submit"  id="guardarvictima" class="btn btn-primary btn-flat" data-dismiss="modal"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
+    <button type="submit"  id="guardarvictima" class="btn btn-primary btn-flat" ><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</button>
 </div>
 <?php echo $this->form()->closeTag() ?>
 <!------------- Finaliza formulario victima ----------------->
 <script>
-
-    $('#guardarvictima').click(function() {
-        $.ajax({
-            type: 'POST',
-            dataType: 'json',
-            url: '<?php echo $this->basePath() . "/validacion/guardarvictima"; ?>',
-            data: $('#victima').serialize(),
-            success: function(data) {
-                $('#victimas').append("<tr>\n\
-                        <td>" + data.numdoc + "</td>\n\
-                        <td>" + data.nombre + " " + data.apellido + "</td>\n\
-                        <td>" + data.correo + "</td>\n\
-                        <td>" + data.correo + "</td>\n\
-                        <td><a href='' class='badge bg-yellow'>Editar</a></td>\n\
-                        </tr>");
-            },
-            error: function() {
-                alert('error');
-
-            }
-        });
+    $(document).ready(function() {
+        $("#noindividual").hide();
+        $("#noindividual :input").attr("disabled", true);
+        if (($("#victima_relacion option:selected").val()) == 5) {
+            $("#victima_relacion").attr("readonly", true);
+        }
     });
     $('#newvictimaModal').on('hidden.bs.modal', function() {
-        $('form[name="victima"]')[0].reset();
-        $('#noindividual').css("display", "none");
-        $('#individual').css("display", "block");
+        $('#newvictimaModal').removeData('bs.modal');
+        $('form[name="victima"]')[ 0].reset();
+        $('#noindividual').hide();
+        $("#noindividual :input").attr("disabled", true);
+        $('#individual').show();
+        $("#individual :input").attr("disabled", false);
     });
-    $('input[name="tipovictima[]"]').click(function() {
-        $('.datos').toggle();
+    $("select[name='victima_depto']").change(function() {
+        var depto = $(this).val();
+        $.ajax({
+            url: "<?php echo $this->basePath(); ?>/validacion/listarmunicipios",
+            dataType: 'json',
+            type: 'POST',
+            data: {depto: depto},
+            success: function(data) {
+                $("select[name='victima_muni']").append($("<option>Seleccione una opción</option>"));
+                $.each(data, function(key, value) {
+                    $("select[name='victima_muni']")
+                            .append($("<option></option>")
+                                    .attr("value", key)
+                                    .text(value));
+                });
+            }
+        });
+        $("select[name='victima_muni']").empty().prop("selectedIndex", -1);
     });
-
 </script>

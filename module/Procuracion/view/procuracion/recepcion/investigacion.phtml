@@ -71,7 +71,7 @@ $calificacion = $this->expediente["calificacion"];
                         </small>
                     </h3>
                     <div class="pull-right">
-                        <a href="#" data-widget="collapse" data-tt="tooltip" title="Maximizar">
+                        <a href="#" data-widget="collapse">
                             <i class="fa fa-plus"></i>
                         </a>
                     </div>
@@ -135,6 +135,8 @@ $calificacion = $this->expediente["calificacion"];
             </div>
             <!------------- Finaliza formulario solicitud ----------------->
         </div>
+    </div>
+    <div class="row" id="hechos">
         <div class="col-xs-12">
             <!------------- Inicia formulario hechos ----------------->
             <div class="box box-default color-palette-box collapsed-box">
@@ -151,7 +153,7 @@ $calificacion = $this->expediente["calificacion"];
                         </small>
                     </h3>
                     <div class="pull-right box-tools">
-                        <a href="#" data-widget="collapse" data-tt="tooltip" title="Maximizar">
+                        <a href="#" data-widget="collapse">
                             <i class="fa fa-plus"></i>
                         </a>
                     </div>
@@ -163,6 +165,7 @@ $calificacion = $this->expediente["calificacion"];
                                 <?php
                                 $fecha = $form->get('fechahecho')->setValue($expediente->getFechahechos()->format("d/m/Y"))->setAttributes(array(
                                     "class" => "form-control datepicker",
+                                    "name" => "hechos_fecha",
                                     "readonly" => false,
                                     "disabled" => true,
                                     "required" => true
@@ -177,6 +180,7 @@ $calificacion = $this->expediente["calificacion"];
                             <div class="form-group">
                                 <?php
                                 $area = $form->get('areaubicacion')->setValue($expediente->getArea())->setAttributes(array(
+                                    "name" => "hechos_ubicacion",
                                     "disabled" => true
                                 ));
                                 echo $formLabel->openTag() . $area->getOption('label') . $formLabel->closeTag();
@@ -188,6 +192,7 @@ $calificacion = $this->expediente["calificacion"];
                             <div class="form-group">
                                 <?php
                                 $direccion = $form->get('direccion')->setValue($expediente->getLugarhechos())->setAttributes(array(
+                                    "name" => "hechos_direccion",
                                     "disabled" => true
                                 ));
                                 echo $formLabel->openTag() . $direccion->getOption('label') . " ";
@@ -205,6 +210,7 @@ $calificacion = $this->expediente["calificacion"];
                                     $deptosOptions[$deptoOption->getCodigo()] = $deptoOption->getNombre();
                                 }
                                 $depto = $form->get('depto')->setValueOptions($deptosOptions)->setValue($expediente->getDeptohechos()->getCodigo())->setAttributes(array(
+                                    "name" => "hechos_depto",
                                     "required" => true,
                                     "disabled" => true
                                 ));
@@ -223,6 +229,7 @@ $calificacion = $this->expediente["calificacion"];
                                     $munisOptions[$muniOption->getCodigo()] = $muniOption->getNombre();
                                 }
                                 $muni = $form->get('muni')->setValueOptions($munisOptions)->setValue($expediente->getMunihechos()->getCodigo())->setAttributes(array(
+                                    "name" => "hechos_muni",
                                     "required" => true,
                                     "disabled" => true
                                 ));
@@ -236,6 +243,7 @@ $calificacion = $this->expediente["calificacion"];
                                 <?php
                                 $hechos = $form->get('deschechos')->setValue($expediente->getHechos())->setAttributes(array(
                                     "id" => "hechos",
+                                    "name" => "hechos_descripcion",
                                     "required" => true,
                                     "disabled" => true
                                 ));
@@ -249,6 +257,7 @@ $calificacion = $this->expediente["calificacion"];
                             <div class="form-group">
                                 <?php
                                 $peticion = $form->get('peticion')->setValue($expediente->getPeticion())->setAttributes(array(
+                                    "name" => "hechos_peticion",
                                     "disabled" => true
                                 ));
                                 echo $formLabel->openTag() . $peticion->getOption('label') . $formLabel->closeTag();
@@ -260,6 +269,7 @@ $calificacion = $this->expediente["calificacion"];
                             <div class="form-group">
                                 <?php
                                 $pruebas = $form->get('pruebas')->setValue($expediente->getPruebas())->setAttributes(array(
+                                    "name" => "hechos_pruebas",
                                     "disabled" => true
                                 ));
                                 echo $formLabel->openTag() . $pruebas->getOption('label') . $formLabel->closeTag();
@@ -332,6 +342,7 @@ $calificacion = $this->expediente["calificacion"];
                                             echo $hecho->getIdHecho()->getHecho() . "</label></div>";
                                         }
                                         ?>
+
                                     </div>
                                 </div>
                                 <div class="col-xs-3">
@@ -345,25 +356,28 @@ $calificacion = $this->expediente["calificacion"];
                     </div>
                 </div>
                 <div class="box-footer clearfix">
-                    <a href="#fechahecho" data-toggle="" data-tt="tooltip" title="Editar" id="editarhechos">
+                    <a href="#" id="editarhechos">
                         <span class="badge bg-red"><i class="fa fa-edit"></i> Editar</span>
+                    </a>
+                    <a href="#" id="guardarhechos" style="display:none">
+                        <span class="badge bg-blue"><i class="fa fa-save"></i> Guardar</span>
                     </a>
                 </div>
             </div>
             <!------------- Finaliza formulario hechos y calificacion ----------------->
         </div>
     </div>
-    <div class="row">
+    <div class="row" id="denunciante">
         <div class="col-xs-12">
-            <!---------------------- Inicia formulario de solicitante -------------------------->
-            <div class="box box-default color-palette-box ">
+            <!---------------------- Inicia formulario de denunciante -------------------------->
+            <div class="box box-default color-palette-box">
                 <div class="box-header with-border">
                     <i class="fa fa-user"></i>
                     <h3 class="box-title">Denunciante
                         <small>
                             <?php
                             echo " / " . $persona->getNombres() . " " . $persona->getApellidos();
-                            $fechanacString = $persona->getFechanacimiento();
+                            $fechanacString = $cola->getIdpersona()->getFechanacimiento();
                             $hoy = new DateTime('today');
                             if ($fechanacString == NULL) {
                                 $edad = "";
@@ -375,19 +389,20 @@ $calificacion = $this->expediente["calificacion"];
                         </small>
                     </h3>
                     <div class="pull-right">
-                        <a href="#" data-widget="collapse" data-tt="tooltip" title="Maximizar">
-                            <i class="fa fa-plus"></i>
+                        <a href="#" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
                         </a>
                     </div>
                 </div>
-                <div class="box-body" id="denunciante">
+                <div class="box-body">
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="form-group">
                                 <?php
                                 $anonimo = $form->get('checkbox')->setValue($persona->getAnonimo())->setAttributes(array(
-                                    'id' => 'anonimo',
-                                    'name' => 'anonimo'
+                                    "id" => "anonimo",
+                                    "name" => "solicitante_anonimo",
+                                    "disabled" => true
                                 ));
                                 echo $formLabel->openTag() . $anonimo->getOption('label') . $formLabel->closeTag();
                                 echo "  " . $this->formInput($anonimo);
@@ -399,7 +414,10 @@ $calificacion = $this->expediente["calificacion"];
                                 <div class="col-xs-6">
                                     <div class="form-group">
                                         <?php
-                                        $numdoc = $form->get('numdoc')->setValue($persona->getNumeroDocumento());
+                                        $numdoc = $form->get('numdoc')->setValue($persona->getNumeroDocumento())->setAttributes(array(
+                                            "name" => "solicitante_numdoc",
+                                            "disabled" => true
+                                        ));
                                         echo $formLabel->openTag() . $numdoc->getOption('label') . $formLabel->closeTag();
                                         echo $this->formInput($numdoc);
                                         ?>
@@ -408,7 +426,11 @@ $calificacion = $this->expediente["calificacion"];
                                 <div class="col-xs-6">
                                     <div class="form-group">
                                         <?php
-                                        $tipodoc = $form->get('tipodoc')->setValue($persona->getTipoDocumento());
+                                        $tipodoc = $form->get('tipodoc')->setValue($persona->getTipoDocumento())->setAttributes(array(
+                                            "name" => "solicitante_tipodoc",
+                                            "disabled" => true
+                                        ));
+                                        ;
                                         echo $formLabel->openTag() . $tipodoc->getOption('label') . $formLabel->closeTag();
                                         echo $this->formSelect($tipodoc);
                                         ?>
@@ -417,7 +439,10 @@ $calificacion = $this->expediente["calificacion"];
                                 <div class="col-xs-6">
                                     <div class="form-group">
                                         <?php
-                                        $nombres = $form->get('nombre')->setValue($persona->getNombres());
+                                        $nombres = $form->get('nombre')->setValue($persona->getNombres())->setAttributes(array(
+                                            "name" => "solicitante_nombre",
+                                            "disabled" => true
+                                        ));
                                         echo $formLabel->openTag() . $nombres->getOption('label') . $formLabel->closeTag();
                                         echo $this->formInput($nombres);
                                         ?>
@@ -426,7 +451,10 @@ $calificacion = $this->expediente["calificacion"];
                                 <div class="col-xs-6">
                                     <div class="form-group">
                                         <?php
-                                        $apellidos = $form->get('apellido')->setValue($persona->getApellidos());
+                                        $apellidos = $form->get('apellido')->setValue($persona->getApellidos())->setAttributes(array(
+                                            "name" => "solicitante_apellido",
+                                            "disabled" => true
+                                        ));
                                         echo $formLabel->openTag() . $apellidos->getOption('label') . $formLabel->closeTag();
                                         echo $this->formInput($apellidos);
                                         ?>
@@ -436,10 +464,14 @@ $calificacion = $this->expediente["calificacion"];
                                     <div class="form-group">
                                         <?php
                                         if (($cola->getIdpersona()->getFechanacimiento()) == NULL) {
-                                            $fechanac = $form->get('fechanac')->setValue($persona->getFechanacimiento());
+                                            $value = $persona->getFechanacimiento();
                                         } else {
-                                            $fechanac = $form->get('fechanac')->setValue($persona->getFechanacimiento()->format("d/m/Y"));
+                                            $value = $persona->getFechanacimiento()->format("d/m/Y");
                                         }
+                                        $fechanac = $form->get('fechanac')->setValue($value)->setAttributes(array(
+                                            "name" => "solicitante_fechanac",
+                                            "disabled" => true
+                                        ));
                                         echo $formLabel->openTag() . $fechanac->getOption('label') . " ";
                                         echo $formLabel->closeTag();
                                         echo $this->formInput($fechanac);
@@ -448,14 +480,23 @@ $calificacion = $this->expediente["calificacion"];
                                 </div>
                                 <div class="col-xs-6">
                                     <div class="form-group">
-                                        <label>Edad</label>
-                                        <input name="edad" type="text" value="<?php echo $edad; ?>" class="form-control" disabled="disabled">
+                                        <?php
+                                        $edad = $form->get('edad')->setValue($persona->getEdad())->setAttributes(array(
+                                            "name" => "solicitante_edad",
+                                            "disabled" => true
+                                        ));
+                                        echo $formLabel->openTag() . $edad->getOption('label') . $formLabel->closeTag() . "<br>";
+                                        echo $this->formNumber($edad);
+                                        ?>
                                     </div>
                                 </div>
                                 <div class="col-xs-12">
                                     <div class="form-group">
                                         <?php
-                                        $sexo = $form->get('sexo')->setValue($persona->getSexo());
+                                        $sexo = $form->get('sexo')->setValue($persona->getSexo())->setAttributes(array(
+                                            "name" => "solicitante_sexo",
+                                            "disabled" => true
+                                        ));
                                         echo $formLabel->openTag() . $sexo->getOption('label') . $formLabel->closeTag() . "<br>";
                                         echo $this->formRadio($sexo);
                                         ?>
@@ -464,7 +505,10 @@ $calificacion = $this->expediente["calificacion"];
                                 <div class="col-xs-12">
                                     <div class="form-group">
                                         <?php
-                                        $lgbti = $form->get('lgbti')->setValue($persona->getLgbti());
+                                        $lgbti = $form->get('lgbti')->setValue($persona->getLgbti())->setAttributes(array(
+                                            "name" => "solicitante_lgbti",
+                                            "disabled" => true
+                                        ));
                                         echo $formLabel->openTag() . $lgbti->getOption('label') . $formLabel->closeTag() . "</br>";
                                         echo $this->formRadio($lgbti);
                                         ?>
@@ -477,7 +521,10 @@ $calificacion = $this->expediente["calificacion"];
                                 <div class="col-xs-6">
                                     <div class="form-group">
                                         <?php
-                                        $correo = $form->get('correo');
+                                        $correo = $form->get('correo')->setValue($persona->getCorreoElectronico())->setAttributes(array(
+                                            "name" => "solicitante_correo",
+                                            "disabled" => true
+                                        ));
                                         echo $formLabel->openTag() . $correo->getOption('label') . $formLabel->closeTag();
                                         echo "  " . $this->formEmail($correo);
                                         echo $this->formElementErrors($correo);
@@ -487,7 +534,10 @@ $calificacion = $this->expediente["calificacion"];
                                 <div class="col-xs-6">
                                     <div class="form-group">
                                         <?php
-                                        $telefono = $form->get('telefono');
+                                        $telefono = $form->get('telefono')->setValue($persona->getTelefono())->setAttributes(array(
+                                            "name" => "solicitante_telefono",
+                                            "disabled" => true
+                                        ));
                                         echo $formLabel->openTag() . $telefono->getOption('label') . $formLabel->closeTag();
                                         echo "  " . $this->formInput($telefono);
                                         echo $this->formElementErrors($telefono);
@@ -497,8 +547,10 @@ $calificacion = $this->expediente["calificacion"];
                                 <div class="col-xs-12">
                                     <div class="form-group">
                                         <?php
-                                        $direccionden = $form->get('direccionden')->setAttributes(array(
-                                            "required" => true
+                                        $direccionden = $form->get('direccion')->setValue($persona->getDireccion())->setAttributes(array(
+                                            "name" => "solicitante_direccion",
+                                            "required" => true,
+                                            "disabled" => true
                                         ));
                                         echo $formLabel->openTag() . $direccionden->getOption('label') . $formLabel->closeTag();
                                         echo "  " . $this->formInput($direccionden);
@@ -514,9 +566,10 @@ $calificacion = $this->expediente["calificacion"];
                                         foreach ($deptos as $deptoOption) {
                                             $deptosOptions[$deptoOption->getCodigo()] = $deptoOption->getNombre();
                                         }
-                                        $depto = $form->get('depto')->setValueOptions($deptosOptions)->setValue("")->setAttributes(array(
+                                        $depto = $form->get('depto')->setValueOptions($deptosOptions)->setValue($persona->getDepto()->getCodigo())->setAttributes(array(
+                                            "name" => "solicitante_depto",
                                             "required" => true,
-                                            "disabled" => false
+                                            "disabled" => true
                                         ));
                                         echo $formLabel->openTag() . $depto->getOption('label') . $formLabel->closeTag();
                                         echo $this->formSelect($depto);
@@ -527,14 +580,14 @@ $calificacion = $this->expediente["calificacion"];
                                     <div class="form-group">
                                         <?php
                                         $munis = $this->munis;
-                                        //print_r($munis);
                                         $munisOptions = array();
                                         foreach ($munis as $muniOption) {
                                             $munisOptions[$muniOption->getCodigo()] = $muniOption->getNombre();
                                         }
-                                        $muni = $form->get('muni')->setValueOptions($munisOptions)->setValue("")->setAttributes(array(
+                                        $muni = $form->get('muni')->setValueOptions($munisOptions)->setValue($persona->getMuni()->getCodigo())->setAttributes(array(
+                                            "name" => "solicitante_muni",
                                             "required" => true,
-                                            "disabled" => false
+                                            "disabled" => true
                                         ));
                                         echo $formLabel->openTag() . $muni->getOption('label') . $formLabel->closeTag();
                                         echo $this->formSelect($muni);
@@ -543,25 +596,23 @@ $calificacion = $this->expediente["calificacion"];
                                 </div>
                                 <div class="col-xs-6">
                                     <div class="form-group">
-                                        <label>Es Víctima</label>
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" name="esvictima" value="1" class="checkbox"/>
-                                                ¿El denunciante es la víctima?
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-6">
-                                    <div class="form-group">
-                                        <label>Relación</label>
-                                        <select class="form-control">
-                                            <option>opcion 1</option>
-                                            <option>opcion 2</option>
-                                            <option>opcion 3</option>
-                                            <option>opcion 4</option>
-                                            <option>opcion 5</option>
-                                        </select>
+                                        <?php
+                                        $victimas = $this->victimas;
+                                        foreach ($victimas as $victima) {
+                                            if ($victima->getIdPersona()->getId() === $cola->getIdpersona()->getId()) {
+                                                $denunciante_victima = 1;
+                                                $denunciante_victima_attr = true;
+                                            }
+                                        }
+
+                                        $victima = $form->get('victima')->setValue($denunciante_victima)->setAttributes(array(
+                                            "name" => "solicitante_victima",
+                                            "disabled" => $denunciante_victima_attr
+                                        ));
+                                        echo $formLabel->openTag() . $victima->getOption('label') . $formLabel->closeTag() . "<br>";
+                                        echo "<label>¿El denunciante también es la víctima?</label>";
+                                        echo "  " . $this->formRadio($victima);
+                                        ?>
                                     </div>
                                 </div>
                             </div>
@@ -569,12 +620,15 @@ $calificacion = $this->expediente["calificacion"];
                     </div>
                 </div>
                 <div class="box-footer clearfix">
-                    <a href="" data-toggle="" id="guardardenunciante" onclick="guardarPersona('<?php echo $this->basePath() . "/page"; ?>')">
-                        <span class="badge bg-blue"><i class="glyphicon glyphicon-floppy-disk"></i> Guardar</span>
+                    <a href="#" data-toggle="" data-tt="tooltip" title="Editar" id="editarsolicitante">
+                        <span class="badge bg-red"><i class="fa fa-edit"></i> Editar</span>
+                    </a>
+                    <a href="#" id="guardardenunciante" style="display:none">
+                        <span class="badge bg-blue"><i class="fa fa-save"></i> Guardar</span>
                     </a>
                 </div>
             </div>
-            <!------------- Finaliza formulario solicitante ----------------->
+            <!------------- Finaliza formulario denunciante ----------------->
         </div>
     </div>
     <div class="row">
@@ -589,7 +643,7 @@ $calificacion = $this->expediente["calificacion"];
                         </small>
                     </h3>
                     <div class="pull-right box-tools">
-                        <a href="#" data-widget="collapse" data-tt="tooltip" title="Minimizar">
+                        <a href="#" data-widget="collapse">
                             <i class="fa fa-minus"></i>
                         </a>
                     </div>
@@ -598,20 +652,42 @@ $calificacion = $this->expediente["calificacion"];
                     <table class="table table-striped" id="victimas">
                         <thead>
                             <tr>
-                                <th># documento</th>
-                                <th>Nombre</th>
-                                <th>Edad</th>
+                                <th>Nombres</th>
+                                <th>Apellidos</th>
+                                <th>Relación</th>
                                 <th>Sexo</th>
+                                <th>Edad</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
-
+                            <?php
+                            $victimas = $this->victimas;
+                            foreach ($victimas as $victima) {
+                                echo "<tr>";
+                                echo "<td>" . $victima->getIdPersona()->getNombres() . "</td>";
+                                echo "<td>" . $victima->getIdPersona()->getApellidos() . "</td>";
+                                echo "<td>" . $victima->getRelacionvictima()->getValor() . "</td>";
+                                switch ($victima->getIdPersona()->getSexo()) {
+                                    case 1:
+                                        $sexo = "Masculino";
+                                        break;
+                                    case 2:
+                                        $sexo = "Femenino";
+                                    default:
+                                        break;
+                                }
+                                echo "<td>" . $sexo . "</td>";
+                                echo "<td>" . $victima->getIdPersona()->getEdad() . "</td>";
+                                echo "<td><a href='" . $victima->getIdPersona()->getId() . "'><span class='badge bg-yellow'>Editar</span></a></td>";
+                                echo "</tr>";
+                            }
+                            ?>
                         </tbody>
                     </table>
                 </div>
                 <div class="box-footer">
-                    <a href="<?php echo $this->url('recepcion', array('action' => 'registrovictima')); ?>" data-toggle="modal" data-target="#newvictimaModal">
+                    <a href="<?php echo $this->url('recepcion', array('action' => 'registrovictima', 'id' => $expediente->getId())); ?>" data-toggle="modal" data-target="#newvictimaModal">
                         <span class="badge bg-green"><i class="glyphicon glyphicon-plus"></i> Nuevo</span>
                     </a>
                 </div>
@@ -631,7 +707,7 @@ $calificacion = $this->expediente["calificacion"];
                         </small>
                     </h3>
                     <div class="pull-right box-tools">
-                        <a href="#" data-widget="collapse" data-tt="tooltip" title="Minimizar">
+                        <a href="#" data-widget="collapse">
                             <i class="fa fa-minus"></i>
                         </a>
                     </div>
@@ -640,19 +716,42 @@ $calificacion = $this->expediente["calificacion"];
                     <table class="table table-striped" id="denunciados">
                         <thead>
                             <tr>
-                                <th># documento</th>
-                                <th>Nombre</th>
-                                <th>Edad</th>
+                                <th>Nombres</th>
+                                <th>Apellidos</th>
+                                <th>Relación</th>
                                 <th>Sexo</th>
+                                <th>Edad</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
+                            <?php
+                            $denunciados = $this->denunciados;
+                            foreach ($denunciados as $denunciado) {
+                                echo "<tr>";
+                                echo "<td>" . $denunciado->getIdPersona()->getNombres() . "</td>";
+                                echo "<td>" . $denunciado->getIdPersona()->getApellidos() . "</td>";
+                                echo "<td>" . $denunciado->getRelacionagresor()->getValor() . "</td>";
+                                switch ($denunciado->getIdPersona()->getSexo()) {
+                                    case 1:
+                                        $sexo = "Masculino";
+                                        break;
+                                    case 2:
+                                        $sexo = "Femenino";
+                                    default:
+                                        break;
+                                }
+                                echo "<td>" . $sexo . "</td>";
+                                echo "<td>" . $denunciado->getIdPersona()->getEdad() . "</td>";
+                                echo "<td><a href='" . $denunciado->getIdPersona()->getId() . "'><span class='badge bg-yellow'>Editar</span></a></td>";
+                                echo "</tr>";
+                            }
+                            ?>
                         </tbody>
                     </table>
                 </div>
                 <div class="box-footer">
-                    <a href="<?php echo $this->url('recepcion', array('action' => 'registrodenunciado')); ?>" data-toggle="modal" data-target="#newdenunciadoModal">
+                    <a href="<?php echo $this->url('recepcion', array('action' => 'registrodenunciado', 'id' => $expediente->getId())); ?>" data-toggle="modal" data-target="#newdenunciadoModal">
                         <span class="badge bg-green"><i class="glyphicon glyphicon-plus"></i> Nuevo</span>
                     </a>
                 </div>
@@ -682,7 +781,43 @@ $calificacion = $this->expediente["calificacion"];
         </div>
     </div>
 </div>
+<div class="modal fade" tabindex="-1" role="dialog" id="messagesuccessmodal" >
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="alert alert-success">
+                <strong>Los datos se han actualizado exitosamente.</strong>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" tabindex="-1" role="dialog" id="messageerrormodal" >
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="alert alert-danger">
+                <strong>Ha ocurrido un error al actualizar los datos</strong>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
+    $(function() {
+        $('#guardarhechos').click(function() {
+            guardarhechos('<?php echo $this->url('recepcion', array('action' => 'editarexpediente', 'id' => $expediente->getId())); ?>', '<?php echo $this->url('recepcion', array('action' => 'investigacion', 'id' => $expediente->getId())) ?>');
+        });
+        $('#guardardenunciante').click(function() {
+            guardardenunciante('<?php echo $this->url('recepcion', array('action' => 'editarexpediente', 'id' => $expediente->getId())); ?>', '<?php echo $this->url('recepcion', array('action' => 'investigacion', 'id' => $expediente->getId())) ?>');
+        });
+    });
+
+    var url2 = '<?php echo $this->url('recepcion', array('action' => 'registrovictima', 'id' => $expediente->getId(), 'param1' => $persona->getId())); ?>';
+    $('input[name="solicitante_victima"]').click(function() {
+        if (($(this).val()) == 1) {
+            $('#newvictimaModal').removeData('bs.modal');
+            $('#newvictimaModal').modal({remote: url2});
+            $('#newvictimaModal').modal('show');
+            $('#victima_relacion').append("esto va aqui");
+        }
+    });
     $('#recepcion').submit(validateDerecho);
     $('#recepcion').submit(validateinstitucion);
 </script>

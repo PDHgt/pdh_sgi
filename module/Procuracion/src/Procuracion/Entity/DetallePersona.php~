@@ -130,7 +130,21 @@ class DetallePersona
      * })
      */
     private $comunidadLinguistica;
-    
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Cargo", type="string", length=255, nullable=false)
+     */
+    private $cargo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Institucion", type="string", length=255, nullable=false)
+     */
+    private $institucion;
+
     /**
      * @var \Procuracion\Entity\Persona
      *

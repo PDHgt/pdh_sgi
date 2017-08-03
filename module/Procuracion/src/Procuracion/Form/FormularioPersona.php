@@ -18,56 +18,59 @@ class FormularioPersona extends Form {
     function __construct($name) {
         parent::__construct($name);
 
+        //****************** id ***************************/
+        $this->add(array(
+            'name' => 'id',
+            'type' => 'hidden'
+        ));
+
         //****************** Tipo persona *****************/
         $this->add(array(
+            'type' => 'Zend\Form\Element\Checkbox',
             'name' => 'tipovictima',
-            'type' => 'Multicheckbox',
             'options' => array(
-                'use_hidden_element' => false,
-                'checked_value' => 1,
-                'unchecked_value' => 0,
-                'value_options' => array(
-                    '1' => ' Persona No individual',
-                ),
-            ),
+                'label' => 'Tipo víctima',
+                'use_hidden_element' => true,
+                'checked_value' => '1',
+                'unchecked_value' => '0'
+            )
         ));
 
         $this->add(array(
+            'type' => 'Zend\Form\Element\Checkbox',
             'name' => 'tipodenunciado',
-            'type' => 'Multicheckbox',
             'options' => array(
-                'use_hidden_element' => false,
-                'checked_value' => 1,
-                'unchecked_value' => 0,
-                'value_options' => array(
-                    '1' => ' Persona No individual',
-                ),
-            ),
+                'label' => 'Tipo denuncaido',
+                'use_hidden_element' => true,
+                'checked_value' => '1',
+                'unchecked_value' => '0'
+            )
         ));
+
 
         //******************* Nombres *********************/
         $this->add(array(
-            'name' => 'nombre',
+            'name' => 'nombres',
             'options' => array(
                 'label' => 'Nombres',
             ),
             'attributes' => array(
                 'type' => 'text',
                 'class' => 'form-control',
-                'id' => 'nombre'
+                'id' => 'nombres'
             )
         ));
 
         //***************** Apellidos *********************/
         $this->add(array(
-            'name' => 'apellido',
+            'name' => 'apellidos',
             'options' => array(
                 'label' => 'Apellidos',
             ),
             'attributes' => array(
                 'type' => 'text',
                 'class' => 'form-control',
-                'id' => 'apellido'
+                'id' => 'apellidos'
             )
         ));
 
@@ -99,10 +102,10 @@ class FormularioPersona extends Form {
                 'label' => '# de documento',
             ),
             'attributes' => array(
-                'autocomplete' => false,
                 'type' => 'text',
                 'class' => 'form-control',
-                'id' => 'numdoc'
+                'id' => 'numdoc',
+                'autocomplete' => false
             )
         ));
 
@@ -240,7 +243,7 @@ class FormularioPersona extends Form {
                 'label' => 'Correo electrónico',
             ),
             'attributes' => array(
-                'type' => 'text',
+                'type' => 'email',
                 'class' => 'form-control'
             )
         ));
@@ -426,14 +429,14 @@ class FormularioPersona extends Form {
 
         //******************* Nombre no individual *********************/
         $this->add(array(
-            'name' => 'nombrenoin',
+            'name' => 'nombrecolectivo',
             'options' => array(
                 'label' => 'Nombre',
             ),
             'attributes' => array(
                 'type' => 'text',
                 'class' => 'form-control',
-                'id' => 'nombrenoin'
+                'id' => 'nombrecolectivo'
             )
         ));
 

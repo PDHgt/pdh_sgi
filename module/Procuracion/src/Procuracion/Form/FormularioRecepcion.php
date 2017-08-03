@@ -168,6 +168,17 @@ class FormularioRecepcion extends Form {
             )
         ));
 
+        //************************INPUTS NUMBER****************************/
+        $this->add(array(
+            'name' => 'edad',
+            'options' => array(
+                'label' => 'Edad',
+            ),
+            'attributes' => array(
+                'type' => 'text',
+                'class' => 'form-control'
+            )
+        ));
 
         //************************INPUTS SELECT*****************************/
         //Campo tipo de documento
@@ -260,6 +271,19 @@ class FormularioRecepcion extends Form {
             )
         ));
 
+        //***************** Relación ********************/
+        $this->add(array(
+            'name' => 'relacion',
+            'type' => 'select',
+            'options' => array(
+                'label' => 'Relación',
+                'empty_option' => 'Seleccione una opción'
+            ),
+            'attributes' => array(
+                'class' => 'form-control'
+            )
+        ));
+
         //************************INPUTS DATE*****************************/
         //Fecha solicitud
         $this->add(array(
@@ -314,7 +338,6 @@ class FormularioRecepcion extends Form {
         //**************************INPUTS CHECKBOX****************************/
         //Campo anonimo
         $this->add(array(
-            //'name' => 'checkbox',
             'type' => 'Checkbox',
             'name' => 'checkbox',
             'options' => [
@@ -356,8 +379,6 @@ class FormularioRecepcion extends Form {
             'type' => 'Multicheckbox',
             'name' => 'institucion[]'
         ));
-
-
 
 
         //**************************INPUTS RADIO*******************************/
@@ -463,24 +484,25 @@ class FormularioRecepcion extends Form {
                     '1' => 'Si',
                     '2' => 'No'
                 )
-            /* 'value_options' => array(
-              '1' => array(
-              'label' => 'Si',
-              'value' => 1,
-              'attributes' => array(
-              'data-toggle' => 'collapse',
-              'data-target' => '#instremision'
-              )
-              ),
-              '0' => array(
-              'label' => 'No',
-              'value' => 0,
-              'attributes' => array(
-              'data-toggle' => 'collapse in',
-              'data-target' => '#instremision'
-              )
-              )
-              ) */
+            )
+        ));
+
+        //************** victima *****************/
+        $this->add(array(
+            'type' => 'Radio',
+            'name' => 'victima',
+            'options' => array(
+                'label' => 'Víctima',
+                'label_attributes' => array(
+                    'class' => 'radio-inline'
+                ),
+                'value_options' => array(
+                    '1' => 'Si',
+                    '0' => 'No'
+                )
+            ),
+            'attributes' => array(
+                'required' => true
             )
         ));
 

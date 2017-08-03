@@ -16,7 +16,6 @@ return array(
             'Procuracion\Controller\Admin' => 'Procuracion\Factory\AdminControllerFactory',
             'Procuracion\Controller\Validacion' => 'Procuracion\Factory\ValidacionControllerFactory',
             'Procuracion\Controller\Recepcion' => 'Procuracion\Factory\RecepcionControllerFactory',
-            'Procuracion\Controller\Solicitud' => 'Procuracion\Factory\SolicitudControllerFactory',
         ),
     ),
     'router' => array(
@@ -103,19 +102,6 @@ return array(
                             ),
                         ),
                     ),
-                /* 'registro' => array(
-                  'type' => 'Segment',
-                  'options' => array(
-                  'route' => '/registro[/:action][/:param1]',
-                  'constraints' => array(
-                  'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                  'param1' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                  ),
-                  'defaults' => array(
-                  'controller' => 'Procuracion\Controller\Recepcion',
-                  ),
-                  ),
-                  ), */
                 ),
             ),
             'solicitud' => array(
@@ -214,6 +200,7 @@ return array(
             'layout/index' => __DIR__ . '/../view/layout/layout-index.phtml',
             'layout/layout' => __DIR__ . '/../view/layout/layout-recepcion.phtml',
             'layout/modal' => __DIR__ . '/../view/layout/layout-modal.phtml',
+            'layout/form' => __DIR__ . '/../view/layout/layout-form.phtml',
             'header' => __DIR__ . '/../view/procuracion/header.phtml',
             'aside' => __DIR__ . '/../view/procuracion/aside.phtml',
             'error/404' => __DIR__ . '/../view/error/404.phtml',

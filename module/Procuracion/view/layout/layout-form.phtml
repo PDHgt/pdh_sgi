@@ -40,9 +40,6 @@
         <div class="wrapper">
             <!-- Main Header -->
             <!-- Left side column. contains the logo and sidebar -->
-            <?php echo $this->header; ?>
-            <?php echo $this->aside; ?>
-            <?php echo $this->addbutton; ?>
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->
@@ -104,17 +101,10 @@
             /*
              *  Llamado a funcion cambiar departamento para obtener municipios
              */
-            $("select[name='solicitante_depto']").change(function() {
+            $("select[name='depto']").change(function() {
                 var url = "<?php echo $this->basePath(); ?>/validacion/listarmunicipios";
                 var depto = $(this).val();
-                var prefix = "solicitante";
-                cambiarDepto(url, depto, prefix);
-            });
-            $("select[name='hechos_depto']").change(function() {
-                var url = "<?php echo $this->basePath(); ?>/validacion/listarmunicipios";
-                var depto = $(this).val();
-                var prefix = "hechos";
-                cambiarDepto(url, depto, prefix);
+                cambiarDepto(url, depto);
             });
 
             /*
