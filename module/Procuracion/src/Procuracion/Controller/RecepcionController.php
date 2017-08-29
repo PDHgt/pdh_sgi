@@ -61,6 +61,14 @@ class RecepcionController extends AbstractActionController {
             $visitaservice = new VisitaService();
             $visitas = $visitaservice->listToday($this->entityManager, $sede);
 
+            $colaservice = new ColaRecepcionService(); //ExpedienteService();
+            $atendidos = $colaservice->listarPendientes($this->entityManager, $identity->getId());
+
+            $etapas = array(7, 3);
+
+            $expedienteservice = new ExpedienteService();
+            $iniciados = $expedienteservice->listarPendientes($this->entityManager, $identity->getId(), $etapas);
+
             $usuarioservice = new UsuarioService();
             $permisos = $usuarioservice->getPermisos($this->entityManager, $identity->getUsuario());
 
@@ -69,7 +77,7 @@ class RecepcionController extends AbstractActionController {
             $header->setTemplate('header');
 
             $aside = new ViewModel();
-            $aside->setVariables(array('identity' => $identity));
+            $aside->setVariables(array('identity' => $identity, 'atendidos' => $atendidos, 'iniciados' => $iniciados));
             $aside->setTemplate('aside');
 
             $layout = $this->layout();
@@ -97,12 +105,19 @@ class RecepcionController extends AbstractActionController {
             $colaservice = new ColaRecepcionService();
             $cola = $colaservice->listToday($this->entityManager, $sede); //$usr->sede
 
+            $atendidos = $colaservice->listarPendientes($this->entityManager, $identity->getId());
+
+            $etapas = array(7, 3);
+
+            $expedienteservice = new ExpedienteService();
+            $iniciados = $expedienteservice->listarPendientes($this->entityManager, $identity->getId(), $etapas);
+
             $header = new ViewModel();
             $header->setVariables(array('identity' => $identity));
             $header->setTemplate('header');
 
             $aside = new ViewModel();
-            $aside->setVariables(array('identity' => $identity));
+            $aside->setVariables(array('identity' => $identity, 'atendidos' => $atendidos, 'iniciados' => $iniciados));
             $aside->setTemplate('aside');
 
             $layout = $this->layout();
@@ -123,12 +138,20 @@ class RecepcionController extends AbstractActionController {
             $usuarioservice = new UsuarioService();
             $permisos = $usuarioservice->getPermisos($this->entityManager, $identity->getUsuario());
 
+            $colaservice = new ColaRecepcionService(); //ExpedienteService();
+            $atendidos = $colaservice->listarPendientes($this->entityManager, $identity->getId());
+
+            $etapas = array(7, 3);
+
+            $expedienteservice = new ExpedienteService();
+            $iniciados = $expedienteservice->listarPendientes($this->entityManager, $identity->getId(), $etapas);
+
             $header = new ViewModel();
             $header->setVariables(array('identity' => $identity));
             $header->setTemplate('header');
 
             $aside = new ViewModel();
-            $aside->setVariables(array('identity' => $identity));
+            $aside->setVariables(array('identity' => $identity, 'atendidos' => $atendidos, 'iniciados' => $iniciados));
             $aside->setTemplate('aside');
 
             $layout = $this->layout();
@@ -149,6 +172,14 @@ class RecepcionController extends AbstractActionController {
             $usuarioservice = new UsuarioService();
             $permisos = $usuarioservice->getPermisos($this->entityManager, $identity->getUsuario());
 
+            $colaservice = new ColaRecepcionService(); //ExpedienteService();
+            $atendidos = $colaservice->listarPendientes($this->entityManager, $identity->getId());
+
+            $etapas = array(7, 3);
+
+            $expedienteservice = new ExpedienteService();
+            $iniciados = $expedienteservice->listarPendientes($this->entityManager, $identity->getId(), $etapas);
+
             $form = new FormularioRecepcion();
 
             $header = new ViewModel();
@@ -156,7 +187,7 @@ class RecepcionController extends AbstractActionController {
             $header->setTemplate('header');
 
             $aside = new ViewModel();
-            $aside->setVariables(array('identity' => $identity));
+            $aside->setVariables(array('identity' => $identity, 'atendidos' => $atendidos, 'iniciados' => $iniciados));
             $aside->setTemplate('aside');
 
             $layout = $this->layout();
@@ -175,6 +206,9 @@ class RecepcionController extends AbstractActionController {
 
             $data = $this->request->getPost();
 
+            $usuarioservice = new UsuarioService();
+            $permisos = $usuarioservice->getPermisos($this->entityManager, $identity->getUsuario());
+
             $fechaInicio = date_create_from_format('d/m/Y', $data['fechaInicio']);
             $fechaFin = date_create_from_format('d/m/Y', $data['fechaFin']);
 
@@ -184,19 +218,26 @@ class RecepcionController extends AbstractActionController {
             $solicitudservice = new ColaRecepcionService();
             $solicitudes = $solicitudservice->getPorFechas($this->entityManager, $fechaInicio->format("Y-m-d H:i:s"), $fechaFin->format("Y-m-d H:i:s"));
 
+            $atendidos = $solicitudservice->listarPendientes($this->entityManager, $identity->getId());
+
+            $etapas = array(7, 3);
+
+            $expedienteservice = new ExpedienteService();
+            $iniciados = $expedienteservice->listarPendientes($this->entityManager, $identity->getId(), $etapas);
+
             $header = new ViewModel();
             $header->setVariables(array('identity' => $identity));
             $header->setTemplate('header');
 
             $aside = new ViewModel();
-            $aside->setVariables(array('identity' => $identity));
+            $aside->setVariables(array('identity' => $identity, 'atendidos' => $atendidos, 'iniciados' => $iniciados));
             $aside->setTemplate('aside');
 
             $layout = $this->layout();
             $layout->addChild($header, 'header')
                     ->addChild($aside, 'aside');
 
-            $view = new ViewModel(array('visitas' => $visitas, 'solicitudes' => $solicitudes, 'identity' => $identity));
+            $view = new ViewModel(array('visitas' => $visitas, 'solicitudes' => $solicitudes, 'identity' => $identity, 'permisos' => $permisos));
             return $view;
         }
     }
@@ -436,6 +477,7 @@ class RecepcionController extends AbstractActionController {
             'numero' => $data["solicitante_numdoc"],
             'sexo' => $data["solicitante_sexo"],
             'fechanac' => $fechanac,
+            'edad' => $data["solicitante_edad"],
             'lgbti' => $data["solicitante_lgbti"],
             'anonimo' => $data["solicitante_anonimo"],
             'correo' => $data["solicitante_correo"],
@@ -472,7 +514,6 @@ class RecepcionController extends AbstractActionController {
         $expservice->puedeModificarExpediente($this->entityManager, $datos, $calificacion, $persona);
 
         return new JsonModel();
-        //return $this->redirect()->toRoute('recepcion', array('action' => 'investigacion', 'id' => $datos["ide"])); */
     }
 
     public function resumenAction() {
@@ -676,9 +717,9 @@ class RecepcionController extends AbstractActionController {
         if (empty($data["fechanac"])) {
             $fechanac = NULL;
         } else {
-            $fechanac = date_create_from_format('d/m/Y', $data["fechanac"]); /*
-             * $nac = date_create(date("Y-m-d", ));
-             */
+            $fechanac = date_create_from_format('d/m/Y', $data["fechanac"]);
+            $hoy = new \DateTime('now');
+            $edad = $fechanac->diff($hoy)->y;
         }
         $persona = array(
             'id' => $data["id"],
@@ -688,6 +729,7 @@ class RecepcionController extends AbstractActionController {
             'numero' => $data["numdoc"],
             'sexo' => $data["sexo"],
             'fechanac' => $fechanac,
+            'edad' => $edad,
             'lgbti' => $data["lgbti"],
             'anonimo' => $data["anonimo"],
             'usuario' => $identity->getId()
@@ -749,6 +791,7 @@ class RecepcionController extends AbstractActionController {
             'numero' => $data["solicitante_numdoc"],
             'sexo' => $data["solicitante_sexo"],
             'fechanac' => $fechanac,
+            'edad' => $data["solicitante_edad"],
             'lgbti' => $data["solicitante_lgbti"],
             'anonimo' => $data["solicitante_anonimo"],
             'correo' => $data["solicitante_correo"],
@@ -806,59 +849,62 @@ class RecepcionController extends AbstractActionController {
 
         $data = $this->request->getPost();
         $identity = $this->authService->getIdentity();
-        $sede = $identity->getIdEmpleado()->getIdsede()->getId();
+        //$sede = $identity->getIdEmpleado()->getIdsede()->getId();
 
-        if (empty($data["solicitante_fechanac"])) {
-            $fechanac = NULL;
-        } else {
-            $fechanac = date_create_from_format('d/m/Y', $data["solicitante_fechanac"]);
-        }
+        /* if (empty($data["solicitante_fechanac"])) {
+          $fechanac = NULL;
+          } else {
+          $fechanac = date_create_from_format('d/m/Y', $data["solicitante_fechanac"]);
+          }
 
-        if (empty($data["hechos_fecha"])) {
-            $fechahecho = NULL;
-        } else {
-            $fechahecho = date_create_from_format('d/m/Y', $data["hechos_fecha"]);
-        }
-        $persona = array(
-            'idpersona' => $data["idpersona"],
-            'idp' => $data["idp"],
-            'nombres' => $data["solicitante_nombre"],
-            'apellidos' => $data["solicitante_apellido"],
-            'tipo' => $data["solicitante_tipodoc"],
-            'numero' => $data["solicitante_numdoc"],
-            'sexo' => $data["solicitante_sexo"],
-            'fechanac' => $fechanac,
-            'lgbti' => $data["solicitante_lgbti"],
-            'anonimo' => $data["solicitante_anonimo"],
-            'correo' => $data["solicitante_correo"],
-            'telefono' => $data["solicitante_telefono"],
-            'direccion' => $data["solicitante_direccion"],
-            'departamento' => $data["solicitante_depto"],
-            'municipio' => $data["solicitante_muni"],
-            'usuario' => $identity->getId()
-        );
+          if (empty($data["hechos_fecha"])) {
+          $fechahecho = NULL;
+          } else {
+          $fechahecho = date_create_from_format('d/m/Y', $data["hechos_fecha"]);
+          }
+          $persona = array(
+          'idpersona' => $data["idpersona"],
+          'idp' => $data["idp"],
+          'nombres' => $data["solicitante_nombre"],
+          'apellidos' => $data["solicitante_apellido"],
+          'tipo' => $data["solicitante_tipodoc"],
+          'numero' => $data["solicitante_numdoc"],
+          'sexo' => $data["solicitante_sexo"],
+          'fechanac' => $fechanac,
+          'edad' => $data["solicitante_edad"],
+          'lgbti' => $data["solicitante_lgbti"],
+          'anonimo' => $data["solicitante_anonimo"],
+          'correo' => $data["solicitante_correo"],
+          'telefono' => $data["solicitante_telefono"],
+          'direccion' => $data["solicitante_direccion"],
+          'departamento' => $data["solicitante_depto"],
+          'municipio' => $data["solicitante_muni"],
+          'usuario' => $identity->getId()
+          );
 
-        $datos = array(
-            'idexpediente' => $data["idexpediente"],
-            'ide' => $data["ide"],
-            'cola' => $data["idcola"],
-            'usr' => $identity->getId(),
-            'sede' => $sede,
-            'tipo' => $data["tipoexpediente"],
-            'departamento' => $data["hechos_depto"],
-            'municipio' => $data["hechos_muni"],
-            'area' => $data["hechos_ubicacion"],
-            'hechos' => $data["hechos_descripcion"],
-            'direccion' => $data["hechos_direccion"],
-            'fecha' => $fechahecho,
-            'peticion' => $data["hechos_peticion"],
-            'pruebas' => $data["hechos_pruebas"]
-        );
+          $datos = array(
+          'idexpediente' => $data["idexpediente"],
+          'ide' => $data["ide"],
+          'cola' => $data["idcola"],
+          'usr' => $identity->getId(),
+          'sede' => $sede,
+          'tipo' => $data["tipoexpediente"],
+          'departamento' => $data["hechos_depto"],
+          'municipio' => $data["hechos_muni"],
+          'area' => $data["hechos_ubicacion"],
+          'hechos' => $data["hechos_descripcion"],
+          'direccion' => $data["hechos_direccion"],
+          'fecha' => $fechahecho,
+          'peticion' => $data["hechos_peticion"],
+          'pruebas' => $data["hechos_pruebas"]
+          );
 
-        $calificacion = array(
-            'ide' => $data["ide"],
-            'hechos' => $data["hechos"]
-        );
+          $calificacion = array(
+          'ide' => $data["ide"],
+          'hechos' => $data["hechos"]
+          ); */
+        $idexpediente = $data["ide"];
+
 
         $orientacion = array(
             'idorientacion' => $data["idorientacion"],
@@ -875,12 +921,12 @@ class RecepcionController extends AbstractActionController {
 
 
         $expservice = new ExpedienteService();
-        $expservice->guardarOrientacion($this->entityManager, $orientacion, $instituciones, $datos, $calificacion, $persona);
+        $expservice->guardarOrientacion($this->entityManager, $orientacion, $instituciones, $idexpediente);
 
         $caminoservice = new CaminoService();
         //$caminoservice->TerminarEtapa($this->entityManager, $data["ide"], $identity);
 
-        return $this->redirect()->toRoute('recepcion', array('action' => 'resumen', 'id' => $datos["ide"]));
+        return $this->redirect()->toRoute('recepcion', array('action' => 'resumen', 'id' => $idexpediente));
     }
 
 ///************************Métodos para modificar registros*****************************///
@@ -894,6 +940,8 @@ class RecepcionController extends AbstractActionController {
             $fechanac = NULL;
         } else {
             $fechanac = date_create_from_format('d/m/Y', $data["fechanac"]);
+            $hoy = new \DateTime('now');
+            $edad = $fechanac->diff($hoy)->y;
         }
         $persona = array(
             'id' => $data["idp"],
@@ -903,6 +951,7 @@ class RecepcionController extends AbstractActionController {
             'numero' => $data["numdoc"],
             'sexo' => $data["sexo"],
             'fechanac' => $fechanac,
+            'edad' => $edad,
             'lgbti' => $data["lgbti"],
             'anonimo' => $data["anonimo"],
             'usuario' => $identity->getId()
@@ -1068,24 +1117,45 @@ class RecepcionController extends AbstractActionController {
         $idexpediente = $this->getEvent()->getRouteMatch()->getParam('id');
         $identity = $this->authService->getIdentity();
 
-        $nvoService = new GeneraDocsService();
-        $pdftext = $nvoService->GenerarOrientacion($this->entityManager, $idexpediente, $identity->getId());
+        $expedienteservice = new ExpedienteService();
+        $expediente = $expedienteservice->verExpediente($this->entityManager, $idexpediente);
 
+        $tipoexpediente = $expediente["datos"]->getIdTipo()->getId();
+
+        $nvoService = new GeneraDocsService();
+
+        $ruta = $nvoService->makeDir($this->entityManager, $idexpediente, $identity->getId());
+
+        switch ($tipoexpediente) {
+            case 1:
+                $nombreDoc = $ruta . "/actaOrientacion.pdf";
+                $pdftext = $nvoService->GenerarOrientacion($this->entityManager, $idexpediente, $identity->getId(), $nombreDoc);
+                $action = "resumen";
+                break;
+            case 2:
+
+                break;
+            case 3:
+
+                break;
+            case 4:
+                $nombreDoc = $ruta . "/actaDenuncia.pdf";
+                $pdftext = $nvoService->GenerarInvestigacion($this->entityManager, $idexpediente, $identity->getId(), $nombreDoc);
+                $action = "resumeninv";
+                break;
+        }
         $this->pdfService->set_paper('folio', 'portrait');
         $this->pdfService->load_html($pdftext);
         $this->pdfService->render();
 
-        $ruta = $nvoService->makeDir($this->entityManager, $idexpediente, $identity->getId()); //exit();
-        if ($ruta) {
-            $nombreDoc = $ruta . "/actaOrientacion.pdf";
-            $pdftext = $nvoService->GenerarOrientacion($this->entityManager, $idexpediente, $identity->getId(), $nombreDoc);
-            file_put_contents($nombreDoc, $this->pdfService->output());
+        if ((file_put_contents($nombreDoc, $this->pdfService->output()) !== false)) {
+            $nvoService->guardarGenerado($this->entityManager, $nombreDoc, $identity->getId(), $idexpediente);
             $this->flashMessenger()->addMessage("Se generó exitósamente el archivo");
-            return $this->redirect()->toRoute('recepcion', array('action' => 'resumen', 'id' => $idexpediente));
         } else {
             $this->flashMessenger()->addMessage("Error al generar el archivo");
-            return $this->redirect()->toRoute('recepcion', array('action' => 'resumen', 'id' => $idexpediente));
         }
+
+        return $this->redirect()->toRoute('recepcion', array('action' => $action, 'id' => $idexpediente));
     }
 
     public function terminarAction() {
@@ -1106,8 +1176,7 @@ class RecepcionController extends AbstractActionController {
             $identity = $this->authService->getIdentity();
             $idexpediente = $this->getEvent()->getRouteMatch()->getParam('id');
             $idpersona = $this->getEvent()->getRouteMatch()->getParam('param1');
-
-            $data = $this->request->getPost();
+            $param = $this->getEvent()->getRouteMatch()->getParam('param2');
 
             $form = new FormularioPersona("victima");
 
@@ -1128,6 +1197,7 @@ class RecepcionController extends AbstractActionController {
             $this->layout('layout/modal');
 
             $view = new ViewModel(array(
+                'param' => $param,
                 'expediente' => $idexpediente,
                 'denunciante' => $persona,
                 'form' => $form,
@@ -1149,12 +1219,18 @@ class RecepcionController extends AbstractActionController {
         $identity = $this->authService->getIdentity();
         $data = $this->request->getPost();
         $idexpediente = $data["idexpediente"];
-        /* var_dump($data);
-          var_dump($idexpediente); */
         $personaservice = new PersonaService();
         $personaservice->ingresarVictima($this->entityManager, $identity, $data, $idexpediente);
 
-        return $this->redirect()->toRoute('recepcion', array('action' => 'investigacion', 'id' => $idexpediente));
+        switch ($data["param"]) {
+            case 1:
+                $action = "investigacion";
+                break;
+            case 2:
+                $action = "resumeninv";
+                break;
+        }
+        return $this->redirect()->toRoute('recepcion', array('action' => $action, 'id' => $idexpediente));
     }
 
     public function registrodenunciadoAction() {
@@ -1164,6 +1240,8 @@ class RecepcionController extends AbstractActionController {
         } else {
             $identity = $this->authService->getIdentity();
             $idexpediente = $this->getEvent()->getRouteMatch()->getParam('id');
+            $idpersona = $this->getEvent()->getRouteMatch()->getParam('param1');
+            $param = $this->getEvent()->getRouteMatch()->getParam('param2');
 
             $form = new FormularioPersona("denunciado");
 
@@ -1181,6 +1259,7 @@ class RecepcionController extends AbstractActionController {
             $this->layout('layout/modal');
 
             $view = new ViewModel(array(
+                'param' => $param,
                 'expediente' => $idexpediente,
                 'form' => $form,
                 'identity' => $identity,
@@ -1201,10 +1280,242 @@ class RecepcionController extends AbstractActionController {
         $identity = $this->authService->getIdentity();
         $data = $this->request->getPost();
         $idexpediente = $data["idexpediente"];
+
         $personaservice = new PersonaService();
         $personaservice->ingresarDenunciado($this->entityManager, $identity, $data, $idexpediente);
+        switch ($data["param"]) {
+            case 1:
+                $action = "investigacion";
+                break;
+            case 2:
+                $action = "resumeninv";
+                break;
+        }
+        return $this->redirect()->toRoute('recepcion', array('action' => $action, 'id' => $idexpediente));
+    }
 
-        return $this->redirect()->toRoute('recepcion', array('action' => 'investigacion', 'id' => $idexpediente));
+    public function resumeninvAction() {
+        if (!$this->authService->hasIdentity()) {
+            return $this->redirect()->toRoute('inicio', array('action' => 'login'));
+        } else {
+            $identity = $this->authService->getIdentity();
+            $id = $this->getEvent()->getRouteMatch()->getParam('id');
+
+            $form = new FormularioRecepcion();
+
+            $geografiaService = new GeografiaService();
+            $deptos = $geografiaService->ListarDeptos($this->entityManager);
+            $munis = $geografiaService->ListarMunis($this->entityManager);
+
+            $derechoservice = new CuboCalificacionService();
+            $derechos = $derechoservice->listarDerechos($this->entityManager);
+
+            $usuarioservice = new UsuarioService();
+            $permisos = $usuarioservice->getPermisos($this->entityManager, $identity->getUsuario());
+
+            $expedienteservice = new ExpedienteService();
+            $expediente = $expedienteservice->verExpediente($this->entityManager, $id);
+
+            $institucionservice = new RemisionService();
+            $institucion = $institucionservice->listarInstitucionPadre($this->entityManager);
+
+            $catalogoservice = new CatalogoService();
+            $relacionvicagr = $catalogoservice->obtenerCatalogo($this->entityManager, "RelacionVicAgr");
+
+            $personaservice = new PersonaService();
+            $victimas = $personaservice->devolverPersonas($this->entityManager, "víctima", $id);
+            $denunciados = $personaservice->devolverPersonas($this->entityManager, "denunciado", $id);
+
+            $docservice = new DocumentoService();
+            $docs = $docservice->getDocumentos($this->entityManager, $id);
+
+            $url = $this->url()->fromRoute('recepcion', array('action' => 'imprimirdoc', 'id' => $id));
+
+            $header = new ViewModel();
+            $header->setVariables(array('identity' => $identity));
+            $header->setTemplate('header');
+
+            $aside = new ViewModel();
+            $aside->setVariables(array('identity' => $identity));
+            $aside->setTemplate('aside');
+
+            $layout = $this->layout();
+            $layout->addChild($header, 'header')
+                    ->addChild($aside, 'aside');
+            $view = new ViewModel(array(
+                'form' => $form,
+                'expediente' => $expediente,
+                'identity' => $identity,
+                'id' => $id,
+                'derechos' => $derechos,
+                'permisos' => $permisos,
+                'deptos' => $deptos,
+                'munis' => $munis,
+                'institucion' => $institucion,
+                'relacionvicagr' => $relacionvicagr,
+                'victimas' => $victimas,
+                'denunciados' => $denunciados,
+                'docs' => $docs,
+                'url' => $url
+            ));
+            return $view;
+        }
+    }
+
+    public function incompletoAction() {
+
+        if (!$this->authService->hasIdentity()) {
+            return $this->redirect()->toRoute('inicio', array('action' => 'login'));
+        } else {
+            $identity = $this->authService->getIdentity();
+
+            $form = new FormularioRecepcion();
+
+            $usuarioservice = new UsuarioService();
+            $permisos = $usuarioservice->getPermisos($this->entityManager, $identity->getUsuario());
+
+            $colaservice = new ColaRecepcionService(); //ExpedienteService();
+            $atendidos = $colaservice->listarPendientes($this->entityManager, $identity->getId());
+
+            $etapas = array(7, 3);
+
+            $expedienteservice = new ExpedienteService();
+            $iniciados = $expedienteservice->listarPendientes($this->entityManager, $identity->getId(), $etapas);
+
+            $header = new ViewModel();
+            $header->setVariables(array('identity' => $identity));
+            $header->setTemplate('header');
+
+            $aside = new ViewModel();
+            $aside->setVariables(array('identity' => $identity, 'atendidos' => $atendidos, 'iniciados' => $iniciados));
+            $aside->setTemplate('aside');
+
+            $layout = $this->layout();
+            $layout->addChild($header, 'header')
+                    ->addChild($aside, 'aside');
+
+            $view = new ViewModel(array('form' => $form, 'visitas' => $atendidos, 'identity' => $identity, 'permisos' => $permisos));
+            return $view;
+        }
+    }
+
+    public function expedienteincAction() {
+        if (!$this->authService->hasIdentity()) {
+            return $this->redirect()->toRoute('inicio', array('action' => 'login'));
+        } else {
+            $identity = $this->authService->getIdentity();
+
+            $usuarioservice = new UsuarioService();
+            $permisos = $usuarioservice->getPermisos($this->entityManager, $identity->getUsuario());
+
+            $colaservice = new ColaRecepcionService(); //ExpedienteService();
+            $atendidos = $colaservice->listarPendientes($this->entityManager, $identity->getId());
+
+            $etapas = array(7, 3);
+
+            $expedienteservice = new ExpedienteService();
+            $iniciados = $expedienteservice->listarPendientes($this->entityManager, $identity->getId(), $etapas);
+
+            $header = new ViewModel();
+            $header->setVariables(array('identity' => $identity));
+            $header->setTemplate('header');
+
+            $aside = new ViewModel();
+            $aside->setVariables(array('identity' => $identity, 'atendidos' => $atendidos, 'iniciados' => $iniciados));
+            $aside->setTemplate('aside');
+
+            $layout = $this->layout();
+            $layout->addChild($header, 'header')
+                    ->addChild($aside, 'aside');
+
+            $view = new ViewModel(array('form' => $form, 'visitas' => $iniciados, 'identity' => $identity, 'permisos' => $permisos));
+            return $view;
+        }
+    }
+
+    public function listadorevisionAction() {
+        if (!$this->authService->hasIdentity()) {
+            return $this->redirect()->toRoute('inicio', array('action' => 'login'));
+        } else {
+            $identity = $this->authService->getIdentity();
+
+            $form = new FormularioRecepcion();
+
+            $usuarioservice = new UsuarioService();
+            $permisos = $usuarioservice->getPermisos($this->entityManager, $identity->getUsuario());
+
+            $header = new ViewModel();
+            $header->setVariables(array('identity' => $identity));
+            $header->setTemplate('header');
+
+            $aside = new ViewModel();
+            $aside->setVariables(array('identity' => $identity));
+            $aside->setTemplate('aside');
+
+            $layout = $this->layout();
+            $layout->addChild($header, 'header')
+                    ->addChild($aside, 'aside');
+            $espedienteservice = new ExpedienteService();
+            $listado = $espedienteservice->listarPendientes($this->entityManager, $identity->getId(), 8); //);//);//
+
+            $view = new ViewModel(array('form' => $form, 'visitas' => $listado, 'identity' => $identity, 'permisos' => $permisos));
+            return $view;
+        }
+    }
+
+    public function continuarAction() {
+
+        $id = $this->getEvent()->getRouteMatch()->getParam('id');
+        $identity = $this->authService->getIdentity();
+        $hora = date("h:i:s");
+        /* $attend = array('id' => $id, 'hora' => $hora, 'usuario' => $identity->getId());
+          $colaservice = new ColaRecepcionService();
+          $colaservice->attend($this->entityManager, $attend); */
+
+        $expediente = new ExpedienteService();
+        $datos = $expediente->unExpediente($this->entityManager, $id);
+        $caminoservice = new CaminoService();
+        $etapa = $caminoservice->enQueEtapa($this->entityManager, $id);
+
+        switch ($etapa->getIdEtapa()->getId()) {
+            case 7://registro
+                switch ($datos->getIdTipo()->getId()) {
+                    case 1:
+                        $action = "orientacion";
+                        break;
+                    case 2:
+                        $action = "mediacion";
+                        break;
+                    case 3:
+                        $action = "accionespecifica";
+                        break;
+                    case 4:
+                        $action = "investigacion";
+                        break;
+                }
+                break;
+            case 3://cierre
+                switch ($datos->getIdTipo()) {
+                    case 1:
+                        $action = "orientacion";
+                        break;
+                    case 2:
+                        $action = "mediacion";
+                        break;
+                    case 3:
+                        $action = "accionespecifica";
+                        break;
+                    case 4:
+                        $action = "investigacion";
+                        break;
+                }
+                break;
+            default:
+                # code...
+                break;
+        }
+
+        return $this->redirect()->toRoute('recepcion', array('action' => $action, 'id' => $datos->getId()));
     }
 
 }

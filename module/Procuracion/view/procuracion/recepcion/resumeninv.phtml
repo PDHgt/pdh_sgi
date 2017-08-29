@@ -3,17 +3,15 @@ $expediente = $this->expediente["datos"];
 $cola = $expediente->getIdCola();
 $persona = $this->expediente["persona"];
 $calificacion = $this->expediente["calificacion"];
-$orientacion = $this->orientacion;
-$remisiones = $this->remisiones;
 ?>
 <section class="content-header">
-    <h1><?php echo ucwords(strtolower($expediente->getIdTipo()->getTipo())); ?> #<?php echo $expediente->getNumero(); ?></h1>
+    <h1>Investigación #<?php echo $expediente->getNumero(); ?></h1>
     <div class="progress">
         <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width: 33%">
             <span>(Hechos / Calificación) Etapa 1 de 3</span>
         </div>
         <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width: 33%">
-            <span>(Orientación / Remisión) Etapa 2 de 3</span>
+            <span>(Víctimas / Denunciados) Etapa 2 de 3</span>
         </div>
         <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width: 34%">
             <span>(Resumen / Impresión) Etapa 3 de 3</span>
@@ -25,7 +23,7 @@ $remisiones = $this->remisiones;
     $form = $this->form;
     $form->prepare();
     $form->setAttributes(array(
-        'action' => $this->url('recepcion', array('action' => 'guardarorientacion')),
+        'action' => $this->url('recepcion', array('action' => 'resumeninv')),
         'method' => 'post'
     ));
     echo $this->form()->openTag($form);
@@ -34,24 +32,19 @@ $remisiones = $this->remisiones;
     $idcola = $form->get('id')->setValue($cola->getId())->setAttributes(array("name" => "idcola"));
     echo $this->formInput($idcola);
 
-    $idexpediente = $form->get('id')->setValue($expediente->getId())->setAttributes(array("name" => "idexpediente", "disabled" => true));
+    $id = $form->get('id')->setValue($expediente->getId())->setAttributes(array("name" => "idexpediente", "disabled" => true));
+    echo $this->formInput($id);
+
+    $idexpediente = $form->get('id')->setValue($expediente->getId())->setAttributes(array("name" => "ide", "disabled" => false));
     echo $this->formInput($idexpediente);
 
     $idpersona = $form->get('id')->setValue($cola->getIdpersona()->getId())->setAttributes(array("name" => "idpersona", "disabled" => true));
     echo $this->formInput($idpersona);
 
-    $idorientacion = $form->get('id')->setValue($orientacion->getId())->setAttributes(array("name" => "idorientacion", "disabled" => true));
-    echo $this->formInput($idorientacion);
-
-    $ide = $form->get('id')->setValue($expediente->getId())->setAttributes(array("name" => "ide", "disabled" => false));
-    echo $this->formInput($ide);
-
     $idp = $form->get('id')->setValue($cola->getIdpersona()->getId())->setAttributes(array("name" => "idp", "disabled" => false));
     echo $this->formInput($idp);
-
-    $ido = $form->get('id')->setValue($orientacion->getId())->setAttributes(array("name" => "ido", "disabled" => false));
-    echo $this->formInput($ido);
     ?>
+
     <div class="row">
         <div class = "col-xs-12">
             <!------------- Inicia formulario solicitud ----------------->
@@ -80,7 +73,7 @@ $remisiones = $this->remisiones;
                         </small>
                     </h3>
                     <div class="pull-right">
-                        <a href="#" data-widget="collapse" data-tt="tooltip" title="Maximizar">
+                        <a href="#" data-widget="collapse">
                             <i class="fa fa-plus"></i>
                         </a>
                     </div>
@@ -100,6 +93,7 @@ $remisiones = $this->remisiones;
                                 echo $formLabel->closeTag();
                                 echo $this->formInput($fechasol);
                                 ?>
+
                             </div>
                         </div>
                         <div class="col-xs-6">
@@ -144,13 +138,245 @@ $remisiones = $this->remisiones;
             <!------------- Finaliza formulario solicitud ----------------->
         </div>
     </div>
+    <div class="row" id="hechos">
+        <div class="col-xs-12">
+            <!------------- Inicia formulario hechos ----------------->
+            <div class="box box-default color-palette-box collapsed-box">
+                <div class="box-header with-border">
+                    <i class="fa fa-calendar"></i>
+                    <h3 class="box-title">Hechos y Calificación
+                        <small>
+                            <?php
+                            echo " / " . $expediente->getFechahechos()->format("d/m/Y");
+                            echo " / " . $expediente->getDeptohechos()->getNombre();
+                            echo " / " . $expediente->getMunihechos()->getNombre();
+                            echo " / " . ucwords(strtolower($expediente->getIdTipo()->getTipo()));
+                            ?>
+                        </small>
+                    </h3>
+                    <div class="pull-right box-tools">
+                        <a href="#" data-widget="collapse">
+                            <i class="fa fa-plus"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="form-group">
+                                <?php
+                                $fecha = $form->get('fechahecho')->setValue($expediente->getFechahechos()->format("d/m/Y"))->setAttributes(array(
+                                    "class" => "form-control",
+                                    "name" => "hechos_fecha",
+                                    "id" => "hechos_fecha",
+                                    "readonly" => false,
+                                    "disabled" => true,
+                                    "required" => true
+                                ));
+                                echo $formLabel->openTag() . $fecha->getOption('label') . " ";
+                                echo $formLabel->closeTag();
+                                echo $this->formInput($fecha);
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="form-group">
+                                <?php
+                                $area = $form->get('areaubicacion')->setValue($expediente->getArea())->setAttributes(array(
+                                    "name" => "hechos_ubicacion",
+                                    "disabled" => true
+                                ));
+                                echo $formLabel->openTag() . $area->getOption('label') . $formLabel->closeTag();
+                                echo $this->formSelect($area);
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <?php
+                                $direccion = $form->get('direccion')->setValue($expediente->getLugarhechos())->setAttributes(array(
+                                    "name" => "hechos_direccion",
+                                    "disabled" => true
+                                ));
+                                echo $formLabel->openTag() . $direccion->getOption('label') . " ";
+                                echo $formLabel->closeTag();
+                                echo $this->formInput($direccion);
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="form-group">
+                                <?php
+                                $deptos = $this->deptos;
+                                $deptosOptions = array();
+                                foreach ($deptos as $deptoOption) {
+                                    $deptosOptions[$deptoOption->getCodigo()] = $deptoOption->getNombre();
+                                }
+                                $depto = $form->get('depto')->setValueOptions($deptosOptions)->setValue($expediente->getDeptohechos()->getCodigo())->setAttributes(array(
+                                    "name" => "hechos_depto",
+                                    "required" => true,
+                                    "disabled" => true
+                                ));
+                                echo $formLabel->openTag() . $depto->getOption('label') . $formLabel->closeTag();
+                                echo $this->formSelect($depto);
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="form-group">
+                                <?php
+                                $munis = $this->munis;
+                                //print_r($munis);
+                                $munisOptions = array();
+                                foreach ($munis as $muniOption) {
+                                    $munisOptions[$muniOption->getCodigo()] = $muniOption->getNombre();
+                                }
+                                $muni = $form->get('muni')->setValueOptions($munisOptions)->setValue($expediente->getMunihechos()->getCodigo())->setAttributes(array(
+                                    "name" => "hechos_muni",
+                                    "required" => true,
+                                    "disabled" => true
+                                ));
+                                echo $formLabel->openTag() . $muni->getOption('label') . $formLabel->closeTag();
+                                echo $this->formSelect($muni);
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <?php
+                                $hechos = $form->get('deschechos')->setValue($expediente->getHechos())->setAttributes(array(
+                                    "id" => "hechos",
+                                    "name" => "hechos_descripcion",
+                                    "required" => true,
+                                    "disabled" => true
+                                ));
+                                echo $formLabel->openTag() . $hechos->getOption('label') . " ";
+                                echo $formLabel->closeTag();
+                                echo $this->formTextarea($hechos);
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="form-group">
+                                <?php
+                                $peticion = $form->get('peticion')->setValue($expediente->getPeticion())->setAttributes(array(
+                                    "name" => "hechos_peticion",
+                                    "disabled" => true
+                                ));
+                                echo $formLabel->openTag() . $peticion->getOption('label') . $formLabel->closeTag();
+                                echo $this->formTextarea($peticion);
+                                ?>
+                            </div>
+                        </div>
+                        <div class = "col-xs-6">
+                            <div class="form-group">
+                                <?php
+                                $pruebas = $form->get('pruebas')->setValue($expediente->getPruebas())->setAttributes(array(
+                                    "name" => "hechos_pruebas",
+                                    "disabled" => true
+                                ));
+                                echo $formLabel->openTag() . $pruebas->getOption('label') . $formLabel->closeTag();
+                                echo $this->formTextarea($pruebas);
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <?php
+                                $tipoexpediente = $form->get('tipoexpediente')->setValue($expediente->getIdTipo()->getId())->setAttributes(array(
+                                    "required" => true,
+                                    "disabled" => true
+                                ));
+                                echo $formLabel->openTag() . $tipoexpediente->getOption('label') . "  &nbsp;" . $formLabel->closeTag();
+                                echo $this->formRadio($tipoexpediente);
+                                ?>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 calificacion">
+                            <strong>Hechos violatorios</strong>
+                            <ul>
+                                <?php
+                                foreach ($calificacion as $hecho) {
+                                    echo "<li>" . $hecho->getIdHecho()->getHecho() . "</li>";
+                                }
+                                ?>
+                            </ul>
+                        </div>
+                        <div class="col-xs-12 calificacion" style="display: none">
+                            <div class="row" id="calificacion">
+                                <div class="col-xs-3">
+                                    <h4>Civíles y Políticos</h4>
+                                    <div class="form-group">
+                                        <?php
+                                        $derechos = $this->derechos;
+                                        foreach ($derechos as $derechoOption) {
+                                            if ($derechoOption->getArea() == "DCP") {
+                                                $derecho = $form->get('derecho[]')->setLabel($derechoOption->getDerecho());
+                                                echo "<div class='checkbox'>";
+                                                echo "<label><input type='checkbox' name='derecho[]' value='" . $derechoOption->getId() . "'>";
+                                                echo $derechoOption->getDerecho() . "</label></div>";
+                                            }
+                                        }
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class="col-xs-3">
+                                    <h4>Económicos, Sociales y Culturales</h4>
+                                    <div class="form-group checkdiv">
+                                        <?php
+                                        foreach ($derechos as $derechoOption) {
+                                            if ($derechoOption->getArea() == "DESC") {
+                                                $derecho = $form->get('derecho[]')->setLabel($derechoOption->getDerecho());
+                                                echo "<div class='checkbox'>";
+                                                echo "<label><input type='checkbox' name='derecho[]' value='" . $derechoOption->getId() . "'>";
+                                                echo $derechoOption->getDerecho() . "</label></div>";
+                                            }
+                                        }
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class="col-xs-3">
+                                    <h4>Hechos violatorios</h4>
+                                    <div class="form-group" id="hechosviolatorios">
+                                        <?php
+                                        foreach ($calificacion as $hecho) {
+                                            echo "<div class='checkbox'>";
+                                            echo "<label><input type='checkbox' name ='hechos[]' checked='checked' value='" . $hecho->getIdHecho()->getId() . "'>";
+                                            echo $hecho->getIdHecho()->getHecho() . "</label></div>";
+                                        }
+                                        ?>
+
+                                    </div>
+                                </div>
+                                <div class="col-xs-3">
+                                    <h4>Calificación</h4>
+                                    <div id="resumen" class="padding-lg">
+                                        <span></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer clearfix">
+                    <a href="#" id="editarhechos">
+                        <span class="badge bg-red"><i class="fa fa-edit"></i> Editar</span>
+                    </a>
+                    <a href="#" id="guardarhechos" style="display:none">
+                        <span class="badge bg-blue"><i class="fa fa-save"></i> Guardar</span>
+                    </a>
+                </div>
+            </div>
+            <!------------- Finaliza formulario hechos y calificacion ----------------->
+        </div>
+    </div>
     <div class="row" id="denunciante">
         <div class="col-xs-12">
-            <!---------------------- Inicia formulario de solicitante -------------------------->
+            <!---------------------- Inicia formulario de denunciante -------------------------->
             <div class="box box-default color-palette-box collapsed-box">
                 <div class="box-header with-border">
                     <i class="fa fa-user"></i>
-                    <h3 class="box-title">Solicitante
+                    <h3 class="box-title">Denunciante
                         <small>
                             <?php
                             echo " / " . $persona->getNombres() . " " . $persona->getApellidos();
@@ -166,12 +392,12 @@ $remisiones = $this->remisiones;
                         </small>
                     </h3>
                     <div class="pull-right">
-                        <a href="#" data-widget="collapse" data-tt="tooltip" title="Maximizar">
+                        <a href="#" data-widget="collapse">
                             <i class="fa fa-plus"></i>
                         </a>
                     </div>
                 </div>
-                <div class="box-body" id="denunciante">
+                <div class="box-body">
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="form-group">
@@ -261,6 +487,7 @@ $remisiones = $this->remisiones;
                                         <?php
                                         $edad = $form->get('edad')->setValue($persona->getEdad())->setAttributes(array(
                                             "name" => "solicitante_edad",
+                                            "id" => "solicitante_edad",
                                             "disabled" => true
                                         ));
                                         echo $formLabel->openTag() . $edad->getOption('label') . $formLabel->closeTag() . "<br>";
@@ -372,6 +599,27 @@ $remisiones = $this->remisiones;
                                         ?>
                                     </div>
                                 </div>
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <?php
+                                        $victimas = $this->victimas;
+                                        foreach ($victimas as $victima) {
+                                            if ($victima->getIdPersona()->getId() === $cola->getIdpersona()->getId()) {
+                                                $denunciante_victima = 1;
+                                                $denunciante_victima_attr = true;
+                                            }
+                                        }
+
+                                        $victima = $form->get('victima')->setValue($denunciante_victima)->setAttributes(array(
+                                            "name" => "solicitante_victima",
+                                            "disabled" => $denunciante_victima_attr
+                                        ));
+                                        echo $formLabel->openTag() . $victima->getOption('label') . $formLabel->closeTag() . "<br>";
+                                        echo "<label>¿El denunciante también es la víctima?</label>";
+                                        echo "  " . $this->formRadio($victima);
+                                        ?>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -385,355 +633,130 @@ $remisiones = $this->remisiones;
                     </a>
                 </div>
             </div>
-            <!------------- Finaliza formulario solicitante ----------------->
+            <!------------- Finaliza formulario denunciante ----------------->
         </div>
     </div>
-    <div class="row" id="hechos">
+    <div class="row">
+        <!---------------- Inicia formulario victima --------------------->
         <div class="col-xs-12">
-            <!------------- Inicia formulario hechos ----------------->
             <div class="box box-default color-palette-box collapsed-box">
                 <div class="box-header with-border">
-                    <i class="fa fa-calendar"></i>
-                    <h3 class="box-title">Hechos y Calificación
+                    <i class="fa fa-users"></i>
+                    <h3 class="box-title">Víctimas
                         <small>
                             <?php
-                            echo " / " . $expediente->getFechahechos()->format("d/m/Y");
-                            echo " / " . $expediente->getDeptohechos()->getNombre();
-                            echo " / " . $expediente->getMunihechos()->getNombre();
-                            echo " / " . ucwords(strtolower($expediente->getIdTipo()->getTipo()));
+                            $victimas = $this->victimas;
+                            $count_victimas = count($victimas);
+                            echo "El expediente tiene (" . $count_victimas . ") victimas relacionadas";
                             ?>
                         </small>
                     </h3>
                     <div class="pull-right box-tools">
-                        <a href="#" data-widget="collapse" data-tt="tooltip" title="Maximizar">
+                        <a href="#" data-widget="collapse">
                             <i class="fa fa-plus"></i>
                         </a>
                     </div>
                 </div>
                 <div class="box-body">
-                    <div class="row">
-                        <div class="col-xs-6">
-                            <div class="form-group">
-                                <?php
-                                $fecha = $form->get('fechahecho')->setValue($expediente->getFechahechos()->format("d/m/Y"))->setAttributes(array(
-                                    "class" => "form-control",
-                                    "name" => "hechos_fecha",
-                                    "id" => "hechos_fecha",
-                                    "readonly" => false,
-                                    "disabled" => true,
-                                    "required" => true
-                                ));
-                                echo $formLabel->openTag() . $fecha->getOption('label') . " ";
-                                echo $formLabel->closeTag();
-                                echo $this->formInput($fecha);
-                                ?>
-                            </div>
-                        </div>
-                        <div class="col-xs-6">
-                            <div class="form-group">
-                                <?php
-                                $area = $form->get('areaubicacion')->setValue($expediente->getArea())->setAttributes(array(
-                                    "name" => "hechos_ubicacion",
-                                    "disabled" => true
-                                ));
-                                echo $formLabel->openTag() . $area->getOption('label') . $formLabel->closeTag();
-                                echo $this->formSelect($area);
-                                ?>
-                            </div>
-                        </div>
-                        <div class="col-xs-12">
-                            <div class="form-group">
-                                <?php
-                                $direccion = $form->get('direccion')->setValue($expediente->getLugarhechos())->setAttributes(array(
-                                    "name" => "hechos_direccion",
-                                    "disabled" => true
-                                ));
-                                echo $formLabel->openTag() . $direccion->getOption('label') . " ";
-                                echo $formLabel->closeTag();
-                                echo $this->formInput($direccion);
-                                ?>
-                            </div>
-                        </div>
-                        <div class="col-xs-6">
-                            <div class="form-group">
-
-                                <?php
-                                $deptos = $this->deptos;
-                                $deptosOptions = array();
-                                foreach ($deptos as $deptoOption) {
-                                    $deptosOptions[$deptoOption->getCodigo()] = $deptoOption->getNombre();
-                                }
-                                $depto = $form->get('depto')->setValueOptions($deptosOptions)->setValue($expediente->getDeptohechos()->getCodigo())->setAttributes(array(
-                                    "name" => "hechos_depto",
-                                    "required" => true,
-                                    "disabled" => true
-                                ));
-                                echo $formLabel->openTag() . $depto->getOption('label') . $formLabel->closeTag();
-                                echo $this->formSelect($depto);
-                                ?>
-                            </div>
-                        </div>
-                        <div class="col-xs-6">
-                            <div class="form-group">
-                                <?php
-                                $munis = $this->munis;
-                                //print_r($munis);
-                                $munisOptions = array();
-                                foreach ($munis as $muniOption) {
-                                    $munisOptions[$muniOption->getCodigo()] = $muniOption->getNombre();
-                                }
-                                $muni = $form->get('muni')->setValueOptions($munisOptions)->setValue($expediente->getMunihechos()->getCodigo())->setAttributes(array(
-                                    "name" => "hechos_muni",
-                                    "required" => true,
-                                    "disabled" => true
-                                ));
-                                echo $formLabel->openTag() . $muni->getOption('label') . $formLabel->closeTag();
-                                echo $this->formSelect($muni);
-                                ?>
-                            </div>
-                        </div>
-                        <div class="col-xs-12">
-                            <div class="form-group">
-                                <?php
-                                $hechos = $form->get('deschechos')->setValue($expediente->getHechos())->setAttributes(array(
-                                    "id" => "hechos",
-                                    "name" => "hechos_descripcion",
-                                    "required" => true,
-                                    "disabled" => true
-                                ));
-                                echo $formLabel->openTag() . $hechos->getOption('label') . " ";
-                                echo $formLabel->closeTag();
-                                echo $this->formTextarea($hechos);
-                                ?>
-                            </div>
-                        </div>
-                        <div class="col-xs-6">
-                            <div class="form-group">
-                                <?php
-                                $peticion = $form->get('peticion')->setValue($expediente->getPeticion())->setAttributes(array(
-                                    "name" => "hechos_peticion",
-                                    "disabled" => true
-                                ));
-                                echo $formLabel->openTag() . $peticion->getOption('label') . $formLabel->closeTag();
-                                echo $this->formTextarea($peticion);
-                                ?>
-                            </div>
-                        </div>
-                        <div class = "col-xs-6">
-                            <div class="form-group">
-                                <?php
-                                $pruebas = $form->get('pruebas')->setValue($expediente->getPruebas())->setAttributes(array(
-                                    "name" => "hechos_pruebas",
-                                    "disabled" => true
-                                ));
-                                echo $formLabel->openTag() . $pruebas->getOption('label') . $formLabel->closeTag();
-                                echo $this->formTextarea($pruebas);
-                                ?>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row" id="calificacion">
-                        <div class="col-xs-12">
-                            <div class="form-group">
-                                <?php
-                                $tipoexpediente = $form->get('tipoexpediente')->setValue($expediente->getIdTipo()->getId())->setAttributes(array(
-                                    "required" => true,
-                                    "disabled" => true
-                                ));
-                                echo $formLabel->openTag() . $tipoexpediente->getOption('label') . "  &nbsp;" . $formLabel->closeTag();
-                                echo $this->formRadio($tipoexpediente);
-                                ?>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 calificacion">
-                            <strong>Hechos violatorios</strong>
-                            <ul>
-                                <?php
-                                foreach ($calificacion as $hecho) {
-                                    echo "<li>" . $hecho->getIdHecho()->getHecho() . "</li>";
-                                }
-                                ?>
-                            </ul>
-                        </div>
-                        <div class="col-xs-12 calificacion" style="display: none">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <h4>Civíles y Políticos</h4>
-                                    <div class="form-group">
-                                        <?php
-                                        $derechos = $this->derechos;
-                                        foreach ($derechos as $derechoOption) {
-                                            if ($derechoOption->getArea() == "DCP") {
-                                                $derecho = $form->get('derecho[]')->setLabel($derechoOption->getDerecho());
-                                                echo "<div class='checkbox'>";
-                                                echo "<label><input type='checkbox' name='derecho[]' value='" . $derechoOption->getId() . "'>";
-                                                echo $derechoOption->getDerecho() . "</label></div>";
-                                            }
-                                        }
-                                        ?>
-                                    </div>
-                                </div>
-                                <div class="col-xs-3">
-                                    <h4>Económicos, Sociales y Culturales</h4>
-                                    <div class="form-group checkdiv">
-                                        <?php
-                                        foreach ($derechos as $derechoOption) {
-                                            if ($derechoOption->getArea() == "DESC") {
-                                                $derecho = $form->get('derecho[]')->setLabel($derechoOption->getDerecho());
-                                                echo "<div class='checkbox'>";
-                                                echo "<label><input type='checkbox' name='derecho[]' value='" . $derechoOption->getId() . "'>";
-                                                echo $derechoOption->getDerecho() . "</label></div>";
-                                            }
-                                        }
-                                        ?>
-                                    </div>
-                                </div>
-                                <div class="col-xs-3">
-                                    <h4>Hechos violatorios</h4>
-                                    <div class="form-group" id="hechosviolatorios">
-                                        <?php
-                                        foreach ($calificacion as $hecho) {
-                                            echo "<div class='checkbox'>";
-                                            echo "<label><input type='checkbox' name ='hechos[]' checked='checked' value='" . $hecho->getIdHecho()->getId() . "'>";
-                                            echo $hecho->getIdHecho()->getHecho() . "</label></div>";
-                                        }
-                                        ?>
-                                    </div>
-                                </div>
-                                <div class="col-xs-3">
-                                    <h4>Calificación</h4>
-                                    <div id="resumen" class="padding-lg">
-                                        <span></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="box-footer clearfix">
-                    <a href="#" id="editarhechos">
-                        <span class="badge bg-red"><i class="fa fa-edit"></i> Editar</span>
-                    </a>
-                    <a href="#" id="guardarhechos" style="display:none">
-                        <span class="badge bg-blue"><i class="fa fa-save"></i> Guardar</span>
-                    </a>
-                </div>
-            </div>
-            <!------------- Finaliza formulario hechos ----------------->
-        </div>
-    </div>
-    <div class="row" id="orientacion">
-        <div class="col-xs-12">
-            <!------------- Inicia formulario orientacion ----------------->
-            <div class="box box-default color-palette-box collapsed-box">
-                <div class="box-header with-border">
-                    <i class="fa fa-compass"></i>
-                    <h3 class="box-title">Orientación y Remisiones
-                        <small>
+                    <table class="table table-striped" id="victimas">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Tipo</th>
+                                <th>Relación</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
                             <?php
-                            echo " / " . $orientacion->getDetalle();
-                            echo " / ";
-                            foreach ($remisiones as $remision) {
-                                echo "<span>" . $remision->getIdInstitucion()->getInstitucion() . " - </span>";
+                            $victimas = $this->victimas;
+                            foreach ($victimas as $victima) {
+                                echo "<tr>";
+                                if ($victima->getIdPersona()->getTipo() == 1) {
+                                    echo "<td>" . $victima->getIdPersona()->getNombreColectivo() . " / " . $victima->getIdPersona()->getNombreContacto() . "</td>";
+                                    echo "<td>No individual</td>";
+                                    echo "<td></td>";
+                                } else {
+                                    echo "<td>" . $victima->getIdPersona()->getNombres() . " " . $victima->getIdPersona()->getApellidos() . "</td>";
+                                    echo "<td>Individual</td>";
+                                    echo "<td>" . $victima->getRelacionvictima()->getValor() . "</td>";
+                                }
+                                echo "<td><a href='" . $victima->getIdPersona()->getId() . "'><span class='badge bg-yellow'>Editar</span></a></td>";
+                                echo "</tr>";
                             }
                             ?>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="box-footer">
+                    <a href="<?php echo $this->url('recepcion', array('action' => 'registrovictima', 'id' => $expediente->getId(), 'param1' => 2)); ?>" data-toggle="modal" data-target="#newvictimaModal">
+                        <span class="badge bg-green"><i class="glyphicon glyphicon-plus"></i> Nuevo</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-----------------Finaliza formulario victima ------------------->
+    </div>
+    <div class="row">
+        <!---------------- Inicia formulario denunciados --------------------->
+        <div class="col-xs-12">
+            <div class="box box-default color-palette-box collapsed-box">
+                <div class="box-header with-border">
+                    <i class="fa fa-users"></i>
+                    <h3 class="box-title">Denunciados
+                        <small>
+                            <?php
+                            $denunciados = $this->denunciados;
+                            $count_denunciados = count($denunciados);
+                            echo "El expediente tiene (" . $count_denunciados . ") denunciados relacionadas";
+                            ?>
                         </small>
                     </h3>
                     <div class="pull-right box-tools">
-                        <a href="#" data-widget="collapse" data-tt="tooltip" title="Maximizar">
+                        <a href="#" data-widget="collapse">
                             <i class="fa fa-plus"></i>
                         </a>
                     </div>
                 </div>
                 <div class="box-body">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="form-group">
-                                <?php
-                                $detalleorientacion = $form->get('detalleorientacion')->setValue($orientacion->getDetalle())->setAttributes(array(
-                                    "required" => true,
-                                    "disabled" => true
-                                ));
-                                echo $formLabel->openTag() . $detalleorientacion->getOption('label') . $formLabel->closeTag();
-                                echo $this->formTextarea($detalleorientacion);
-                                ?>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="form-group">
-                                <?php
-                                $remision = $form->get('remision')->setValue($orientacion->getRemite())->setAttributes(array(
-                                    "required" => true,
-                                    "disabled" => true
-                                ));
-                                echo $formLabel->openTag() . $remision->getOption('label') . " &nbsp; " . $formLabel->closeTag();
-                                echo $this->formRadio($remision);
-                                ?>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row" id="remisiones">
-                        <div class="col-xs-12 remisiones">
-                            <strong>Remisiones</strong>
-                            <ul>
-                                <?php
-                                foreach ($remisiones as $remision) {
-                                    echo "<li>" . $remision->getIdInstitucion()->getInstitucion() . "</li>";
+                    <table class="table table-striped" id="denunciados">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Tipo</th>
+                                <th>Relación</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $denunciados = $this->denunciados;
+                            foreach ($denunciados as $denunciado) {
+                                echo "<tr>";
+                                if ($denunciado->getIdPersona()->getTipo() == 1) {
+                                    echo "<td>" . $denunciado->getIdPersona()->getNombreColectivo() . " / " . $denunciado->getIdPersona()->getNombreContacto() . "</td>";
+                                    echo "<td>No individual</td>";
+                                    echo "<td></td>";
+                                } else {
+                                    echo "<td>" . $denunciado->getIdPersona()->getNombres() . " " . $denunciado->getIdPersona()->getApellidos() . "</td>";
+                                    echo "<td>Individual</td>";
+                                    echo "<td>" . $denunciado->getRelacionagresor()->getValor() . "</td>";
                                 }
-                                ?>
-                            </ul>
-                        </div>
-                        <div class="col-xs-12 remisiones" style="display: none">
-                            <div class="row">
-                                <div class="col-xs-4">
-                                    <h4>Sector</h4>
-                                    <div class="form-group">
-                                        <?php
-                                        $instituciones = $this->institucion;
-                                        foreach ($instituciones as $institucionOption) {
-                                            $institucion = $form->get('institucion[]')->setLabel($institucionOption->getNombre());
-                                            echo "<div class='checkbox'>";
-                                            echo "<label><input type='checkbox' name='institucion[]' value='" . $institucionOption->getId() . "'>";
-                                            echo $institucionOption->getNombre() . "</label></div>";
-                                        }
-                                        ?>
-                                    </div>
-                                </div>
-                                <div class="col-xs-4">
-                                    <h4>Instituciones</h4>
-                                    <div class="form-group" id="instdependientes">
-                                        <?php
-                                        foreach ($remisiones as $remision) {
-                                            echo "<div class='checkbox'>";
-                                            echo "<label><input type='checkbox' name ='instdependientes[]' checked='checked' value='" . $remision->getIdInstitucion()->getId() . "'>";
-                                            echo $remision->getIdInstitucion()->getInstitucion() . "</label></div>";
-                                        }
-                                        ?>
-                                    </div>
-                                </div>
-                                <div class="col-xs-4">
-                                    <h4>Remisiones</h4>
-                                    <div id="resumenremision" class="padding-lg">
-                                        <span></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                echo "<td><a href='" . $denunciado->getIdPersona()->getId() . "'><span class='badge bg-yellow'>Editar</span></a></td>";
+                                echo "</tr>";
+                            }
+                            ?>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="box-footer clearfix">
-                    <a href="#" id="editarorientacion">
-                        <span class="badge bg-red"><i class="fa fa-edit"></i> Editar</span>
-                    </a>
-                    <a href="#" id="guardarorientacion" style="display:none">
-                        <span class="badge bg-blue"><i class="fa fa-save"></i> Guardar</span>
+                <div class="box-footer">
+                    <a href="<?php echo $this->url('recepcion', array('action' => 'registrodenunciado', 'id' => $expediente->getId(), 'param1' => 2)); ?>" data-toggle="modal" data-target="#newdenunciadoModal">
+                        <span class="badge bg-green"><i class="glyphicon glyphicon-plus"></i> Nuevo</span>
                     </a>
                 </div>
             </div>
-            <!------------- Finaliza formulario orientacion ----------------->
         </div>
+        <!-----------------Finaliza formulario denunciados ------------------->
     </div>
     <div class="row">
         <div class="col-xs-12">
@@ -790,14 +813,12 @@ $remisiones = $this->remisiones;
     <div class="box-footer">
         <?php
         if ($this->flashMessenger()->hasMessages()) {
-
             echo '<div class="alert-message alert alert-success alert-dismissible fade in" role="alert">';
             echo '<button type="button" class="close" data-dismiss="alert" aria-label="Cerrar"><span aria-hidden="true">×</span></button>';
             $messages = $this->flashMessenger()->getMessages();
             foreach ($messages as $message) {
                 echo $message;
             }
-
             echo '</div>';
         }
         $url = $this->url;
@@ -811,8 +832,22 @@ $remisiones = $this->remisiones;
         )));
         ?>
     </div>
-    <?php echo $this->form()->closeTag(); ?>
+    <?php echo $this->form()->closeTag() ?>
 </section>
+<div class="modal fade" tabindex="-1" role="dialog" id="newvictimaModal" >
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" tabindex="-1" role="dialog" id="newdenunciadoModal" >
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
 <div class="modal fade" tabindex="-1" role="dialog" id="messagesuccessmodal" >
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -831,13 +866,31 @@ $remisiones = $this->remisiones;
         </div>
     </div>
 </div>
+<div class="modal fade" tabindex="-1" role="dialog" id="submiterrormodal" >
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="alert alert-warning">
+                <strong>Debe agregar víctimas y denunciados antes de seguir con el proceso</strong>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     $(function() {
+        var victimas = <?php echo json_encode($victimas); ?>;
+        var denunciados = <?php echo json_encode($denunciados); ?>;
+        $('#recepcion').submit(function() {
+            if ((victimas.length == 0) || (denunciados.length == 0)) {
+                $("#submiterrormodal").modal("toggle");
+                return false;
+            }
+
+        });
         $('#guardarhechos').click(function() {
             if ($('#recepcion #hechos').validator('validate').has('.has-error').length) {
                 $("#messageerrormodal").modal("toggle");
             } else {
-                editarexpediente('<?php echo $this->url('recepcion', array('action' => 'editarexpediente', 'id' => $expediente->getId())); ?>', '<?php echo $this->url('recepcion', array('action' => 'resumen', 'id' => $expediente->getId())) ?>');
+                editarexpediente('<?php echo $this->url('recepcion', array('action' => 'editarexpediente', 'id' => $expediente->getId())); ?>', '<?php echo $this->url('recepcion', array('action' => 'resumeninv', 'id' => $expediente->getId())) ?>');
             }
 
         });
@@ -845,19 +898,19 @@ $remisiones = $this->remisiones;
             if ($('#recepcion #denunciante').validator('validate').has('.has-error').length) {
                 $("#messageerrormodal").modal("toggle");
             } else {
-                editarexpediente('<?php echo $this->url('recepcion', array('action' => 'editarexpediente', 'id' => $expediente->getId())); ?>', '<?php echo $this->url('recepcion', array('action' => 'resumen', 'id' => $expediente->getId())) ?>');
+                editarexpediente('<?php echo $this->url('recepcion', array('action' => 'editarexpediente', 'id' => $expediente->getId())); ?>', '<?php echo $this->url('recepcion', array('action' => 'resumeninv', 'id' => $expediente->getId())) ?>');
             }
         });
-        $('#guardarorientacion').click(function() {
-            if ($('#recepcion #orientacion').validator('validate').has('.has-error').length) {
-                $("#messageerrormodal").modal("toggle");
-            } else {
-                editarexpediente('<?php echo $this->url('recepcion', array('action' => 'guardarorientacion', 'id' => $expediente->getId())); ?>', '<?php echo $this->url('recepcion', array('action' => 'resumen', 'id' => $expediente->getId())) ?>');
-            }
-        });
-
     });
 
+    var url2 = '<?php echo $this->url('recepcion', array('action' => 'registrovictima', 'id' => $expediente->getId(), 'param2' => $persona->getId(), 'param1' => 2)); ?>';
+    $('input[name="solicitante_victima"]').click(function() {
+        if (($(this).val()) == 1) {
+            $('#newvictimaModal').removeData('bs.modal');
+            $('#newvictimaModal').modal({remote: url2});
+            $('#newvictimaModal').modal('show');
+        }
+    });
     $('#recepcion').submit(validateDerecho);
     $('#recepcion').submit(validateinstitucion);
 </script>

@@ -1,0 +1,92 @@
+<meta http-equiv="refresh" content="30"/>
+<section class="content-header">
+    <h1>Recepción de personas</h1>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-info">
+                <div class="box-header">
+                    <h3 class="box-title">Pendientes en el registro</h3>
+                </div>
+                <div class="box-body">
+                    <table id="datatable" class="table table-bordered table-hover table-responsive dataTable" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>N&uacute;mero</th>
+                                <th>Solicitante</th>
+                                <th>Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $listado = $this->visitas;
+                            foreach ($listado as $pendiente):
+                                ?>
+                                <tr>
+                                    <td>
+                                        <?php echo $pendiente->getFechaentrada()->format("d/m/Y"); ?>
+                                    </td>
+                                    <td>
+                                        <?php echo "Cola id " . $pendiente->getId(); ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $pendiente->getIdPersona()->getNombres() . " " . $pendiente->getIdPersona()->getApellidos(); ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        $linkclass = "bg-green";
+                                        echo "<a href='" . $this->url('recepcion', array('action' => 'atender', 'id' => $pendiente->getId())) . "'>";
+                                        echo "<span class='badge " . $linkclass . "'>Continuar</span></a>";
+                                        ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--fab-button-add-->
+<div class="fixed-action-btn">
+    <nav class="fab">
+        <?php
+        $permisos = $this->permisos;
+        foreach ($permisos as $permiso) {
+            foreach ($permiso["permiso"] as $perm) {
+                if ($perm == 11) {
+                    echo "<a class='fab-button bg-primary " . $permiso["accion"] . "' href='" . $this->url('recepcion', array('action' => 'registro', 'id' => $permiso["accion"])) . "' data-tip='tooltip' title='" . ucfirst($permiso["accion"]) . "'>";
+                }
+            }
+        }
+        ?>
+        <a class="fab-button" href="#"><span class="fab-span"><span class="fab-span rotate"></span></span></a>
+    </nav>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="departureModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#datatable').DataTable({
+
+        });
+    });
+</script>

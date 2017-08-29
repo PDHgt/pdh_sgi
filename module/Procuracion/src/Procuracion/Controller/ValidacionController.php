@@ -46,6 +46,7 @@ class ValidacionController extends AbstractActionController {
             } else {
                 $date = $personaOption->getFechanacimiento()->format("d/m/Y");
             }
+
             $item = array(
                 $personasOptions['id'] = $personaOption->getId(),
                 $personasOptions['tipodoc'] = $personaOption->getTipodocumento(),
@@ -53,12 +54,17 @@ class ValidacionController extends AbstractActionController {
                 $personasOptions['sexo'] = $personaOption->getSexo(),
                 $personasOptions['nombres'] = $personaOption->getNombres(),
                 $personasOptions['apellidos'] = $personaOption->getApellidos(),
-                $personasOptions['lgbti'] = $personaOption->getLgbti()
+                $personasOptions['lgbti'] = $personaOption->getLgbti(),
+                $personasOptions['correo'] = $personaOption->getCorreoElectronico(),
+                $personasOptions['telefono'] = $personaOption->getTelefono(),
+                $personasOptions['direccion'] = $personaOption->getDireccion(),
+                $personasOptions['depto'] = $personaOption->getDepto()->getCodigo(),
+                $personasOptions['muni'] = $personaOption->getMuni()->getCodigo()
             );
         }
 
-
         $result = new JsonModel($item);
+
         return $result;
     }
 

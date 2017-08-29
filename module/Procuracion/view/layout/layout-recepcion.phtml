@@ -124,9 +124,6 @@
                 var url = "<?php echo $this->basePath(); ?>/validacion/listarempleados";
                 var unidad = $(this).val();
                 cambiarUnidad(url, unidad);
-                /*if (($(this).val() == 0)) {
-
-                 }*/
             });
             /*
              * Muestra y oculta calificacion
@@ -156,7 +153,6 @@
             $('#editarorientacion').click(function() {
                 $('.remisiones').toggle();
             });
-
             /*
              *  Llamado a funcion checkbox instituciones
              */
@@ -171,9 +167,6 @@
 
             });
 
-
-        </script>
-        <script type="text/javascript">
             $.extend(true, $.fn.dataTable.defaults, {
                 "language": {
                     "url": "<?php echo $this->basePath(); ?>/js/datatables/spanish.json",

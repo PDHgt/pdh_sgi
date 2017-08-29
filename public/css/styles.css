@@ -1,3 +1,11 @@
+input[name=victima_numdoc]{
+    position: relative;
+    z-index: 10000;
+}
+.ui-autocomplete {
+    z-index: 9999 !important;
+}
+
 .bg-custom1{
     background-color: #222d32;
 }

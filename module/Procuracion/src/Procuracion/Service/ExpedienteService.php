@@ -102,8 +102,8 @@ class ExpedienteService {
         }
     }
 
-    public function guardarOrientacion(EntityManager $em, array $orientacion, array $instituciones, array $datos, array $calificacion, array $persona) {
-        $exp = $em->getRepository('Procuracion\Entity\Expediente')->find($datos['ide']);
+    public function guardarOrientacion(EntityManager $em, array $orientacion, array $instituciones, $idexpediente) {
+        $exp = $em->getRepository('Procuracion\Entity\Expediente')->find($idexpediente);
         if ($orientacion['idorientacion'] > 0) {//update
             $nuevo = $em->getRepository('Procuracion\Entity\Orientacion')->find($orientacion['ido']);
             $nuevo->setDetalle($orientacion['detalle']);
@@ -125,7 +125,7 @@ class ExpedienteService {
         $remi = new RemisionService();
         $remi->setRemision($em, $instituciones, $exp);
         //}
-        $this->puedeModificarExpediente($em, $datos, $calificacion, $persona);
+        //$this->puedeModificarExpediente($em, $datos, $calificacion, $persona);
         return $nuevo;
     }
 
@@ -161,6 +161,24 @@ class ExpedienteService {
 
     public function guardarDocumento(EntityManager $em, $datos) {
 
+    }
+
+    public function listarPendientes(EntityManager $em, $usuario, $etapa) {
+        $commaList = implode(', ', $etapa);
+        $cadena = "select p from Procuracion\Entity\TrabajoExpediente p WHERE
+                    p.inicio is not NULL AND p.fin is NULL AND
+                    p.idEtapa IN (" . $commaList . ")  AND exists
+                    (select p2.id from Procuracion\Entity\AsignaTrabajo p2 where
+                    p2.idUsuarioAsignado = " . $usuario . " AND p2.funcion = 'encargado')";
+        //echo $cadena; exit(1);
+        $query = $em->createQuery($cadena);
+        $listado = $query->getResult();
+        return $listado;
+    }
+
+    public function unExpediente(EntityManager $em, $id) {
+        $expediente = $em->getRepository('Procuracion\Entity\Expediente')->find($id);
+        return $expediente;
     }
 
 }

@@ -135,6 +135,8 @@ $calificacion = $this->expediente["calificacion"];
             </div>
             <!------------- Finaliza formulario solicitud ----------------->
         </div>
+    </div>
+    <div class="row" id="denunciante">
         <div class="col-xs-12">
             <!---------------------- Inicia formulario de solicitante -------------------------->
             <div class="box box-default color-palette-box collapsed-box">
@@ -237,6 +239,7 @@ $calificacion = $this->expediente["calificacion"];
                                         }
                                         $fechanac = $form->get('fechanac')->setValue($value)->setAttributes(array(
                                             "name" => "solicitante_fechanac",
+                                            "id" => "solicitante_fechanac",
                                             "disabled" => true
                                         ));
                                         echo $formLabel->openTag() . $fechanac->getOption('label') . " ";
@@ -250,6 +253,7 @@ $calificacion = $this->expediente["calificacion"];
                                         <?php
                                         $edad = $form->get('edad')->setValue($persona->getEdad())->setAttributes(array(
                                             "name" => "solicitante_edad",
+                                            "id" => "solicitante_edad",
                                             "disabled" => true
                                         ));
                                         echo $formLabel->openTag() . $edad->getOption('label') . $formLabel->closeTag() . "<br>";
@@ -369,12 +373,15 @@ $calificacion = $this->expediente["calificacion"];
                     <a href="#" data-toggle="" data-tt="tooltip" title="Editar" id="editarsolicitante">
                         <span class="badge bg-red"><i class="fa fa-edit"></i> Editar</span>
                     </a>
+                    <a href="#" id="guardardenunciante" style="display:none">
+                        <span class="badge bg-blue"><i class="fa fa-save"></i> Guardar</span>
+                    </a>
                 </div>
             </div>
             <!------------- Finaliza formulario solicitante ----------------->
         </div>
     </div>
-    <div class="row">
+    <div class="row" id="hechos">
         <div class="col-xs-12">
             <!------------- Inicia formulario hechos ----------------->
             <div class="box box-default color-palette-box collapsed-box">
@@ -402,8 +409,9 @@ $calificacion = $this->expediente["calificacion"];
                             <div class="form-group">
                                 <?php
                                 $fecha = $form->get('fechahecho')->setValue($expediente->getFechahechos()->format("d/m/Y"))->setAttributes(array(
-                                    "class" => "form-control datepicker",
+                                    "class" => "form-control",
                                     "name" => "hechos_fecha",
+                                    "id" => "hechos_fecha",
                                     "readonly" => false,
                                     "disabled" => true,
                                     "required" => true
@@ -594,8 +602,11 @@ $calificacion = $this->expediente["calificacion"];
                     </div>
                 </div>
                 <div class="box-footer clearfix">
-                    <a href="#fechahecho" data-toggle="" data-tt="tooltip" title="Editar" id="editarhechos">
+                    <a href="#" id="editarhechos">
                         <span class="badge bg-red"><i class="fa fa-edit"></i> Editar</span>
+                    </a>
+                    <a href="#" id="guardarhechos" style="display:none">
+                        <span class="badge bg-blue"><i class="fa fa-save"></i> Guardar</span>
                     </a>
                 </div>
             </div>
@@ -679,7 +690,43 @@ $calificacion = $this->expediente["calificacion"];
     </div>
     <?php echo $this->form()->closeTag() ?>
 </section>
+<div class="modal fade" tabindex="-1" role="dialog" id="messagesuccessmodal" >
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="alert alert-success">
+                <strong>Los datos se han actualizado exitosamente.</strong>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" tabindex="-1" role="dialog" id="messageerrormodal" >
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="alert alert-danger">
+                <strong>Ha ocurrido un error al actualizar los datos</strong>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
+    $(function() {
+        $('#guardarhechos').click(function() {
+            if ($('#recepcion #hechos').validator('validate').has('.has-error').length) {
+                $("#messageerrormodal").modal("toggle");
+            } else {
+                editarexpediente('<?php echo $this->url('recepcion', array('action' => 'editarexpediente', 'id' => $expediente->getId())); ?>', '<?php echo $this->url('recepcion', array('action' => 'orientacion', 'id' => $expediente->getId())) ?>');
+            }
+
+        });
+        $('#guardardenunciante').click(function() {
+            if ($('#recepcion #denunciante').validator('validate').has('.has-error').length) {
+                $("#messageerrormodal").modal("toggle");
+            } else {
+                editarexpediente('<?php echo $this->url('recepcion', array('action' => 'editarexpediente', 'id' => $expediente->getId())); ?>', '<?php echo $this->url('recepcion', array('action' => 'orientacion', 'id' => $expediente->getId())) ?>');
+            }
+        });
+
+    });
     $('#recepcion').submit(validateDerecho);
     $('#recepcion').submit(validateinstitucion);
 </script>

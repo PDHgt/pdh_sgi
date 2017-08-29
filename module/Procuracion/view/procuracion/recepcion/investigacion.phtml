@@ -4,7 +4,6 @@ $cola = $expediente->getIdCola();
 $persona = $this->expediente["persona"];
 $calificacion = $this->expediente["calificacion"];
 ?>
-
 <section class="content-header">
     <h1>Investigación #<?php echo $expediente->getNumero(); ?></h1>
     <div class="progress">
@@ -12,7 +11,7 @@ $calificacion = $this->expediente["calificacion"];
             <span>(Hechos / Calificación) Etapa 1 de 3</span>
         </div>
         <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width: 33%">
-            <span>( / ) Etapa 2 de 3</span>
+            <span>( Víctimas / Denunciados ) Etapa 2 de 3</span>
         </div>
     </div>
 </section>
@@ -21,7 +20,7 @@ $calificacion = $this->expediente["calificacion"];
     $form = $this->form;
     $form->prepare();
     $form->setAttributes(array(
-        'action' => $this->url('recepcion', array('action' => 'guardarinvestigacion')),
+        'action' => $this->url('recepcion', array('action' => 'resumeninv', 'id' => $expediente->getId())),
         'method' => 'post'
     ));
     echo $this->form()->openTag($form);
@@ -164,8 +163,9 @@ $calificacion = $this->expediente["calificacion"];
                             <div class="form-group">
                                 <?php
                                 $fecha = $form->get('fechahecho')->setValue($expediente->getFechahechos()->format("d/m/Y"))->setAttributes(array(
-                                    "class" => "form-control datepicker",
+                                    "class" => "form-control",
                                     "name" => "hechos_fecha",
+                                    "id" => "hechos_fecha",
                                     "readonly" => false,
                                     "disabled" => true,
                                     "required" => true
@@ -470,6 +470,7 @@ $calificacion = $this->expediente["calificacion"];
                                         }
                                         $fechanac = $form->get('fechanac')->setValue($value)->setAttributes(array(
                                             "name" => "solicitante_fechanac",
+                                            "id" => "solicitante_fechanac",
                                             "disabled" => true
                                         ));
                                         echo $formLabel->openTag() . $fechanac->getOption('label') . " ";
@@ -483,6 +484,7 @@ $calificacion = $this->expediente["calificacion"];
                                         <?php
                                         $edad = $form->get('edad')->setValue($persona->getEdad())->setAttributes(array(
                                             "name" => "solicitante_edad",
+                                            "id" => "solicitante_edad",
                                             "disabled" => true
                                         ));
                                         echo $formLabel->openTag() . $edad->getOption('label') . $formLabel->closeTag() . "<br>";
@@ -652,11 +654,9 @@ $calificacion = $this->expediente["calificacion"];
                     <table class="table table-striped" id="victimas">
                         <thead>
                             <tr>
-                                <th>Nombres</th>
-                                <th>Apellidos</th>
+                                <th>Nombre</th>
+                                <th>Tipo</th>
                                 <th>Relación</th>
-                                <th>Sexo</th>
-                                <th>Edad</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -665,20 +665,15 @@ $calificacion = $this->expediente["calificacion"];
                             $victimas = $this->victimas;
                             foreach ($victimas as $victima) {
                                 echo "<tr>";
-                                echo "<td>" . $victima->getIdPersona()->getNombres() . "</td>";
-                                echo "<td>" . $victima->getIdPersona()->getApellidos() . "</td>";
-                                echo "<td>" . $victima->getRelacionvictima()->getValor() . "</td>";
-                                switch ($victima->getIdPersona()->getSexo()) {
-                                    case 1:
-                                        $sexo = "Masculino";
-                                        break;
-                                    case 2:
-                                        $sexo = "Femenino";
-                                    default:
-                                        break;
+                                if ($victima->getIdPersona()->getTipo() == 1) {
+                                    echo "<td>" . $victima->getIdPersona()->getNombreColectivo() . " / " . $victima->getIdPersona()->getNombreContacto() . "</td>";
+                                    echo "<td>No individual</td>";
+                                    echo "<td></td>";
+                                } else {
+                                    echo "<td>" . $victima->getIdPersona()->getNombres() . " " . $victima->getIdPersona()->getApellidos() . "</td>";
+                                    echo "<td>Individual</td>";
+                                    echo "<td>" . $victima->getRelacionvictima()->getValor() . "</td>";
                                 }
-                                echo "<td>" . $sexo . "</td>";
-                                echo "<td>" . $victima->getIdPersona()->getEdad() . "</td>";
                                 echo "<td><a href='" . $victima->getIdPersona()->getId() . "'><span class='badge bg-yellow'>Editar</span></a></td>";
                                 echo "</tr>";
                             }
@@ -687,7 +682,7 @@ $calificacion = $this->expediente["calificacion"];
                     </table>
                 </div>
                 <div class="box-footer">
-                    <a href="<?php echo $this->url('recepcion', array('action' => 'registrovictima', 'id' => $expediente->getId())); ?>" data-toggle="modal" data-target="#newvictimaModal">
+                    <a href="<?php echo $this->url('recepcion', array('action' => 'registrovictima', 'id' => $expediente->getId(), 'param1' => 0, 'param2' => 1)); ?>" data-toggle="modal" data-target="#newvictimaModal">
                         <span class="badge bg-green"><i class="glyphicon glyphicon-plus"></i> Nuevo</span>
                     </a>
                 </div>
@@ -716,11 +711,9 @@ $calificacion = $this->expediente["calificacion"];
                     <table class="table table-striped" id="denunciados">
                         <thead>
                             <tr>
-                                <th>Nombres</th>
-                                <th>Apellidos</th>
+                                <th>Nombre</th>
+                                <th>Tipo</th>
                                 <th>Relación</th>
-                                <th>Sexo</th>
-                                <th>Edad</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -729,20 +722,15 @@ $calificacion = $this->expediente["calificacion"];
                             $denunciados = $this->denunciados;
                             foreach ($denunciados as $denunciado) {
                                 echo "<tr>";
-                                echo "<td>" . $denunciado->getIdPersona()->getNombres() . "</td>";
-                                echo "<td>" . $denunciado->getIdPersona()->getApellidos() . "</td>";
-                                echo "<td>" . $denunciado->getRelacionagresor()->getValor() . "</td>";
-                                switch ($denunciado->getIdPersona()->getSexo()) {
-                                    case 1:
-                                        $sexo = "Masculino";
-                                        break;
-                                    case 2:
-                                        $sexo = "Femenino";
-                                    default:
-                                        break;
+                                if ($denunciado->getIdPersona()->getTipo() == 1) {
+                                    echo "<td>" . $denunciado->getIdPersona()->getNombreColectivo() . " / " . $denunciado->getIdPersona()->getNombreContacto() . "</td>";
+                                    echo "<td>No individual</td>";
+                                    echo "<td></td>";
+                                } else {
+                                    echo "<td>" . $denunciado->getIdPersona()->getNombres() . " " . $denunciado->getIdPersona()->getApellidos() . "</td>";
+                                    echo "<td>Individual</td>";
+                                    echo "<td>" . $denunciado->getRelacionagresor()->getValor() . "</td>";
                                 }
-                                echo "<td>" . $sexo . "</td>";
-                                echo "<td>" . $denunciado->getIdPersona()->getEdad() . "</td>";
                                 echo "<td><a href='" . $denunciado->getIdPersona()->getId() . "'><span class='badge bg-yellow'>Editar</span></a></td>";
                                 echo "</tr>";
                             }
@@ -751,7 +739,7 @@ $calificacion = $this->expediente["calificacion"];
                     </table>
                 </div>
                 <div class="box-footer">
-                    <a href="<?php echo $this->url('recepcion', array('action' => 'registrodenunciado', 'id' => $expediente->getId())); ?>" data-toggle="modal" data-target="#newdenunciadoModal">
+                    <a href="<?php echo $this->url('recepcion', array('action' => 'registrodenunciado', 'id' => $expediente->getId(), 'param1' => 0, 'param2' => 1)); ?>" data-toggle="modal" data-target="#newdenunciadoModal">
                         <span class="badge bg-green"><i class="glyphicon glyphicon-plus"></i> Nuevo</span>
                     </a>
                 </div>
@@ -761,7 +749,6 @@ $calificacion = $this->expediente["calificacion"];
     </div>
     <div class="box-footer">
         <?php
-        //echo $this->formElement($form->get('guardar'));
         echo $this->formElement($form->get('siguiente'));
         ?>
     </div>
@@ -799,23 +786,49 @@ $calificacion = $this->expediente["calificacion"];
         </div>
     </div>
 </div>
+<div class="modal fade" tabindex="-1" role="dialog" id="submiterrormodal" >
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="alert alert-warning">
+                <strong>Debe agregar víctimas y denunciados antes de seguir con el proceso</strong>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     $(function() {
+        var victimas = <?php echo json_encode($victimas); ?>;
+        var denunciados = <?php echo json_encode($denunciados); ?>;
+        $('#recepcion').submit(function() {
+            if ((victimas.length == 0) || (denunciados.length == 0)) {
+                $("#submiterrormodal").modal("toggle");
+                return false;
+            }
+
+        });
         $('#guardarhechos').click(function() {
-            guardarhechos('<?php echo $this->url('recepcion', array('action' => 'editarexpediente', 'id' => $expediente->getId())); ?>', '<?php echo $this->url('recepcion', array('action' => 'investigacion', 'id' => $expediente->getId())) ?>');
+            if ($('#recepcion #hechos').validator('validate').has('.has-error').length) {
+                $("#messageerrormodal").modal("toggle");
+            } else {
+                editarexpediente('<?php echo $this->url('recepcion', array('action' => 'editarexpediente', 'id' => $expediente->getId())); ?>', '<?php echo $this->url('recepcion', array('action' => 'investigacion', 'id' => $expediente->getId())) ?>');
+            }
+
         });
         $('#guardardenunciante').click(function() {
-            guardardenunciante('<?php echo $this->url('recepcion', array('action' => 'editarexpediente', 'id' => $expediente->getId())); ?>', '<?php echo $this->url('recepcion', array('action' => 'investigacion', 'id' => $expediente->getId())) ?>');
+            if ($('#recepcion #denunciante').validator('validate').has('.has-error').length) {
+                $("#messageerrormodal").modal("toggle");
+            } else {
+                editarexpediente('<?php echo $this->url('recepcion', array('action' => 'editarexpediente', 'id' => $expediente->getId())); ?>', '<?php echo $this->url('recepcion', array('action' => 'investigacion', 'id' => $expediente->getId())) ?>');
+            }
         });
     });
 
-    var url2 = '<?php echo $this->url('recepcion', array('action' => 'registrovictima', 'id' => $expediente->getId(), 'param1' => $persona->getId())); ?>';
+    var url2 = '<?php echo $this->url('recepcion', array('action' => 'registrovictima', 'id' => $expediente->getId(), 'param1' => $persona->getId(), 'param2' => 1)); ?>';
     $('input[name="solicitante_victima"]').click(function() {
         if (($(this).val()) == 1) {
             $('#newvictimaModal').removeData('bs.modal');
             $('#newvictimaModal').modal({remote: url2});
             $('#newvictimaModal').modal('show');
-            $('#victima_relacion').append("esto va aqui");
         }
     });
     $('#recepcion').submit(validateDerecho);

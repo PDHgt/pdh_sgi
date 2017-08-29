@@ -17,7 +17,7 @@ class DocumentoService {
         $usr = $em->getRepository('Procuracion\Entity\Usuario')->find($datos['usuario']);
         $accion = $em->getRepository('Procuracion\Entity\Accion')->find($datos['accion']);
         //actaOrientacion=20;
-        if ($datos['accion'] == 20) {//or cualquier otro que sea único...
+        if ($datos['accion'] == 20 || $datos['accion'] == 19) {//or cualquier otro que sea único...
             $documentoAnt = $em->getRepository('Procuracion\Entity\DocumentoExpediente')->findBy(array('idAccion' => $datos['accion'], 'idExpediente' => $datos['idexpediente']));
             foreach ($documentoAnt as $docAnt) {
                 $em->remove($docAnt);

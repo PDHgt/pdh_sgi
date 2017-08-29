@@ -4,14 +4,24 @@ $(function() {
     /******************** mostrar calendarios ******************/
     $('#recepcion').validator();
 
-    $("#datepicker").datepicker({
+    $("#hechos_fecha").datepicker({
         changeMonth: true,
         changeYear: true,
-        dateFormat: 'dd/mm/yy'});
-    $(".datepicker").datepicker({
+        dateFormat: 'dd/mm/yy'
+    });
+    $("#solicitante_fechanac").datepicker({
         changeMonth: true,
         changeYear: true,
-        dateFormat: 'dd/mm/yy'});
+        dateFormat: 'dd/mm/yy',
+        onSelect: function(dateString) {
+            var dateString = $('#solicitante_fechanac').val().split("/");
+            var dateObject = new Date(dateString[2], dateString[1] - 1, dateString[0]);
+            var today = new Date();
+            var age = Math.floor((today - dateObject) / (365.25 * 24 * 60 * 60 * 1000));
+            $('#solicitante_edad').val(age);
+
+        }
+    });
 
     $(function($) {
         $.datepicker.regional['es'] = {
@@ -44,6 +54,7 @@ $(function() {
         if (e.which === 32)
             return false;
     });
+
     /************** Editar solicitante ******************/
     $("#editarsolicitante").click(function() {
         $("input[name='idpersona']").attr('disabled', !$("input[name='idpersona']").attr('disabled'));
@@ -122,6 +133,10 @@ $(function() {
     });
     $("#editarsolicitante").click(function(e) {
         $("#guardardenunciante").toggle("show");
+        e.preventDefault();
+    });
+    $("#editarorientacion").click(function(e) {
+        $("#guardarorientacion").toggle("show");
         e.preventDefault();
     });
 });
@@ -360,29 +375,9 @@ function validateinstitucion()
     }
 }
 
-/*************************** funcion para guardar datos **************************************/
-function guardarPersona(url)
-{
-    var inputs = $('#denunciante :input').serializeArray();
-    $.ajax({
-        type: 'POST',
-        dataType: 'json',
-        url: url,
-        data: {inputs: inputs},
-        success: function(data) {
-            //alert(data['nombres']);
-            alert('success');
-        },
-        error: function() {
-            alert('error');
-
-        }
-    })
-    //$.post(url, data);
-}
 
 /*************************** funcion para guardar datos **************************************/
-function guardarhechos(url, newURL)
+function editarexpediente(url, newURL)
 {
     var inputs = $('#recepcion').serializeArray();
     $.ajax({
@@ -399,26 +394,6 @@ function guardarhechos(url, newURL)
         }
     });
 }
-
-/*************************** funcion para guardar datos **************************************/
-function guardardenunciante(url, newURL)
-{
-    var inputs = $('#recepcion').serializeArray();
-    $.ajax({
-        type: 'POST',
-        url: url,
-        data: inputs,
-        success: function() {
-            $('#messagesuccessmodal').modal('toggle');
-            top.location.href = newURL;
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            $('#messageerrormodal').modal('toggle');
-            console.log(textStatus, errorThrown);
-        }
-    });
-}
-
 
 /**************************** funciones efectos de botones ***********************************/
 (function(window) {

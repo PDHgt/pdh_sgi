@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * AsignaTrabajo
  *
- * @ORM\Table(name="asigna_trabajo", indexes={@ORM\Index(name="fk_trabajo", columns={"id_trabajo"}), @ORM\Index(name="fk_asignado", columns={"id_usuario_asignado"}), @ORM\Index(name="fk_asigna", columns={"id_usuario_asigna"})})
+ * @ORM\Table(name="asigna_trabajo", indexes={@ORM\Index(name="fk_etapa", columns={"id_etapa"}),@ORM\Index(name="fk_asignado", columns={"id_usuario_asignado"}), @ORM\Index(name="fk_asigna", columns={"id_usuario_asigna"})})
  * @ORM\Entity
  */
 class AsignaTrabajo {
@@ -22,14 +22,22 @@ class AsignaTrabajo {
     private $id;
 
     /**
-     * @var \Procuracion\Entity\TrabajoExpediente
+     * @var \Procuracion\Entity\Etapa
      *
-     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\TrabajoExpediente")
+     * @ORM\ManyToOne(targetEntity="Procuracion\Entity\Etapa")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_trabajo", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="id_etapa", referencedColumnName="id")
      * })
      */
-    private $idTrabajo;
+    private $idEtapa;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_expediente_cola", type="integer", nullable=true)
+     *
+     */
+    private $idExpedienteCola;
 
     /**
      * @var \Procuracion\Entity\Usuario
@@ -75,25 +83,47 @@ class AsignaTrabajo {
     }
 
     /**
-     * Set idTrabajo
+     * Set idEtapa
      *
-     * @param \Procuracion\Entity\TrabajoExpediente $idTrabajo
+     * @param \Procuracion\Entity\Etapa $idEtapa
      *
      * @return AsignaTrabajo
      */
-    public function setIdTrabajo(\Procuracion\Entity\TrabajoExpediente $idTrabajo = null) {
-        $this->idTrabajo = $idTrabajo;
+    public function setIdEtapa(\Procuracion\Entity\Etapa $idEtapa = null) {
+        $this->idEtapa = $idEtapa;
 
         return $this;
     }
 
     /**
-     * Get idTrabajo
+     * Get idEtapa
      *
-     * @return \Procuracion\Entity\TrabajoExpediente
+     * @return \Procuracion\Entity\Etapa
      */
-    public function getIdTrabajo() {
-        return $this->idTrabajo;
+    public function getIdEtapa() {
+        return $this->idEtapa;
+    }
+
+    /**
+     * Set idExpedienteCola
+     *
+     * @param integer
+     *
+     * @return AsignaTrabajo
+     */
+    public function setIdExpedienteCola($id) {
+        $this->idExpedienteCola = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get idExpedienteCola
+     *
+     * @return integer
+     */
+    public function getIdExpedienteCola() {
+        return $this->idExpedienteCola;
     }
 
     /**

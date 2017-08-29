@@ -13,8 +13,19 @@ $form->setAttributes(array(
 $formLabel = $this->plugin('formLabel');
 echo $this->form()->openTag($form);
 
-$id = $form->get('id')->setValue($expediente)->setAttributes(array("name" => "idexpediente"));
+$param = $form->get('param')->setValue($this->param);
+echo $this->formInput($param);
+
+$id = $form->get('id')->setValue($expediente)->setAttributes(array(
+    "name" => "idexpediente"
+        ));
 echo $this->formInput($id);
+
+$denunciado_idpersona = $form->get('id')->setValue("")->setAttributes(array(
+    "name" => "idpersona",
+    "id" => "idpersona"
+        ));
+echo $this->formInput($denunciado_idpersona);
 ?>
 <div class="modal-header bg-primary">
     <button type="button" class="close" data-dismiss="modal">
@@ -42,7 +53,7 @@ echo $this->formInput($id);
             </div>
         </div>
     </div>
-    <div class="row datos" id="individual">
+    <div class="row" id="individual">
         <div class="col-xs-6">
             <div class="form-group">
                 <?php
@@ -106,34 +117,6 @@ echo $this->formInput($id);
                 ?>
             </div>
         </div>
-    </div>
-    <div class="row datos" id="noindividual" style="display: none">
-        <div class="col-xs-6">
-            <div class="form-group">
-                <?php
-                $nombrecolectivo = $form->get('nombrecolectivo')->setAttributes(array(
-                    "name" => "denunciado_nombrecolectivo",
-                    "id" => "denunciado_nombrecolectivo"
-                ));
-                echo $formLabel->openTag() . $nombrecolectivo->getOption('label') . $formLabel->closeTag();
-                echo $this->formInput($nombrecolectivo);
-                ?>
-            </div>
-        </div>
-        <div class="col-xs-6">
-            <div class="form-group">
-                <?php
-                $contacto = $form->get('contacto')->setAttributes(array(
-                    "name" => "denunciado_contacto",
-                    "id" => "denunciado_contacto"
-                ));
-                echo $formLabel->openTag() . $contacto->getOption('label') . $formLabel->closeTag();
-                echo $this->formInput($contacto);
-                ?>
-            </div>
-        </div>
-    </div>
-    <div class="row">
         <div class="col-xs-6">
             <div class="form-group">
                 <?php
@@ -144,7 +127,8 @@ echo $this->formInput($id);
                 }
                 $relacion = $form->get('relacion')->setValueOptions($relacionOptions)->setAttributes(array(
                     "name" => "denunciado_relacion",
-                    "id" => "denunciado_relacion"
+                    "id" => "denunciado_relacion",
+                    "required" => true
                 ));
                 echo $formLabel->openTag() . $relacion->getOption('label') . $formLabel->closeTag();
                 echo $this->formSelect($relacion);
@@ -205,12 +189,43 @@ echo $this->formInput($id);
                 ?>
             </div>
         </div>
+    </div>
+    <div class="row" id="noindividual" style="display: none">
+        <div class="col-xs-6">
+            <div class="form-group">
+                <?php
+                $nombrecolectivo = $form->get('nombrecolectivo')->setAttributes(array(
+                    "name" => "denunciado_nombrecolectivo",
+                    "id" => "denunciado_nombrecolectivo",
+                    "disabled" => true
+                ));
+                echo $formLabel->openTag() . $nombrecolectivo->getOption('label') . $formLabel->closeTag();
+                echo $this->formInput($nombrecolectivo);
+                ?>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="form-group">
+                <?php
+                $contacto = $form->get('contacto')->setAttributes(array(
+                    "name" => "denunciado_contacto",
+                    "id" => "denunciado_contacto",
+                    "disabled" => true
+                ));
+                echo $formLabel->openTag() . $contacto->getOption('label') . $formLabel->closeTag();
+                echo $this->formInput($contacto);
+                ?>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="contacto">
         <div class="col-xs-12">
             <div class="form-group">
                 <?php
                 $direccion = $form->get('direccion')->setAttributes(array(
                     "name" => "denunciado_direccion",
-                    "id" => "denunciado_direccion"
+                    "id" => "denunciado_direccion",
+                    "required" => true
                 ));
                 echo $formLabel->openTag() . $direccion->getOption('label') . $formLabel->closeTag();
                 echo $this->formInput($direccion);
@@ -227,7 +242,8 @@ echo $this->formInput($id);
                 }
                 $depto = $form->get('depto')->setValueOptions($deptosOptions)->setAttributes(array(
                     "name" => "denunciado_depto",
-                    "id" => "denunciado_depto"
+                    "id" => "denunciado_depto",
+                    "required" => true
                 ));
                 echo $formLabel->openTag() . $depto->getOption('label') . $formLabel->closeTag();
                 echo $this->formSelect($depto);
@@ -244,7 +260,8 @@ echo $this->formInput($id);
                 }
                 $muni = $form->get('muni')->setValueOptions($munisOptions)->setAttributes(array(
                     "name" => "denunciado_muni",
-                    "id" => "denunciado_muni"
+                    "id" => "denunciado_muni",
+                    "required" => true
                 ));
                 echo $formLabel->openTag() . $muni->getOption('label') . $formLabel->closeTag();
                 echo $this->formSelect($muni);
@@ -307,20 +324,106 @@ echo $this->formInput($id);
 <?php echo $this->form()->closeTag() ?>
 <!------------- Finaliza formulario denunciado ----------------->
 <script>
-
     $(document).ready(function() {
-        $("#noindividual").hide();
-        $("#noindividual :input").attr("disabled", true);
+        $("#denunciado_fechanac").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'dd/mm/yy',
+            onSelect: function(dateString) {
+                var dateString = $('#denunciado_fechanac').val().split("/");
+                var dateObject = new Date(dateString[2], dateString[1] - 1, dateString[0]);
+                var today = new Date();
+                var age = Math.floor((today - dateObject) / (365.25 * 24 * 60 * 60 * 1000));
+                $('#denunciado_edad').val(age);
+
+            }
+        });
+        /*$("#noindividual").hide();
+         $("#noindividual :input").attr("disabled", true);
+         if (($("#denunciado_relacion option:selected").val()) == 5) {
+         $("#denunciado_relacion").attr("readonly", true);
+         }*/
+    });
+    $('#denunciado').validator();
+    /*
+     *  Llamado a funcion validar dpi para ver si existe en la db
+     */
+    $("#denunciado_tipodoc").change(function() {
+        $("#denunciado_numdoc").attr("required", "true");
     });
 
+    /*
+     *  Llamado a funcion obtener datos segun el dpi
+     */
+
+    $("#denunciado_numdoc").autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                url: "<?php echo $this->basePath(); ?>/validacion/validardpi",
+                dataType: "json",
+                type: "POST",
+                data: {
+                    term: request.term
+                },
+                success: function(data) {
+                    response($.map(data, function(item) {
+                        return {
+                            label: item,
+                            value: item
+                        };
+                    }));
+                }
+            });
+        },
+        minLength: 6
+    });
+    /*
+     *  Llamado a funcion completar datos para llenar formulario
+     */
+    $("#denunciado_numdoc").focusout(function() {
+        $.ajax({
+            url: "<?php echo $this->basePath(); ?>/validacion/seleccionardpi",
+            dataType: "json",
+            type: "POST",
+            data: {
+                term: $("#denunciado_numdoc").val()
+            },
+            success: function(data) {
+                if ($("#denunciado_numdoc").val()) {
+                    $('#idpersona').val(data[0]);
+                    $('#denunciado_tipodoc').val(data[1]);
+                    $('#denunciado_fechanac').val(data[2]);
+                    $('#denunciado_nombres').val(data[4]);
+                    $('#denunciado_apellidos').val(data[5]);
+                    var radios = $("input[name='denunciado_sexo']");
+                    if (radios.is(':checked') === false) {
+                        radios.filter('[value=' + data[3] + ']').prop('checked', true);
+                    }
+                    var lgbti = $("input[name='denunciado_lgbti']");
+                    if (lgbti.is(':checked') === false) {
+                        lgbti.filter('[value=' + data[6] + ']').prop('checked', true);
+                    }
+                    $('#denunciado_correo').val(data[7]);
+                    $('#denunciado_telefono').val(data[8]);
+                    $('#denunciado_direccion').val(data[9]);
+                    $('#denunciado_depto').val(data[10]);
+                    $('#denunciado_muni').val(data[11]);
+                }
+            },
+        });
+        if ($("#denunciado_numdoc").val() !== '') {
+            $("#denunciado_tipodoc").attr("required", "true");
+        }
+
+    });
     $('#newdenunciadoModal').on('hidden.bs.modal', function() {
-        $('form[name="denunciado"]')[0].reset();
-        $('#noindividual').hide();
-        $("#noindividual :input").attr("disabled", true);
+        $('#newdenunciadoModal').removeData('bs.modal');
+        $('form[name="denunciado"]')[ 0].reset();
+        /*$('#noindividual').hide();
+         $("#noindividual :input").attr("disabled", true);*/
         $('#individual').show();
         $("#individual :input").attr("disabled", false);
     });
-
     $("select[name='denunciado_depto']").change(function() {
         var depto = $(this).val();
         $.ajax({
@@ -336,58 +439,25 @@ echo $this->formInput($id);
                                     .attr("value", key)
                                     .text(value));
                 });
-
             }
         });
         $("select[name='denunciado_muni']").empty().prop("selectedIndex", -1);
     });
-    /*$('#guardardenunciado').click(function() {
-     $.ajax({
-     type: 'POST',
-     dataType: 'json',
-     url: '<?php echo $this->basePath() . "/validacion/guardardenunciado"; ?>',
-     data: $('#denunciado').serialize(),
-     success: function(data) {
-     $('#denunciados').append("<tr>\n\
-     <td>" + data.denunciado_numdoc + "</td>\n\
-     <td>" + data.denunciado_nombres + " " + data.denunciado_apellidos + "</td>\n\
-     <td>" + data.denunciado_correo + "</td>\n\
-     <td>" + data.denunciado_correo + "</td>\n\
-     <td><a href='' class='badge bg-yellow'>Editar</a></td>\n\
-     </tr>");
-     },
-     error: function() {
-     alert('error');
 
-     }
-     });
-     });
-     $('#newdenunciadoModal').on('hidden.bs.modal', function() {
-     $('form[name="denunciado"]')[0].reset();
-     $('#noindividual').css("display", "none");
-     $('#individual').css("display", "block");
-     });
-     $('input[name="tipodenunciado[]"]').click(function() {
-     $('.datos').toggle();
-     });
-     $("select[name='denunciado_depto']").change(function() {
-     var depto = $(this).val();
-     $.ajax({
-     url: "<?php echo $this->basePath(); ?>/validacion/listarmunicipios",
-     dataType: 'json',
-     type: 'POST',
-     data: {depto: depto},
-     success: function(data) {
-     $("select[name='denunciado_muni']").append($("<option>Seleccione una opción</option>"));
-     $.each(data, function(key, value) {
-     $("select[name='denunciado_muni']")
-     .append($("<option></option>")
-     .attr("value", key)
-     .text(value));
-     });
-
-     }
-     });
-     $("select[name='denunciado_muni']").empty().prop("selectedIndex", -1);
-     });*/
+    //Denunciado tipo
+    var individual = $('#individual');
+    var noindividual = $('#noindividual');
+    $("input[name='denunciado_tipo']").click(function() {
+        if ($(this).is(":checked")) {
+            individual.find(':input').attr({disabled: true, required: false});
+            $("#individual").css("display", "none");
+            noindividual.find(':input').attr({disabled: false});
+            $("#noindividual").css("display", "block");
+        } else {
+            individual.find(':input').attr({disabled: false, required: true});
+            $("#noindividual").css("display", "none");
+            noindividual.find(':input').attr({disabled: true});
+            $("#individual").css("display", "block");
+        }
+    });
 </script>

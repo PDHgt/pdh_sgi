@@ -18,6 +18,20 @@ use Doctrine\ORM\EntityManager as EntityManager;
 
 class PersonaService {
 
+    public function devolverPersonas(EntityManager $em, $que, $idexpediente) {
+        $catalogoservice = new CatalogoService();
+        $tipopersona = $catalogoservice->obtenerDato($em, $que, 'TipoPersona');
+        $listado = $em->getRepository('Procuracion\Entity\ExpedientePersona')->findBy(array('idExpediente' => $idexpediente, 'tipo' => $tipopersona[0]));
+        return $listado;
+    }
+
+    public function yaExisteRelacion(EntityManager $em, $que, $idexpediente, $idpersona) {
+        $catalogoservice = new CatalogoService();
+        $tipopersona = $catalogoservice->obtenerDato($em, $que, 'TipoPersona');
+        $listado = $em->getRepository('Procuracion\Entity\ExpedientePersona')->findBy(array('idExpediente' => $idexpediente, 'tipo' => $tipopersona[0], 'idPersona' => $idpersona));
+        return $listado;
+    }
+
     public function searchPersona(EntityManager $em, array $parametros) {
         $repository = $em->getRepository('Procuracion\Entity\Persona');
         $cadena = "SELECT p FROM Procuracion\Entity\Persona p WHERE (";
@@ -68,6 +82,7 @@ class PersonaService {
         $np->setSexo($nueva['sexo']);
         $np->setLgbti($nueva['lgbti']);
         $np->setFechaNacimiento($nueva['fechanac']);
+        $np->setEdad($nueva['edad']);
         $np->setUpdatedBy($usr);
 
         $em->persist($np);
@@ -163,6 +178,10 @@ class PersonaService {
         if ($datos["idpersona"] > 0) {
             $usr = $em->getRepository('Procuracion\Entity\Usuario')->find($datos['usuario']);
             $np = $em->getRepository('Procuracion\Entity\Persona')->find($datos['idp']);
+            //departamento
+            $depto = $em->getRepository('Procuracion\Entity\Departamento')->findByCodigo($datos['departamento']);
+            //municipio
+            $muni = $em->getRepository('Procuracion\Entity\Municipio')->findByCodigo($datos['municipio']);
             //var_dump($np);
             $np->setNombres($datos['nombres']);
             $np->setApellidos($datos['apellidos']);
@@ -171,8 +190,12 @@ class PersonaService {
             $np->setSexo($datos['sexo']);
             $np->setLgbti($datos['lgbti']);
             $np->setFechaNacimiento($datos['fechanac']);
+            $np->setEdad($datos['edad']);
             $np->setTelefono($datos['telefono']);
             $np->setCorreoElectronico($datos['correo']);
+            $np->setDireccion($datos['direccion']);
+            $np->setDepto($depto[0]);
+            $np->setMuni($muni[0]);
             $np->setUpdatedBy($usr);
             $em->flush();
         } else {
@@ -180,24 +203,17 @@ class PersonaService {
         }
     }
 
-    public function yaExisteRelacion(EntityManager $em, $que, $idexpediente, $idpersona) {
-        $catalogoservice = new CatalogoService();
-        $tipopersona = $catalogoservice->obtenerDato($em, $que, 'TipoPersona');
-        $listado = $em->getRepository('Procuracion\Entity\ExpedientePersona')->findBy(array('idExpediente' => $idexpediente, 'tipo' => $tipopersona[0], 'idPersona' => $idpersona));
-        return $listado;
-    }
-
     public function ingresarVictima(EntityManager $em, $usr, $datos, $idexpediente) {
 
         $departamento = $em->getRepository('Procuracion\Entity\Departamento')->findByCodigo($datos['victima_depto']);
         $municipio = $em->getRepository('Procuracion\Entity\Municipio')->findByCodigo($datos['victima_muni']);
         $usuario = $em->getRepository('Procuracion\Entity\Usuario')->find($usr);
-        $relacionvictima = $em->getRepository('Procuracion\Entity\DetalleCatalogo')->find($datos['victima_relacion']);
         $expediente = $em->getRepository('Procuracion\Entity\Expediente')->find($idexpediente);
         if ($datos['victima_tipo'] <> 1) {
             $comunidad = $em->getRepository('Procuracion\Entity\DetalleCatalogo')->find($datos['victima_comunidad']);
             $pueblopertenencia = $em->getRepository('Procuracion\Entity\DetalleCatalogo')->find($datos['victima_pertenencia']);
             $nacionalidad = $em->getRepository('Procuracion\Entity\DetalleCatalogo')->find($datos['victima_nacionalidad']);
+            $relacionvictima = $em->getRepository('Procuracion\Entity\DetalleCatalogo')->find($datos['victima_relacion']);
         }
 
         if ($datos['idpersona'] > 0) {
@@ -223,7 +239,7 @@ class PersonaService {
             $persona->setFechaNacimiento($fechanac);
             $persona->setEdad($datos['victima_edad']);
         } else {//colectiva
-            $persona->setNombreColectivo($datos['victima_nombrenoin']);
+            $persona->setNombreColectivo($datos['victima_nombrecolectivo']);
             $persona->setNombreContacto($datos['victima_contacto']);
         }
         //var_dump($departamento[0]);;
@@ -273,17 +289,16 @@ class PersonaService {
     }
 
     public function ingresarDenunciado(EntityManager $em, $usr, $datos, $idexpediente) {
-        //echo $datos['victima_depto']; exit(1);
+
         $departamento = $em->getRepository('Procuracion\Entity\Departamento')->findByCodigo($datos['denunciado_depto']);
-        //var_dump($departamento); exit(1);
         $municipio = $em->getRepository('Procuracion\Entity\Municipio')->findByCodigo($datos['denunciado_muni']);
         $usuario = $em->getRepository('Procuracion\Entity\Usuario')->find($usr);
-        $relacionagresor = $em->getRepository('Procuracion\Entity\DetalleCatalogo')->find($datos['denunciado_relacion']);
         $expediente = $em->getRepository('Procuracion\Entity\Expediente')->find($idexpediente);
         if ($datos['denunciado_tipo'] <> 1) {
             $comunidad = $em->getRepository('Procuracion\Entity\DetalleCatalogo')->find($datos['denunciado_comunidad']);
             $pueblopertenencia = $em->getRepository('Procuracion\Entity\DetalleCatalogo')->find($datos['denunciado_pertenencia']);
             $nacionalidad = $em->getRepository('Procuracion\Entity\DetalleCatalogo')->find($datos['denunciado_nacionalidad']);
+            $relacionagresor = $em->getRepository('Procuracion\Entity\DetalleCatalogo')->find($datos['denunciado_relacion']);
         }
 
         if ($datos['idpersona'] > 0) {
@@ -310,6 +325,7 @@ class PersonaService {
             $persona->setNombreColectivo($datos['denunciado_nombrecolectivo']);
             $persona->setNombreContacto($datos['denunciado_contacto']);
         }
+
         $persona->setTipo($datos['denunciado_tipo']);
         $persona->setDireccion($datos['denunciado_direccion']);
         $persona->setDepto($departamento[0]);
@@ -346,13 +362,6 @@ class PersonaService {
         }
 
         $em->flush();
-    }
-
-    public function devolverPersonas(EntityManager $em, $que, $idexpediente) {
-        $catalogoservice = new CatalogoService();
-        $tipopersona = $catalogoservice->obtenerDato($em, $que, 'TipoPersona');
-        $listado = $em->getRepository('Procuracion\Entity\ExpedientePersona')->findBy(array('idExpediente' => $idexpediente, 'tipo' => $tipopersona[0]));
-        return $listado;
     }
 
 }

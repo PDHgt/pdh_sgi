@@ -15,17 +15,24 @@ $form->setAttributes(array(
 $formLabel = $this->plugin('formLabel');
 echo $this->form()->openTag($form);
 
+$param = $form->get('param')->setValue($this->param);
+echo $this->formInput($param);
+
 if (!empty($denunciante)) {
-    $idp = $form->get('id')->setValue($denunciante->getId())->setAttributes(array(
+    $victima_idpersona = $form->get('id')->setValue($denunciante->getId())->setAttributes(array(
         "name" => "idpersona",
         "id" => "idpersona"
     ));
-    echo $this->formInput($idp);
+    echo $this->formInput($victima_idpersona);
     $victima_numdoc = $denunciante->getNumeroDocumento();
     $victima_tipodoc = $denunciante->getTipoDocumento();
     $victima_nombres = $denunciante->getNombres();
     $victima_apellidos = $denunciante->getApellidos();
-    $victima_fechanac = $denunciante->getFechanacimiento()->format("d/m/Y");
+    if ($denunciante->getFechanacimiento() == null) {
+        $victima_fechanac = $denunciante->getFechanacimiento();
+    } else {
+        $victima_fechanac = $denunciante->getFechanacimiento()->format("d/m/Y");
+    }
     $victima_edad = $denunciante->getEdad();
     $victima_sexo = $denunciante->getSexo();
     $victima_lgbti = $denunciante->getLgbti();
@@ -36,6 +43,11 @@ if (!empty($denunciante)) {
     $victima_correo = $denunciante->getCorreoElectronico();
     $victima_relacion = 5;
 } else {
+    $victima_idpersona = $form->get('id')->setAttributes(array(
+        "name" => "idpersona",
+        "id" => "idpersona"
+    ));
+    echo $this->formInput($victima_idpersona);
     $victima_numdoc = NULL;
     $victima_tipodoc = NULL;
     $victima_nombres = NULL;
@@ -295,7 +307,7 @@ echo $this->formInput($id);
                 $nombrecolectivo = $form->get('nombrecolectivo')->setAttributes(array(
                     "name" => "victima_nombrecolectivo",
                     "id" => "victima_nombrecolectivo",
-                    "required" => true
+                    "disabled" => true
                 ));
                 echo $formLabel->openTag() . $nombrecolectivo->getOption('label') . $formLabel->closeTag();
                 echo $this->formInput($nombrecolectivo);
@@ -308,7 +320,7 @@ echo $this->formInput($id);
                 $contacto = $form->get('contacto')->setAttributes(array(
                     "name" => "victima_contacto",
                     "id" => "victima_contacto",
-                    "required" => true
+                    "disabled" => true
                 ));
                 echo $formLabel->openTag() . $contacto->getOption('label') . $formLabel->closeTag();
                 echo $this->formInput($contacto);
@@ -398,20 +410,100 @@ echo $this->formInput($id);
 <!------------- Finaliza formulario victima ----------------->
 <script>
     $(document).ready(function() {
-        $("#noindividual").hide();
-        $("#noindividual :input").attr("disabled", true);
+        $("#victima_fechanac").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'dd/mm/yy',
+            onSelect: function(dateString) {
+                var dateString = $('#victima_fechanac').val().split("/");
+                var dateObject = new Date(dateString[2], dateString[1] - 1, dateString[0]);
+                var today = new Date();
+                var age = Math.floor((today - dateObject) / (365.25 * 24 * 60 * 60 * 1000));
+                $('#victima_edad').val(age);
+
+            }
+        });
         if (($("#victima_relacion option:selected").val()) == 5) {
             $("#victima_relacion").attr("readonly", true);
         }
     });
+    // Validacion de formulario de victima
+    $('#victima').validator();
+
+    // Llamado a funcion validar dpi para ver si existe en la db
+    $("#victima_tipodoc").change(function() {
+        $("#victima_numdoc").attr("required", "true");
+    });
+    // Llamado a funcion obtener datos segun el dpi
+    $("#victima_numdoc").autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                url: "<?php echo $this->basePath(); ?>/validacion/validardpi",
+                dataType: "json",
+                type: "POST",
+                data: {
+                    term: request.term
+                },
+                success: function(data) {
+                    response($.map(data, function(item) {
+                        return {
+                            label: item,
+                            value: item
+                        };
+                    }));
+                }
+            });
+        },
+        minLength: 6
+    });
+
+    // Llamado a funcion completar datos para llenar formulario
+    $("#victima_numdoc").focusout(function() {
+        $.ajax({
+            url: "<?php echo $this->basePath(); ?>/validacion/seleccionardpi",
+            dataType: "json",
+            type: "POST",
+            data: {
+                term: $("#victima_numdoc").val()
+            },
+            success: function(data) {
+                if ($("#victima_numdoc").val()) {
+                    $('#idpersona').val(data[0]);
+                    $('#victima_tipodoc').val(data[1]);
+                    $('#victima_fechanac').val(data[2]);
+                    $('#victima_nombres').val(data[4]);
+                    $('#victima_apellidos').val(data[5]);
+                    var radios = $("input[name='victima_sexo']");
+                    if (radios.is(':checked') === false) {
+                        radios.filter('[value=' + data[3] + ']').prop('checked', true);
+                    }
+                    var lgbti = $("input[name='victima_lgbti']");
+                    if (lgbti.is(':checked') === false) {
+                        lgbti.filter('[value=' + data[6] + ']').prop('checked', true);
+                    }
+                    $('#victima_correo').val(data[7]);
+                    $('#victima_telefono').val(data[8]);
+                    $('#victima_direccion').val(data[9]);
+                    $('#victima_depto').val(data[10]);
+                    $('#victima_muni').val(data[11]);
+                }
+            }
+        });
+        if ($("#victima_numdoc").val() !== '') {
+            $("#victima_tipodoc").attr("required", "true");
+        }
+
+    });
+
+    // Borra los datos del modal victima
     $('#newvictimaModal').on('hidden.bs.modal', function() {
         $('#newvictimaModal').removeData('bs.modal');
         $('form[name="victima"]')[ 0].reset();
-        $('#noindividual').hide();
-        $("#noindividual :input").attr("disabled", true);
         $('#individual').show();
         $("#individual :input").attr("disabled", false);
     });
+
+    // Lista municipios de cada departamento
     $("select[name='victima_depto']").change(function() {
         var depto = $(this).val();
         $.ajax({
@@ -430,5 +522,22 @@ echo $this->formInput($id);
             }
         });
         $("select[name='victima_muni']").empty().prop("selectedIndex", -1);
+    });
+
+    //Victima tipo
+    var individual = $('#individual');
+    var noindividual = $('#noindividual');
+    $("input[name='victima_tipo']").click(function() {
+        if ($(this).is(":checked")) {
+            individual.find(':input').attr({disabled: true, required: false});
+            $("#individual").css("display", "none");
+            noindividual.find(':input').attr({disabled: false});
+            $("#noindividual").css("display", "block");
+        } else {
+            individual.find(':input').attr({disabled: false, required: true});
+            $("#noindividual").css("display", "none");
+            noindividual.find(':input').attr({disabled: true});
+            $("#individual").css("display", "block");
+        }
     });
 </script>

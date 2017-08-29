@@ -304,7 +304,7 @@ class FormularioRecepcion extends Form {
             ),
             'attributes' => array(
                 'type' => 'text',
-                'class' => 'form-control datepicker',
+                'class' => 'form-control',
                 'id' => 'fechanac'
             )
         ));
@@ -632,6 +632,7 @@ class FormularioRecepcion extends Form {
                 'class' => 'btn btn-warning btn-flat',
             )
         ));
+
         //Input Buscar
         $this->add(array(
             'name' => 'buscar',
@@ -654,6 +655,22 @@ class FormularioRecepcion extends Form {
             'attributes' => array(
                 //'type' => 'button',
                 'value' => 'Imprimir',
+                'class' => 'btn btn-default btn-flat'
+            )
+        ));
+
+        //Input button
+        $this->add(array(
+            'type' => 'Button',
+            'name' => 'boton',
+            'options' => array(
+                'label_options' => array(
+                    'disable_html_escape' => true,
+                )
+            ),
+            'attributes' => array(
+                //'type' => 'button',
+                'value' => 'Botón',
                 'class' => 'btn btn-default btn-flat'
             )
         ));

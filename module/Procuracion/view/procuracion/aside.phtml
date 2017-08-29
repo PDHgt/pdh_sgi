@@ -26,7 +26,6 @@
         </div>
         </form>
         <!--/.search form -->
-
         <!--Sidebar Menu -->
         <ul class = "sidebar-menu">
             <li class = "header">Menú principal</li>
@@ -36,17 +35,24 @@
             <li><a href="<?php echo $this->url('recepcion', array('action' => 'cola')) ?>"><i class="glyphicon glyphicon-edit"></i><span>Cola de solicitantes</span></a></li>
             <li><a href="<?php echo $this->url('recepcion', array('action' => 'consulta')) ?>"><i class="glyphicon glyphicon-link"></i><span>Consulta de expedientes</span></a></li>
             <li><a href="<?php echo $this->url('recepcion', array('action' => 'buscar')) ?>"><i class="glyphicon glyphicon-search"></i><span>Buscar personas</span></a></li>
-            <!--<li class="treeview">
-              <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
-                <span class="pull-right-container">
-                  <i class="fa fa-angle-left pull-right"></i>
-                </span>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="#">Link in level 2</a></li>
-                <li><a href="#">Link in level 2</a></li>
-              </ul>
-            </li>-->
+            <li>
+                <a href="<?php echo $this->url('recepcion', array('action' => 'incompleto')) ?>">
+                    <i class="glyphicon glyphicon-unchecked"></i>
+                    <span>Casos iniciados</span>
+                    <span class="pull-right-container">
+                        <small class="label pull-right bg-red"><?php echo count($this->atendidos) ?></small>
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="<?php echo $this->url('recepcion', array('action' => 'expedienteinc')) ?>">
+                    <i class="glyphicon glyphicon-alert"></i>
+                    <span>Casos pendientes</span>
+                    <span class="pull-right-container">
+                        <small class="label pull-right bg-red"><?php echo count($this->iniciados) ?></small>
+                    </span>
+                </a>
+            </li>
         </ul>
         <!-- /.sidebar-menu -->
     </section>

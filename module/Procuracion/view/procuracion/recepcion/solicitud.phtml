@@ -220,7 +220,8 @@
                                     <div class="form-group">
                                         <?php
                                         $edad = $form->get('edad')->setValue($cola->getIdpersona()->getEdad())->setAttributes(array(
-                                            "name" => "solicitante_edad"
+                                            "name" => "solicitante_edad",
+                                            "id" => "solicitante_edad"
                                         ));
                                         echo $formLabel->openTag() . $edad->getOption('label') . $formLabel->closeTag() . "<br>";
                                         echo $this->formNumber($edad);

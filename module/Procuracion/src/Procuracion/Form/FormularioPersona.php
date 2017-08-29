@@ -24,6 +24,19 @@ class FormularioPersona extends Form {
             'type' => 'hidden'
         ));
 
+        //******************* text *********************/
+        $this->add(array(
+            'name' => 'param',
+            'options' => array(
+                'label' => 'param',
+            ),
+            'attributes' => array(
+                'type' => 'hidden',
+                'class' => 'form-control',
+                'id' => 'param'
+            )
+        ));
+
         //****************** Tipo persona *****************/
         $this->add(array(
             'type' => 'Zend\Form\Element\Checkbox',
@@ -40,7 +53,7 @@ class FormularioPersona extends Form {
             'type' => 'Zend\Form\Element\Checkbox',
             'name' => 'tipodenunciado',
             'options' => array(
-                'label' => 'Tipo denuncaido',
+                'label' => 'Tipo denunciado',
                 'use_hidden_element' => true,
                 'checked_value' => '1',
                 'unchecked_value' => '0'
@@ -117,7 +130,7 @@ class FormularioPersona extends Form {
             ),
             'attributes' => array(
                 'type' => 'text',
-                'class' => 'form-control datepicker',
+                'class' => 'form-control',
                 'id' => 'fechanac'
             )
         ));

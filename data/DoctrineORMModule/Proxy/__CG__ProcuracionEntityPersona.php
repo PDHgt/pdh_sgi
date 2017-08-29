@@ -64,10 +64,10 @@ class Persona extends \Procuracion\Entity\Persona implements \Doctrine\ORM\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'anonimo', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'nombres', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'apellidos', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'tipodocumento', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'numerodocumento', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'sexo', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'lgbti', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'fechanacimiento', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'edad', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'direccion', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'depto', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'muni', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'updated_at', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'updated_by'];
+            return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'anonimo', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'tipo', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'nombreColectivo', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'nombreContacto', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'nombres', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'apellidos', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'tipodocumento', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'numerodocumento', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'sexo', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'lgbti', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'nombreUsual', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'fechanacimiento', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'edad', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'direccion', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'depto', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'muni', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'telefono', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'correoElectronico', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'updated_at', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'updated_by'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'anonimo', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'nombres', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'apellidos', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'tipodocumento', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'numerodocumento', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'sexo', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'lgbti', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'fechanacimiento', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'edad', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'direccion', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'depto', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'muni', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'updated_at', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'updated_by'];
+        return ['__isInitialized__', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'id', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'anonimo', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'tipo', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'nombreColectivo', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'nombreContacto', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'nombres', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'apellidos', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'tipodocumento', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'numerodocumento', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'sexo', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'lgbti', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'nombreUsual', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'fechanacimiento', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'edad', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'direccion', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'depto', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'muni', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'telefono', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'correoElectronico', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'updated_at', '' . "\0" . 'Procuracion\\Entity\\Persona' . "\0" . 'updated_by'];
     }
 
     /**
@@ -213,6 +213,28 @@ class Persona extends \Procuracion\Entity\Persona implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
+    public function setTipo($tipo)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTipo', [$tipo]);
+
+        return parent::setTipo($tipo);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTipo()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTipo', []);
+
+        return parent::getTipo();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setNombres($nombres)
     {
 
@@ -230,6 +252,50 @@ class Persona extends \Procuracion\Entity\Persona implements \Doctrine\ORM\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNombres', []);
 
         return parent::getNombres();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setNombreColectivo($nombres)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNombreColectivo', [$nombres]);
+
+        return parent::setNombreColectivo($nombres);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getNombreColectivo()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNombreColectivo', []);
+
+        return parent::getNombreColectivo();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setNombreContacto($nombrecontacto)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNombreContacto', [$nombrecontacto]);
+
+        return parent::setNombreContacto($nombrecontacto);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getNombreContacto()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNombreContacto', []);
+
+        return parent::getNombreContacto();
     }
 
     /**
@@ -345,6 +411,28 @@ class Persona extends \Procuracion\Entity\Persona implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
+    public function setNombreUsual($nombreusual)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNombreUsual', [$nombreusual]);
+
+        return parent::setNombreUsual($nombreusual);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getNombreUsual()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNombreUsual', []);
+
+        return parent::getNombreUsual();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setFechanacimiento($fechanacimiento)
     {
 
@@ -450,6 +538,50 @@ class Persona extends \Procuracion\Entity\Persona implements \Doctrine\ORM\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMuni', []);
 
         return parent::getMuni();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTelefono($numero)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTelefono', [$numero]);
+
+        return parent::setTelefono($numero);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTelefono()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTelefono', []);
+
+        return parent::getTelefono();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setCorreoElectronico($correo)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCorreoElectronico', [$correo]);
+
+        return parent::setCorreoElectronico($correo);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCorreoElectronico()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCorreoElectronico', []);
+
+        return parent::getCorreoElectronico();
     }
 
     /**
